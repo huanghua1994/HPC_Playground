@@ -93,7 +93,8 @@ static void test_kernel_3axis(double *stencil_coefs, double *x0, double *x1_ref,
         stencil_3axis_ref(x0, radius, stencil_coefs, nx, ny, nz, x1_ref);
         et = omp_get_wtime();
         ut = et - st;
-        printf("Reference kernel finished, %lf GPoint/s, %lf GFlops\n", GPoints / ut, GFlops / ut);
+        printf("Reference kernel finished, used time = %lf (ms), %lf GPoint/s, %lf GFlops\n", 
+               ut * 1000.0, GPoints / ut, GFlops / ut);
     }
     printf("\n");
     

@@ -47,7 +47,7 @@ void stencil_3axis_cuda(
     // Test the kernel
     cudaEvent_t st, et;
     double kernel_s;
-    double GPoints = (double) nxyz / 100000000.0;
+    double GPoints = (double) nxyz / 1000000000.0;
     double GFlops  = GPoints * (7.0 * radius + 1);
     float kernel_ms;
     cudaCheck( cudaEventCreate(&st) );
@@ -57,10 +57,11 @@ void stencil_3axis_cuda(
         cudaCheck( cudaEventRecord(st, 0) );
         stencil_3axis_cuda_kernel<<<dim_grid, dim_block>>>(nx, ny, nz, cu_x0, cu_x1);
         cudaCheck( cudaEventRecord(et, 0) );
-        cudaCheck( cudaDeviceSynchronize() );
+        cudaCheck( cudaEventSynchronize(et) );
         cudaEventElapsedTime(&kernel_ms, st, et);
         kernel_s = (double) kernel_ms * 1.0e-3;
-        printf("CUDA kernel finished, %lf GPoint/s, %lf GFlops\n", GPoints / kernel_s, GFlops / kernel_s);
+        printf("CUDA kernel finished, used time = %lf (ms), %lf GPoint/s, %lf GFlops\n", 
+               kernel_s * 1000.0, GPoints / kernel_s, GFlops / kernel_s);
     }
     printf("\n");
     

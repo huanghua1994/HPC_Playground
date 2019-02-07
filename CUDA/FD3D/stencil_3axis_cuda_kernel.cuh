@@ -61,7 +61,7 @@ __global__ void stencil_3axis_cuda_kernel(
         // 2. Load the x & y halo for current z
         if (local_y < RADIUS)
         {
-            xy_plane[local_y][tile_x]                       = x0[thread_x0_idx - RADIUS * stride_y_ex];
+            xy_plane[local_y][tile_x]                       = x0[thread_x0_idx -     RADIUS * stride_y_ex];
             xy_plane[local_y + Y_BLK_SIZE + RADIUS][tile_x] = x0[thread_x0_idx + Y_BLK_SIZE * stride_y_ex];
         }
         
@@ -84,12 +84,10 @@ __global__ void stencil_3axis_cuda_kernel(
                                    + xy_plane[tile_y + r][tile_x] + xy_plane[tile_y - r][tile_x] 
                                    + xy_plane[tile_y][tile_x + r] + xy_plane[tile_y][tile_x - r]);
         }
-        __syncthreads();
         
         // 4. Store the output value
         if (valid_x1) x1[thread_x1_idx] = value;
         thread_x1_idx += stride_z;
         thread_x0_idx += stride_z_ex;
-        __syncthreads();
     }
 }
