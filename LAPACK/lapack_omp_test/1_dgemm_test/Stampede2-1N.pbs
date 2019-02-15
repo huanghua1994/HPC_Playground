@@ -1,0 +1,38 @@
+#!/bin/bash
+#SBATCH -J lapack_omp  # Job name
+#SBATCH -o job-%j.out  # Name of stdout output file
+#SBATCH -p skx-dev     # Queue (partition) name
+#SBATCH -N 1           # Total # of nodes (must be 1 for OpenMP)
+#SBATCH -n 48          # Total # of mpi tasks (should be 1 for OpenMP)
+#SBATCH -t 00:30:00    # Run time (hh:mm:ss)
+#SBATCH -A Intel-IPCC  # Allocation name (req'd if you have more than 1)
+
+export NTHREADS=1
+ibrun ./test_dgemm_omp >> out.log
+ibrun ./test_dgemm_omp >> out.log
+ibrun ./test_dgemm_omp >> out.log
+ibrun ./test_dgemm_omp >> out.log
+ibrun ./test_dgemm_omp >> out.log
+echo "=======================================================================" >> out.log
+export NTHREADS=2
+ibrun ./test_dgemm_omp >> out.log
+ibrun ./test_dgemm_omp >> out.log
+ibrun ./test_dgemm_omp >> out.log
+ibrun ./test_dgemm_omp >> out.log
+ibrun ./test_dgemm_omp >> out.log
+echo "=======================================================================" >> out.log
+export NTHREADS=4
+ibrun ./test_dgemm_omp >> out.log
+ibrun ./test_dgemm_omp >> out.log
+ibrun ./test_dgemm_omp >> out.log
+ibrun ./test_dgemm_omp >> out.log
+ibrun ./test_dgemm_omp >> out.log
+echo "=======================================================================" >> out.log
+export NTHREADS=8
+ibrun ./test_dgemm_omp >> out.log
+ibrun ./test_dgemm_omp >> out.log
+ibrun ./test_dgemm_omp >> out.log
+ibrun ./test_dgemm_omp >> out.log
+ibrun ./test_dgemm_omp >> out.log
+echo "=======================================================================" >> out.log
+
