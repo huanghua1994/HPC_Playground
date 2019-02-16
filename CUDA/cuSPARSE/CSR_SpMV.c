@@ -3,9 +3,12 @@
 #include <string.h>
 #include <assert.h>
 #include <sys/time.h>
+#include <time.h>
 #include <math.h>
 #include <omp.h>
 //#include <mkl.h>
+
+#include "CSRPlus.h"
 
 #include "cuSPARSE_SpMV_test.h"
 
@@ -58,11 +61,14 @@ static void COO2CSR(int *row, int *row_idx, int *col, double *val, int nnz, int 
     compressIndices(row, row_idx, nrows, nnz);
 }
 
+CSRP_blk_info_t CSRP_blkinfo = NULL;
+
 static void CSR_SpMV_CPU_ref(
     const int *row_idx, const int *col, const double *val, 
     const int nrows, const double * __restrict x, double * __restrict y
 )
 {
+    /*
     #pragma omp parallel for schedule(dynamic, 16)
     for (int irow = 0; irow < nrows; irow++)
     {
@@ -72,6 +78,19 @@ static void CSR_SpMV_CPU_ref(
             res += val[idx] * x[col[idx]];
         y[irow] = res;
     }
+    */
+    
+    int nnz = row_idx[nrows];
+    int nthreads = omp_get_max_threads();
+    int nblocks  = nthreads;
+    
+    if (CSRP_blkinfo == NULL)  // Initialize it once, since we are using the same matrix
+    {
+        CSRP_blkinfo = (CSRP_blk_info_t) malloc(sizeof(CSRP_blk_info) * nthreads);
+        CSRP_equal_nnz_partition(nnz, nblocks, nrows, row_idx, CSRP_blkinfo);
+    }
+    
+    CSRP_SpMV(row_idx, col, val, nrows, nblocks, CSRP_blkinfo, x, y);
 }
 
 static double getL2NormError(const double *__restrict x, const double *__restrict y, const int n)
@@ -81,10 +100,12 @@ static double getL2NormError(const double *__restrict x, const double *__restric
     #pragma omp simd
     for (int i = 0; i < n; i++)
     {
-        double diff = x[i] - y[i];
+        double diff = fabs(x[i] - y[i]);
         res += diff * diff;
+        if (diff / fabs(x[i]) > 0.001) printf("%d: %lf %lf\n", i, x[i], y[i]);
     }
     res = sqrt(res);
+    
     
     return res;
 }
@@ -106,7 +127,7 @@ int main(int argc, char **argv)
     nnz   = atoi(argv[3]);
     
     ntest = (2000000000 / nnz) + 1;
-    if (ntest > 10000) ntest = 10000;
+    if (ntest > 4000) ntest = 4000;
     
     row     = (int*)    malloc(sizeof(int)    * nnz);
     col     = (int*)    malloc(sizeof(int)    * nnz);
@@ -126,7 +147,7 @@ int main(int argc, char **argv)
     for (int i = 0; i < ncols; i++) x[i] = (double) (i % 1919);
     
     // Generate random matrix
-    srand(114514);
+    srand(time(NULL));
     #pragma omp parallel for
     for (int i = 0; i < nnz; i++) 
     {
