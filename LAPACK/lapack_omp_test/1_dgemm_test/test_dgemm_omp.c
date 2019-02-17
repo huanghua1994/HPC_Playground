@@ -3,6 +3,9 @@
 #include <mpi.h>
 #include <stdlib.h>
 
+#include <unistd.h> // for 'usleep()'
+#include <time.h> // for 'nanosleep()'
+
 #include <omp.h>
 
 #define min(x,y) ((x)<(y)?(x):(y))
@@ -74,6 +77,7 @@ int main(int argc, char **argv) {
     int save;
     
     /**  Implementation two **/
+    MPI_Request req;
     //MPI_Barrier(MPI_COMM_WORLD);
     t1 = MPI_Wtime();
     // start finding B = A'*A on rank 0
@@ -88,10 +92,32 @@ int main(int argc, char **argv) {
                      N,N,N,1,A,N,A,N,0,B,N);
         save = mkl_get_max_threads();
         mkl_set_num_threads(1);
-        MPI_Barrier(MPI_COMM_WORLD);
+        //MPI_Barrier(MPI_COMM_WORLD);
+        MPI_Ibarrier(MPI_COMM_WORLD, &req);
     } else {
-        MPI_Barrier(MPI_COMM_WORLD);
+        //MPI_Barrier(MPI_COMM_WORLD);
+        MPI_Ibarrier(MPI_COMM_WORLD, &req);
     }
+    
+    // every one waits here, check every 10 ms to see if it's completed
+    int flag;
+    MPI_Status status;
+	MPI_Test(&req, &flag, &status);
+	while (!flag)
+	{
+	    /* Do some work ... */
+	    usleep(10000); // in micro-seconds, this function is not preferred
+	    
+	    /* nanosleep is preferred, but not as handy */
+		//struct timespec ts;
+		//int milliseconds = 10;
+		//ts.tv_sec = milliseconds / 1000;
+		//ts.tv_nsec = (milliseconds % 1000) * 1000000;
+		//nanosleep(&ts, NULL);
+	    
+	    MPI_Test(&req, &flag, &status);
+	}
+    
     //omp_set_num_threads(1);
     t2 = MPI_Wtime();
     

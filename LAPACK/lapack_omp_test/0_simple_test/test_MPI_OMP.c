@@ -2,6 +2,9 @@
 #include <mpi.h>
 #include <stdlib.h>
 
+#include <unistd.h> // for 'usleep()'
+#include <time.h> // for 'nanosleep()'
+
 #include <omp.h>
 
 int main(int argc, char *argv[])
@@ -38,7 +41,7 @@ int main(int argc, char *argv[])
         my_nthreads = atoi(env_ntheads);
     if (my_nthreads < 1) my_nthreads = 1;
     
-    
+    MPI_Request req;
     MPI_Barrier(MPI_COMM_WORLD);
     t1 = MPI_Wtime();
     // start finding sum of array A on rank 0
@@ -62,10 +65,37 @@ int main(int argc, char *argv[])
         //   sum += A[i];
         //}
         
-        MPI_Barrier(MPI_COMM_WORLD);
+        //MPI_Barrier(MPI_COMM_WORLD);
+        MPI_Ibarrier(MPI_COMM_WORLD, &req);
+    	
     } else {
-        MPI_Barrier(MPI_COMM_WORLD);
+        //MPI_Barrier(MPI_COMM_WORLD);
+        MPI_Ibarrier(MPI_COMM_WORLD, &req);
     }
+    
+    // every one waits here, check every 10 ms to see if it's completed
+    int flag;
+    MPI_Status status;
+	MPI_Test(&req, &flag, &status);
+	while (!flag)
+	{
+	    /* Do some work ... */
+	    usleep(10000); // in micro-seconds, this function is not preferred
+	    
+	    /* nanosleep is preferred, but not as handy */
+		//struct timespec ts;
+		//int milliseconds = 10;
+		//ts.tv_sec = milliseconds / 1000;
+		//ts.tv_nsec = (milliseconds % 1000) * 1000000;
+		//nanosleep(&ts, NULL);
+	    
+	    MPI_Test(&req, &flag, &status);
+	}
+    
+
+    
+    
+    
     
     t2 = MPI_Wtime();
     

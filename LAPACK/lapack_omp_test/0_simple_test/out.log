@@ -157,3 +157,162 @@ Thread number: 6/8
 Finding sum using 8 threads took: 625.934 ms, sum = 1.000000e+09
 TACC:  Shutdown complete. Exiting. 
 =======================================================================
+TACC:  Starting up job 2955368 
+TACC:  Starting parallel tasks... 
+Thread number: 0/1
+Finding sum using 1 threads took: 709.845 ms, sum = 1.000000e+09
+TACC:  Shutdown complete. Exiting. 
+TACC:  Starting up job 2955368 
+TACC:  Starting parallel tasks... 
+Thread number: 0/1
+Finding sum using 1 threads took: 708.638 ms, sum = 1.000000e+09
+TACC:  Shutdown complete. Exiting. 
+TACC:  Starting up job 2955368 
+TACC:  Starting parallel tasks... 
+Thread number: 0/1
+Finding sum using 1 threads took: 708.792 ms, sum = 1.000000e+09
+TACC:  Shutdown complete. Exiting. 
+TACC:  Starting up job 2955368 
+TACC:  Starting parallel tasks... 
+Thread number: 0/1
+Finding sum using 1 threads took: 708.794 ms, sum = 1.000000e+09
+TACC:  Shutdown complete. Exiting. 
+TACC:  Starting up job 2955368 
+TACC:  Starting parallel tasks... 
+Thread number: 0/1
+Finding sum using 1 threads took: 708.846 ms, sum = 1.000000e+09
+TACC:  Shutdown complete. Exiting. 
+=======================================================================
+TACC:  Starting up job 2955368 
+TACC:  Starting parallel tasks... 
+Thread number: 0/2
+Thread number: 1/2
+Finding sum using 2 threads took: 640.765 ms, sum = 1.000000e+09
+TACC:  Shutdown complete. Exiting. 
+TACC:  Starting up job 2955368 
+TACC:  Starting parallel tasks... 
+Thread number: 0/2
+Thread number: 1/2
+Finding sum using 2 threads took: 640.618 ms, sum = 1.000000e+09
+TACC:  Shutdown complete. Exiting. 
+TACC:  Starting up job 2955368 
+TACC:  Starting parallel tasks... 
+Thread number: 0/2
+Thread number: 1/2
+Finding sum using 2 threads took: 640.688 ms, sum = 1.000000e+09
+TACC:  Shutdown complete. Exiting. 
+TACC:  Starting up job 2955368 
+TACC:  Starting parallel tasks... 
+Thread number: 0/2
+Thread number: 1/2
+Finding sum using 2 threads took: 641.601 ms, sum = 1.000000e+09
+TACC:  Shutdown complete. Exiting. 
+TACC:  Starting up job 2955368 
+TACC:  Starting parallel tasks... 
+Thread number: 0/2
+Thread number: 1/2
+Finding sum using 2 threads took: 641.230 ms, sum = 1.000000e+09
+TACC:  Shutdown complete. Exiting. 
+=======================================================================
+TACC:  Starting up job 2955368 
+TACC:  Starting parallel tasks... 
+Thread number: 0/4
+Thread number: 1/4
+Thread number: 2/4
+Thread number: 3/4
+Finding sum using 4 threads took: 648.897 ms, sum = 1.000000e+09
+TACC:  Shutdown complete. Exiting. 
+TACC:  Starting up job 2955368 
+TACC:  Starting parallel tasks... 
+Thread number: 0/4
+Thread number: 1/4
+Thread number: 3/4
+Thread number: 2/4
+Finding sum using 4 threads took: 648.377 ms, sum = 1.000000e+09
+TACC:  Shutdown complete. Exiting. 
+TACC:  Starting up job 2955368 
+TACC:  Starting parallel tasks... 
+Thread number: 0/4
+Thread number: 1/4
+Thread number: 3/4
+Thread number: 2/4
+Finding sum using 4 threads took: 646.916 ms, sum = 1.000000e+09
+TACC:  Shutdown complete. Exiting. 
+TACC:  Starting up job 2955368 
+TACC:  Starting parallel tasks... 
+Thread number: 0/4
+Thread number: 1/4
+Thread number: 2/4
+Thread number: 3/4
+Finding sum using 4 threads took: 687.707 ms, sum = 1.000000e+09
+TACC:  Shutdown complete. Exiting. 
+TACC:  Starting up job 2955368 
+TACC:  Starting parallel tasks... 
+Thread number: 0/4
+Thread number: 1/4
+Thread number: 3/4
+Thread number: 2/4
+Finding sum using 4 threads took: 649.426 ms, sum = 1.000000e+09
+TACC:  Shutdown complete. Exiting. 
+=======================================================================
+TACC:  Starting up job 2955368 
+TACC:  Starting parallel tasks... 
+Thread number: 0/8
+Thread number: 1/8
+Thread number: 3/8
+Thread number: 4/8
+Thread number: 5/8
+Thread number: 2/8
+Thread number: 6/8
+Thread number: 7/8
+Finding sum using 8 threads took: 754.903 ms, sum = 1.000000e+09
+TACC:  Shutdown complete. Exiting. 
+TACC:  Starting up job 2955368 
+TACC:  Starting parallel tasks... 
+Thread number: 3/8
+Thread number: 0/8
+Thread number: 4/8
+Thread number: 1/8
+Thread number: 5/8
+Thread number: 6/8
+Thread number: 2/8
+Thread number: 7/8
+Finding sum using 8 threads took: 667.581 ms, sum = 1.000000e+09
+TACC:  Shutdown complete. Exiting. 
+TACC:  Starting up job 2955368 
+TACC:  Starting parallel tasks... 
+Thread number: 0/8
+Thread number: 1/8
+Thread number: 5/8
+Thread number: 6/8
+Thread number: 3/8
+Thread number: 4/8
+Thread number: 7/8
+Thread number: 2/8
+Finding sum using 8 threads took: 667.073 ms, sum = 1.000000e+09
+TACC:  Shutdown complete. Exiting. 
+TACC:  Starting up job 2955368 
+TACC:  Starting parallel tasks... 
+Thread number: 4/8
+Thread number: 1/8
+Thread number: 3/8
+Thread number: 5/8
+Thread number: 2/8
+Thread number: 0/8
+Thread number: 7/8
+Thread number: 6/8
+Finding sum using 8 threads took: 709.359 ms, sum = 1.000000e+09
+TACC:  Shutdown complete. Exiting. 
+TACC:  Starting up job 2955368 
+TACC:  Starting parallel tasks... 
+Thread number: 0/8
+Thread number: 4/8
+Thread number: 3/8
+Thread number: 2/8
+Thread number: 1/8
+Thread number: 6/8
+Thread number: 7/8
+Thread number: 5/8
+Finding sum using 8 threads took: 664.070 ms, sum = 1.000000e+09
+TACC:  Shutdown complete. Exiting. 
+=======================================================================
