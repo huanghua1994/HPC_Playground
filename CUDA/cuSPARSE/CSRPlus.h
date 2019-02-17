@@ -22,7 +22,9 @@ struct CSRP_blk_info_
 typedef struct CSRP_blk_info_  CSRP_blk_info;
 typedef struct CSRP_blk_info_* CSRP_blk_info_t;
 
+#ifdef __cplusplus
 extern "C" {
+#endif
 
 // Partition a CSR matrix into multiple blocks with the same nnz
 // Input:
@@ -54,6 +56,9 @@ void CSRP_SpMV(
     const double *x, double *y
 );
 
+#ifdef __cplusplus
 }
+#endif
 
 #endif
+

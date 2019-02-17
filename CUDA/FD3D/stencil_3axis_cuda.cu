@@ -6,8 +6,11 @@
 #include <cuda.h>
 #include "CUDA_Utils.h"
 
+extern "C" {
 #include "stencil_3axis_cuda_kernel.cuh"
+}
 
+extern "C"
 void stencil_3axis_cuda(
     const double *x0, const int radius, const double *stencil_coefs, 
     const int nx, const int ny, const int nz, double *x1, const int ntest

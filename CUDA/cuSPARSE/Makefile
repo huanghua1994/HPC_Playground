@@ -1,11 +1,14 @@
 SPMVEXE = cuda_CSR_SpMV.x
 
-HOSTCC  = g++
-CFLAGS  = -O3 -march=native -Wall -fopenmp -g
+HOSTCC  = gcc
+CFLAGS  = -O3 -march=native -Wall -fopenmp -g -std=gnu99
+
+#HOSTCC   = icc
+#CFLAGS   = -O3 -xHost -Wall -qopenmp -g -std=gnu99
 
 CUPATH  = /usr/local/cuda-8.0
 NVCC    = nvcc
-NVFLAGS = -O3 -g -Wno-deprecated-gpu-targets -lcudart_static -lcusparse_static -lculibos
+NVFLAGS = -O3 -g -Wno-deprecated-gpu-targets -lcudart_static -lcusparse_static -lculibos -arch=sm_60 
 
 LDFLAGS = -fopenmp -I $(CUPATH)/include -L$(CUPATH)/lib64 -lcudart -lcusparse
 

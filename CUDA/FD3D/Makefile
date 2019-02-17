@@ -1,15 +1,18 @@
 FD3DEXE = FD3D.x
 
-HOSTCC  = g++
-CFLAGS  = -O3 -march=native -Wall -fopenmp -g
+#HOSTCC  = gcc
+#CFLAGS  = -O3 -Wall -fopenmp -g -std=gnu99 -march=native
+
+HOSTCC  = icc
+CFLAGS  = -O3 -Wall -qopenmp -g -std=gnu99 -xHost
 
 CUPATH  = /usr/local/cuda-8.0
 NVCC    = nvcc
-NVFLAGS = -O3 -g -Wno-deprecated-gpu-targets -lcudart_static -lcusparse_static -lculibos
+NVFLAGS = -O3 -g -Wno-deprecated-gpu-targets -lcudart_static -lcusparse_static -lculibos -arch=sm_60
 
 LDFLAGS = -fopenmp -I $(CUPATH)/include -L$(CUPATH)/lib64 -lcudart -lcusparse
 
-OBJS    = stencil_3axis_ref.o stencil_3axis_cuda.o FD3D.o
+OBJS    = FD3D.o stencil_3axis_ref.o stencil_3axis_cuda.o 
 
 FD3DEXE: $(OBJS)
 	$(HOSTCC) $(OBJS) -o $(FD3DEXE) $(LDFLAGS) 

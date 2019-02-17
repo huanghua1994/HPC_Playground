@@ -8,6 +8,11 @@
 #include <cusparse_v2.h>
 #include "CUDA_Utils.h"
 
+extern "C" {
+#include "cuSPARSE_SpMV_test.h"
+}
+
+extern "C"
 void cuSPARSE_SpMV_test(
     const int nrows, const int ncols, const int nnz, 
     const int *row_ptr, const int *col, const double *val, 
