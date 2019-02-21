@@ -34,16 +34,17 @@ int main(int argc, char **argv)
     int *row, *row_ptr, *col;
     double *val, *x, *y0, *y1;
     
-    int nrows, ncols, nnz, ntest;
-    if (argc < 3) 
+    int nrows, ncols, nnz, X_ncol, ntest;
+    if (argc < 4) 
     {
-        printf("Usage: CSR_SpMV.x <nrows> <ncols> <nnz>\n");
-        assert(argc >= 3);
+        printf("Usage: CSR_SpMM.x <nrows> <ncols> <nnz> <nvec> \n");
+        assert(argc >= 4);
     }
     
-    nrows = atoi(argv[1]);
-    ncols = atoi(argv[2]);
-    nnz   = atoi(argv[3]);
+    nrows  = atoi(argv[1]);
+    ncols  = atoi(argv[2]);
+    nnz    = atoi(argv[3]);
+    X_ncol = atoi(argv[4]);
     
     ntest = (2000000000 / nnz) + 1;
     if (ntest > 4000) ntest = 4000;
@@ -51,9 +52,9 @@ int main(int argc, char **argv)
     row     = (int*)    malloc(sizeof(int)    * nnz);
     col     = (int*)    malloc(sizeof(int)    * nnz);
     val     = (double*) malloc(sizeof(double) * nnz);
-    x       = (double*) malloc(sizeof(double) * ncols);
-    y0      = (double*) malloc(sizeof(double) * nrows);
-    y1      = (double*) malloc(sizeof(double) * nrows);
+    x       = (double*) malloc(sizeof(double) * ncols * X_ncol);
+    y0      = (double*) malloc(sizeof(double) * nrows * X_ncol);
+    y1      = (double*) malloc(sizeof(double) * nrows * X_ncol);
     assert(row     != NULL);
     assert(col     != NULL);
     assert(val     != NULL);
@@ -61,7 +62,7 @@ int main(int argc, char **argv)
     assert(y0      != NULL);
     assert(y1      != NULL);
     
-    for (int i = 0; i < ncols; i++) x[i] = (double) (i % 1919);
+    for (int i = 0; i < ncols * X_ncol; i++) x[i] = (double) (i % 1919);
     
     int nthreads = omp_get_max_threads();
     
@@ -78,21 +79,31 @@ int main(int argc, char **argv)
     CSRP_init_with_COO_matrix(nrows, ncols, nnz, row, col, val, &CSRP);
     CSRP_partition(nthreads, CSRP);
     CSRP_optimize_NUMA(CSRP);
-    row_ptr = CSRP->row_ptr;
     
     double st, et, ut, GFlops;
-    GFlops = 2.0 * (double) nnz / 1000000000.0;
+    GFlops = 2.0 * (double) nnz * (double) X_ncol / 1000000000.0;
 
     // Get reference result
     st = omp_get_wtime();
     for (int k = 0; k < ntest; k++)
-        CSRP_SpMV(CSRP, x, y0);
+        CSRP_SpMV_nvec(CSRP, x, ncols, X_ncol, y0, nrows);
     et = omp_get_wtime();
     ut = (et - st) / (double) ntest;
     printf("Reference OMP CSR SpMV done, used time = %lf (ms), %lf GFlops\n", ut * 1000.0, GFlops / ut);
+    
+    st = omp_get_wtime();
+    for (int k = 0; k < ntest; k++)
+        CSRP_SpMM_CM(CSRP, x, ncols, X_ncol, y0, nrows);
+    et = omp_get_wtime();
+    ut = (et - st) / (double) ntest;
+    printf("Reference OMP CSR SpMM done, used time = %lf (ms), %lf GFlops\n", ut * 1000.0, GFlops / ut);
 
     // Get test result
-    cuSPARSE_SpMV_test(nrows, ncols, nnz, CSRP->row_ptr, CSRP->col, CSRP->val, x, y1, ntest);
+    cuSPARSE_SpMM_test(
+        nrows, ncols, nnz, X_ncol, 
+        CSRP->row_ptr, CSRP->col, CSRP->val, 
+        x, ncols, y1, nrows, ntest
+    );
     /*
     sparse_matrix_t mat;
     struct matrix_descr mat_descr;

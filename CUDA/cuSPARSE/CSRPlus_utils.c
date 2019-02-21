@@ -86,13 +86,14 @@ static int lower_bound(const int *a, int n, int x)
 
 // Initialize a CSRPlus matrix using a COO matrix
 void CSRP_init_with_COO_matrix(
-    const int nrows, const int nnz, const int *row,
+    const int nrows, const int ncols, const int nnz, const int *row,
     const int *col, const double *val, CSRPlusMatrix_t *CSRP
 )
 {
     CSRPlusMatrix_t _CSRP = (CSRPlusMatrix_t) malloc(sizeof(CSRPlusMatrix));
     
     _CSRP->nrows   = nrows;
+    _CSRP->ncols   = ncols;
     _CSRP->nnz     = nnz;
     _CSRP->row_ptr = (int*)    malloc(sizeof(int)    * (nrows + 1));
     _CSRP->col     = (int*)    malloc(sizeof(int)    * nnz);
@@ -146,6 +147,7 @@ void CSRP_free(CSRPlusMatrix_t CSRP)
 // Partition a CSR matrix into multiple blocks with the same nnz
 void CSRP_partition(const int nblocks, CSRPlusMatrix_t CSRP)
 {
+    CSRP->X_ncol    = 1;
     CSRP->nblocks   = nblocks;
     CSRP->nnz_spos  = (int*)    malloc(sizeof(int)    * nblocks);
     CSRP->nnz_epos  = (int*)    malloc(sizeof(int)    * nblocks);

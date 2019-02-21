@@ -14,13 +14,14 @@
 struct CSRPlusMatrix_
 {
     // Standard CSR arrays and parameters
-    int    nrows, nnz;
+    int    nrows, ncols, nnz;
     int    *row_ptr;
     int    *col;
     double *val;
     
     // CSRPlus task partitioning information
     int    nblocks;     // Total number of nnz blocks
+    int    X_ncol;      // Number of X matrix column
     int    *nnz_spos;   // First nnz of a block
     int    *nnz_epos;   // Last  nnz (included) of a block
     int    *first_row;  // First row of a block
@@ -43,15 +44,14 @@ extern "C" {
 // Initialize a CSRPlus matrix using a COO matrix
 // Note: This function assumes that the input COO matrix is not sorted
 // Input:
-//   nrows    : Number of rows 
-//   nnz      : Number of non-zeros
-//   row, col : Indices of non-zero elements
-//   val      : Values of non-zero elements
-//   CSRP     : Pointer to CSRPlus matrix structure pointer
+//   nrows, ncols  : Number of rows and columns
+//   nnz           : Number of non-zeros
+//   row, col, val : Indices and values of non-zero elements
+//   CSRP          : Pointer to CSRPlus matrix structure pointer
 // Output:
-//   CSRP     : Pointer to initialized CSRPlus matrix structure pointer
+//   CSRP         : Pointer to initialized CSRPlus matrix structure pointer
 void CSRP_init_with_COO_matrix(
-    const int nrows, const int nnz, const int *row,
+    const int nrows, const int ncols, const int nnz, const int *row,
     const int *col, const double *val, CSRPlusMatrix_t *CSRP
 );
 
@@ -76,8 +76,7 @@ void CSRP_partition(const int nblocks, CSRPlusMatrix_t CSRP);
 void CSRP_optimize_NUMA(CSRPlusMatrix_t CSRP);
 
 
-
-// =============== Calculation Kernels ===============
+// =============== Computation Kernels ===============
 
 // Perform OpenMP parallelized CSR SpMV with a CSRPlus matrix
 // Input:
@@ -86,6 +85,25 @@ void CSRP_optimize_NUMA(CSRPlusMatrix_t CSRP);
 // Output:
 //   y    : Output vector
 void CSRP_SpMV(CSRPlusMatrix_t CSRP, const double *x, double *y);
+
+// Perform OpenMP parallelized CSR SpMM with a CSRPlus matrix and column-major dense matrix
+// Input:
+//   CSRP : CSRPlus matrix structure pointer
+//   X    : Input matrix, stored in column-major style
+//   ldX  : Leading dimension of X
+//   ldY  : Leading dimension of Y
+// Output:
+//   y    : Output matrix, stored in row-major style
+void CSRP_SpMM_CM(
+    CSRPlusMatrix_t CSRP, const double *X, const int ldX, 
+    const int ncol, double *Y, const int ldY
+);
+
+// Using CSRP_SpMV() to perform CSRP_SpMM_CM() computation, for testing
+void CSRP_SpMV_nvec(
+    CSRPlusMatrix_t CSRP, const double *X, const int ldX, 
+    const int ncol, double *Y, const int ldY
+);
 
 #ifdef __cplusplus
 }
