@@ -1,6 +1,6 @@
 /**
  * @file    CSRPlus.h
- * @brief   CSRPlus format 
+ * @brief   CSRPlus matrix header file 
  *
  * @author  Hua Huang <huangh223@gatech.edu>
  *          Edmond Chow <echow@cc.gatech.edu>
@@ -11,54 +11,84 @@
 #ifndef __CSRPLUS_H__
 #define __CSRPLUS_H__
 
-struct CSRP_blk_info_
+struct CSRPlusMatrix_
 {
-	int    nnz_spos,  nnz_epos;   // First and last nnz of this block (INCLUDED the last nnz)
-    int    first_row, last_row;   // First and last row of this block
-	int    fr_intact, lr_intact;  // If the first / last row of this block is intact
-	double fr_res,    lr_res;     // Partial result for the first / last row
+    // Standard CSR arrays and parameters
+    int    nrows, nnz;
+    int    *row_ptr;
+    int    *col;
+    double *val;
+    
+    // CSRPlus task partitioning information
+    int    nblocks;     // Total number of nnz blocks
+    int    *nnz_spos;   // First nnz of a block
+    int    *nnz_epos;   // Last  nnz (included) of a block
+    int    *first_row;  // First row of a block
+    int    *last_row;   // Last  row of a block
+    int    *fr_intact;  // If the first row of a block is intact
+    int    *lr_intact;  // If the last  row of a block is intact
+    double *fr_res;     // Partial result of the first row 
+    double *lr_res;     // Partial result of the last  row
 };
 
-typedef struct CSRP_blk_info_  CSRP_blk_info;
-typedef struct CSRP_blk_info_* CSRP_blk_info_t;
+typedef struct CSRPlusMatrix_  CSRPlusMatrix;
+typedef struct CSRPlusMatrix_* CSRPlusMatrix_t;
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-// Partition a CSR matrix into multiple blocks with the same nnz
+// =============== Helper Functions ===============
+
+// Initialize a CSRPlus matrix using a COO matrix
+// Note: This function assumes that the input COO matrix is not sorted
 // Input:
-//   nnz       : Number of non-zeros of the matrix
-//   nblocks   : Number of blocks to be partitioned
-//   nrows     : Number of rows of the matrix
-//   row_ptr   : Displacement of each row's nnz, length nrows+1, standard array in CSR
+//   nrows    : Number of rows 
+//   nnz      : Number of non-zeros
+//   row, col : Indices of non-zero elements
+//   val      : Values of non-zero elements
+//   CSRP     : Pointer to CSRPlus matrix structure pointer
 // Output:
-//   blk_info  : Partition information of each block, length nblocks, should be allocated before 
-void CSRP_equal_nnz_partition(
-    const int nnz, const int nblocks, const int nrows,
-    const int *row_ptr, CSRP_blk_info_t blk_info
+//   CSRP     : Pointer to initialized CSRPlus matrix structure pointer
+void CSRP_init_with_COO_matrix(
+    const int nrows, const int nnz, const int *row,
+    const int *col, const double *val, CSRPlusMatrix_t *CSRP
 );
 
-// Perform OpenMP paralleled CSR SpMV using partitioned block information
+// Free a CSRPlus matrix structure
 // Input:
-//   row_ptr   : Displacement of each row's non-zeros, length nrows+1, standard array in CSR
-//   col_idx   : Column indices of non-zeros, standard array in CSR
-//   val       : Non-zero values, standard array in CSR
-//   nrows     : Number of rows of the sparse matrix
-//   blk_info  : Partition information of each block, length nblocks, should be allocated before 
-//   nblocks   : Number of blocks to be partitioned
-//   x         : Input vector
+//   CSRP : CSRPlus matrix structure pointer
+void CSRP_free(CSRPlusMatrix_t CSRP);
+
+// Partition a CSR matrix into multiple blocks with the same nnz
+// Input:
+//   nblocks : Number of blocks to be partitioned
+//   CSRP    : CSRPlus matrix structure pointer
 // Output:
-//   y         : Output vector
-void CSRP_SpMV(
-    const int *row_ptr, const int *col_idx, const double *val, 
-    const int nrows, const int nblocks, CSRP_blk_info_t blk_info, 
-    const double *x, double *y
-);
+//   CSRP    : CSRPlus matrix structure pointer with partitioning information
+void CSRP_partition(const int nblocks, CSRPlusMatrix_t CSRP);
+
+// Use first-touch policy to optimize the storage of CSR arrays in a CSRPlus matrix
+// Input:
+//   CSRP      : CSRPlus matrix structure pointer
+// Output:
+//   CSRP      : CSRPlus matrix structure pointer with NUMA optimized storage
+void CSRP_optimize_NUMA(CSRPlusMatrix_t CSRP);
+
+
+
+// =============== Calculation Kernels ===============
+
+// Perform OpenMP parallelized CSR SpMV with a CSRPlus matrix
+// Input:
+//   CSRP : CSRPlus matrix structure pointer
+//   x    : Input vector
+// Output:
+//   y    : Output vector
+void CSRP_SpMV(CSRPlusMatrix_t CSRP, const double *x, double *y);
 
 #ifdef __cplusplus
 }
 #endif
 
 #endif
-

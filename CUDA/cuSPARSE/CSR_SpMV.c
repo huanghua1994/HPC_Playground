@@ -9,88 +9,28 @@
 //#include <mkl.h>
 
 #include "CSRPlus.h"
-
 #include "cuSPARSE_SpMV_test.h"
 
-static int cmp_pair(int M1, int N1, int M2, int N2)
-{
-    if (M1 == M2) return (N1 < N2);
-    else return (M1 < M2);
-}
+CSRPlusMatrix_t CSRP = NULL;
 
-static void qsortCOO2CSR(int *row, int *col, double *val, int l, int r)
-{
-    int i = l, j = r, row_tmp, col_tmp;
-    int mid_row = row[(l + r) / 2];
-    int mid_col = col[(l + r) / 2];
-    double val_tmp;
-    while (i <= j)
-    {
-        while (cmp_pair(row[i], col[i], mid_row, mid_col)) i++;
-        while (cmp_pair(mid_row, mid_col, row[j], col[j])) j--;
-        if (i <= j)
-        {
-            row_tmp = row[i]; row[i] = row[j]; row[j] = row_tmp;
-            col_tmp = col[i]; col[i] = col[j]; col[j] = col_tmp;
-            val_tmp = val[i]; val[i] = val[j]; val[j] = val_tmp;
-            
-            i++;  j--;
-        }
-    }
-    if (i < r) qsortCOO2CSR(row, col, val, i, r);
-    if (j > l) qsortCOO2CSR(row, col, val, l, j);
-}
-
-static void compressIndices(int *idx, int *idx_ptr, int nindex, int nelem)
-{
-    int curr_pos = 0, end_pos;
-    idx_ptr[0] = 0;
-    for (int index = 0; index < nindex; index++)
-    {
-        for (end_pos = curr_pos; end_pos < nelem; end_pos++)
-            if (idx[end_pos] > index) break;
-        idx_ptr[index + 1] = end_pos;
-        curr_pos = end_pos;
-    }
-    idx_ptr[nindex] = nelem; 
-}
-
-static void COO2CSR(int *row, int *row_idx, int *col, double *val, int nnz, int nrows)
-{
-    qsortCOO2CSR(row, col, val, 0, nnz - 1);
-    compressIndices(row, row_idx, nrows, nnz);
-}
-
-CSRP_blk_info_t CSRP_blkinfo = NULL;
-
-static void CSR_SpMV_CPU_ref(
-    const int *row_idx, const int *col, const double *val, 
-    const int nrows, const double * __restrict x, double * __restrict y
-)
+static void CSR_SpMV_CPU_ref(CSRPlusMatrix_t CSRP, const double * __restrict x, double * __restrict y)
 {
     /*
+    int    *row_ptr = CSRP->row_ptr;
+    int    *col     = CSRP->col;
+    double *val     = CSRP->val;
     #pragma omp parallel for schedule(dynamic, 16)
-    for (int irow = 0; irow < nrows; irow++)
+    for (int irow = 0; irow < CSRP->nrows; irow++)
     {
         double res = 0.0;
         #pragma omp simd
-        for (int idx = row_idx[irow]; idx < row_idx[irow + 1]; idx++)
+        for (int idx = row_ptr[irow]; idx < row_ptr[irow + 1]; idx++)
             res += val[idx] * x[col[idx]];
         y[irow] = res;
     }
     */
     
-    int nnz = row_idx[nrows];
-    int nthreads = omp_get_max_threads();
-    int nblocks  = nthreads;
-    
-    if (CSRP_blkinfo == NULL)  // Initialize it once, since we are using the same matrix
-    {
-        CSRP_blkinfo = (CSRP_blk_info_t) malloc(sizeof(CSRP_blk_info) * nthreads);
-        CSRP_equal_nnz_partition(nnz, nblocks, nrows, row_idx, CSRP_blkinfo);
-    }
-    
-    CSRP_SpMV(row_idx, col, val, nrows, nblocks, CSRP_blkinfo, x, y);
+    CSRP_SpMV(CSRP, x, y);
 }
 
 static double getL2NormError(const double *__restrict x, const double *__restrict y, const int n)
@@ -106,13 +46,12 @@ static double getL2NormError(const double *__restrict x, const double *__restric
     }
     res = sqrt(res);
     
-    
     return res;
 }
 
 int main(int argc, char **argv)
 {
-    int *row, *row_idx, *col;
+    int *row, *row_ptr, *col;
     double *val, *x, *y0, *y1;
     
     int nrows, ncols, nnz, ntest;
@@ -131,14 +70,12 @@ int main(int argc, char **argv)
     
     row     = (int*)    malloc(sizeof(int)    * nnz);
     col     = (int*)    malloc(sizeof(int)    * nnz);
-    row_idx = (int*)    malloc(sizeof(int)    * (nrows + 1));
     val     = (double*) malloc(sizeof(double) * nnz);
     x       = (double*) malloc(sizeof(double) * ncols);
     y0      = (double*) malloc(sizeof(double) * nrows);
     y1      = (double*) malloc(sizeof(double) * nrows);
     assert(row     != NULL);
     assert(col     != NULL);
-    assert(row_idx != NULL);
     assert(val     != NULL);
     assert(x       != NULL);
     assert(y0      != NULL);
@@ -146,34 +83,35 @@ int main(int argc, char **argv)
     
     for (int i = 0; i < ncols; i++) x[i] = (double) (i % 1919);
     
+    int nthreads = omp_get_max_threads();
+    
     // Generate random matrix
     srand(time(NULL));
-    #pragma omp parallel for
+    //#pragma omp parallel for
     for (int i = 0; i < nnz; i++) 
     {
         row[i] = rand() % nrows;
         col[i] = rand() % ncols;
         val[i] = 1.0;
     }
-    COO2CSR(row, row_idx, col, val, nnz, nrows);
-    printf("Generating random matrix done\n");
+    CSRP_init_with_COO_matrix(nrows, nnz, row, col, val, &CSRP);
+    CSRP_partition(nthreads, CSRP);
+    CSRP_optimize_NUMA(CSRP);
+    row_ptr = CSRP->row_ptr;
     
     double st, et, ut, GFlops;
     GFlops = 2.0 * (double) nnz / 1000000000.0;
-    
+
     // Get reference result
     st = omp_get_wtime();
     for (int k = 0; k < ntest; k++)
-    {
-        CSR_SpMV_CPU_ref(row_idx, col, val, nrows, x, y0);
-        val[k] = 1.0;
-    }
+        CSR_SpMV_CPU_ref(CSRP, x, y0);
     et = omp_get_wtime();
     ut = (et - st) / (double) ntest;
     printf("Reference OMP CSR SpMV done, used time = %lf (ms), %lf GFlops\n", ut * 1000.0, GFlops / ut);
 
     // Get test result
-    cuSPARSE_SpMV_test(nrows, ncols, nnz, row_idx, col, val, x, y1, ntest);
+    cuSPARSE_SpMV_test(nrows, ncols, nnz, CSRP->row_ptr, CSRP->col, CSRP->val, x, y1, ntest);
     /*
     sparse_matrix_t mat;
     struct matrix_descr mat_descr;
@@ -196,7 +134,6 @@ int main(int argc, char **argv)
     
     free(row);
     free(col);
-    free(row_idx);
     free(val);
     free(x);
     free(y0);
