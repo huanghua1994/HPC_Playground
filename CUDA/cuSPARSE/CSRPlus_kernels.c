@@ -23,7 +23,7 @@ static double CSR_SpMV_row_seg(
     const double *__restrict val, const double *__restrict x
 )
 {
-    double res = 0.0;
+    register double res = 0.0;
     #pragma omp simd
     for (int idx = 0; idx < seg_len; idx++)
         res += val[idx] * x[col[idx]];
@@ -38,7 +38,7 @@ static void CSR_SpMV_row_block(
 {
     for (int irow = srow; irow < erow; irow++)
     {
-        double res = 0.0;
+        register double res = 0.0;
         #pragma omp simd
         for (int idx = row_ptr[irow]; idx < row_ptr[irow + 1]; idx++)
             res += val[idx] * x[col[idx]];
@@ -62,6 +62,7 @@ static void CSRP_SpMV_block(CSRPlusMatrix_t CSRP, const int iblock, const double
         
         CSRP->fr_res[iblock] = CSR_SpMV_row_seg(seg_len, col + nnz_spos, val + nnz_spos, x);
         CSRP->lr_res[iblock] = 0.0;
+        y[CSRP->first_row[iblock]] = 0.0;
     } else {
         // This thread handles segments on multiple rows
         
@@ -75,6 +76,7 @@ static void CSRP_SpMV_block(CSRPlusMatrix_t CSRP, const int iblock, const double
             int seg_len  = nnz_epos - nnz_spos;
             
             CSRP->fr_res[iblock] = CSR_SpMV_row_seg(seg_len, col + nnz_spos, val + nnz_spos, x);
+            y[first_intact_row] = 0.0;
             first_intact_row++;
         }
         
@@ -85,6 +87,7 @@ static void CSRP_SpMV_block(CSRPlusMatrix_t CSRP, const int iblock, const double
             int seg_len  = nnz_epos - nnz_spos + 1;
             
             CSRP->lr_res[iblock] = CSR_SpMV_row_seg(seg_len, col + nnz_spos, val + nnz_spos, x);
+            y[last_intact_row] = 0.0;
             last_intact_row--;
         }
         
@@ -98,18 +101,11 @@ static void CSRP_SpMV_block(CSRPlusMatrix_t CSRP, const int iblock, const double
 // Perform OpenMP parallelized CSR SpMV with a CSRPlus matrix
 void CSRP_SpMV(CSRPlusMatrix_t CSRP, const double *x, double *y)
 {
-    int nrows = CSRP->nrows;
     int nblocks = CSRP->nblocks;
     
-    #pragma omp parallel 
-    {
-        #pragma omp for 
-        for (int i = 0; i < nrows; i++) y[i] = 0.0;
-        
-        #pragma omp for
-        for (int iblock = 0; iblock < nblocks; iblock++)
-            CSRP_SpMV_block(CSRP, iblock, x, y);
-    }
+    #pragma omp parallel for schedule(static)
+    for (int iblock = 0; iblock < nblocks; iblock++)
+        CSRP_SpMV_block(CSRP, iblock, x, y);
     
     // Accumulate the results for the threads that shared the same row
     for (int iblock = 0; iblock < nblocks; iblock++)
