@@ -2,34 +2,33 @@
 #include <mpi.h>
 #include <stdlib.h>
 
-#include <unistd.h> // for 'usleep()'
-#include <time.h> // for 'nanosleep()'
+#include <unistd.h>
+#include <time.h> 
 
 #include <omp.h>
 
 int main(int argc, char *argv[])
 {
-    MPI_Init( &argc, &argv); // Initialize MPI
+    MPI_Init(&argc, &argv); // Initialize MPI
     
     int rank, nproc, i, N;
     double t1, t2;
-    MPI_Comm_rank(MPI_COMM_WORLD,&rank );
-    MPI_Comm_size(MPI_COMM_WORLD,&nproc);
+    MPI_Comm_rank(MPI_COMM_WORLD, &rank );
+    MPI_Comm_size(MPI_COMM_WORLD, &nproc);
     
     N = 1000000000; // 1e9
     
     double *A, sum;
-    if (rank == 0) {
-        // create an array of len N and set to 1.0
-        A = (double *)malloc(N * sizeof(double));
-        if (A == NULL) {
+    if (rank == 0) 
+    {
+        A = (double *) malloc(N * sizeof(double));
+        if (A == NULL) 
+        {
             printf("Cannot allocate memory!\n");
             exit(1);
         }
         
-        for (i = 0; i < N; i++) {
-            A[i] = 1.0;
-        }    
+        for (i = 0; i < N; i++) A[i] = 1.0;
     }
 
     sum = 0.0;
@@ -37,37 +36,32 @@ int main(int argc, char *argv[])
     // check env for number of threads to use
     int my_nthreads = 1;
     char *env_ntheads = getenv("NTHREADS"); 
-    if (env_ntheads != NULL) 
-        my_nthreads = atoi(env_ntheads);
+    if (env_ntheads != NULL) my_nthreads = atoi(env_ntheads);
     if (my_nthreads < 1) my_nthreads = 1;
     
     MPI_Request req;
     MPI_Barrier(MPI_COMM_WORLD);
     t1 = MPI_Wtime();
     // start finding sum of array A on rank 0
-    if (rank == 0) {    
+    if (rank == 0) 
+    {
         omp_set_dynamic(0); // Explicitly disable dynamic teams
         omp_set_num_threads(my_nthreads);
         
         #pragma omp parallel
         {
-            printf("Thread number: %d/%d\n", omp_get_thread_num(), omp_get_num_threads());
-            #pragma omp for reduction(+:sum) 
-            for (i = 0; i < N; i++) {
-               sum += A[i];
+            for (int irepeat = 0; irepeat < 3; irepeat++)
+            {
+                #pragma omp for reduction(+:sum) 
+                for (i = 0; i < N; i++) {
+                   sum += A[i];
+                }
             }
+            #pragma omp barrier
         }
-        
-        //// this will always give 1
-        //printf("Number of threads: %d\n", omp_get_num_threads());
-        //#pragma omp parallel for reduction(+:sum)
-        //for (i = 0; i < N; i++) {
-        //   sum += A[i];
-        //}
         
         //MPI_Barrier(MPI_COMM_WORLD);
         MPI_Ibarrier(MPI_COMM_WORLD, &req);
-    	
     } else {
         //MPI_Barrier(MPI_COMM_WORLD);
         MPI_Ibarrier(MPI_COMM_WORLD, &req);
@@ -91,24 +85,15 @@ int main(int argc, char *argv[])
 	    
 	    MPI_Test(&req, &flag, &status);
 	}
-    
 
-    
-    
-    
-    
     t2 = MPI_Wtime();
     
-    if (rank == 0) {
+    if (rank == 0) 
+    {
         printf("Finding sum using %d threads took: %.3f ms, sum = %.6e\n", my_nthreads, (t2-t1)*1e3, sum);
-    }
-    
-    
-    if (rank == 0) {
         free(A);
     }
     
-    MPI_Finalize(); // finalize MPI
+    MPI_Finalize();
     return 0;
 }
-
