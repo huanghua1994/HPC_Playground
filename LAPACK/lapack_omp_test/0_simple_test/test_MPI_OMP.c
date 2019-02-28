@@ -50,7 +50,7 @@ int main(int argc, char *argv[])
         
         #pragma omp parallel
         {
-            for (int irepeat = 0; irepeat < 10; irepeat++)
+            for (int irepeat = 0; irepeat < 3; irepeat++)
             {
                 #pragma omp for reduction(+:sum) 
                 for (i = 0; i < N; i++) {

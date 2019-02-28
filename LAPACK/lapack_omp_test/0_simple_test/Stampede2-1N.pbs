@@ -8,6 +8,7 @@
 #SBATCH -A Intel-IPCC  # Allocation name (req'd if you have more than 1)
 
 export PRINT_MAT=0
+export I_MPI_PIN=0
 
 export NTHREADS=1
 ibrun ./test_mpi_omp >> out.log

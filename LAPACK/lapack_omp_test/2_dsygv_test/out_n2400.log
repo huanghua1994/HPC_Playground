@@ -1,54 +1,54 @@
-TACC:  Starting up job 2955389 
+TACC:  Starting up job 3016076 
 TACC:  Starting parallel tasks... 
-This is 1 / 48
-This is 8 / 48
-This is 9 / 48
-This is 11 / 48
-This is 13 / 48
-This is 14 / 48
-This is 16 / 48
-This is 20 / 48
-This is 22 / 48
-This is 23 / 48
-This is 24 / 48
-This is 25 / 48
-This is 26 / 48
-This is 27 / 48
-This is 28 / 48
-This is 30 / 48
-This is 43 / 48
-This is 45 / 48
 This is 0 / 48
-Matrix size = 2400 x 2400
 This is 2 / 48
+This is 6 / 48
+This is 9 / 48
+This is 10 / 48
+This is 13 / 48
+This is 19 / 48
+This is 24 / 48
+This is 26 / 48
+This is 36 / 48
+This is 39 / 48
+This is 45 / 48
+This is 47 / 48
+Matrix size = 2400 x 2400
+This is 1 / 48
 This is 3 / 48
 This is 4 / 48
 This is 5 / 48
-This is 6 / 48
 This is 7 / 48
-This is 10 / 48
+This is 8 / 48
+This is 11 / 48
 This is 12 / 48
+This is 14 / 48
 This is 15 / 48
+This is 16 / 48
 This is 17 / 48
 This is 18 / 48
-This is 19 / 48
+This is 20 / 48
 This is 21 / 48
+This is 22 / 48
+This is 23 / 48
+This is 25 / 48
+This is 27 / 48
+This is 28 / 48
 This is 29 / 48
+This is 30 / 48
 This is 31 / 48
 This is 32 / 48
 This is 33 / 48
 This is 34 / 48
 This is 35 / 48
-This is 36 / 48
 This is 37 / 48
 This is 38 / 48
-This is 39 / 48
 This is 40 / 48
 This is 41 / 48
 This is 42 / 48
+This is 43 / 48
 This is 44 / 48
 This is 46 / 48
-This is 47 / 48
 Default mkl threads = 1, now set to 1
 first ten lambda (enable threading) = 
 -2757.61860 
@@ -62,10 +62,10 @@ first ten lambda (enable threading) =
 -92.03005 
 -66.42266 
 ------------------------------------------------------
-Time for solving generalized eigenproblem: 3525.454 ms
+Time for solving generalized eigenproblem: 3120.622 ms
 ------------------------------------------------------
 New number of mkl threads = 1
-Time for solving the same problem on single thread: 4535.668 ms
+Time for solving the same problem on single thread: 3590.993 ms
 first ten lambda_ref (without threading) = 
 -2757.61860 
 -821.12678 
@@ -79,57 +79,57 @@ first ten lambda_ref (without threading) =
 -66.42266 
 TACC:  Shutdown complete. Exiting. 
 =======================================================================
-TACC:  Starting up job 2955389 
+TACC:  Starting up job 3016076 
 TACC:  Starting parallel tasks... 
+This is 1 / 48
 This is 2 / 48
-This is 10 / 48
-This is 15 / 48
-This is 18 / 48
-This is 20 / 48
-This is 28 / 48
-This is 30 / 48
-This is 31 / 48
-This is 33 / 48
-This is 35 / 48
-This is 39 / 48
-This is 46 / 48
-This is 3 / 48
-This is 4 / 48
-This is 5 / 48
 This is 6 / 48
 This is 7 / 48
+This is 8 / 48
+This is 9 / 48
 This is 11 / 48
 This is 12 / 48
-This is 13 / 48
 This is 14 / 48
+This is 16 / 48
+This is 18 / 48
 This is 19 / 48
+This is 20 / 48
 This is 21 / 48
-This is 22 / 48
 This is 23 / 48
+This is 25 / 48
 This is 26 / 48
-This is 27 / 48
 This is 29 / 48
+This is 30 / 48
+This is 31 / 48
+This is 32 / 48
 This is 34 / 48
-This is 37 / 48
 This is 38 / 48
-This is 41 / 48
-This is 42 / 48
-This is 43 / 48
-This is 45 / 48
+This is 39 / 48
+This is 40 / 48
+This is 46 / 48
 This is 47 / 48
 This is 0 / 48
 Matrix size = 2400 x 2400
-This is 1 / 48
-This is 8 / 48
-This is 9 / 48
-This is 16 / 48
+This is 3 / 48
+This is 4 / 48
+This is 5 / 48
+This is 10 / 48
+This is 13 / 48
+This is 15 / 48
 This is 17 / 48
+This is 22 / 48
 This is 24 / 48
-This is 25 / 48
-This is 32 / 48
+This is 27 / 48
+This is 28 / 48
+This is 33 / 48
+This is 35 / 48
 This is 36 / 48
-This is 40 / 48
+This is 37 / 48
+This is 41 / 48
+This is 42 / 48
+This is 43 / 48
 This is 44 / 48
+This is 45 / 48
 Default mkl threads = 1, now set to 2
 first ten lambda (enable threading) = 
 -2757.61860 
@@ -143,10 +143,10 @@ first ten lambda (enable threading) =
 -92.03005 
 -66.42266 
 ------------------------------------------------------
-Time for solving generalized eigenproblem: 3553.383 ms
+Time for solving generalized eigenproblem: 1985.335 ms
 ------------------------------------------------------
 New number of mkl threads = 1
-Time for solving the same problem on single thread: 4529.484 ms
+Time for solving the same problem on single thread: 5332.588 ms
 first ten lambda_ref (without threading) = 
 -2757.61860 
 -821.12678 
@@ -160,57 +160,57 @@ first ten lambda_ref (without threading) =
 -66.42266 
 TACC:  Shutdown complete. Exiting. 
 =======================================================================
-TACC:  Starting up job 2955389 
+TACC:  Starting up job 3016076 
 TACC:  Starting parallel tasks... 
-This is 5 / 48
-This is 11 / 48
-This is 19 / 48
-This is 22 / 48
-This is 23 / 48
-This is 28 / 48
-This is 29 / 48
-This is 34 / 48
-This is 37 / 48
-This is 39 / 48
-This is 41 / 48
-This is 43 / 48
-This is 46 / 48
-This is 47 / 48
-This is 2 / 48
 This is 3 / 48
+This is 16 / 48
+This is 25 / 48
+This is 28 / 48
+This is 36 / 48
+This is 40 / 48
+This is 0 / 48
+This is 2 / 48
 This is 4 / 48
+This is 5 / 48
 This is 6 / 48
-This is 7 / 48
-This is 10 / 48
+This is 9 / 48
+This is 11 / 48
 This is 12 / 48
 This is 13 / 48
 This is 14 / 48
 This is 15 / 48
-This is 18 / 48
-This is 20 / 48
+This is 19 / 48
 This is 21 / 48
+This is 23 / 48
 This is 26 / 48
-This is 27 / 48
+This is 29 / 48
 This is 30 / 48
 This is 31 / 48
+This is 32 / 48
 This is 33 / 48
+This is 34 / 48
 This is 35 / 48
 This is 38 / 48
-This is 42 / 48
-This is 45 / 48
-This is 1 / 48
-This is 8 / 48
-This is 9 / 48
-This is 16 / 48
-This is 17 / 48
-This is 24 / 48
-This is 25 / 48
-This is 32 / 48
-This is 36 / 48
-This is 40 / 48
+This is 39 / 48
 This is 44 / 48
-This is 0 / 48
+This is 46 / 48
+This is 47 / 48
 Matrix size = 2400 x 2400
+This is 1 / 48
+This is 7 / 48
+This is 8 / 48
+This is 10 / 48
+This is 17 / 48
+This is 18 / 48
+This is 20 / 48
+This is 22 / 48
+This is 24 / 48
+This is 27 / 48
+This is 37 / 48
+This is 41 / 48
+This is 42 / 48
+This is 43 / 48
+This is 45 / 48
 Default mkl threads = 1, now set to 4
 first ten lambda (enable threading) = 
 -2757.61860 
@@ -224,10 +224,10 @@ first ten lambda (enable threading) =
 -92.03005 
 -66.42266 
 ------------------------------------------------------
-Time for solving generalized eigenproblem: 4679.783 ms
+Time for solving generalized eigenproblem: 1259.058 ms
 ------------------------------------------------------
 New number of mkl threads = 1
-Time for solving the same problem on single thread: 4601.883 ms
+Time for solving the same problem on single thread: 4303.854 ms
 first ten lambda_ref (without threading) = 
 -2757.61860 
 -821.12678 
@@ -241,57 +241,57 @@ first ten lambda_ref (without threading) =
 -66.42266 
 TACC:  Shutdown complete. Exiting. 
 =======================================================================
-TACC:  Starting up job 2955389 
+TACC:  Starting up job 3016076 
 TACC:  Starting parallel tasks... 
-This is 3 / 48
-This is 6 / 48
 This is 7 / 48
-This is 9 / 48
-This is 13 / 48
-This is 19 / 48
-This is 23 / 48
-This is 26 / 48
-This is 29 / 48
-This is 30 / 48
-This is 38 / 48
-This is 41 / 48
-This is 47 / 48
+This is 1 / 48
 This is 2 / 48
+This is 3 / 48
+This is 5 / 48
+This is 12 / 48
+This is 17 / 48
+This is 18 / 48
+This is 19 / 48
+This is 25 / 48
+This is 26 / 48
+This is 27 / 48
+This is 34 / 48
+This is 35 / 48
 This is 8 / 48
+This is 9 / 48
 This is 10 / 48
 This is 11 / 48
-This is 12 / 48
+This is 13 / 48
 This is 14 / 48
 This is 15 / 48
-This is 18 / 48
+This is 16 / 48
 This is 20 / 48
 This is 21 / 48
-This is 22 / 48
+This is 23 / 48
 This is 24 / 48
-This is 25 / 48
-This is 27 / 48
 This is 28 / 48
+This is 29 / 48
+This is 30 / 48
 This is 31 / 48
 This is 33 / 48
-This is 35 / 48
 This is 36 / 48
 This is 37 / 48
 This is 39 / 48
+This is 40 / 48
+This is 41 / 48
 This is 42 / 48
 This is 43 / 48
-This is 44 / 48
 This is 45 / 48
-This is 46 / 48
 This is 0 / 48
-This is 4 / 48
-This is 5 / 48
-This is 16 / 48
-This is 17 / 48
-This is 32 / 48
-This is 34 / 48
-This is 40 / 48
-This is 1 / 48
 Matrix size = 2400 x 2400
+This is 4 / 48
+This is 6 / 48
+This is 22 / 48
+This is 32 / 48
+This is 38 / 48
+This is 44 / 48
+This is 46 / 48
+This is 47 / 48
 Default mkl threads = 1, now set to 8
 first ten lambda (enable threading) = 
 -2757.61860 
@@ -305,10 +305,10 @@ first ten lambda (enable threading) =
 -92.03005 
 -66.42266 
 ------------------------------------------------------
-Time for solving generalized eigenproblem: 5930.067 ms
+Time for solving generalized eigenproblem: 1036.393 ms
 ------------------------------------------------------
 New number of mkl threads = 1
-Time for solving the same problem on single thread: 4656.411 ms
+Time for solving the same problem on single thread: 4481.721 ms
 first ten lambda_ref (without threading) = 
 -2757.61860 
 -821.12678 

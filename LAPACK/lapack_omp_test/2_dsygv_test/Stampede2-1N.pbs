@@ -8,6 +8,7 @@
 #SBATCH -A Intel-IPCC  # Allocation name (req'd if you have more than 1)
 
 export MAT_SIZE=2400
+export I_MPI_PIN=0
 
 export NTHREADS=1
 ibrun  ./test_dsygv_omp > out_n$MAT_SIZE.log
