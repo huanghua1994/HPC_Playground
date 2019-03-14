@@ -1,11 +1,11 @@
 function [x, fft_t, d_t] = Poisson_FFTsolver(nx, ny, nz, w2_x, w2_y, w2_z, radius, f)
 % Credit: Qimen Xu <qimenxu@gatech.edu>
 % Solve Poisson equation -\nabla^2 * x = f with period boundary condition 
-% \nabla^2 is discreted with order-(2*radius) finite difference
+% \nabla^2 is discretized with order-(2*radius) finite difference
 % The FD domain is a cube with equal mesh size on each direction
 % Input parameters:
 %   n{x, y, z}   : Number of grid points on x, y, z direction
-%   x2_{x, y, z} : FD stencil coefficients, length radius+1
+%   w2_{x, y, z} : FD stencil coefficients, length radius+1
 %   radius       : FD radius
 %   f            : Right-hand side of the equation, size [nx, ny, nz]
 % Output parameters:
@@ -29,16 +29,16 @@ function [x, fft_t, d_t] = Poisson_FFTsolver(nx, ny, nz, w2_x, w2_y, w2_z, radiu
         tmp_x = 2 * pi * p / nx;
         tmp_y = 2 * pi * p / ny;
         tmp_z = 2 * pi * p / nz;
-        for ix = [1:ix_e, ix_s:0]
-            ix1 = ix - ix_s + 1;
+        for ix = ix_s : ix_e
+            ix1 = ix - ix_s;
             cos_ix(ix1*radius+p) = cos((ix-1)*tmp_x)*w2_x(p+1);
         end
-        for iy = [1:iy_e, iy_s:0]
-            iy1 = iy - iy_s + 1;
+        for iy = iy_s : iy_e
+            iy1 = iy - iy_s;
             cos_iy(iy1*radius+p) = cos((iy-1)*tmp_y)*w2_y(p+1);
         end
-        for iz = [1:iz_e, iz_s:0]
-            iz1 = iz - iz_s + 1;
+        for iz = iz_s : iz_e
+            iz1 = iz - iz_s;
             cos_iz(iz1*radius+p) = cos((iz-1)*tmp_z)*w2_z(p+1);
         end
     end
@@ -47,11 +47,11 @@ function [x, fft_t, d_t] = Poisson_FFTsolver(nx, ny, nz, w2_x, w2_y, w2_z, radiu
     d_hat = zeros(nx, ny, nz);
     w2_diag = w2_x(1) + w2_y(1) + w2_z(1);
     for iz = [1:iz_e, iz_s:0]
-        iz1 = (iz - iz_s + 1) * radius;
+        iz1 = (iz - iz_s) * radius;
         for iy = [1:iy_e, iy_s:0]
-            iy1 = (iy - iy_s + 1) * radius;
+            iy1 = (iy - iy_s) * radius;
             for ix = [1:ix_e, ix_s:0]
-                ix1 = (ix - ix_s + 1) * radius;
+                ix1 = (ix - ix_s) * radius;
                 res = 0;
                 for p = 1 : radius
                     res = res + (cos_ix(ix1+p) + cos_iy(iy1+p) + cos_iz(iz1+p)); 
