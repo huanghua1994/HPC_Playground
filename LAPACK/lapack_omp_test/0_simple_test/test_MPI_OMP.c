@@ -1,3 +1,5 @@
+
+#define _BSD_SOURCE
 #include <stdio.h>
 #include <mpi.h>
 #include <stdlib.h>
@@ -6,6 +8,7 @@
 #include <time.h> 
 
 #include <omp.h>
+
 
 int main(int argc, char *argv[])
 {

@@ -22,7 +22,7 @@ OBJSC = test_dgemm_omp.o
 
 LIBBASE = test_dgemm_omp
 
-override CC=mpiicc
+override CC=mpicc
 
 all: test_dgemm_omp
 

@@ -24,7 +24,7 @@ OBJSC = test_dsygv_omp.o
 
 LIBBASE = test_dsygv_omp
 
-override CC=mpiicc
+override CC=mpicc
 
 all: test_dsygv_omp
 
