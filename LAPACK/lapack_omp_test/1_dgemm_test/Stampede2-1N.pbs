@@ -10,31 +10,31 @@
 export I_MPI_PIN=0
 
 export NTHREADS=1
-ibrun ./test_dgemm_omp >> out.log
-ibrun ./test_dgemm_omp >> out.log
-ibrun ./test_dgemm_omp >> out.log
-ibrun ./test_dgemm_omp >> out.log
-ibrun ./test_dgemm_omp >> out.log
+ibrun -n 48 -o 0  ./test_dgemm_omp >> out.log
+ibrun -n 48 -o 0  ./test_dgemm_omp >> out.log
+ibrun -n 48 -o 0  ./test_dgemm_omp >> out.log
+ibrun -n 48 -o 0  ./test_dgemm_omp >> out.log
+ibrun -n 48 -o 0  ./test_dgemm_omp >> out.log
 echo "=======================================================================" >> out.log
 export NTHREADS=2
-ibrun ./test_dgemm_omp >> out.log
-ibrun ./test_dgemm_omp >> out.log
-ibrun ./test_dgemm_omp >> out.log
-ibrun ./test_dgemm_omp >> out.log
-ibrun ./test_dgemm_omp >> out.log
+ibrun -n 48 -o 0  ./test_dgemm_omp >> out.log
+ibrun -n 48 -o 0  ./test_dgemm_omp >> out.log
+ibrun -n 48 -o 0  ./test_dgemm_omp >> out.log
+ibrun -n 48 -o 0  ./test_dgemm_omp >> out.log
+ibrun -n 48 -o 0  ./test_dgemm_omp >> out.log
 echo "=======================================================================" >> out.log
 export NTHREADS=4
-ibrun ./test_dgemm_omp >> out.log
-ibrun ./test_dgemm_omp >> out.log
-ibrun ./test_dgemm_omp >> out.log
-ibrun ./test_dgemm_omp >> out.log
-ibrun ./test_dgemm_omp >> out.log
+ibrun -n 48 -o 0  ./test_dgemm_omp >> out.log
+ibrun -n 48 -o 0  ./test_dgemm_omp >> out.log
+ibrun -n 48 -o 0  ./test_dgemm_omp >> out.log
+ibrun -n 48 -o 0  ./test_dgemm_omp >> out.log
+ibrun -n 48 -o 0  ./test_dgemm_omp >> out.log
 echo "=======================================================================" >> out.log
 export NTHREADS=8
-ibrun ./test_dgemm_omp >> out.log
-ibrun ./test_dgemm_omp >> out.log
-ibrun ./test_dgemm_omp >> out.log
-ibrun ./test_dgemm_omp >> out.log
-ibrun ./test_dgemm_omp >> out.log
+ibrun -n 48 -o 0  ./test_dgemm_omp >> out.log
+ibrun -n 48 -o 0  ./test_dgemm_omp >> out.log
+ibrun -n 48 -o 0  ./test_dgemm_omp >> out.log
+ibrun -n 48 -o 0  ./test_dgemm_omp >> out.log
+ibrun -n 48 -o 0  ./test_dgemm_omp >> out.log
 echo "=======================================================================" >> out.log
 
