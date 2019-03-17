@@ -6,7 +6,7 @@
 #include <unistd.h> // for 'usleep()'
 #include <time.h> // for 'nanosleep()'
 
-//#include <omp.h>
+#include <omp.h>
 
 #define min(x,y) ((x)<(y)?(x):(y))
 
@@ -17,8 +17,8 @@ int main(int argc, char **argv) {
     int rank, nproc, i, j, k;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     MPI_Comm_size(MPI_COMM_WORLD, &nproc);
+    printf("MPI rank %d / %d launched\n", rank + 1, nproc);
 	
-	printf("This is %d / %d\n", rank, nproc);
 	MPI_Barrier(MPI_COMM_WORLD);
 	
     double t1, t2;
@@ -156,7 +156,6 @@ int main(int argc, char **argv) {
         LAPACKE_dsygv(LAPACK_COL_MAJOR,1,'V','U',N,A,N,B,N,lambda);                 
         mkl_set_dynamic(1);
         mkl_set_num_threads(1);
-        
         //MPI_Barrier(MPI_COMM_WORLD);
         MPI_Ibarrier(MPI_COMM_WORLD, &req);
     } else {

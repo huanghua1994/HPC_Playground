@@ -4,9 +4,10 @@
 #include <assert.h>
 #include <time.h>
 
-#include "FD3D.h"
+#include "AAR.h"
 #include "BiCGStab.h"
 #include "CG.h"
+#include "FD3D.h"
 
 const int    RADIUS   = 6;
 const int    max_iter = 500;
@@ -36,15 +37,22 @@ int main(int argc, char **argv)
     
     FD3D_Laplacian_set_param(nx, ny, nz, RADIUS);
     
+    /*
     printf("Starting BiCGStab...\n");
     // Use x = 0 as initial guess
     memset(x, 0, nxyz_msize);
     BiCGStab(nxyz, res_tol, max_iter, b, x);
+    */
     
     printf("Starting classic CG...\n");
     // Use x = 0 as initial guess
     memset(x, 0, nxyz_msize);
     CG_classic(nxyz, res_tol, max_iter, b, x);
+    
+    printf("Starting AAR...\n");
+    // Use x = 0 as initial guess
+    memset(x, 0, nxyz_msize);
+    AAR(nxyz, res_tol, max_iter, b, x);
     
     free(b);
     free(x);

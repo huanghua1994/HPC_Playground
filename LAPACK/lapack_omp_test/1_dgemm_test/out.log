@@ -1,6 +1,54 @@
-TACC:  Starting up job 3016124 
+TACC:  Starting up job 3129156 
 TACC:  Starting parallel tasks... 
-Finding B = A'*A using threads (1) took: 2762.373 ms, trace(B) = 2.500000e+07
+MPI rank 3 / 48 launched
+MPI rank 5 / 48 launched
+MPI rank 7 / 48 launched
+MPI rank 9 / 48 launched
+MPI rank 11 / 48 launched
+MPI rank 13 / 48 launched
+MPI rank 16 / 48 launched
+MPI rank 17 / 48 launched
+MPI rank 18 / 48 launched
+MPI rank 22 / 48 launched
+MPI rank 25 / 48 launched
+MPI rank 26 / 48 launched
+MPI rank 34 / 48 launched
+MPI rank 35 / 48 launched
+MPI rank 36 / 48 launched
+MPI rank 44 / 48 launched
+MPI rank 46 / 48 launched
+MPI rank 47 / 48 launched
+MPI rank 1 / 48 launched
+MPI rank 4 / 48 launched
+MPI rank 6 / 48 launched
+MPI rank 8 / 48 launched
+MPI rank 10 / 48 launched
+MPI rank 12 / 48 launched
+MPI rank 14 / 48 launched
+MPI rank 15 / 48 launched
+MPI rank 19 / 48 launched
+MPI rank 20 / 48 launched
+MPI rank 21 / 48 launched
+MPI rank 23 / 48 launched
+MPI rank 24 / 48 launched
+MPI rank 27 / 48 launched
+MPI rank 28 / 48 launched
+MPI rank 29 / 48 launched
+MPI rank 30 / 48 launched
+MPI rank 31 / 48 launched
+MPI rank 32 / 48 launched
+MPI rank 33 / 48 launched
+MPI rank 37 / 48 launched
+MPI rank 38 / 48 launched
+MPI rank 39 / 48 launched
+MPI rank 40 / 48 launched
+MPI rank 42 / 48 launched
+MPI rank 43 / 48 launched
+MPI rank 2 / 48 launched
+MPI rank 41 / 48 launched
+MPI rank 45 / 48 launched
+MPI rank 48 / 48 launched
+Finding B = A'*A using threads (1) took: 3733.055 ms, trace(B) = 2.500000e+07
 First 10 x 10 block of B:
  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000 
  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000 
@@ -13,9 +61,57 @@ First 10 x 10 block of B:
  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000 
  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000 
 TACC:  Shutdown complete. Exiting. 
-TACC:  Starting up job 3016124 
+TACC:  Starting up job 3129156 
 TACC:  Starting parallel tasks... 
-Finding B = A'*A using threads (1) took: 2695.708 ms, trace(B) = 2.500000e+07
+MPI rank 2 / 48 launched
+MPI rank 26 / 48 launched
+MPI rank 30 / 48 launched
+MPI rank 6 / 48 launched
+MPI rank 29 / 48 launched
+MPI rank 35 / 48 launched
+MPI rank 39 / 48 launched
+MPI rank 43 / 48 launched
+MPI rank 11 / 48 launched
+MPI rank 13 / 48 launched
+MPI rank 14 / 48 launched
+MPI rank 25 / 48 launched
+MPI rank 34 / 48 launched
+MPI rank 5 / 48 launched
+MPI rank 17 / 48 launched
+MPI rank 32 / 48 launched
+MPI rank 37 / 48 launched
+MPI rank 45 / 48 launched
+MPI rank 8 / 48 launched
+MPI rank 9 / 48 launched
+MPI rank 18 / 48 launched
+MPI rank 21 / 48 launched
+MPI rank 22 / 48 launched
+MPI rank 47 / 48 launched
+MPI rank 10 / 48 launched
+MPI rank 33 / 48 launched
+MPI rank 41 / 48 launched
+MPI rank 1 / 48 launched
+MPI rank 7 / 48 launched
+MPI rank 20 / 48 launched
+MPI rank 27 / 48 launched
+MPI rank 44 / 48 launched
+MPI rank 4 / 48 launched
+MPI rank 16 / 48 launched
+MPI rank 23 / 48 launched
+MPI rank 24 / 48 launched
+MPI rank 38 / 48 launched
+MPI rank 42 / 48 launched
+MPI rank 28 / 48 launched
+MPI rank 12 / 48 launched
+MPI rank 36 / 48 launched
+MPI rank 40 / 48 launched
+MPI rank 46 / 48 launched
+MPI rank 48 / 48 launched
+MPI rank 3 / 48 launched
+MPI rank 15 / 48 launched
+MPI rank 19 / 48 launched
+MPI rank 31 / 48 launched
+Finding B = A'*A using threads (1) took: 3036.713 ms, trace(B) = 2.500000e+07
 First 10 x 10 block of B:
  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000 
  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000 
@@ -28,9 +124,57 @@ First 10 x 10 block of B:
  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000 
  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000 
 TACC:  Shutdown complete. Exiting. 
-TACC:  Starting up job 3016124 
+TACC:  Starting up job 3129156 
 TACC:  Starting parallel tasks... 
-Finding B = A'*A using threads (1) took: 2703.364 ms, trace(B) = 2.500000e+07
+MPI rank 11 / 48 launched
+MPI rank 12 / 48 launched
+MPI rank 19 / 48 launched
+MPI rank 4 / 48 launched
+MPI rank 7 / 48 launched
+MPI rank 24 / 48 launched
+MPI rank 28 / 48 launched
+MPI rank 32 / 48 launched
+MPI rank 42 / 48 launched
+MPI rank 44 / 48 launched
+MPI rank 48 / 48 launched
+MPI rank 41 / 48 launched
+MPI rank 18 / 48 launched
+MPI rank 2 / 48 launched
+MPI rank 9 / 48 launched
+MPI rank 43 / 48 launched
+MPI rank 47 / 48 launched
+MPI rank 13 / 48 launched
+MPI rank 14 / 48 launched
+MPI rank 17 / 48 launched
+MPI rank 25 / 48 launched
+MPI rank 40 / 48 launched
+MPI rank 1 / 48 launched
+MPI rank 5 / 48 launched
+MPI rank 27 / 48 launched
+MPI rank 35 / 48 launched
+MPI rank 3 / 48 launched
+MPI rank 16 / 48 launched
+MPI rank 36 / 48 launched
+MPI rank 8 / 48 launched
+MPI rank 15 / 48 launched
+MPI rank 20 / 48 launched
+MPI rank 34 / 48 launched
+MPI rank 46 / 48 launched
+MPI rank 23 / 48 launched
+MPI rank 30 / 48 launched
+MPI rank 31 / 48 launched
+MPI rank 38 / 48 launched
+MPI rank 26 / 48 launched
+MPI rank 37 / 48 launched
+MPI rank 22 / 48 launched
+MPI rank 21 / 48 launched
+MPI rank 39 / 48 launched
+MPI rank 10 / 48 launched
+MPI rank 29 / 48 launched
+MPI rank 33 / 48 launched
+MPI rank 6 / 48 launched
+MPI rank 45 / 48 launched
+Finding B = A'*A using threads (1) took: 3307.721 ms, trace(B) = 2.500000e+07
 First 10 x 10 block of B:
  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000 
  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000 
@@ -43,9 +187,57 @@ First 10 x 10 block of B:
  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000 
  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000 
 TACC:  Shutdown complete. Exiting. 
-TACC:  Starting up job 3016124 
+TACC:  Starting up job 3129156 
 TACC:  Starting parallel tasks... 
-Finding B = A'*A using threads (1) took: 2782.257 ms, trace(B) = 2.500000e+07
+MPI rank 2 / 48 launched
+MPI rank 13 / 48 launched
+MPI rank 14 / 48 launched
+MPI rank 17 / 48 launched
+MPI rank 18 / 48 launched
+MPI rank 19 / 48 launched
+MPI rank 25 / 48 launched
+MPI rank 26 / 48 launched
+MPI rank 29 / 48 launched
+MPI rank 30 / 48 launched
+MPI rank 37 / 48 launched
+MPI rank 40 / 48 launched
+MPI rank 41 / 48 launched
+MPI rank 45 / 48 launched
+MPI rank 46 / 48 launched
+MPI rank 47 / 48 launched
+MPI rank 3 / 48 launched
+MPI rank 7 / 48 launched
+MPI rank 8 / 48 launched
+MPI rank 9 / 48 launched
+MPI rank 10 / 48 launched
+MPI rank 12 / 48 launched
+MPI rank 15 / 48 launched
+MPI rank 23 / 48 launched
+MPI rank 24 / 48 launched
+MPI rank 31 / 48 launched
+MPI rank 32 / 48 launched
+MPI rank 33 / 48 launched
+MPI rank 34 / 48 launched
+MPI rank 36 / 48 launched
+MPI rank 38 / 48 launched
+MPI rank 39 / 48 launched
+MPI rank 42 / 48 launched
+MPI rank 44 / 48 launched
+MPI rank 48 / 48 launched
+MPI rank 6 / 48 launched
+MPI rank 11 / 48 launched
+MPI rank 22 / 48 launched
+MPI rank 35 / 48 launched
+MPI rank 43 / 48 launched
+MPI rank 1 / 48 launched
+MPI rank 4 / 48 launched
+MPI rank 27 / 48 launched
+MPI rank 20 / 48 launched
+MPI rank 28 / 48 launched
+MPI rank 5 / 48 launched
+MPI rank 16 / 48 launched
+MPI rank 21 / 48 launched
+Finding B = A'*A using threads (1) took: 3295.398 ms, trace(B) = 2.500000e+07
 First 10 x 10 block of B:
  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000 
  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000 
@@ -58,9 +250,57 @@ First 10 x 10 block of B:
  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000 
  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000 
 TACC:  Shutdown complete. Exiting. 
-TACC:  Starting up job 3016124 
+TACC:  Starting up job 3129156 
 TACC:  Starting parallel tasks... 
-Finding B = A'*A using threads (1) took: 2826.517 ms, trace(B) = 2.500000e+07
+MPI rank 4 / 48 launched
+MPI rank 5 / 48 launched
+MPI rank 15 / 48 launched
+MPI rank 22 / 48 launched
+MPI rank 25 / 48 launched
+MPI rank 27 / 48 launched
+MPI rank 28 / 48 launched
+MPI rank 31 / 48 launched
+MPI rank 35 / 48 launched
+MPI rank 41 / 48 launched
+MPI rank 44 / 48 launched
+MPI rank 45 / 48 launched
+MPI rank 1 / 48 launched
+MPI rank 6 / 48 launched
+MPI rank 8 / 48 launched
+MPI rank 9 / 48 launched
+MPI rank 10 / 48 launched
+MPI rank 11 / 48 launched
+MPI rank 12 / 48 launched
+MPI rank 14 / 48 launched
+MPI rank 16 / 48 launched
+MPI rank 17 / 48 launched
+MPI rank 18 / 48 launched
+MPI rank 19 / 48 launched
+MPI rank 20 / 48 launched
+MPI rank 23 / 48 launched
+MPI rank 24 / 48 launched
+MPI rank 29 / 48 launched
+MPI rank 32 / 48 launched
+MPI rank 33 / 48 launched
+MPI rank 34 / 48 launched
+MPI rank 36 / 48 launched
+MPI rank 37 / 48 launched
+MPI rank 38 / 48 launched
+MPI rank 39 / 48 launched
+MPI rank 42 / 48 launched
+MPI rank 46 / 48 launched
+MPI rank 48 / 48 launched
+MPI rank 3 / 48 launched
+MPI rank 7 / 48 launched
+MPI rank 21 / 48 launched
+MPI rank 26 / 48 launched
+MPI rank 30 / 48 launched
+MPI rank 43 / 48 launched
+MPI rank 47 / 48 launched
+MPI rank 2 / 48 launched
+MPI rank 13 / 48 launched
+MPI rank 40 / 48 launched
+Finding B = A'*A using threads (1) took: 3239.088 ms, trace(B) = 2.500000e+07
 First 10 x 10 block of B:
  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000 
  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000 
@@ -74,9 +314,57 @@ First 10 x 10 block of B:
  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000 
 TACC:  Shutdown complete. Exiting. 
 =======================================================================
-TACC:  Starting up job 3016124 
+TACC:  Starting up job 3129156 
 TACC:  Starting parallel tasks... 
-Finding B = A'*A using threads (2) took: 1482.358 ms, trace(B) = 2.500000e+07
+MPI rank 9 / 48 launched
+MPI rank 14 / 48 launched
+MPI rank 21 / 48 launched
+MPI rank 25 / 48 launched
+MPI rank 33 / 48 launched
+MPI rank 39 / 48 launched
+MPI rank 47 / 48 launched
+MPI rank 6 / 48 launched
+MPI rank 13 / 48 launched
+MPI rank 18 / 48 launched
+MPI rank 26 / 48 launched
+MPI rank 29 / 48 launched
+MPI rank 30 / 48 launched
+MPI rank 35 / 48 launched
+MPI rank 37 / 48 launched
+MPI rank 41 / 48 launched
+MPI rank 45 / 48 launched
+MPI rank 2 / 48 launched
+MPI rank 10 / 48 launched
+MPI rank 17 / 48 launched
+MPI rank 43 / 48 launched
+MPI rank 1 / 48 launched
+MPI rank 22 / 48 launched
+MPI rank 5 / 48 launched
+MPI rank 20 / 48 launched
+MPI rank 34 / 48 launched
+MPI rank 7 / 48 launched
+MPI rank 24 / 48 launched
+MPI rank 44 / 48 launched
+MPI rank 4 / 48 launched
+MPI rank 48 / 48 launched
+MPI rank 28 / 48 launched
+MPI rank 31 / 48 launched
+MPI rank 32 / 48 launched
+MPI rank 38 / 48 launched
+MPI rank 3 / 48 launched
+MPI rank 15 / 48 launched
+MPI rank 16 / 48 launched
+MPI rank 19 / 48 launched
+MPI rank 23 / 48 launched
+MPI rank 27 / 48 launched
+MPI rank 46 / 48 launched
+MPI rank 36 / 48 launched
+MPI rank 40 / 48 launched
+MPI rank 42 / 48 launched
+MPI rank 8 / 48 launched
+MPI rank 12 / 48 launched
+MPI rank 11 / 48 launched
+Finding B = A'*A using threads (2) took: 1977.654 ms, trace(B) = 2.500000e+07
 First 10 x 10 block of B:
  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000 
  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000 
@@ -89,9 +377,57 @@ First 10 x 10 block of B:
  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000 
  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000 
 TACC:  Shutdown complete. Exiting. 
-TACC:  Starting up job 3016124 
+TACC:  Starting up job 3129156 
 TACC:  Starting parallel tasks... 
-Finding B = A'*A using threads (2) took: 1479.596 ms, trace(B) = 2.500000e+07
+MPI rank 12 / 48 launched
+MPI rank 28 / 48 launched
+MPI rank 19 / 48 launched
+MPI rank 3 / 48 launched
+MPI rank 11 / 48 launched
+MPI rank 27 / 48 launched
+MPI rank 34 / 48 launched
+MPI rank 38 / 48 launched
+MPI rank 42 / 48 launched
+MPI rank 46 / 48 launched
+MPI rank 20 / 48 launched
+MPI rank 4 / 48 launched
+MPI rank 30 / 48 launched
+MPI rank 29 / 48 launched
+MPI rank 6 / 48 launched
+MPI rank 18 / 48 launched
+MPI rank 40 / 48 launched
+MPI rank 31 / 48 launched
+MPI rank 45 / 48 launched
+MPI rank 8 / 48 launched
+MPI rank 26 / 48 launched
+MPI rank 39 / 48 launched
+MPI rank 43 / 48 launched
+MPI rank 9 / 48 launched
+MPI rank 14 / 48 launched
+MPI rank 15 / 48 launched
+MPI rank 48 / 48 launched
+MPI rank 36 / 48 launched
+MPI rank 16 / 48 launched
+MPI rank 24 / 48 launched
+MPI rank 10 / 48 launched
+MPI rank 13 / 48 launched
+MPI rank 37 / 48 launched
+MPI rank 2 / 48 launched
+MPI rank 5 / 48 launched
+MPI rank 17 / 48 launched
+MPI rank 21 / 48 launched
+MPI rank 22 / 48 launched
+MPI rank 25 / 48 launched
+MPI rank 32 / 48 launched
+MPI rank 33 / 48 launched
+MPI rank 35 / 48 launched
+MPI rank 41 / 48 launched
+MPI rank 47 / 48 launched
+MPI rank 1 / 48 launched
+MPI rank 7 / 48 launched
+MPI rank 23 / 48 launched
+MPI rank 44 / 48 launched
+Finding B = A'*A using threads (2) took: 2292.189 ms, trace(B) = 2.500000e+07
 First 10 x 10 block of B:
  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000 
  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000 
@@ -104,9 +440,57 @@ First 10 x 10 block of B:
  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000 
  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000 
 TACC:  Shutdown complete. Exiting. 
-TACC:  Starting up job 3016124 
+TACC:  Starting up job 3129156 
 TACC:  Starting parallel tasks... 
-Finding B = A'*A using threads (2) took: 1463.540 ms, trace(B) = 2.500000e+07
+MPI rank 5 / 48 launched
+MPI rank 18 / 48 launched
+MPI rank 22 / 48 launched
+MPI rank 28 / 48 launched
+MPI rank 35 / 48 launched
+MPI rank 2 / 48 launched
+MPI rank 39 / 48 launched
+MPI rank 41 / 48 launched
+MPI rank 44 / 48 launched
+MPI rank 10 / 48 launched
+MPI rank 14 / 48 launched
+MPI rank 21 / 48 launched
+MPI rank 26 / 48 launched
+MPI rank 43 / 48 launched
+MPI rank 11 / 48 launched
+MPI rank 33 / 48 launched
+MPI rank 42 / 48 launched
+MPI rank 47 / 48 launched
+MPI rank 13 / 48 launched
+MPI rank 17 / 48 launched
+MPI rank 19 / 48 launched
+MPI rank 25 / 48 launched
+MPI rank 34 / 48 launched
+MPI rank 45 / 48 launched
+MPI rank 46 / 48 launched
+MPI rank 3 / 48 launched
+MPI rank 4 / 48 launched
+MPI rank 8 / 48 launched
+MPI rank 9 / 48 launched
+MPI rank 16 / 48 launched
+MPI rank 20 / 48 launched
+MPI rank 24 / 48 launched
+MPI rank 27 / 48 launched
+MPI rank 29 / 48 launched
+MPI rank 30 / 48 launched
+MPI rank 31 / 48 launched
+MPI rank 32 / 48 launched
+MPI rank 36 / 48 launched
+MPI rank 38 / 48 launched
+MPI rank 40 / 48 launched
+MPI rank 1 / 48 launched
+MPI rank 6 / 48 launched
+MPI rank 7 / 48 launched
+MPI rank 12 / 48 launched
+MPI rank 15 / 48 launched
+MPI rank 23 / 48 launched
+MPI rank 37 / 48 launched
+MPI rank 48 / 48 launched
+Finding B = A'*A using threads (2) took: 2261.677 ms, trace(B) = 2.500000e+07
 First 10 x 10 block of B:
  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000 
  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000 
@@ -119,9 +503,57 @@ First 10 x 10 block of B:
  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000 
  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000 
 TACC:  Shutdown complete. Exiting. 
-TACC:  Starting up job 3016124 
+TACC:  Starting up job 3129156 
 TACC:  Starting parallel tasks... 
-Finding B = A'*A using threads (2) took: 1468.008 ms, trace(B) = 2.500000e+07
+MPI rank 3 / 48 launched
+MPI rank 4 / 48 launched
+MPI rank 10 / 48 launched
+MPI rank 12 / 48 launched
+MPI rank 15 / 48 launched
+MPI rank 17 / 48 launched
+MPI rank 20 / 48 launched
+MPI rank 22 / 48 launched
+MPI rank 24 / 48 launched
+MPI rank 26 / 48 launched
+MPI rank 27 / 48 launched
+MPI rank 34 / 48 launched
+MPI rank 37 / 48 launched
+MPI rank 38 / 48 launched
+MPI rank 40 / 48 launched
+MPI rank 41 / 48 launched
+MPI rank 42 / 48 launched
+MPI rank 43 / 48 launched
+MPI rank 44 / 48 launched
+MPI rank 48 / 48 launched
+MPI rank 7 / 48 launched
+MPI rank 16 / 48 launched
+MPI rank 21 / 48 launched
+MPI rank 29 / 48 launched
+MPI rank 30 / 48 launched
+MPI rank 45 / 48 launched
+MPI rank 8 / 48 launched
+MPI rank 11 / 48 launched
+MPI rank 18 / 48 launched
+MPI rank 23 / 48 launched
+MPI rank 28 / 48 launched
+MPI rank 36 / 48 launched
+MPI rank 19 / 48 launched
+MPI rank 31 / 48 launched
+MPI rank 32 / 48 launched
+MPI rank 33 / 48 launched
+MPI rank 46 / 48 launched
+MPI rank 1 / 48 launched
+MPI rank 6 / 48 launched
+MPI rank 9 / 48 launched
+MPI rank 13 / 48 launched
+MPI rank 14 / 48 launched
+MPI rank 25 / 48 launched
+MPI rank 35 / 48 launched
+MPI rank 39 / 48 launched
+MPI rank 47 / 48 launched
+MPI rank 2 / 48 launched
+MPI rank 5 / 48 launched
+Finding B = A'*A using threads (2) took: 2239.432 ms, trace(B) = 2.500000e+07
 First 10 x 10 block of B:
  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000 
  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000 
@@ -134,9 +566,57 @@ First 10 x 10 block of B:
  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000 
  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000 
 TACC:  Shutdown complete. Exiting. 
-TACC:  Starting up job 3016124 
+TACC:  Starting up job 3129156 
 TACC:  Starting parallel tasks... 
-Finding B = A'*A using threads (2) took: 1484.528 ms, trace(B) = 2.500000e+07
+MPI rank 7 / 48 launched
+MPI rank 32 / 48 launched
+MPI rank 35 / 48 launched
+MPI rank 39 / 48 launched
+MPI rank 43 / 48 launched
+MPI rank 3 / 48 launched
+MPI rank 5 / 48 launched
+MPI rank 9 / 48 launched
+MPI rank 11 / 48 launched
+MPI rank 12 / 48 launched
+MPI rank 14 / 48 launched
+MPI rank 15 / 48 launched
+MPI rank 17 / 48 launched
+MPI rank 19 / 48 launched
+MPI rank 21 / 48 launched
+MPI rank 23 / 48 launched
+MPI rank 28 / 48 launched
+MPI rank 29 / 48 launched
+MPI rank 31 / 48 launched
+MPI rank 34 / 48 launched
+MPI rank 37 / 48 launched
+MPI rank 38 / 48 launched
+MPI rank 42 / 48 launched
+MPI rank 44 / 48 launched
+MPI rank 47 / 48 launched
+MPI rank 10 / 48 launched
+MPI rank 22 / 48 launched
+MPI rank 26 / 48 launched
+MPI rank 30 / 48 launched
+MPI rank 33 / 48 launched
+MPI rank 40 / 48 launched
+MPI rank 46 / 48 launched
+MPI rank 36 / 48 launched
+MPI rank 13 / 48 launched
+MPI rank 8 / 48 launched
+MPI rank 45 / 48 launched
+MPI rank 24 / 48 launched
+MPI rank 27 / 48 launched
+MPI rank 41 / 48 launched
+MPI rank 4 / 48 launched
+MPI rank 16 / 48 launched
+MPI rank 18 / 48 launched
+MPI rank 20 / 48 launched
+MPI rank 25 / 48 launched
+MPI rank 48 / 48 launched
+MPI rank 1 / 48 launched
+MPI rank 2 / 48 launched
+MPI rank 6 / 48 launched
+Finding B = A'*A using threads (2) took: 2275.815 ms, trace(B) = 2.500000e+07
 First 10 x 10 block of B:
  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000 
  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000 
@@ -150,9 +630,57 @@ First 10 x 10 block of B:
  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000 
 TACC:  Shutdown complete. Exiting. 
 =======================================================================
-TACC:  Starting up job 3016124 
+TACC:  Starting up job 3129156 
 TACC:  Starting parallel tasks... 
-Finding B = A'*A using threads (4) took: 783.379 ms, trace(B) = 2.500000e+07
+MPI rank 3 / 48 launched
+MPI rank 4 / 48 launched
+MPI rank 7 / 48 launched
+MPI rank 8 / 48 launched
+MPI rank 15 / 48 launched
+MPI rank 16 / 48 launched
+MPI rank 20 / 48 launched
+MPI rank 24 / 48 launched
+MPI rank 27 / 48 launched
+MPI rank 31 / 48 launched
+MPI rank 34 / 48 launched
+MPI rank 38 / 48 launched
+MPI rank 42 / 48 launched
+MPI rank 44 / 48 launched
+MPI rank 46 / 48 launched
+MPI rank 48 / 48 launched
+MPI rank 1 / 48 launched
+MPI rank 10 / 48 launched
+MPI rank 18 / 48 launched
+MPI rank 25 / 48 launched
+MPI rank 37 / 48 launched
+MPI rank 41 / 48 launched
+MPI rank 45 / 48 launched
+MPI rank 11 / 48 launched
+MPI rank 14 / 48 launched
+MPI rank 22 / 48 launched
+MPI rank 35 / 48 launched
+MPI rank 36 / 48 launched
+MPI rank 39 / 48 launched
+MPI rank 40 / 48 launched
+MPI rank 47 / 48 launched
+MPI rank 19 / 48 launched
+MPI rank 21 / 48 launched
+MPI rank 23 / 48 launched
+MPI rank 28 / 48 launched
+MPI rank 30 / 48 launched
+MPI rank 32 / 48 launched
+MPI rank 2 / 48 launched
+MPI rank 9 / 48 launched
+MPI rank 12 / 48 launched
+MPI rank 26 / 48 launched
+MPI rank 17 / 48 launched
+MPI rank 33 / 48 launched
+MPI rank 29 / 48 launched
+MPI rank 5 / 48 launched
+MPI rank 6 / 48 launched
+MPI rank 43 / 48 launched
+MPI rank 13 / 48 launched
+Finding B = A'*A using threads (4) took: 1546.120 ms, trace(B) = 2.500000e+07
 First 10 x 10 block of B:
  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000 
  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000 
@@ -165,9 +693,57 @@ First 10 x 10 block of B:
  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000 
  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000 
 TACC:  Shutdown complete. Exiting. 
-TACC:  Starting up job 3016124 
+TACC:  Starting up job 3129156 
 TACC:  Starting parallel tasks... 
-Finding B = A'*A using threads (4) took: 785.196 ms, trace(B) = 2.500000e+07
+MPI rank 5 / 48 launched
+MPI rank 6 / 48 launched
+MPI rank 21 / 48 launched
+MPI rank 25 / 48 launched
+MPI rank 26 / 48 launched
+MPI rank 29 / 48 launched
+MPI rank 35 / 48 launched
+MPI rank 41 / 48 launched
+MPI rank 43 / 48 launched
+MPI rank 47 / 48 launched
+MPI rank 2 / 48 launched
+MPI rank 7 / 48 launched
+MPI rank 8 / 48 launched
+MPI rank 9 / 48 launched
+MPI rank 10 / 48 launched
+MPI rank 11 / 48 launched
+MPI rank 14 / 48 launched
+MPI rank 15 / 48 launched
+MPI rank 16 / 48 launched
+MPI rank 17 / 48 launched
+MPI rank 20 / 48 launched
+MPI rank 22 / 48 launched
+MPI rank 23 / 48 launched
+MPI rank 24 / 48 launched
+MPI rank 27 / 48 launched
+MPI rank 28 / 48 launched
+MPI rank 30 / 48 launched
+MPI rank 33 / 48 launched
+MPI rank 36 / 48 launched
+MPI rank 37 / 48 launched
+MPI rank 38 / 48 launched
+MPI rank 39 / 48 launched
+MPI rank 40 / 48 launched
+MPI rank 44 / 48 launched
+MPI rank 48 / 48 launched
+MPI rank 1 / 48 launched
+MPI rank 13 / 48 launched
+MPI rank 34 / 48 launched
+MPI rank 42 / 48 launched
+MPI rank 4 / 48 launched
+MPI rank 18 / 48 launched
+MPI rank 45 / 48 launched
+MPI rank 3 / 48 launched
+MPI rank 12 / 48 launched
+MPI rank 19 / 48 launched
+MPI rank 31 / 48 launched
+MPI rank 32 / 48 launched
+MPI rank 46 / 48 launched
+Finding B = A'*A using threads (4) took: 1257.021 ms, trace(B) = 2.500000e+07
 First 10 x 10 block of B:
  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000 
  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000 
@@ -180,9 +756,57 @@ First 10 x 10 block of B:
  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000 
  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000 
 TACC:  Shutdown complete. Exiting. 
-TACC:  Starting up job 3016124 
+TACC:  Starting up job 3129156 
 TACC:  Starting parallel tasks... 
-Finding B = A'*A using threads (4) took: 790.795 ms, trace(B) = 2.500000e+07
+MPI rank 15 / 48 launched
+MPI rank 22 / 48 launched
+MPI rank 25 / 48 launched
+MPI rank 28 / 48 launched
+MPI rank 33 / 48 launched
+MPI rank 36 / 48 launched
+MPI rank 4 / 48 launched
+MPI rank 6 / 48 launched
+MPI rank 8 / 48 launched
+MPI rank 10 / 48 launched
+MPI rank 11 / 48 launched
+MPI rank 12 / 48 launched
+MPI rank 18 / 48 launched
+MPI rank 21 / 48 launched
+MPI rank 23 / 48 launched
+MPI rank 26 / 48 launched
+MPI rank 31 / 48 launched
+MPI rank 32 / 48 launched
+MPI rank 34 / 48 launched
+MPI rank 35 / 48 launched
+MPI rank 37 / 48 launched
+MPI rank 38 / 48 launched
+MPI rank 40 / 48 launched
+MPI rank 41 / 48 launched
+MPI rank 42 / 48 launched
+MPI rank 44 / 48 launched
+MPI rank 45 / 48 launched
+MPI rank 19 / 48 launched
+MPI rank 43 / 48 launched
+MPI rank 46 / 48 launched
+MPI rank 48 / 48 launched
+MPI rank 7 / 48 launched
+MPI rank 20 / 48 launched
+MPI rank 2 / 48 launched
+MPI rank 3 / 48 launched
+MPI rank 9 / 48 launched
+MPI rank 5 / 48 launched
+MPI rank 16 / 48 launched
+MPI rank 17 / 48 launched
+MPI rank 27 / 48 launched
+MPI rank 30 / 48 launched
+MPI rank 39 / 48 launched
+MPI rank 1 / 48 launched
+MPI rank 14 / 48 launched
+MPI rank 24 / 48 launched
+MPI rank 13 / 48 launched
+MPI rank 47 / 48 launched
+MPI rank 29 / 48 launched
+Finding B = A'*A using threads (4) took: 1274.335 ms, trace(B) = 2.500000e+07
 First 10 x 10 block of B:
  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000 
  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000 
@@ -195,9 +819,57 @@ First 10 x 10 block of B:
  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000 
  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000 
 TACC:  Shutdown complete. Exiting. 
-TACC:  Starting up job 3016124 
+TACC:  Starting up job 3129156 
 TACC:  Starting parallel tasks... 
-Finding B = A'*A using threads (4) took: 792.100 ms, trace(B) = 2.500000e+07
+MPI rank 39 / 48 launched
+MPI rank 9 / 48 launched
+MPI rank 33 / 48 launched
+MPI rank 34 / 48 launched
+MPI rank 36 / 48 launched
+MPI rank 43 / 48 launched
+MPI rank 1 / 48 launched
+MPI rank 10 / 48 launched
+MPI rank 13 / 48 launched
+MPI rank 19 / 48 launched
+MPI rank 23 / 48 launched
+MPI rank 29 / 48 launched
+MPI rank 42 / 48 launched
+MPI rank 12 / 48 launched
+MPI rank 14 / 48 launched
+MPI rank 2 / 48 launched
+MPI rank 16 / 48 launched
+MPI rank 21 / 48 launched
+MPI rank 22 / 48 launched
+MPI rank 27 / 48 launched
+MPI rank 35 / 48 launched
+MPI rank 3 / 48 launched
+MPI rank 11 / 48 launched
+MPI rank 20 / 48 launched
+MPI rank 25 / 48 launched
+MPI rank 30 / 48 launched
+MPI rank 32 / 48 launched
+MPI rank 18 / 48 launched
+MPI rank 24 / 48 launched
+MPI rank 44 / 48 launched
+MPI rank 37 / 48 launched
+MPI rank 47 / 48 launched
+MPI rank 5 / 48 launched
+MPI rank 7 / 48 launched
+MPI rank 46 / 48 launched
+MPI rank 48 / 48 launched
+MPI rank 4 / 48 launched
+MPI rank 6 / 48 launched
+MPI rank 8 / 48 launched
+MPI rank 15 / 48 launched
+MPI rank 17 / 48 launched
+MPI rank 26 / 48 launched
+MPI rank 28 / 48 launched
+MPI rank 31 / 48 launched
+MPI rank 38 / 48 launched
+MPI rank 40 / 48 launched
+MPI rank 41 / 48 launched
+MPI rank 45 / 48 launched
+Finding B = A'*A using threads (4) took: 1270.653 ms, trace(B) = 2.500000e+07
 First 10 x 10 block of B:
  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000 
  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000 
@@ -210,9 +882,57 @@ First 10 x 10 block of B:
  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000 
  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000 
 TACC:  Shutdown complete. Exiting. 
-TACC:  Starting up job 3016124 
+TACC:  Starting up job 3129156 
 TACC:  Starting parallel tasks... 
-Finding B = A'*A using threads (4) took: 784.866 ms, trace(B) = 2.500000e+07
+MPI rank 8 / 48 launched
+MPI rank 2 / 48 launched
+MPI rank 3 / 48 launched
+MPI rank 6 / 48 launched
+MPI rank 11 / 48 launched
+MPI rank 12 / 48 launched
+MPI rank 20 / 48 launched
+MPI rank 27 / 48 launched
+MPI rank 34 / 48 launched
+MPI rank 40 / 48 launched
+MPI rank 46 / 48 launched
+MPI rank 1 / 48 launched
+MPI rank 4 / 48 launched
+MPI rank 5 / 48 launched
+MPI rank 7 / 48 launched
+MPI rank 13 / 48 launched
+MPI rank 14 / 48 launched
+MPI rank 16 / 48 launched
+MPI rank 18 / 48 launched
+MPI rank 25 / 48 launched
+MPI rank 26 / 48 launched
+MPI rank 28 / 48 launched
+MPI rank 30 / 48 launched
+MPI rank 35 / 48 launched
+MPI rank 38 / 48 launched
+MPI rank 44 / 48 launched
+MPI rank 45 / 48 launched
+MPI rank 47 / 48 launched
+MPI rank 48 / 48 launched
+MPI rank 23 / 48 launched
+MPI rank 24 / 48 launched
+MPI rank 41 / 48 launched
+MPI rank 9 / 48 launched
+MPI rank 33 / 48 launched
+MPI rank 31 / 48 launched
+MPI rank 43 / 48 launched
+MPI rank 10 / 48 launched
+MPI rank 22 / 48 launched
+MPI rank 39 / 48 launched
+MPI rank 15 / 48 launched
+MPI rank 17 / 48 launched
+MPI rank 21 / 48 launched
+MPI rank 29 / 48 launched
+MPI rank 32 / 48 launched
+MPI rank 37 / 48 launched
+MPI rank 19 / 48 launched
+MPI rank 36 / 48 launched
+MPI rank 42 / 48 launched
+Finding B = A'*A using threads (4) took: 1276.924 ms, trace(B) = 2.500000e+07
 First 10 x 10 block of B:
  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000 
  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000 
@@ -226,9 +946,57 @@ First 10 x 10 block of B:
  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000 
 TACC:  Shutdown complete. Exiting. 
 =======================================================================
-TACC:  Starting up job 3016124 
+TACC:  Starting up job 3129156 
 TACC:  Starting parallel tasks... 
-Finding B = A'*A using threads (8) took: 569.563 ms, trace(B) = 2.500000e+07
+MPI rank 2 / 48 launched
+MPI rank 5 / 48 launched
+MPI rank 6 / 48 launched
+MPI rank 10 / 48 launched
+MPI rank 13 / 48 launched
+MPI rank 14 / 48 launched
+MPI rank 18 / 48 launched
+MPI rank 21 / 48 launched
+MPI rank 22 / 48 launched
+MPI rank 25 / 48 launched
+MPI rank 29 / 48 launched
+MPI rank 30 / 48 launched
+MPI rank 37 / 48 launched
+MPI rank 39 / 48 launched
+MPI rank 41 / 48 launched
+MPI rank 43 / 48 launched
+MPI rank 45 / 48 launched
+MPI rank 47 / 48 launched
+MPI rank 1 / 48 launched
+MPI rank 7 / 48 launched
+MPI rank 9 / 48 launched
+MPI rank 11 / 48 launched
+MPI rank 12 / 48 launched
+MPI rank 15 / 48 launched
+MPI rank 16 / 48 launched
+MPI rank 24 / 48 launched
+MPI rank 26 / 48 launched
+MPI rank 27 / 48 launched
+MPI rank 28 / 48 launched
+MPI rank 31 / 48 launched
+MPI rank 32 / 48 launched
+MPI rank 35 / 48 launched
+MPI rank 36 / 48 launched
+MPI rank 40 / 48 launched
+MPI rank 44 / 48 launched
+MPI rank 48 / 48 launched
+MPI rank 8 / 48 launched
+MPI rank 33 / 48 launched
+MPI rank 17 / 48 launched
+MPI rank 3 / 48 launched
+MPI rank 20 / 48 launched
+MPI rank 38 / 48 launched
+MPI rank 4 / 48 launched
+MPI rank 19 / 48 launched
+MPI rank 23 / 48 launched
+MPI rank 46 / 48 launched
+MPI rank 34 / 48 launched
+MPI rank 42 / 48 launched
+Finding B = A'*A using threads (8) took: 1037.932 ms, trace(B) = 2.500000e+07
 First 10 x 10 block of B:
  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000 
  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000 
@@ -241,9 +1009,57 @@ First 10 x 10 block of B:
  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000 
  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000 
 TACC:  Shutdown complete. Exiting. 
-TACC:  Starting up job 3016124 
+TACC:  Starting up job 3129156 
 TACC:  Starting parallel tasks... 
-Finding B = A'*A using threads (8) took: 536.259 ms, trace(B) = 2.500000e+07
+MPI rank 1 / 48 launched
+MPI rank 2 / 48 launched
+MPI rank 3 / 48 launched
+MPI rank 6 / 48 launched
+MPI rank 7 / 48 launched
+MPI rank 8 / 48 launched
+MPI rank 9 / 48 launched
+MPI rank 10 / 48 launched
+MPI rank 11 / 48 launched
+MPI rank 12 / 48 launched
+MPI rank 13 / 48 launched
+MPI rank 14 / 48 launched
+MPI rank 18 / 48 launched
+MPI rank 19 / 48 launched
+MPI rank 20 / 48 launched
+MPI rank 21 / 48 launched
+MPI rank 24 / 48 launched
+MPI rank 25 / 48 launched
+MPI rank 27 / 48 launched
+MPI rank 28 / 48 launched
+MPI rank 29 / 48 launched
+MPI rank 30 / 48 launched
+MPI rank 31 / 48 launched
+MPI rank 32 / 48 launched
+MPI rank 33 / 48 launched
+MPI rank 35 / 48 launched
+MPI rank 36 / 48 launched
+MPI rank 37 / 48 launched
+MPI rank 38 / 48 launched
+MPI rank 39 / 48 launched
+MPI rank 40 / 48 launched
+MPI rank 41 / 48 launched
+MPI rank 42 / 48 launched
+MPI rank 45 / 48 launched
+MPI rank 46 / 48 launched
+MPI rank 15 / 48 launched
+MPI rank 17 / 48 launched
+MPI rank 26 / 48 launched
+MPI rank 34 / 48 launched
+MPI rank 43 / 48 launched
+MPI rank 44 / 48 launched
+MPI rank 4 / 48 launched
+MPI rank 5 / 48 launched
+MPI rank 16 / 48 launched
+MPI rank 22 / 48 launched
+MPI rank 47 / 48 launched
+MPI rank 48 / 48 launched
+MPI rank 23 / 48 launched
+Finding B = A'*A using threads (8) took: 1277.602 ms, trace(B) = 2.500000e+07
 First 10 x 10 block of B:
  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000 
  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000 
@@ -256,9 +1072,57 @@ First 10 x 10 block of B:
  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000 
  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000 
 TACC:  Shutdown complete. Exiting. 
-TACC:  Starting up job 3016124 
+TACC:  Starting up job 3129156 
 TACC:  Starting parallel tasks... 
-Finding B = A'*A using threads (8) took: 545.872 ms, trace(B) = 2.500000e+07
+MPI rank 3 / 48 launched
+MPI rank 4 / 48 launched
+MPI rank 8 / 48 launched
+MPI rank 12 / 48 launched
+MPI rank 15 / 48 launched
+MPI rank 20 / 48 launched
+MPI rank 23 / 48 launched
+MPI rank 24 / 48 launched
+MPI rank 27 / 48 launched
+MPI rank 28 / 48 launched
+MPI rank 31 / 48 launched
+MPI rank 34 / 48 launched
+MPI rank 38 / 48 launched
+MPI rank 40 / 48 launched
+MPI rank 25 / 48 launched
+MPI rank 7 / 48 launched
+MPI rank 16 / 48 launched
+MPI rank 32 / 48 launched
+MPI rank 36 / 48 launched
+MPI rank 39 / 48 launched
+MPI rank 46 / 48 launched
+MPI rank 47 / 48 launched
+MPI rank 6 / 48 launched
+MPI rank 19 / 48 launched
+MPI rank 21 / 48 launched
+MPI rank 26 / 48 launched
+MPI rank 37 / 48 launched
+MPI rank 43 / 48 launched
+MPI rank 44 / 48 launched
+MPI rank 45 / 48 launched
+MPI rank 48 / 48 launched
+MPI rank 10 / 48 launched
+MPI rank 11 / 48 launched
+MPI rank 17 / 48 launched
+MPI rank 18 / 48 launched
+MPI rank 42 / 48 launched
+MPI rank 1 / 48 launched
+MPI rank 14 / 48 launched
+MPI rank 29 / 48 launched
+MPI rank 22 / 48 launched
+MPI rank 5 / 48 launched
+MPI rank 30 / 48 launched
+MPI rank 2 / 48 launched
+MPI rank 33 / 48 launched
+MPI rank 35 / 48 launched
+MPI rank 9 / 48 launched
+MPI rank 13 / 48 launched
+MPI rank 41 / 48 launched
+Finding B = A'*A using threads (8) took: 1226.574 ms, trace(B) = 2.500000e+07
 First 10 x 10 block of B:
  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000 
  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000 
@@ -271,9 +1135,57 @@ First 10 x 10 block of B:
  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000 
  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000 
 TACC:  Shutdown complete. Exiting. 
-TACC:  Starting up job 3016124 
+TACC:  Starting up job 3129156 
 TACC:  Starting parallel tasks... 
-Finding B = A'*A using threads (8) took: 524.417 ms, trace(B) = 2.500000e+07
+MPI rank 5 / 48 launched
+MPI rank 7 / 48 launched
+MPI rank 8 / 48 launched
+MPI rank 13 / 48 launched
+MPI rank 22 / 48 launched
+MPI rank 23 / 48 launched
+MPI rank 24 / 48 launched
+MPI rank 29 / 48 launched
+MPI rank 30 / 48 launched
+MPI rank 31 / 48 launched
+MPI rank 32 / 48 launched
+MPI rank 35 / 48 launched
+MPI rank 36 / 48 launched
+MPI rank 39 / 48 launched
+MPI rank 40 / 48 launched
+MPI rank 44 / 48 launched
+MPI rank 47 / 48 launched
+MPI rank 48 / 48 launched
+MPI rank 6 / 48 launched
+MPI rank 14 / 48 launched
+MPI rank 15 / 48 launched
+MPI rank 16 / 48 launched
+MPI rank 21 / 48 launched
+MPI rank 38 / 48 launched
+MPI rank 41 / 48 launched
+MPI rank 43 / 48 launched
+MPI rank 11 / 48 launched
+MPI rank 12 / 48 launched
+MPI rank 17 / 48 launched
+MPI rank 26 / 48 launched
+MPI rank 27 / 48 launched
+MPI rank 28 / 48 launched
+MPI rank 33 / 48 launched
+MPI rank 37 / 48 launched
+MPI rank 3 / 48 launched
+MPI rank 4 / 48 launched
+MPI rank 10 / 48 launched
+MPI rank 19 / 48 launched
+MPI rank 25 / 48 launched
+MPI rank 42 / 48 launched
+MPI rank 46 / 48 launched
+MPI rank 1 / 48 launched
+MPI rank 18 / 48 launched
+MPI rank 34 / 48 launched
+MPI rank 2 / 48 launched
+MPI rank 9 / 48 launched
+MPI rank 45 / 48 launched
+MPI rank 20 / 48 launched
+Finding B = A'*A using threads (8) took: 1252.563 ms, trace(B) = 2.500000e+07
 First 10 x 10 block of B:
  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000 
  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000 
@@ -286,9 +1198,57 @@ First 10 x 10 block of B:
  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000 
  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000 
 TACC:  Shutdown complete. Exiting. 
-TACC:  Starting up job 3016124 
+TACC:  Starting up job 3129156 
 TACC:  Starting parallel tasks... 
-Finding B = A'*A using threads (8) took: 529.269 ms, trace(B) = 2.500000e+07
+MPI rank 24 / 48 launched
+MPI rank 26 / 48 launched
+MPI rank 35 / 48 launched
+MPI rank 41 / 48 launched
+MPI rank 1 / 48 launched
+MPI rank 4 / 48 launched
+MPI rank 8 / 48 launched
+MPI rank 9 / 48 launched
+MPI rank 10 / 48 launched
+MPI rank 11 / 48 launched
+MPI rank 16 / 48 launched
+MPI rank 17 / 48 launched
+MPI rank 18 / 48 launched
+MPI rank 19 / 48 launched
+MPI rank 27 / 48 launched
+MPI rank 31 / 48 launched
+MPI rank 37 / 48 launched
+MPI rank 38 / 48 launched
+MPI rank 39 / 48 launched
+MPI rank 42 / 48 launched
+MPI rank 44 / 48 launched
+MPI rank 46 / 48 launched
+MPI rank 5 / 48 launched
+MPI rank 12 / 48 launched
+MPI rank 13 / 48 launched
+MPI rank 20 / 48 launched
+MPI rank 21 / 48 launched
+MPI rank 23 / 48 launched
+MPI rank 30 / 48 launched
+MPI rank 36 / 48 launched
+MPI rank 40 / 48 launched
+MPI rank 45 / 48 launched
+MPI rank 47 / 48 launched
+MPI rank 48 / 48 launched
+MPI rank 15 / 48 launched
+MPI rank 28 / 48 launched
+MPI rank 33 / 48 launched
+MPI rank 34 / 48 launched
+MPI rank 7 / 48 launched
+MPI rank 22 / 48 launched
+MPI rank 25 / 48 launched
+MPI rank 2 / 48 launched
+MPI rank 6 / 48 launched
+MPI rank 14 / 48 launched
+MPI rank 29 / 48 launched
+MPI rank 43 / 48 launched
+MPI rank 3 / 48 launched
+MPI rank 32 / 48 launched
+Finding B = A'*A using threads (8) took: 1273.339 ms, trace(B) = 2.500000e+07
 First 10 x 10 block of B:
  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000 
  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000  5000.000 

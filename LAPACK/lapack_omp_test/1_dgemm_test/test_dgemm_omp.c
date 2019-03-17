@@ -17,6 +17,7 @@ int main(int argc, char **argv) {
     int rank, nproc, i, j, k;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     MPI_Comm_size(MPI_COMM_WORLD, &nproc);
+    printf("MPI rank %d / %d launched\n", rank + 1, nproc);
 
     double t1, t2;
     double *A, *B;
