@@ -1,84 +1,6899 @@
-TACC:  Starting up job 3016184 
+TACC:  Starting up job 3129209 
 TACC:  Starting parallel tasks... 
-Finding sum using 1 threads took: 3236.051 ms, sum = 3.000000e+09
+MPI rank 3 / 48 launched
+MPI rank 6 / 48 launched
+Rank 5 before barrier at: Sat Mar 16 22:43:10 2019
+
+MPI rank 9 / 48 launched
+Rank 8 before barrier at: Sat Mar 16 22:43:10 2019
+
+MPI rank 25 / 48 launched
+MPI rank 29 / 48 launched
+Rank 28 before barrier at: Sat Mar 16 22:43:10 2019
+
+MPI rank 30 / 48 launched
+MPI rank 43 / 48 launched
+MPI rank 46 / 48 launched
+MPI rank 2 / 48 launched
+Rank 1 before barrier at: Sat Mar 16 22:43:10 2019
+
+Rank 2 before barrier at: Sat Mar 16 22:43:10 2019
+
+MPI rank 8 / 48 launched
+Rank 7 before barrier at: Sat Mar 16 22:43:10 2019
+
+MPI rank 10 / 48 launched
+Rank 9 before barrier at: Sat Mar 16 22:43:10 2019
+
+MPI rank 11 / 48 launched
+Rank 10 before barrier at: Sat Mar 16 22:43:10 2019
+
+MPI rank 12 / 48 launched
+Rank 11 before barrier at: Sat Mar 16 22:43:10 2019
+
+MPI rank 14 / 48 launched
+Rank 13 before barrier at: Sat Mar 16 22:43:10 2019
+
+MPI rank 16 / 48 launched
+Rank 15 before barrier at: Sat Mar 16 22:43:10 2019
+
+MPI rank 21 / 48 launched
+Rank 20 before barrier at: Sat Mar 16 22:43:10 2019
+
+MPI rank 22 / 48 launched
+Rank 21 before barrier at: Sat Mar 16 22:43:10 2019
+
+Rank 24 before barrier at: Sat Mar 16 22:43:10 2019
+
+MPI rank 26 / 48 launched
+Rank 25 before barrier at: Sat Mar 16 22:43:10 2019
+
+MPI rank 28 / 48 launched
+Rank 27 before barrier at: Sat Mar 16 22:43:10 2019
+
+Rank 29 before barrier at: Sat Mar 16 22:43:10 2019
+
+MPI rank 31 / 48 launched
+Rank 30 before barrier at: Sat Mar 16 22:43:10 2019
+
+MPI rank 32 / 48 launched
+Rank 31 before barrier at: Sat Mar 16 22:43:10 2019
+
+MPI rank 33 / 48 launched
+Rank 32 before barrier at: Sat Mar 16 22:43:10 2019
+
+MPI rank 34 / 48 launched
+Rank 33 before barrier at: Sat Mar 16 22:43:10 2019
+
+MPI rank 39 / 48 launched
+Rank 38 before barrier at: Sat Mar 16 22:43:10 2019
+
+MPI rank 41 / 48 launched
+Rank 40 before barrier at: Sat Mar 16 22:43:10 2019
+
+Rank 42 before barrier at: Sat Mar 16 22:43:10 2019
+
+MPI rank 44 / 48 launched
+Rank 43 before barrier at: Sat Mar 16 22:43:10 2019
+
+MPI rank 45 / 48 launched
+Rank 44 before barrier at: Sat Mar 16 22:43:10 2019
+
+Rank 45 before barrier at: Sat Mar 16 22:43:10 2019
+
+MPI rank 48 / 48 launched
+Rank 47 before barrier at: Sat Mar 16 22:43:10 2019
+
+MPI rank 1 / 48 launched
+MPI rank 4 / 48 launched
+Rank 3 before barrier at: Sat Mar 16 22:43:10 2019
+
+MPI rank 5 / 48 launched
+Rank 4 before barrier at: Sat Mar 16 22:43:10 2019
+
+MPI rank 7 / 48 launched
+Rank 6 before barrier at: Sat Mar 16 22:43:10 2019
+
+MPI rank 13 / 48 launched
+Rank 12 before barrier at: Sat Mar 16 22:43:10 2019
+
+MPI rank 15 / 48 launched
+Rank 14 before barrier at: Sat Mar 16 22:43:10 2019
+
+MPI rank 17 / 48 launched
+Rank 16 before barrier at: Sat Mar 16 22:43:10 2019
+
+MPI rank 18 / 48 launched
+Rank 17 before barrier at: Sat Mar 16 22:43:10 2019
+
+MPI rank 19 / 48 launched
+Rank 18 before barrier at: Sat Mar 16 22:43:10 2019
+
+MPI rank 20 / 48 launched
+Rank 19 before barrier at: Sat Mar 16 22:43:10 2019
+
+MPI rank 23 / 48 launched
+Rank 22 before barrier at: Sat Mar 16 22:43:10 2019
+
+MPI rank 24 / 48 launched
+Rank 23 before barrier at: Sat Mar 16 22:43:10 2019
+
+MPI rank 27 / 48 launched
+Rank 26 before barrier at: Sat Mar 16 22:43:10 2019
+
+MPI rank 35 / 48 launched
+Rank 34 before barrier at: Sat Mar 16 22:43:10 2019
+
+MPI rank 36 / 48 launched
+Rank 35 before barrier at: Sat Mar 16 22:43:10 2019
+
+MPI rank 37 / 48 launched
+Rank 36 before barrier at: Sat Mar 16 22:43:10 2019
+
+MPI rank 38 / 48 launched
+Rank 37 before barrier at: Sat Mar 16 22:43:10 2019
+
+MPI rank 40 / 48 launched
+Rank 39 before barrier at: Sat Mar 16 22:43:10 2019
+
+MPI rank 42 / 48 launched
+Rank 41 before barrier at: Sat Mar 16 22:43:10 2019
+
+MPI rank 47 / 48 launched
+Rank 46 before barrier at: Sat Mar 16 22:43:10 2019
+
+Rank 0 before barrier at: Sat Mar 16 22:43:13 2019
+
+Rank 0 just past barrier at: Sat Mar 16 22:43:13 2019
+
+Rank 4 just past barrier at: Sat Mar 16 22:43:13 2019
+
+Rank 5 just past barrier at: Sat Mar 16 22:43:13 2019
+
+Rank 25 just past barrier at: Sat Mar 16 22:43:13 2019
+
+Rank 40 just past barrier at: Sat Mar 16 22:43:13 2019
+
+Rank 2 just past barrier at: Sat Mar 16 22:43:13 2019
+
+Rank 12 just past barrier at: Sat Mar 16 22:43:13 2019
+
+Rank 16 just past barrier at: Sat Mar 16 22:43:13 2019
+
+Rank 17 just past barrier at: Sat Mar 16 22:43:13 2019
+
+Rank 22 just past barrier at: Sat Mar 16 22:43:13 2019
+
+Rank 29 just past barrier at: Sat Mar 16 22:43:13 2019
+
+Rank 30 just past barrier at: Sat Mar 16 22:43:13 2019
+
+Rank 32 just past barrier at: Sat Mar 16 22:43:13 2019
+
+Rank 33 just past barrier at: Sat Mar 16 22:43:13 2019
+
+Rank 36 just past barrier at: Sat Mar 16 22:43:13 2019
+
+Rank 41 just past barrier at: Sat Mar 16 22:43:13 2019
+
+Rank 43 just past barrier at: Sat Mar 16 22:43:13 2019
+
+Rank 44 just past barrier at: Sat Mar 16 22:43:13 2019
+
+Rank 47 just past barrier at: Sat Mar 16 22:43:13 2019
+
+Rank 10 just past barrier at: Sat Mar 16 22:43:13 2019
+
+Rank 15 just past barrier at: Sat Mar 16 22:43:13 2019
+
+Rank 27 just past barrier at: Sat Mar 16 22:43:13 2019
+
+Rank 19 just past barrier at: Sat Mar 16 22:43:13 2019
+
+Rank 20 just past barrier at: Sat Mar 16 22:43:13 2019
+
+Rank 34 just past barrier at: Sat Mar 16 22:43:13 2019
+
+Rank 38 just past barrier at: Sat Mar 16 22:43:13 2019
+
+Rank 1 just past barrier at: Sat Mar 16 22:43:13 2019
+
+Rank 18 just past barrier at: Sat Mar 16 22:43:13 2019
+
+Rank 37 just past barrier at: Sat Mar 16 22:43:13 2019
+
+Rank 21 just past barrier at: Sat Mar 16 22:43:13 2019
+
+Rank 3 just past barrier at: Sat Mar 16 22:43:13 2019
+
+Rank 8 just past barrier at: Sat Mar 16 22:43:13 2019
+
+Rank 11 just past barrier at: Sat Mar 16 22:43:13 2019
+
+Rank 14 just past barrier at: Sat Mar 16 22:43:13 2019
+
+Rank 24 just past barrier at: Sat Mar 16 22:43:13 2019
+
+Rank 31 just past barrier at: Sat Mar 16 22:43:13 2019
+
+Rank 42 just past barrier at: Sat Mar 16 22:43:13 2019
+
+Rank 45 just past barrier at: Sat Mar 16 22:43:13 2019
+
+Rank 7 just past barrier at: Sat Mar 16 22:43:13 2019
+
+Rank 28 just past barrier at: Sat Mar 16 22:43:13 2019
+
+Rank 13 just past barrier at: Sat Mar 16 22:43:13 2019
+
+Rank 26 just past barrier at: Sat Mar 16 22:43:13 2019
+
+Rank 39 just past barrier at: Sat Mar 16 22:43:13 2019
+
+Rank 9 just past barrier at: Sat Mar 16 22:43:13 2019
+
+Rank 23 just past barrier at: Sat Mar 16 22:43:13 2019
+
+Rank 46 just past barrier at: Sat Mar 16 22:43:13 2019
+
+Rank 6 just past barrier at: Sat Mar 16 22:43:13 2019
+
+Rank 35 just past barrier at: Sat Mar 16 22:43:13 2019
+
+MPI Rank 0, thread 0 launched
+Calc done, MPI 0 thread 0 still exists
+Rank 41 ready to exit at: Sat Mar 16 22:43:13 2019
+
+Rank 42 ready to exit at: Sat Mar 16 22:43:13 2019
+
+Rank 17 ready to exit at: Sat Mar 16 22:43:13 2019
+
+Rank 34 ready to exit at: Sat Mar 16 22:43:13 2019
+
+Rank 18 ready to exit at: Sat Mar 16 22:43:13 2019
+
+Rank 21 ready to exit at: Sat Mar 16 22:43:13 2019
+
+Rank 38 ready to exit at: Sat Mar 16 22:43:13 2019
+
+Rank 37 ready to exit at: Sat Mar 16 22:43:13 2019
+
+Rank 1 ready to exit at: Sat Mar 16 22:43:13 2019
+
+Rank 33 ready to exit at: Sat Mar 16 22:43:13 2019
+
+Rank 25 ready to exit at: Sat Mar 16 22:43:13 2019
+
+Rank 26 ready to exit at: Sat Mar 16 22:43:13 2019
+
+Rank 9 ready to exit at: Sat Mar 16 22:43:13 2019
+
+Rank 46 ready to exit at: Sat Mar 16 22:43:13 2019
+
+Rank 20 ready to exit at: Sat Mar 16 22:43:13 2019
+
+Rank 2 ready to exit at: Sat Mar 16 22:43:13 2019
+
+Rank 22 ready to exit at: Sat Mar 16 22:43:13 2019
+
+Rank 30 ready to exit at: Sat Mar 16 22:43:13 2019
+
+Rank 5 ready to exit at: Sat Mar 16 22:43:13 2019
+
+Rank 6 ready to exit at: Sat Mar 16 22:43:13 2019
+
+Rank 10 ready to exit at: Sat Mar 16 22:43:13 2019
+
+Rank 44 ready to exit at: Sat Mar 16 22:43:13 2019
+
+Rank 29 ready to exit at: Sat Mar 16 22:43:13 2019
+
+Rank 14 ready to exit at: Sat Mar 16 22:43:13 2019
+
+Rank 19 ready to exit at: Sat Mar 16 22:43:13 2019
+
+Rank 27 ready to exit at: Sat Mar 16 22:43:13 2019
+
+Rank 35 ready to exit at: Sat Mar 16 22:43:13 2019
+
+Rank 45 ready to exit at: Sat Mar 16 22:43:13 2019
+
+Rank 3 ready to exit at: Sat Mar 16 22:43:13 2019
+
+Rank 43 ready to exit at: Sat Mar 16 22:43:13 2019
+
+Rank 36 ready to exit at: Sat Mar 16 22:43:13 2019
+
+Rank 23 ready to exit at: Sat Mar 16 22:43:13 2019
+
+Rank 4 ready to exit at: Sat Mar 16 22:43:13 2019
+
+Rank 39 ready to exit at: Sat Mar 16 22:43:13 2019
+
+Rank 13 ready to exit at: Sat Mar 16 22:43:13 2019
+
+Rank 31 ready to exit at: Sat Mar 16 22:43:13 2019
+
+Rank 7 ready to exit at: Sat Mar 16 22:43:13 2019
+
+Rank 28 ready to exit at: Sat Mar 16 22:43:13 2019
+
+Rank 47 ready to exit at: Sat Mar 16 22:43:13 2019
+
+Rank 11 ready to exit at: Sat Mar 16 22:43:13 2019
+
+Rank 16 ready to exit at: Sat Mar 16 22:43:13 2019
+
+Rank 40 ready to exit at: Sat Mar 16 22:43:14 2019
+
+Rank 15 ready to exit at: Sat Mar 16 22:43:14 2019
+
+Rank 24 ready to exit at: Sat Mar 16 22:43:14 2019
+
+Rank 12 ready to exit at: Sat Mar 16 22:43:14 2019
+
+Rank 8 ready to exit at: Sat Mar 16 22:43:14 2019
+
+Rank 32 ready to exit at: Sat Mar 16 22:43:14 2019
+
+Rank 0 ready to exit at: Sat Mar 16 22:43:14 2019
+
+Finding sum using 1 threads took: 719.612 ms, sum = 1.000000e+09
 TACC:  Shutdown complete. Exiting. 
-TACC:  Starting up job 3016184 
+TACC:  Starting up job 3129209 
 TACC:  Starting parallel tasks... 
-Finding sum using 1 threads took: 3263.739 ms, sum = 3.000000e+09
+MPI rank 9 / 48 launched
+MPI rank 13 / 48 launched
+Rank 12 before barrier at: Sat Mar 16 22:43:14 2019
+
+MPI rank 14 / 48 launched
+MPI rank 26 / 48 launched
+Rank 25 before barrier at: Sat Mar 16 22:43:14 2019
+
+MPI rank 27 / 48 launched
+MPI rank 30 / 48 launched
+Rank 29 before barrier at: Sat Mar 16 22:43:14 2019
+
+MPI rank 33 / 48 launched
+Rank 32 before barrier at: Sat Mar 16 22:43:14 2019
+
+MPI rank 38 / 48 launched
+Rank 37 before barrier at: Sat Mar 16 22:43:14 2019
+
+MPI rank 41 / 48 launched
+Rank 40 before barrier at: Sat Mar 16 22:43:14 2019
+
+MPI rank 1 / 48 launched
+MPI rank 3 / 48 launched
+Rank 2 before barrier at: Sat Mar 16 22:43:14 2019
+
+MPI rank 7 / 48 launched
+Rank 6 before barrier at: Sat Mar 16 22:43:14 2019
+
+MPI rank 8 / 48 launched
+Rank 7 before barrier at: Sat Mar 16 22:43:14 2019
+
+Rank 8 before barrier at: Sat Mar 16 22:43:14 2019
+
+MPI rank 12 / 48 launched
+Rank 11 before barrier at: Sat Mar 16 22:43:14 2019
+
+Rank 13 before barrier at: Sat Mar 16 22:43:14 2019
+
+MPI rank 15 / 48 launched
+Rank 14 before barrier at: Sat Mar 16 22:43:14 2019
+
+MPI rank 16 / 48 launched
+Rank 15 before barrier at: Sat Mar 16 22:43:14 2019
+
+MPI rank 19 / 48 launched
+Rank 18 before barrier at: Sat Mar 16 22:43:14 2019
+
+Rank 26 before barrier at: Sat Mar 16 22:43:14 2019
+
+MPI rank 32 / 48 launched
+Rank 31 before barrier at: Sat Mar 16 22:43:14 2019
+
+MPI rank 36 / 48 launched
+Rank 35 before barrier at: Sat Mar 16 22:43:14 2019
+
+MPI rank 39 / 48 launched
+Rank 38 before barrier at: Sat Mar 16 22:43:14 2019
+
+MPI rank 45 / 48 launched
+Rank 44 before barrier at: Sat Mar 16 22:43:14 2019
+
+MPI rank 47 / 48 launched
+Rank 46 before barrier at: Sat Mar 16 22:43:14 2019
+
+MPI rank 48 / 48 launched
+Rank 47 before barrier at: Sat Mar 16 22:43:14 2019
+
+MPI rank 17 / 48 launched
+Rank 16 before barrier at: Sat Mar 16 22:43:14 2019
+
+MPI rank 25 / 48 launched
+MPI rank 29 / 48 launched
+MPI rank 10 / 48 launched
+MPI rank 18 / 48 launched
+MPI rank 24 / 48 launched
+Rank 24 before barrier at: Sat Mar 16 22:43:14 2019
+
+Rank 28 before barrier at: Sat Mar 16 22:43:14 2019
+
+Rank 9 before barrier at: Sat Mar 16 22:43:14 2019
+
+MPI rank 21 / 48 launched
+MPI rank 22 / 48 launched
+Rank 21 before barrier at: Sat Mar 16 22:43:14 2019
+
+MPI rank 23 / 48 launched
+MPI rank 34 / 48 launched
+MPI rank 37 / 48 launched
+MPI rank 2 / 48 launched
+MPI rank 4 / 48 launched
+MPI rank 11 / 48 launched
+Rank 17 before barrier at: Sat Mar 16 22:43:14 2019
+
+MPI rank 20 / 48 launched
+Rank 19 before barrier at: Sat Mar 16 22:43:14 2019
+
+Rank 22 before barrier at: Sat Mar 16 22:43:14 2019
+
+Rank 23 before barrier at: Sat Mar 16 22:43:14 2019
+
+MPI rank 28 / 48 launched
+Rank 27 before barrier at: Sat Mar 16 22:43:14 2019
+
+MPI rank 31 / 48 launched
+Rank 30 before barrier at: Sat Mar 16 22:43:14 2019
+
+Rank 33 before barrier at: Sat Mar 16 22:43:14 2019
+
+MPI rank 35 / 48 launched
+Rank 34 before barrier at: Sat Mar 16 22:43:14 2019
+
+MPI rank 40 / 48 launched
+Rank 39 before barrier at: Sat Mar 16 22:43:14 2019
+
+MPI rank 42 / 48 launched
+Rank 41 before barrier at: Sat Mar 16 22:43:14 2019
+
+MPI rank 43 / 48 launched
+Rank 42 before barrier at: Sat Mar 16 22:43:14 2019
+
+MPI rank 44 / 48 launched
+Rank 43 before barrier at: Sat Mar 16 22:43:14 2019
+
+MPI rank 46 / 48 launched
+Rank 45 before barrier at: Sat Mar 16 22:43:14 2019
+
+Rank 1 before barrier at: Sat Mar 16 22:43:14 2019
+
+Rank 3 before barrier at: Sat Mar 16 22:43:14 2019
+
+Rank 10 before barrier at: Sat Mar 16 22:43:14 2019
+
+Rank 20 before barrier at: Sat Mar 16 22:43:14 2019
+
+Rank 36 before barrier at: Sat Mar 16 22:43:14 2019
+
+MPI rank 6 / 48 launched
+Rank 5 before barrier at: Sat Mar 16 22:43:14 2019
+
+MPI rank 5 / 48 launched
+Rank 4 before barrier at: Sat Mar 16 22:43:14 2019
+
+Rank 0 before barrier at: Sat Mar 16 22:43:17 2019
+
+Rank 0 just past barrier at: Sat Mar 16 22:43:17 2019
+
+Rank 2 just past barrier at: Sat Mar 16 22:43:17 2019
+
+Rank 7 just past barrier at: Sat Mar 16 22:43:17 2019
+
+Rank 9 just past barrier at: Sat Mar 16 22:43:17 2019
+
+Rank 14 just past barrier at: Sat Mar 16 22:43:17 2019
+
+Rank 18 just past barrier at: Sat Mar 16 22:43:17 2019
+
+Rank 21 just past barrier at: Sat Mar 16 22:43:17 2019
+
+Rank 22 just past barrier at: Sat Mar 16 22:43:17 2019
+
+Rank 23 just past barrier at: Sat Mar 16 22:43:17 2019
+
+Rank 25 just past barrier at: Sat Mar 16 22:43:17 2019
+
+Rank 33 just past barrier at: Sat Mar 16 22:43:17 2019
+
+Rank 35 just past barrier at: Sat Mar 16 22:43:17 2019
+
+Rank 40 just past barrier at: Sat Mar 16 22:43:17 2019
+
+Rank 41 just past barrier at: Sat Mar 16 22:43:17 2019
+
+Rank 45 just past barrier at: Sat Mar 16 22:43:17 2019
+
+Rank 3 just past barrier at: Sat Mar 16 22:43:17 2019
+
+Rank 5 just past barrier at: Sat Mar 16 22:43:17 2019
+
+Rank 13 just past barrier at: Sat Mar 16 22:43:17 2019
+
+Rank 28 just past barrier at: Sat Mar 16 22:43:17 2019
+
+Rank 36 just past barrier at: Sat Mar 16 22:43:17 2019
+
+Rank 11 just past barrier at: Sat Mar 16 22:43:17 2019
+
+Rank 16 just past barrier at: Sat Mar 16 22:43:17 2019
+
+Rank 15 just past barrier at: Sat Mar 16 22:43:17 2019
+
+Rank 34 just past barrier at: Sat Mar 16 22:43:17 2019
+
+Rank 37 just past barrier at: Sat Mar 16 22:43:17 2019
+
+Rank 42 just past barrier at: Sat Mar 16 22:43:17 2019
+
+Rank 4 just past barrier at: Sat Mar 16 22:43:17 2019
+
+Rank 6 just past barrier at: Sat Mar 16 22:43:17 2019
+
+Rank 12 just past barrier at: Sat Mar 16 22:43:17 2019
+
+Rank 31 just past barrier at: Sat Mar 16 22:43:17 2019
+
+Rank 46 just past barrier at: Sat Mar 16 22:43:17 2019
+
+Rank 1 just past barrier at: Sat Mar 16 22:43:17 2019
+
+Rank 10 just past barrier at: Sat Mar 16 22:43:17 2019
+
+Rank 19 just past barrier at: Sat Mar 16 22:43:17 2019
+
+Rank 30 just past barrier at: Sat Mar 16 22:43:17 2019
+
+Rank 32 just past barrier at: Sat Mar 16 22:43:17 2019
+
+Rank 39 just past barrier at: Sat Mar 16 22:43:17 2019
+
+Rank 8 just past barrier at: Sat Mar 16 22:43:17 2019
+
+Rank 20 just past barrier at: Sat Mar 16 22:43:17 2019
+
+Rank 24 just past barrier at: Sat Mar 16 22:43:17 2019
+
+Rank 26 just past barrier at: Sat Mar 16 22:43:17 2019
+
+Rank 17 just past barrier at: Sat Mar 16 22:43:17 2019
+
+Rank 38 just past barrier at: Sat Mar 16 22:43:17 2019
+
+Rank 43 just past barrier at: Sat Mar 16 22:43:17 2019
+
+Rank 44 just past barrier at: Sat Mar 16 22:43:17 2019
+
+Rank 47 just past barrier at: Sat Mar 16 22:43:17 2019
+
+Rank 27 just past barrier at: Sat Mar 16 22:43:17 2019
+
+Rank 29 just past barrier at: Sat Mar 16 22:43:17 2019
+
+MPI Rank 0, thread 0 launched
+Calc done, MPI 0 thread 0 still exists
+Rank 18 ready to exit at: Sat Mar 16 22:43:17 2019
+
+Rank 38 ready to exit at: Sat Mar 16 22:43:17 2019
+
+Rank 17 ready to exit at: Sat Mar 16 22:43:17 2019
+
+Rank 22 ready to exit at: Sat Mar 16 22:43:17 2019
+
+Rank 33 ready to exit at: Sat Mar 16 22:43:17 2019
+
+Rank 25 ready to exit at: Sat Mar 16 22:43:17 2019
+
+Rank 42 ready to exit at: Sat Mar 16 22:43:17 2019
+
+Rank 35 ready to exit at: Sat Mar 16 22:43:17 2019
+
+Rank 19 ready to exit at: Sat Mar 16 22:43:17 2019
+
+Rank 21 ready to exit at: Sat Mar 16 22:43:17 2019
+
+Rank 34 ready to exit at: Sat Mar 16 22:43:17 2019
+
+Rank 2 ready to exit at: Sat Mar 16 22:43:17 2019
+
+Rank 37 ready to exit at: Sat Mar 16 22:43:17 2019
+
+Rank 6 ready to exit at: Sat Mar 16 22:43:17 2019
+
+Rank 1 ready to exit at: Sat Mar 16 22:43:17 2019
+
+Rank 43 ready to exit at: Sat Mar 16 22:43:17 2019
+
+Rank 31 ready to exit at: Sat Mar 16 22:43:17 2019
+
+Rank 30 ready to exit at: Sat Mar 16 22:43:17 2019
+
+Rank 46 ready to exit at: Sat Mar 16 22:43:17 2019
+
+Rank 27 ready to exit at: Sat Mar 16 22:43:17 2019
+
+Rank 39 ready to exit at: Sat Mar 16 22:43:17 2019
+
+Rank 47 ready to exit at: Sat Mar 16 22:43:17 2019
+
+Rank 26 ready to exit at: Sat Mar 16 22:43:17 2019
+
+Rank 10 ready to exit at: Sat Mar 16 22:43:17 2019
+
+Rank 20 ready to exit at: Sat Mar 16 22:43:17 2019
+
+Rank 3 ready to exit at: Sat Mar 16 22:43:17 2019
+
+Rank 45 ready to exit at: Sat Mar 16 22:43:17 2019
+
+Rank 9 ready to exit at: Sat Mar 16 22:43:17 2019
+
+Rank 41 ready to exit at: Sat Mar 16 22:43:17 2019
+
+Rank 28 ready to exit at: Sat Mar 16 22:43:17 2019
+
+Rank 36 ready to exit at: Sat Mar 16 22:43:17 2019
+
+Rank 23 ready to exit at: Sat Mar 16 22:43:17 2019
+
+Rank 7 ready to exit at: Sat Mar 16 22:43:17 2019
+
+Rank 5 ready to exit at: Sat Mar 16 22:43:17 2019
+
+Rank 29 ready to exit at: Sat Mar 16 22:43:17 2019
+
+Rank 14 ready to exit at: Sat Mar 16 22:43:17 2019
+
+Rank 11 ready to exit at: Sat Mar 16 22:43:17 2019
+
+Rank 15 ready to exit at: Sat Mar 16 22:43:17 2019
+
+Rank 4 ready to exit at: Sat Mar 16 22:43:17 2019
+
+Rank 44 ready to exit at: Sat Mar 16 22:43:17 2019
+
+Rank 12 ready to exit at: Sat Mar 16 22:43:17 2019
+
+Rank 13 ready to exit at: Sat Mar 16 22:43:17 2019
+
+Rank 40 ready to exit at: Sat Mar 16 22:43:17 2019
+
+Rank 24 ready to exit at: Sat Mar 16 22:43:17 2019
+
+Rank 16 ready to exit at: Sat Mar 16 22:43:17 2019
+
+Rank 8 ready to exit at: Sat Mar 16 22:43:17 2019
+
+Rank 32 ready to exit at: Sat Mar 16 22:43:17 2019
+
+Rank 0 ready to exit at: Sat Mar 16 22:43:17 2019
+
+Finding sum using 1 threads took: 715.055 ms, sum = 1.000000e+09
 TACC:  Shutdown complete. Exiting. 
-TACC:  Starting up job 3016184 
+TACC:  Starting up job 3129209 
 TACC:  Starting parallel tasks... 
-Finding sum using 1 threads took: 3264.321 ms, sum = 3.000000e+09
+MPI rank 3 / 48 launched
+Rank 2 before barrier at: Sat Mar 16 22:43:18 2019
+
+MPI rank 4 / 48 launched
+Rank 3 before barrier at: Sat Mar 16 22:43:18 2019
+
+MPI rank 16 / 48 launched
+Rank 15 before barrier at: Sat Mar 16 22:43:18 2019
+
+MPI rank 19 / 48 launched
+Rank 18 before barrier at: Sat Mar 16 22:43:18 2019
+
+MPI rank 24 / 48 launched
+Rank 23 before barrier at: Sat Mar 16 22:43:18 2019
+
+MPI rank 28 / 48 launched
+Rank 27 before barrier at: Sat Mar 16 22:43:18 2019
+
+MPI rank 36 / 48 launched
+Rank 35 before barrier at: Sat Mar 16 22:43:18 2019
+
+MPI rank 42 / 48 launched
+Rank 41 before barrier at: Sat Mar 16 22:43:18 2019
+
+MPI rank 46 / 48 launched
+Rank 45 before barrier at: Sat Mar 16 22:43:18 2019
+
+MPI rank 48 / 48 launched
+MPI rank 23 / 48 launched
+MPI rank 44 / 48 launched
+MPI rank 27 / 48 launched
+MPI rank 30 / 48 launched
+Rank 47 before barrier at: Sat Mar 16 22:43:18 2019
+
+MPI rank 1 / 48 launched
+MPI rank 7 / 48 launched
+MPI rank 15 / 48 launched
+MPI rank 20 / 48 launched
+MPI rank 40 / 48 launched
+MPI rank 12 / 48 launched
+Rank 22 before barrier at: Sat Mar 16 22:43:18 2019
+
+MPI rank 26 / 48 launched
+Rank 26 before barrier at: Sat Mar 16 22:43:18 2019
+
+Rank 29 before barrier at: Sat Mar 16 22:43:18 2019
+
+MPI rank 31 / 48 launched
+MPI rank 38 / 48 launched
+MPI rank 41 / 48 launched
+Rank 40 before barrier at: Sat Mar 16 22:43:18 2019
+
+Rank 43 before barrier at: Sat Mar 16 22:43:18 2019
+
+Rank 6 before barrier at: Sat Mar 16 22:43:18 2019
+
+MPI rank 8 / 48 launched
+Rank 7 before barrier at: Sat Mar 16 22:43:18 2019
+
+MPI rank 10 / 48 launched
+Rank 9 before barrier at: Sat Mar 16 22:43:18 2019
+
+Rank 14 before barrier at: Sat Mar 16 22:43:18 2019
+
+Rank 19 before barrier at: Sat Mar 16 22:43:18 2019
+
+Rank 25 before barrier at: Sat Mar 16 22:43:18 2019
+
+Rank 30 before barrier at: Sat Mar 16 22:43:18 2019
+
+MPI rank 32 / 48 launched
+Rank 31 before barrier at: Sat Mar 16 22:43:18 2019
+
+Rank 39 before barrier at: Sat Mar 16 22:43:18 2019
+
+MPI rank 47 / 48 launched
+Rank 46 before barrier at: Sat Mar 16 22:43:18 2019
+
+MPI rank 11 / 48 launched
+Rank 11 before barrier at: Sat Mar 16 22:43:18 2019
+
+MPI rank 29 / 48 launched
+Rank 28 before barrier at: Sat Mar 16 22:43:18 2019
+
+MPI rank 34 / 48 launched
+Rank 37 before barrier at: Sat Mar 16 22:43:18 2019
+
+MPI rank 39 / 48 launched
+Rank 38 before barrier at: Sat Mar 16 22:43:18 2019
+
+Rank 10 before barrier at: Sat Mar 16 22:43:18 2019
+
+MPI rank 13 / 48 launched
+Rank 33 before barrier at: Sat Mar 16 22:43:18 2019
+
+MPI rank 9 / 48 launched
+MPI rank 18 / 48 launched
+MPI rank 25 / 48 launched
+MPI rank 35 / 48 launched
+MPI rank 2 / 48 launched
+MPI rank 6 / 48 launched
+MPI rank 14 / 48 launched
+MPI rank 17 / 48 launched
+MPI rank 21 / 48 launched
+MPI rank 37 / 48 launched
+Rank 36 before barrier at: Sat Mar 16 22:43:18 2019
+
+Rank 1 before barrier at: Sat Mar 16 22:43:18 2019
+
+Rank 5 before barrier at: Sat Mar 16 22:43:18 2019
+
+Rank 8 before barrier at: Sat Mar 16 22:43:18 2019
+
+Rank 12 before barrier at: Sat Mar 16 22:43:18 2019
+
+Rank 13 before barrier at: Sat Mar 16 22:43:18 2019
+
+Rank 16 before barrier at: Sat Mar 16 22:43:18 2019
+
+Rank 17 before barrier at: Sat Mar 16 22:43:18 2019
+
+Rank 20 before barrier at: Sat Mar 16 22:43:18 2019
+
+Rank 24 before barrier at: Sat Mar 16 22:43:18 2019
+
+Rank 34 before barrier at: Sat Mar 16 22:43:18 2019
+
+MPI rank 43 / 48 launched
+Rank 42 before barrier at: Sat Mar 16 22:43:18 2019
+
+MPI rank 45 / 48 launched
+MPI rank 5 / 48 launched
+MPI rank 22 / 48 launched
+MPI rank 33 / 48 launched
+Rank 32 before barrier at: Sat Mar 16 22:43:18 2019
+
+Rank 44 before barrier at: Sat Mar 16 22:43:18 2019
+
+Rank 4 before barrier at: Sat Mar 16 22:43:18 2019
+
+Rank 21 before barrier at: Sat Mar 16 22:43:18 2019
+
+Rank 0 before barrier at: Sat Mar 16 22:43:21 2019
+
+Rank 0 just past barrier at: Sat Mar 16 22:43:21 2019
+
+Rank 1 just past barrier at: Sat Mar 16 22:43:21 2019
+
+Rank 2 just past barrier at: Sat Mar 16 22:43:21 2019
+
+Rank 7 just past barrier at: Sat Mar 16 22:43:21 2019
+
+Rank 9 just past barrier at: Sat Mar 16 22:43:21 2019
+
+Rank 12 just past barrier at: Sat Mar 16 22:43:21 2019
+
+Rank 13 just past barrier at: Sat Mar 16 22:43:21 2019
+
+Rank 14 just past barrier at: Sat Mar 16 22:43:21 2019
+
+Rank 15 just past barrier at: Sat Mar 16 22:43:21 2019
+
+Rank 19 just past barrier at: Sat Mar 16 22:43:21 2019
+
+Rank 22 just past barrier at: Sat Mar 16 22:43:21 2019
+
+Rank 24 just past barrier at: Sat Mar 16 22:43:21 2019
+
+Rank 29 just past barrier at: Sat Mar 16 22:43:21 2019
+
+Rank 30 just past barrier at: Sat Mar 16 22:43:21 2019
+
+Rank 38 just past barrier at: Sat Mar 16 22:43:21 2019
+
+Rank 40 just past barrier at: Sat Mar 16 22:43:21 2019
+
+Rank 41 just past barrier at: Sat Mar 16 22:43:21 2019
+
+Rank 43 just past barrier at: Sat Mar 16 22:43:21 2019
+
+Rank 44 just past barrier at: Sat Mar 16 22:43:21 2019
+
+Rank 45 just past barrier at: Sat Mar 16 22:43:21 2019
+
+Rank 26 just past barrier at: Sat Mar 16 22:43:21 2019
+
+Rank 47 just past barrier at: Sat Mar 16 22:43:21 2019
+
+Rank 8 just past barrier at: Sat Mar 16 22:43:21 2019
+
+Rank 27 just past barrier at: Sat Mar 16 22:43:21 2019
+
+Rank 28 just past barrier at: Sat Mar 16 22:43:21 2019
+
+Rank 34 just past barrier at: Sat Mar 16 22:43:21 2019
+
+Rank 17 just past barrier at: Sat Mar 16 22:43:21 2019
+
+Rank 4 just past barrier at: Sat Mar 16 22:43:21 2019
+
+Rank 23 just past barrier at: Sat Mar 16 22:43:21 2019
+
+Rank 36 just past barrier at: Sat Mar 16 22:43:21 2019
+
+Rank 39 just past barrier at: Sat Mar 16 22:43:21 2019
+
+Rank 5 just past barrier at: Sat Mar 16 22:43:21 2019
+
+Rank 16 just past barrier at: Sat Mar 16 22:43:21 2019
+
+Rank 25 just past barrier at: Sat Mar 16 22:43:21 2019
+
+Rank 31 just past barrier at: Sat Mar 16 22:43:21 2019
+
+Rank 32 just past barrier at: Sat Mar 16 22:43:21 2019
+
+Rank 33 just past barrier at: Sat Mar 16 22:43:21 2019
+
+Rank 3 just past barrier at: Sat Mar 16 22:43:21 2019
+
+Rank 6 just past barrier at: Sat Mar 16 22:43:21 2019
+
+Rank 11 just past barrier at: Sat Mar 16 22:43:21 2019
+
+Rank 18 just past barrier at: Sat Mar 16 22:43:21 2019
+
+Rank 21 just past barrier at: Sat Mar 16 22:43:21 2019
+
+Rank 37 just past barrier at: Sat Mar 16 22:43:21 2019
+
+Rank 42 just past barrier at: Sat Mar 16 22:43:21 2019
+
+Rank 10 just past barrier at: Sat Mar 16 22:43:21 2019
+
+Rank 20 just past barrier at: Sat Mar 16 22:43:21 2019
+
+Rank 35 just past barrier at: Sat Mar 16 22:43:21 2019
+
+Rank 46 just past barrier at: Sat Mar 16 22:43:21 2019
+
+MPI Rank 0, thread 0 launched
+Calc done, MPI 0 thread 0 still exists
+Rank 33 ready to exit at: Sat Mar 16 22:43:22 2019
+
+Rank 17 ready to exit at: Sat Mar 16 22:43:22 2019
+
+Rank 34 ready to exit at: Sat Mar 16 22:43:22 2019
+
+Rank 18 ready to exit at: Sat Mar 16 22:43:22 2019
+
+Rank 35 ready to exit at: Sat Mar 16 22:43:22 2019
+
+Rank 42 ready to exit at: Sat Mar 16 22:43:22 2019
+
+Rank 19 ready to exit at: Sat Mar 16 22:43:22 2019
+
+Rank 26 ready to exit at: Sat Mar 16 22:43:22 2019
+
+Rank 29 ready to exit at: Sat Mar 16 22:43:22 2019
+
+Rank 38 ready to exit at: Sat Mar 16 22:43:22 2019
+
+Rank 23 ready to exit at: Sat Mar 16 22:43:22 2019
+
+Rank 45 ready to exit at: Sat Mar 16 22:43:22 2019
+
+Rank 1 ready to exit at: Sat Mar 16 22:43:22 2019
+
+Rank 21 ready to exit at: Sat Mar 16 22:43:22 2019
+
+Rank 30 ready to exit at: Sat Mar 16 22:43:22 2019
+
+Rank 22 ready to exit at: Sat Mar 16 22:43:22 2019
+
+Rank 47 ready to exit at: Sat Mar 16 22:43:22 2019
+
+Rank 2 ready to exit at: Sat Mar 16 22:43:22 2019
+
+Rank 25 ready to exit at: Sat Mar 16 22:43:22 2019
+
+Rank 39 ready to exit at: Sat Mar 16 22:43:22 2019
+
+Rank 3 ready to exit at: Sat Mar 16 22:43:22 2019
+
+Rank 10 ready to exit at: Sat Mar 16 22:43:22 2019
+
+Rank 37 ready to exit at: Sat Mar 16 22:43:22 2019
+
+Rank 5 ready to exit at: Sat Mar 16 22:43:22 2019
+
+Rank 46 ready to exit at: Sat Mar 16 22:43:22 2019
+
+Rank 20 ready to exit at: Sat Mar 16 22:43:22 2019
+
+Rank 31 ready to exit at: Sat Mar 16 22:43:22 2019
+
+Rank 13 ready to exit at: Sat Mar 16 22:43:22 2019
+
+Rank 6 ready to exit at: Sat Mar 16 22:43:22 2019
+
+Rank 41 ready to exit at: Sat Mar 16 22:43:22 2019
+
+Rank 7 ready to exit at: Sat Mar 16 22:43:22 2019
+
+Rank 15 ready to exit at: Sat Mar 16 22:43:22 2019
+
+Rank 14 ready to exit at: Sat Mar 16 22:43:22 2019
+
+Rank 9 ready to exit at: Sat Mar 16 22:43:22 2019
+
+Rank 43 ready to exit at: Sat Mar 16 22:43:22 2019
+
+Rank 27 ready to exit at: Sat Mar 16 22:43:22 2019
+
+Rank 28 ready to exit at: Sat Mar 16 22:43:22 2019
+
+Rank 11 ready to exit at: Sat Mar 16 22:43:22 2019
+
+Rank 36 ready to exit at: Sat Mar 16 22:43:22 2019
+
+Rank 4 ready to exit at: Sat Mar 16 22:43:22 2019
+
+Rank 44 ready to exit at: Sat Mar 16 22:43:22 2019
+
+Rank 40 ready to exit at: Sat Mar 16 22:43:22 2019
+
+Rank 24 ready to exit at: Sat Mar 16 22:43:22 2019
+
+Rank 12 ready to exit at: Sat Mar 16 22:43:22 2019
+
+Rank 8 ready to exit at: Sat Mar 16 22:43:22 2019
+
+Rank 16 ready to exit at: Sat Mar 16 22:43:22 2019
+
+Rank 32 ready to exit at: Sat Mar 16 22:43:22 2019
+
+Rank 0 ready to exit at: Sat Mar 16 22:43:22 2019
+
+Finding sum using 1 threads took: 1241.146 ms, sum = 1.000000e+09
 TACC:  Shutdown complete. Exiting. 
-TACC:  Starting up job 3016184 
+TACC:  Starting up job 3129209 
 TACC:  Starting parallel tasks... 
-Finding sum using 1 threads took: 3073.612 ms, sum = 3.000000e+09
+MPI rank 8 / 48 launched
+Rank 7 before barrier at: Sat Mar 16 22:43:22 2019
+
+MPI rank 15 / 48 launched
+Rank 14 before barrier at: Sat Mar 16 22:43:22 2019
+
+MPI rank 16 / 48 launched
+Rank 15 before barrier at: Sat Mar 16 22:43:22 2019
+
+MPI rank 31 / 48 launched
+Rank 30 before barrier at: Sat Mar 16 22:43:22 2019
+
+MPI rank 36 / 48 launched
+Rank 35 before barrier at: Sat Mar 16 22:43:22 2019
+
+MPI rank 40 / 48 launched
+Rank 39 before barrier at: Sat Mar 16 22:43:22 2019
+
+MPI rank 48 / 48 launched
+Rank 47 before barrier at: Sat Mar 16 22:43:22 2019
+
+MPI rank 7 / 48 launched
+Rank 6 before barrier at: Sat Mar 16 22:43:22 2019
+
+MPI rank 32 / 48 launched
+Rank 31 before barrier at: Sat Mar 16 22:43:22 2019
+
+MPI rank 41 / 48 launched
+MPI rank 43 / 48 launched
+MPI rank 2 / 48 launched
+MPI rank 6 / 48 launched
+MPI rank 22 / 48 launched
+MPI rank 33 / 48 launched
+MPI rank 35 / 48 launched
+Rank 42 before barrier at: Sat Mar 16 22:43:22 2019
+
+MPI rank 45 / 48 launched
+Rank 44 before barrier at: Sat Mar 16 22:43:22 2019
+
+Rank 1 before barrier at: Sat Mar 16 22:43:22 2019
+
+MPI rank 3 / 48 launched
+MPI rank 5 / 48 launched
+Rank 5 before barrier at: Sat Mar 16 22:43:22 2019
+
+MPI rank 12 / 48 launched
+MPI rank 20 / 48 launched
+Rank 19 before barrier at: Sat Mar 16 22:43:22 2019
+
+MPI rank 21 / 48 launched
+Rank 21 before barrier at: Sat Mar 16 22:43:22 2019
+
+MPI rank 26 / 48 launched
+Rank 25 before barrier at: Sat Mar 16 22:43:22 2019
+
+MPI rank 27 / 48 launched
+Rank 26 before barrier at: Sat Mar 16 22:43:22 2019
+
+MPI rank 28 / 48 launched
+Rank 27 before barrier at: Sat Mar 16 22:43:22 2019
+
+Rank 32 before barrier at: Sat Mar 16 22:43:22 2019
+
+MPI rank 34 / 48 launched
+Rank 33 before barrier at: Sat Mar 16 22:43:22 2019
+
+Rank 34 before barrier at: Sat Mar 16 22:43:22 2019
+
+Rank 40 before barrier at: Sat Mar 16 22:43:22 2019
+
+MPI rank 42 / 48 launched
+Rank 41 before barrier at: Sat Mar 16 22:43:22 2019
+
+MPI rank 1 / 48 launched
+Rank 2 before barrier at: Sat Mar 16 22:43:22 2019
+
+Rank 4 before barrier at: Sat Mar 16 22:43:22 2019
+
+MPI rank 9 / 48 launched
+Rank 8 before barrier at: Sat Mar 16 22:43:22 2019
+
+MPI rank 10 / 48 launched
+Rank 9 before barrier at: Sat Mar 16 22:43:22 2019
+
+MPI rank 11 / 48 launched
+Rank 10 before barrier at: Sat Mar 16 22:43:22 2019
+
+Rank 11 before barrier at: Sat Mar 16 22:43:22 2019
+
+MPI rank 14 / 48 launched
+Rank 13 before barrier at: Sat Mar 16 22:43:22 2019
+
+MPI rank 18 / 48 launched
+Rank 17 before barrier at: Sat Mar 16 22:43:22 2019
+
+MPI rank 19 / 48 launched
+Rank 18 before barrier at: Sat Mar 16 22:43:22 2019
+
+Rank 20 before barrier at: Sat Mar 16 22:43:22 2019
+
+MPI rank 23 / 48 launched
+Rank 22 before barrier at: Sat Mar 16 22:43:22 2019
+
+MPI rank 24 / 48 launched
+Rank 23 before barrier at: Sat Mar 16 22:43:22 2019
+
+MPI rank 38 / 48 launched
+Rank 37 before barrier at: Sat Mar 16 22:43:22 2019
+
+MPI rank 46 / 48 launched
+Rank 45 before barrier at: Sat Mar 16 22:43:22 2019
+
+MPI rank 13 / 48 launched
+Rank 12 before barrier at: Sat Mar 16 22:43:22 2019
+
+MPI rank 17 / 48 launched
+MPI rank 30 / 48 launched
+MPI rank 37 / 48 launched
+Rank 36 before barrier at: Sat Mar 16 22:43:22 2019
+
+MPI rank 25 / 48 launched
+Rank 16 before barrier at: Sat Mar 16 22:43:22 2019
+
+Rank 29 before barrier at: Sat Mar 16 22:43:22 2019
+
+MPI rank 4 / 48 launched
+Rank 24 before barrier at: Sat Mar 16 22:43:22 2019
+
+MPI rank 47 / 48 launched
+MPI rank 29 / 48 launched
+MPI rank 39 / 48 launched
+MPI rank 44 / 48 launched
+Rank 3 before barrier at: Sat Mar 16 22:43:22 2019
+
+Rank 28 before barrier at: Sat Mar 16 22:43:22 2019
+
+Rank 46 before barrier at: Sat Mar 16 22:43:22 2019
+
+Rank 38 before barrier at: Sat Mar 16 22:43:22 2019
+
+Rank 43 before barrier at: Sat Mar 16 22:43:22 2019
+
+Rank 0 before barrier at: Sat Mar 16 22:43:25 2019
+
+Rank 0 just past barrier at: Sat Mar 16 22:43:25 2019
+
+Rank 4 just past barrier at: Sat Mar 16 22:43:25 2019
+
+Rank 8 just past barrier at: Sat Mar 16 22:43:25 2019
+
+Rank 9 just past barrier at: Sat Mar 16 22:43:25 2019
+
+Rank 10 just past barrier at: Sat Mar 16 22:43:25 2019
+
+Rank 11 just past barrier at: Sat Mar 16 22:43:25 2019
+
+Rank 12 just past barrier at: Sat Mar 16 22:43:25 2019
+
+Rank 14 just past barrier at: Sat Mar 16 22:43:25 2019
+
+Rank 15 just past barrier at: Sat Mar 16 22:43:25 2019
+
+Rank 16 just past barrier at: Sat Mar 16 22:43:25 2019
+
+Rank 20 just past barrier at: Sat Mar 16 22:43:25 2019
+
+Rank 21 just past barrier at: Sat Mar 16 22:43:25 2019
+
+Rank 23 just past barrier at: Sat Mar 16 22:43:25 2019
+
+Rank 24 just past barrier at: Sat Mar 16 22:43:25 2019
+
+Rank 26 just past barrier at: Sat Mar 16 22:43:25 2019
+
+Rank 27 just past barrier at: Sat Mar 16 22:43:25 2019
+
+Rank 31 just past barrier at: Sat Mar 16 22:43:25 2019
+
+Rank 33 just past barrier at: Sat Mar 16 22:43:25 2019
+
+Rank 38 just past barrier at: Sat Mar 16 22:43:25 2019
+
+Rank 41 just past barrier at: Sat Mar 16 22:43:25 2019
+
+Rank 42 just past barrier at: Sat Mar 16 22:43:25 2019
+
+Rank 43 just past barrier at: Sat Mar 16 22:43:25 2019
+
+Rank 45 just past barrier at: Sat Mar 16 22:43:25 2019
+
+Rank 2 just past barrier at: Sat Mar 16 22:43:25 2019
+
+Rank 6 just past barrier at: Sat Mar 16 22:43:25 2019
+
+Rank 1 just past barrier at: Sat Mar 16 22:43:25 2019
+
+Rank 17 just past barrier at: Sat Mar 16 22:43:25 2019
+
+Rank 5 just past barrier at: Sat Mar 16 22:43:25 2019
+
+Rank 40 just past barrier at: Sat Mar 16 22:43:25 2019
+
+Rank 3 just past barrier at: Sat Mar 16 22:43:25 2019
+
+Rank 13 just past barrier at: Sat Mar 16 22:43:25 2019
+
+Rank 18 just past barrier at: Sat Mar 16 22:43:25 2019
+
+Rank 19 just past barrier at: Sat Mar 16 22:43:25 2019
+
+Rank 22 just past barrier at: Sat Mar 16 22:43:25 2019
+
+Rank 28 just past barrier at: Sat Mar 16 22:43:25 2019
+
+Rank 39 just past barrier at: Sat Mar 16 22:43:25 2019
+
+Rank 7 just past barrier at: Sat Mar 16 22:43:25 2019
+
+Rank 25 just past barrier at: Sat Mar 16 22:43:25 2019
+
+Rank 29 just past barrier at: Sat Mar 16 22:43:25 2019
+
+Rank 30 just past barrier at: Sat Mar 16 22:43:25 2019
+
+Rank 32 just past barrier at: Sat Mar 16 22:43:25 2019
+
+Rank 34 just past barrier at: Sat Mar 16 22:43:25 2019
+
+Rank 35 just past barrier at: Sat Mar 16 22:43:25 2019
+
+Rank 36 just past barrier at: Sat Mar 16 22:43:25 2019
+
+Rank 37 just past barrier at: Sat Mar 16 22:43:25 2019
+
+Rank 44 just past barrier at: Sat Mar 16 22:43:25 2019
+
+Rank 46 just past barrier at: Sat Mar 16 22:43:25 2019
+
+Rank 47 just past barrier at: Sat Mar 16 22:43:25 2019
+
+MPI Rank 0, thread 0 launched
+Calc done, MPI 0 thread 0 still exists
+Rank 42 ready to exit at: Sat Mar 16 22:43:26 2019
+
+Rank 18 ready to exit at: Sat Mar 16 22:43:26 2019
+
+Rank 34 ready to exit at: Sat Mar 16 22:43:26 2019
+
+Rank 35 ready to exit at: Sat Mar 16 22:43:26 2019
+
+Rank 20 ready to exit at: Sat Mar 16 22:43:26 2019
+
+Rank 33 ready to exit at: Sat Mar 16 22:43:26 2019
+
+Rank 38 ready to exit at: Sat Mar 16 22:43:26 2019
+
+Rank 23 ready to exit at: Sat Mar 16 22:43:26 2019
+
+Rank 26 ready to exit at: Sat Mar 16 22:43:26 2019
+
+Rank 31 ready to exit at: Sat Mar 16 22:43:26 2019
+
+Rank 2 ready to exit at: Sat Mar 16 22:43:26 2019
+
+Rank 45 ready to exit at: Sat Mar 16 22:43:26 2019
+
+Rank 10 ready to exit at: Sat Mar 16 22:43:26 2019
+
+Rank 21 ready to exit at: Sat Mar 16 22:43:26 2019
+
+Rank 27 ready to exit at: Sat Mar 16 22:43:26 2019
+
+Rank 25 ready to exit at: Sat Mar 16 22:43:26 2019
+
+Rank 41 ready to exit at: Sat Mar 16 22:43:26 2019
+
+Rank 17 ready to exit at: Sat Mar 16 22:43:26 2019
+
+Rank 1 ready to exit at: Sat Mar 16 22:43:26 2019
+
+Rank 19 ready to exit at: Sat Mar 16 22:43:26 2019
+
+Rank 37 ready to exit at: Sat Mar 16 22:43:26 2019
+
+Rank 39 ready to exit at: Sat Mar 16 22:43:26 2019
+
+Rank 47 ready to exit at: Sat Mar 16 22:43:26 2019
+
+Rank 3 ready to exit at: Sat Mar 16 22:43:26 2019
+
+Rank 5 ready to exit at: Sat Mar 16 22:43:26 2019
+
+Rank 29 ready to exit at: Sat Mar 16 22:43:26 2019
+
+Rank 36 ready to exit at: Sat Mar 16 22:43:26 2019
+
+Rank 44 ready to exit at: Sat Mar 16 22:43:26 2019
+
+Rank 7 ready to exit at: Sat Mar 16 22:43:26 2019
+
+Rank 13 ready to exit at: Sat Mar 16 22:43:26 2019
+
+Rank 22 ready to exit at: Sat Mar 16 22:43:26 2019
+
+Rank 30 ready to exit at: Sat Mar 16 22:43:26 2019
+
+Rank 6 ready to exit at: Sat Mar 16 22:43:26 2019
+
+Rank 46 ready to exit at: Sat Mar 16 22:43:26 2019
+
+Rank 4 ready to exit at: Sat Mar 16 22:43:26 2019
+
+Rank 43 ready to exit at: Sat Mar 16 22:43:26 2019
+
+Rank 9 ready to exit at: Sat Mar 16 22:43:26 2019
+
+Rank 15 ready to exit at: Sat Mar 16 22:43:26 2019
+
+Rank 40 ready to exit at: Sat Mar 16 22:43:26 2019
+
+Rank 24 ready to exit at: Sat Mar 16 22:43:26 2019
+
+Rank 11 ready to exit at: Sat Mar 16 22:43:26 2019
+
+Rank 14 ready to exit at: Sat Mar 16 22:43:26 2019
+
+Rank 28 ready to exit at: Sat Mar 16 22:43:26 2019
+
+Rank 16 ready to exit at: Sat Mar 16 22:43:26 2019
+
+Rank 8 ready to exit at: Sat Mar 16 22:43:26 2019
+
+Rank 12 ready to exit at: Sat Mar 16 22:43:26 2019
+
+Rank 32 ready to exit at: Sat Mar 16 22:43:26 2019
+
+Rank 0 ready to exit at: Sat Mar 16 22:43:26 2019
+
+Finding sum using 1 threads took: 716.392 ms, sum = 1.000000e+09
 TACC:  Shutdown complete. Exiting. 
-TACC:  Starting up job 3016184 
+TACC:  Starting up job 3129209 
 TACC:  Starting parallel tasks... 
-Finding sum using 1 threads took: 3264.459 ms, sum = 3.000000e+09
+MPI rank 18 / 48 launched
+Rank 17 before barrier at: Sat Mar 16 22:43:26 2019
+
+MPI rank 21 / 48 launched
+Rank 20 before barrier at: Sat Mar 16 22:43:26 2019
+
+MPI rank 41 / 48 launched
+Rank 40 before barrier at: Sat Mar 16 22:43:26 2019
+
+MPI rank 44 / 48 launched
+Rank 43 before barrier at: Sat Mar 16 22:43:26 2019
+
+MPI rank 1 / 48 launched
+MPI rank 2 / 48 launched
+Rank 1 before barrier at: Sat Mar 16 22:43:26 2019
+
+MPI rank 4 / 48 launched
+Rank 3 before barrier at: Sat Mar 16 22:43:26 2019
+
+MPI rank 8 / 48 launched
+Rank 7 before barrier at: Sat Mar 16 22:43:26 2019
+
+MPI rank 11 / 48 launched
+Rank 10 before barrier at: Sat Mar 16 22:43:26 2019
+
+MPI rank 12 / 48 launched
+Rank 11 before barrier at: Sat Mar 16 22:43:26 2019
+
+MPI rank 13 / 48 launched
+Rank 12 before barrier at: Sat Mar 16 22:43:26 2019
+
+MPI rank 14 / 48 launched
+Rank 13 before barrier at: Sat Mar 16 22:43:26 2019
+
+MPI rank 15 / 48 launched
+Rank 14 before barrier at: Sat Mar 16 22:43:26 2019
+
+MPI rank 17 / 48 launched
+Rank 16 before barrier at: Sat Mar 16 22:43:26 2019
+
+MPI rank 19 / 48 launched
+Rank 18 before barrier at: Sat Mar 16 22:43:26 2019
+
+MPI rank 22 / 48 launched
+Rank 21 before barrier at: Sat Mar 16 22:43:26 2019
+
+MPI rank 24 / 48 launched
+Rank 23 before barrier at: Sat Mar 16 22:43:26 2019
+
+MPI rank 25 / 48 launched
+Rank 24 before barrier at: Sat Mar 16 22:43:26 2019
+
+MPI rank 26 / 48 launched
+Rank 25 before barrier at: Sat Mar 16 22:43:26 2019
+
+MPI rank 30 / 48 launched
+Rank 29 before barrier at: Sat Mar 16 22:43:26 2019
+
+MPI rank 31 / 48 launched
+Rank 30 before barrier at: Sat Mar 16 22:43:26 2019
+
+MPI rank 33 / 48 launched
+Rank 32 before barrier at: Sat Mar 16 22:43:26 2019
+
+MPI rank 34 / 48 launched
+Rank 33 before barrier at: Sat Mar 16 22:43:26 2019
+
+MPI rank 36 / 48 launched
+Rank 35 before barrier at: Sat Mar 16 22:43:26 2019
+
+MPI rank 39 / 48 launched
+Rank 38 before barrier at: Sat Mar 16 22:43:26 2019
+
+MPI rank 42 / 48 launched
+Rank 41 before barrier at: Sat Mar 16 22:43:26 2019
+
+MPI rank 43 / 48 launched
+Rank 42 before barrier at: Sat Mar 16 22:43:26 2019
+
+MPI rank 47 / 48 launched
+Rank 46 before barrier at: Sat Mar 16 22:43:26 2019
+
+MPI rank 46 / 48 launched
+MPI rank 28 / 48 launched
+MPI rank 45 / 48 launched
+MPI rank 5 / 48 launched
+MPI rank 7 / 48 launched
+MPI rank 27 / 48 launched
+MPI rank 29 / 48 launched
+Rank 45 before barrier at: Sat Mar 16 22:43:26 2019
+
+MPI rank 3 / 48 launched
+MPI rank 6 / 48 launched
+Rank 5 before barrier at: Sat Mar 16 22:43:26 2019
+
+MPI rank 9 / 48 launched
+MPI rank 10 / 48 launched
+MPI rank 16 / 48 launched
+Rank 27 before barrier at: Sat Mar 16 22:43:26 2019
+
+MPI rank 32 / 48 launched
+MPI rank 37 / 48 launched
+MPI rank 38 / 48 launched
+Rank 37 before barrier at: Sat Mar 16 22:43:26 2019
+
+MPI rank 40 / 48 launched
+Rank 44 before barrier at: Sat Mar 16 22:43:26 2019
+
+MPI rank 48 / 48 launched
+Rank 2 before barrier at: Sat Mar 16 22:43:26 2019
+
+Rank 4 before barrier at: Sat Mar 16 22:43:26 2019
+
+Rank 6 before barrier at: Sat Mar 16 22:43:26 2019
+
+Rank 8 before barrier at: Sat Mar 16 22:43:26 2019
+
+Rank 9 before barrier at: Sat Mar 16 22:43:26 2019
+
+Rank 15 before barrier at: Sat Mar 16 22:43:26 2019
+
+MPI rank 20 / 48 launched
+Rank 19 before barrier at: Sat Mar 16 22:43:26 2019
+
+MPI rank 23 / 48 launched
+Rank 22 before barrier at: Sat Mar 16 22:43:26 2019
+
+Rank 26 before barrier at: Sat Mar 16 22:43:26 2019
+
+Rank 28 before barrier at: Sat Mar 16 22:43:26 2019
+
+Rank 31 before barrier at: Sat Mar 16 22:43:26 2019
+
+Rank 36 before barrier at: Sat Mar 16 22:43:26 2019
+
+Rank 39 before barrier at: Sat Mar 16 22:43:26 2019
+
+Rank 47 before barrier at: Sat Mar 16 22:43:26 2019
+
+MPI rank 35 / 48 launched
+Rank 34 before barrier at: Sat Mar 16 22:43:26 2019
+
+Rank 0 before barrier at: Sat Mar 16 22:43:29 2019
+
+Rank 0 just past barrier at: Sat Mar 16 22:43:29 2019
+
+Rank 1 just past barrier at: Sat Mar 16 22:43:29 2019
+
+Rank 5 just past barrier at: Sat Mar 16 22:43:29 2019
+
+Rank 7 just past barrier at: Sat Mar 16 22:43:29 2019
+
+Rank 12 just past barrier at: Sat Mar 16 22:43:29 2019
+
+Rank 13 just past barrier at: Sat Mar 16 22:43:29 2019
+
+Rank 14 just past barrier at: Sat Mar 16 22:43:29 2019
+
+Rank 15 just past barrier at: Sat Mar 16 22:43:29 2019
+
+Rank 16 just past barrier at: Sat Mar 16 22:43:29 2019
+
+Rank 21 just past barrier at: Sat Mar 16 22:43:29 2019
+
+Rank 22 just past barrier at: Sat Mar 16 22:43:29 2019
+
+Rank 23 just past barrier at: Sat Mar 16 22:43:29 2019
+
+Rank 26 just past barrier at: Sat Mar 16 22:43:29 2019
+
+Rank 28 just past barrier at: Sat Mar 16 22:43:29 2019
+
+Rank 30 just past barrier at: Sat Mar 16 22:43:29 2019
+
+Rank 35 just past barrier at: Sat Mar 16 22:43:29 2019
+
+Rank 37 just past barrier at: Sat Mar 16 22:43:29 2019
+
+Rank 40 just past barrier at: Sat Mar 16 22:43:29 2019
+
+Rank 42 just past barrier at: Sat Mar 16 22:43:29 2019
+
+Rank 47 just past barrier at: Sat Mar 16 22:43:29 2019
+
+Rank 25 just past barrier at: Sat Mar 16 22:43:29 2019
+
+Rank 36 just past barrier at: Sat Mar 16 22:43:29 2019
+
+Rank 44 just past barrier at: Sat Mar 16 22:43:29 2019
+
+Rank 6 just past barrier at: Sat Mar 16 22:43:29 2019
+
+Rank 8 just past barrier at: Sat Mar 16 22:43:29 2019
+
+Rank 38 just past barrier at: Sat Mar 16 22:43:29 2019
+
+Rank 2 just past barrier at: Sat Mar 16 22:43:29 2019
+
+Rank 4 just past barrier at: Sat Mar 16 22:43:29 2019
+
+Rank 18 just past barrier at: Sat Mar 16 22:43:29 2019
+
+Rank 11 just past barrier at: Sat Mar 16 22:43:29 2019
+
+Rank 31 just past barrier at: Sat Mar 16 22:43:29 2019
+
+Rank 32 just past barrier at: Sat Mar 16 22:43:29 2019
+
+Rank 45 just past barrier at: Sat Mar 16 22:43:29 2019
+
+Rank 10 just past barrier at: Sat Mar 16 22:43:29 2019
+
+Rank 17 just past barrier at: Sat Mar 16 22:43:29 2019
+
+Rank 19 just past barrier at: Sat Mar 16 22:43:29 2019
+
+Rank 20 just past barrier at: Sat Mar 16 22:43:29 2019
+
+Rank 24 just past barrier at: Sat Mar 16 22:43:29 2019
+
+Rank 29 just past barrier at: Sat Mar 16 22:43:29 2019
+
+Rank 33 just past barrier at: Sat Mar 16 22:43:29 2019
+
+Rank 34 just past barrier at: Sat Mar 16 22:43:29 2019
+
+Rank 39 just past barrier at: Sat Mar 16 22:43:29 2019
+
+Rank 41 just past barrier at: Sat Mar 16 22:43:29 2019
+
+Rank 43 just past barrier at: Sat Mar 16 22:43:29 2019
+
+Rank 3 just past barrier at: Sat Mar 16 22:43:29 2019
+
+Rank 9 just past barrier at: Sat Mar 16 22:43:29 2019
+
+Rank 27 just past barrier at: Sat Mar 16 22:43:29 2019
+
+Rank 46 just past barrier at: Sat Mar 16 22:43:29 2019
+
+MPI Rank 0, thread 0 launched
+Calc done, MPI 0 thread 0 still exists
+Rank 18 ready to exit at: Sat Mar 16 22:43:30 2019
+
+Rank 34 ready to exit at: Sat Mar 16 22:43:30 2019
+
+Rank 17 ready to exit at: Sat Mar 16 22:43:30 2019
+
+Rank 19 ready to exit at: Sat Mar 16 22:43:30 2019
+
+Rank 33 ready to exit at: Sat Mar 16 22:43:30 2019
+
+Rank 2 ready to exit at: Sat Mar 16 22:43:30 2019
+
+Rank 38 ready to exit at: Sat Mar 16 22:43:30 2019
+
+Rank 41 ready to exit at: Sat Mar 16 22:43:30 2019
+
+Rank 20 ready to exit at: Sat Mar 16 22:43:30 2019
+
+Rank 26 ready to exit at: Sat Mar 16 22:43:30 2019
+
+Rank 36 ready to exit at: Sat Mar 16 22:43:30 2019
+
+Rank 21 ready to exit at: Sat Mar 16 22:43:30 2019
+
+Rank 42 ready to exit at: Sat Mar 16 22:43:30 2019
+
+Rank 1 ready to exit at: Sat Mar 16 22:43:30 2019
+
+Rank 28 ready to exit at: Sat Mar 16 22:43:30 2019
+
+Rank 30 ready to exit at: Sat Mar 16 22:43:30 2019
+
+Rank 35 ready to exit at: Sat Mar 16 22:43:30 2019
+
+Rank 22 ready to exit at: Sat Mar 16 22:43:30 2019
+
+Rank 25 ready to exit at: Sat Mar 16 22:43:30 2019
+
+Rank 6 ready to exit at: Sat Mar 16 22:43:30 2019
+
+Rank 31 ready to exit at: Sat Mar 16 22:43:30 2019
+
+Rank 10 ready to exit at: Sat Mar 16 22:43:30 2019
+
+Rank 44 ready to exit at: Sat Mar 16 22:43:30 2019
+
+Rank 3 ready to exit at: Sat Mar 16 22:43:30 2019
+
+Rank 43 ready to exit at: Sat Mar 16 22:43:30 2019
+
+Rank 45 ready to exit at: Sat Mar 16 22:43:30 2019
+
+Rank 39 ready to exit at: Sat Mar 16 22:43:30 2019
+
+Rank 46 ready to exit at: Sat Mar 16 22:43:30 2019
+
+Rank 9 ready to exit at: Sat Mar 16 22:43:30 2019
+
+Rank 4 ready to exit at: Sat Mar 16 22:43:30 2019
+
+Rank 27 ready to exit at: Sat Mar 16 22:43:30 2019
+
+Rank 29 ready to exit at: Sat Mar 16 22:43:30 2019
+
+Rank 23 ready to exit at: Sat Mar 16 22:43:30 2019
+
+Rank 37 ready to exit at: Sat Mar 16 22:43:30 2019
+
+Rank 12 ready to exit at: Sat Mar 16 22:43:30 2019
+
+Rank 5 ready to exit at: Sat Mar 16 22:43:30 2019
+
+Rank 7 ready to exit at: Sat Mar 16 22:43:30 2019
+
+Rank 13 ready to exit at: Sat Mar 16 22:43:30 2019
+
+Rank 14 ready to exit at: Sat Mar 16 22:43:30 2019
+
+Rank 24 ready to exit at: Sat Mar 16 22:43:30 2019
+
+Rank 47 ready to exit at: Sat Mar 16 22:43:30 2019
+
+Rank 15 ready to exit at: Sat Mar 16 22:43:30 2019
+
+Rank 40 ready to exit at: Sat Mar 16 22:43:30 2019
+
+Rank 11 ready to exit at: Sat Mar 16 22:43:30 2019
+
+Rank 8 ready to exit at: Sat Mar 16 22:43:30 2019
+
+Rank 16 ready to exit at: Sat Mar 16 22:43:30 2019
+
+Rank 32 ready to exit at: Sat Mar 16 22:43:30 2019
+
+Rank 0 ready to exit at: Sat Mar 16 22:43:30 2019
+
+Finding sum using 1 threads took: 1250.037 ms, sum = 1.000000e+09
 TACC:  Shutdown complete. Exiting. 
 =======================================================================
-TACC:  Starting up job 3016184 
+TACC:  Starting up job 3129209 
 TACC:  Starting parallel tasks... 
-Finding sum using 2 threads took: 1610.032 ms, sum = 3.000000e+09
+MPI rank 22 / 48 launched
+MPI rank 31 / 48 launched
+MPI rank 45 / 48 launched
+Rank 44 before barrier at: Sat Mar 16 22:43:31 2019
+
+MPI rank 1 / 48 launched
+MPI rank 3 / 48 launched
+Rank 2 before barrier at: Sat Mar 16 22:43:31 2019
+
+MPI rank 6 / 48 launched
+Rank 5 before barrier at: Sat Mar 16 22:43:31 2019
+
+MPI rank 7 / 48 launched
+Rank 6 before barrier at: Sat Mar 16 22:43:31 2019
+
+MPI rank 9 / 48 launched
+MPI rank 17 / 48 launched
+Rank 16 before barrier at: Sat Mar 16 22:43:31 2019
+
+MPI rank 18 / 48 launched
+Rank 17 before barrier at: Sat Mar 16 22:43:31 2019
+
+MPI rank 19 / 48 launched
+Rank 18 before barrier at: Sat Mar 16 22:43:31 2019
+
+MPI rank 20 / 48 launched
+Rank 19 before barrier at: Sat Mar 16 22:43:31 2019
+
+Rank 21 before barrier at: Sat Mar 16 22:43:31 2019
+
+MPI rank 23 / 48 launched
+Rank 22 before barrier at: Sat Mar 16 22:43:31 2019
+
+MPI rank 24 / 48 launched
+Rank 23 before barrier at: Sat Mar 16 22:43:31 2019
+
+MPI rank 25 / 48 launched
+Rank 24 before barrier at: Sat Mar 16 22:43:31 2019
+
+MPI rank 26 / 48 launched
+Rank 25 before barrier at: Sat Mar 16 22:43:31 2019
+
+MPI rank 28 / 48 launched
+Rank 27 before barrier at: Sat Mar 16 22:43:31 2019
+
+MPI rank 30 / 48 launched
+Rank 29 before barrier at: Sat Mar 16 22:43:31 2019
+
+Rank 30 before barrier at: Sat Mar 16 22:43:31 2019
+
+MPI rank 32 / 48 launched
+Rank 31 before barrier at: Sat Mar 16 22:43:31 2019
+
+MPI rank 33 / 48 launched
+Rank 32 before barrier at: Sat Mar 16 22:43:31 2019
+
+MPI rank 35 / 48 launched
+Rank 34 before barrier at: Sat Mar 16 22:43:31 2019
+
+MPI rank 38 / 48 launched
+Rank 37 before barrier at: Sat Mar 16 22:43:31 2019
+
+MPI rank 39 / 48 launched
+Rank 38 before barrier at: Sat Mar 16 22:43:31 2019
+
+MPI rank 44 / 48 launched
+Rank 43 before barrier at: Sat Mar 16 22:43:31 2019
+
+MPI rank 47 / 48 launched
+Rank 46 before barrier at: Sat Mar 16 22:43:31 2019
+
+MPI rank 4 / 48 launched
+Rank 3 before barrier at: Sat Mar 16 22:43:31 2019
+
+MPI rank 8 / 48 launched
+Rank 7 before barrier at: Sat Mar 16 22:43:31 2019
+
+Rank 8 before barrier at: Sat Mar 16 22:43:31 2019
+
+MPI rank 10 / 48 launched
+Rank 9 before barrier at: Sat Mar 16 22:43:31 2019
+
+MPI rank 13 / 48 launched
+Rank 12 before barrier at: Sat Mar 16 22:43:31 2019
+
+MPI rank 37 / 48 launched
+Rank 36 before barrier at: Sat Mar 16 22:43:31 2019
+
+MPI rank 40 / 48 launched
+Rank 39 before barrier at: Sat Mar 16 22:43:31 2019
+
+MPI rank 43 / 48 launched
+Rank 42 before barrier at: Sat Mar 16 22:43:31 2019
+
+MPI rank 48 / 48 launched
+Rank 47 before barrier at: Sat Mar 16 22:43:31 2019
+
+MPI rank 42 / 48 launched
+MPI rank 5 / 48 launched
+MPI rank 12 / 48 launched
+MPI rank 15 / 48 launched
+Rank 41 before barrier at: Sat Mar 16 22:43:31 2019
+
+MPI rank 2 / 48 launched
+MPI rank 11 / 48 launched
+MPI rank 14 / 48 launched
+MPI rank 16 / 48 launched
+MPI rank 29 / 48 launched
+MPI rank 34 / 48 launched
+MPI rank 36 / 48 launched
+Rank 35 before barrier at: Sat Mar 16 22:43:31 2019
+
+MPI rank 46 / 48 launched
+Rank 4 before barrier at: Sat Mar 16 22:43:31 2019
+
+Rank 10 before barrier at: Sat Mar 16 22:43:31 2019
+
+Rank 11 before barrier at: Sat Mar 16 22:43:31 2019
+
+Rank 14 before barrier at: Sat Mar 16 22:43:31 2019
+
+MPI rank 21 / 48 launched
+Rank 20 before barrier at: Sat Mar 16 22:43:31 2019
+
+MPI rank 27 / 48 launched
+Rank 26 before barrier at: Sat Mar 16 22:43:31 2019
+
+Rank 28 before barrier at: Sat Mar 16 22:43:31 2019
+
+Rank 33 before barrier at: Sat Mar 16 22:43:31 2019
+
+MPI rank 41 / 48 launched
+Rank 40 before barrier at: Sat Mar 16 22:43:31 2019
+
+Rank 45 before barrier at: Sat Mar 16 22:43:31 2019
+
+Rank 1 before barrier at: Sat Mar 16 22:43:31 2019
+
+Rank 13 before barrier at: Sat Mar 16 22:43:31 2019
+
+Rank 15 before barrier at: Sat Mar 16 22:43:31 2019
+
+Rank 0 before barrier at: Sat Mar 16 22:43:33 2019
+
+Rank 0 just past barrier at: Sat Mar 16 22:43:33 2019
+
+Rank 5 just past barrier at: Sat Mar 16 22:43:33 2019
+
+Rank 6 just past barrier at: Sat Mar 16 22:43:33 2019
+
+Rank 11 just past barrier at: Sat Mar 16 22:43:33 2019
+
+Rank 12 just past barrier at: Sat Mar 16 22:43:33 2019
+
+Rank 15 just past barrier at: Sat Mar 16 22:43:33 2019
+
+Rank 16 just past barrier at: Sat Mar 16 22:43:33 2019
+
+Rank 17 just past barrier at: Sat Mar 16 22:43:33 2019
+
+Rank 25 just past barrier at: Sat Mar 16 22:43:33 2019
+
+Rank 26 just past barrier at: Sat Mar 16 22:43:33 2019
+
+Rank 27 just past barrier at: Sat Mar 16 22:43:33 2019
+
+Rank 31 just past barrier at: Sat Mar 16 22:43:33 2019
+
+Rank 35 just past barrier at: Sat Mar 16 22:43:33 2019
+
+Rank 37 just past barrier at: Sat Mar 16 22:43:33 2019
+
+Rank 42 just past barrier at: Sat Mar 16 22:43:33 2019
+
+Rank 43 just past barrier at: Sat Mar 16 22:43:33 2019
+
+Rank 22 just past barrier at: Sat Mar 16 22:43:33 2019
+
+Rank 28 just past barrier at: Sat Mar 16 22:43:33 2019
+
+Rank 36 just past barrier at: Sat Mar 16 22:43:33 2019
+
+Rank 2 just past barrier at: Sat Mar 16 22:43:33 2019
+
+Rank 4 just past barrier at: Sat Mar 16 22:43:33 2019
+
+Rank 18 just past barrier at: Sat Mar 16 22:43:33 2019
+
+Rank 24 just past barrier at: Sat Mar 16 22:43:33 2019
+
+Rank 44 just past barrier at: Sat Mar 16 22:43:33 2019
+
+Rank 8 just past barrier at: Sat Mar 16 22:43:33 2019
+
+Rank 13 just past barrier at: Sat Mar 16 22:43:33 2019
+
+Rank 20 just past barrier at: Sat Mar 16 22:43:33 2019
+
+Rank 21 just past barrier at: Sat Mar 16 22:43:33 2019
+
+Rank 45 just past barrier at: Sat Mar 16 22:43:33 2019
+
+Rank 3 just past barrier at: Sat Mar 16 22:43:33 2019
+
+Rank 7 just past barrier at: Sat Mar 16 22:43:33 2019
+
+Rank 10 just past barrier at: Sat Mar 16 22:43:33 2019
+
+Rank 14 just past barrier at: Sat Mar 16 22:43:33 2019
+
+Rank 23 just past barrier at: Sat Mar 16 22:43:33 2019
+
+Rank 29 just past barrier at: Sat Mar 16 22:43:33 2019
+
+Rank 32 just past barrier at: Sat Mar 16 22:43:33 2019
+
+Rank 33 just past barrier at: Sat Mar 16 22:43:33 2019
+
+Rank 34 just past barrier at: Sat Mar 16 22:43:33 2019
+
+Rank 39 just past barrier at: Sat Mar 16 22:43:33 2019
+
+Rank 40 just past barrier at: Sat Mar 16 22:43:33 2019
+
+Rank 47 just past barrier at: Sat Mar 16 22:43:33 2019
+
+Rank 1 just past barrier at: Sat Mar 16 22:43:33 2019
+
+Rank 9 just past barrier at: Sat Mar 16 22:43:33 2019
+
+Rank 19 just past barrier at: Sat Mar 16 22:43:33 2019
+
+Rank 30 just past barrier at: Sat Mar 16 22:43:33 2019
+
+Rank 38 just past barrier at: Sat Mar 16 22:43:33 2019
+
+Rank 41 just past barrier at: Sat Mar 16 22:43:33 2019
+
+Rank 46 just past barrier at: Sat Mar 16 22:43:33 2019
+
+MPI Rank 0, thread 0 launched
+MPI Rank 0, thread 1 launched
+Calc done, MPI 0 thread 0 still exists
+Rank 18 ready to exit at: Sat Mar 16 22:43:34 2019
+
+Rank 33 ready to exit at: Sat Mar 16 22:43:34 2019
+
+Rank 34 ready to exit at: Sat Mar 16 22:43:34 2019
+
+Rank 17 ready to exit at: Sat Mar 16 22:43:34 2019
+
+Rank 42 ready to exit at: Sat Mar 16 22:43:34 2019
+
+Rank 37 ready to exit at: Sat Mar 16 22:43:34 2019
+
+Rank 22 ready to exit at: Sat Mar 16 22:43:34 2019
+
+Rank 26 ready to exit at: Sat Mar 16 22:43:34 2019
+
+Rank 2 ready to exit at: Sat Mar 16 22:43:34 2019
+
+Rank 1 ready to exit at: Sat Mar 16 22:43:34 2019
+
+Rank 41 ready to exit at: Sat Mar 16 22:43:34 2019
+
+Rank 21 ready to exit at: Sat Mar 16 22:43:34 2019
+
+Rank 38 ready to exit at: Sat Mar 16 22:43:34 2019
+
+Rank 10 ready to exit at: Sat Mar 16 22:43:34 2019
+
+Rank 19 ready to exit at: Sat Mar 16 22:43:34 2019
+
+Rank 30 ready to exit at: Sat Mar 16 22:43:34 2019
+
+Rank 45 ready to exit at: Sat Mar 16 22:43:34 2019
+
+Rank 25 ready to exit at: Sat Mar 16 22:43:34 2019
+
+Rank 6 ready to exit at: Sat Mar 16 22:43:34 2019
+
+Rank 27 ready to exit at: Sat Mar 16 22:43:34 2019
+
+Rank 5 ready to exit at: Sat Mar 16 22:43:34 2019
+
+Rank 43 ready to exit at: Sat Mar 16 22:43:34 2019
+
+Rank 35 ready to exit at: Sat Mar 16 22:43:34 2019
+
+Rank 39 ready to exit at: Sat Mar 16 22:43:34 2019
+
+Rank 36 ready to exit at: Sat Mar 16 22:43:34 2019
+
+Rank 44 ready to exit at: Sat Mar 16 22:43:34 2019
+
+Rank 40 ready to exit at: Sat Mar 16 22:43:34 2019
+
+Rank 3 ready to exit at: Sat Mar 16 22:43:34 2019
+
+Rank 9 ready to exit at: Sat Mar 16 22:43:34 2019
+
+Rank 29 ready to exit at: Sat Mar 16 22:43:34 2019
+
+Rank 23 ready to exit at: Sat Mar 16 22:43:34 2019
+
+Rank 4 ready to exit at: Sat Mar 16 22:43:34 2019
+
+Rank 20 ready to exit at: Sat Mar 16 22:43:34 2019
+
+Rank 47 ready to exit at: Sat Mar 16 22:43:34 2019
+
+Rank 13 ready to exit at: Sat Mar 16 22:43:34 2019
+
+Rank 14 ready to exit at: Sat Mar 16 22:43:34 2019
+
+Rank 46 ready to exit at: Sat Mar 16 22:43:34 2019
+
+Rank 7 ready to exit at: Sat Mar 16 22:43:34 2019
+
+Rank 24 ready to exit at: Sat Mar 16 22:43:34 2019
+
+Rank 11 ready to exit at: Sat Mar 16 22:43:34 2019
+
+Rank 31 ready to exit at: Sat Mar 16 22:43:34 2019
+
+Rank 28 ready to exit at: Sat Mar 16 22:43:34 2019
+
+Rank 15 ready to exit at: Sat Mar 16 22:43:34 2019
+
+Rank 12 ready to exit at: Sat Mar 16 22:43:34 2019
+
+Rank 16 ready to exit at: Sat Mar 16 22:43:34 2019
+
+Rank 8 ready to exit at: Sat Mar 16 22:43:34 2019
+
+Rank 32 ready to exit at: Sat Mar 16 22:43:34 2019
+
+Rank 0 ready to exit at: Sat Mar 16 22:43:34 2019
+
+Finding sum using 2 threads took: 533.647 ms, sum = 1.000000e+09
 TACC:  Shutdown complete. Exiting. 
-TACC:  Starting up job 3016184 
+TACC:  Starting up job 3129209 
 TACC:  Starting parallel tasks... 
-Finding sum using 2 threads took: 1740.048 ms, sum = 3.000000e+09
+MPI rank 1 / 48 launched
+MPI rank 2 / 48 launched
+Rank 1 before barrier at: Sat Mar 16 22:43:35 2019
+
+MPI rank 5 / 48 launched
+Rank 4 before barrier at: Sat Mar 16 22:43:35 2019
+
+MPI rank 30 / 48 launched
+Rank 29 before barrier at: Sat Mar 16 22:43:35 2019
+
+MPI rank 37 / 48 launched
+Rank 36 before barrier at: Sat Mar 16 22:43:35 2019
+
+MPI rank 39 / 48 launched
+Rank 38 before barrier at: Sat Mar 16 22:43:35 2019
+
+MPI rank 41 / 48 launched
+Rank 40 before barrier at: Sat Mar 16 22:43:35 2019
+
+MPI rank 45 / 48 launched
+Rank 44 before barrier at: Sat Mar 16 22:43:35 2019
+
+MPI rank 48 / 48 launched
+Rank 47 before barrier at: Sat Mar 16 22:43:35 2019
+
+MPI rank 7 / 48 launched
+Rank 6 before barrier at: Sat Mar 16 22:43:35 2019
+
+MPI rank 8 / 48 launched
+Rank 7 before barrier at: Sat Mar 16 22:43:35 2019
+
+MPI rank 11 / 48 launched
+Rank 10 before barrier at: Sat Mar 16 22:43:35 2019
+
+MPI rank 12 / 48 launched
+Rank 11 before barrier at: Sat Mar 16 22:43:35 2019
+
+MPI rank 14 / 48 launched
+Rank 13 before barrier at: Sat Mar 16 22:43:35 2019
+
+MPI rank 16 / 48 launched
+Rank 15 before barrier at: Sat Mar 16 22:43:35 2019
+
+MPI rank 17 / 48 launched
+Rank 16 before barrier at: Sat Mar 16 22:43:35 2019
+
+MPI rank 21 / 48 launched
+Rank 20 before barrier at: Sat Mar 16 22:43:35 2019
+
+MPI rank 22 / 48 launched
+Rank 21 before barrier at: Sat Mar 16 22:43:35 2019
+
+MPI rank 25 / 48 launched
+Rank 24 before barrier at: Sat Mar 16 22:43:35 2019
+
+MPI rank 31 / 48 launched
+Rank 30 before barrier at: Sat Mar 16 22:43:35 2019
+
+MPI rank 40 / 48 launched
+Rank 39 before barrier at: Sat Mar 16 22:43:35 2019
+
+MPI rank 47 / 48 launched
+Rank 46 before barrier at: Sat Mar 16 22:43:35 2019
+
+MPI rank 26 / 48 launched
+MPI rank 35 / 48 launched
+MPI rank 6 / 48 launched
+MPI rank 9 / 48 launched
+MPI rank 10 / 48 launched
+MPI rank 13 / 48 launched
+MPI rank 18 / 48 launched
+MPI rank 29 / 48 launched
+MPI rank 33 / 48 launched
+MPI rank 43 / 48 launched
+MPI rank 3 / 48 launched
+MPI rank 4 / 48 launched
+Rank 9 before barrier at: Sat Mar 16 22:43:35 2019
+
+Rank 12 before barrier at: Sat Mar 16 22:43:35 2019
+
+MPI rank 15 / 48 launched
+MPI rank 20 / 48 launched
+MPI rank 23 / 48 launched
+Rank 22 before barrier at: Sat Mar 16 22:43:35 2019
+
+Rank 25 before barrier at: Sat Mar 16 22:43:35 2019
+
+MPI rank 27 / 48 launched
+Rank 26 before barrier at: Sat Mar 16 22:43:35 2019
+
+MPI rank 28 / 48 launched
+Rank 27 before barrier at: Sat Mar 16 22:43:35 2019
+
+Rank 28 before barrier at: Sat Mar 16 22:43:35 2019
+
+MPI rank 32 / 48 launched
+Rank 31 before barrier at: Sat Mar 16 22:43:35 2019
+
+Rank 32 before barrier at: Sat Mar 16 22:43:35 2019
+
+MPI rank 34 / 48 launched
+Rank 33 before barrier at: Sat Mar 16 22:43:35 2019
+
+Rank 34 before barrier at: Sat Mar 16 22:43:35 2019
+
+MPI rank 36 / 48 launched
+Rank 35 before barrier at: Sat Mar 16 22:43:35 2019
+
+MPI rank 38 / 48 launched
+Rank 37 before barrier at: Sat Mar 16 22:43:35 2019
+
+MPI rank 42 / 48 launched
+Rank 41 before barrier at: Sat Mar 16 22:43:35 2019
+
+Rank 42 before barrier at: Sat Mar 16 22:43:35 2019
+
+Rank 2 before barrier at: Sat Mar 16 22:43:35 2019
+
+Rank 3 before barrier at: Sat Mar 16 22:43:35 2019
+
+Rank 5 before barrier at: Sat Mar 16 22:43:35 2019
+
+Rank 8 before barrier at: Sat Mar 16 22:43:35 2019
+
+Rank 14 before barrier at: Sat Mar 16 22:43:35 2019
+
+Rank 17 before barrier at: Sat Mar 16 22:43:35 2019
+
+MPI rank 19 / 48 launched
+Rank 18 before barrier at: Sat Mar 16 22:43:35 2019
+
+Rank 19 before barrier at: Sat Mar 16 22:43:35 2019
+
+MPI rank 46 / 48 launched
+Rank 45 before barrier at: Sat Mar 16 22:43:35 2019
+
+MPI rank 24 / 48 launched
+Rank 23 before barrier at: Sat Mar 16 22:43:35 2019
+
+MPI rank 44 / 48 launched
+Rank 43 before barrier at: Sat Mar 16 22:43:35 2019
+
+Rank 0 before barrier at: Sat Mar 16 22:43:37 2019
+
+Rank 0 just past barrier at: Sat Mar 16 22:43:37 2019
+
+Rank 7 just past barrier at: Sat Mar 16 22:43:37 2019
+
+Rank 14 just past barrier at: Sat Mar 16 22:43:37 2019
+
+Rank 15 just past barrier at: Sat Mar 16 22:43:37 2019
+
+Rank 19 just past barrier at: Sat Mar 16 22:43:37 2019
+
+Rank 22 just past barrier at: Sat Mar 16 22:43:37 2019
+
+Rank 24 just past barrier at: Sat Mar 16 22:43:37 2019
+
+Rank 35 just past barrier at: Sat Mar 16 22:43:37 2019
+
+Rank 38 just past barrier at: Sat Mar 16 22:43:37 2019
+
+Rank 39 just past barrier at: Sat Mar 16 22:43:37 2019
+
+Rank 41 just past barrier at: Sat Mar 16 22:43:37 2019
+
+Rank 44 just past barrier at: Sat Mar 16 22:43:37 2019
+
+Rank 45 just past barrier at: Sat Mar 16 22:43:37 2019
+
+Rank 46 just past barrier at: Sat Mar 16 22:43:37 2019
+
+Rank 47 just past barrier at: Sat Mar 16 22:43:37 2019
+
+Rank 3 just past barrier at: Sat Mar 16 22:43:37 2019
+
+Rank 5 just past barrier at: Sat Mar 16 22:43:37 2019
+
+Rank 6 just past barrier at: Sat Mar 16 22:43:37 2019
+
+Rank 18 just past barrier at: Sat Mar 16 22:43:37 2019
+
+Rank 26 just past barrier at: Sat Mar 16 22:43:37 2019
+
+Rank 34 just past barrier at: Sat Mar 16 22:43:37 2019
+
+Rank 36 just past barrier at: Sat Mar 16 22:43:37 2019
+
+Rank 2 just past barrier at: Sat Mar 16 22:43:37 2019
+
+Rank 21 just past barrier at: Sat Mar 16 22:43:37 2019
+
+Rank 31 just past barrier at: Sat Mar 16 22:43:37 2019
+
+Rank 33 just past barrier at: Sat Mar 16 22:43:37 2019
+
+Rank 42 just past barrier at: Sat Mar 16 22:43:37 2019
+
+Rank 8 just past barrier at: Sat Mar 16 22:43:37 2019
+
+Rank 10 just past barrier at: Sat Mar 16 22:43:37 2019
+
+Rank 9 just past barrier at: Sat Mar 16 22:43:37 2019
+
+Rank 20 just past barrier at: Sat Mar 16 22:43:37 2019
+
+Rank 25 just past barrier at: Sat Mar 16 22:43:37 2019
+
+Rank 28 just past barrier at: Sat Mar 16 22:43:37 2019
+
+Rank 11 just past barrier at: Sat Mar 16 22:43:37 2019
+
+Rank 12 just past barrier at: Sat Mar 16 22:43:37 2019
+
+Rank 16 just past barrier at: Sat Mar 16 22:43:37 2019
+
+Rank 23 just past barrier at: Sat Mar 16 22:43:37 2019
+
+Rank 27 just past barrier at: Sat Mar 16 22:43:37 2019
+
+Rank 37 just past barrier at: Sat Mar 16 22:43:37 2019
+
+Rank 1 just past barrier at: Sat Mar 16 22:43:37 2019
+
+Rank 4 just past barrier at: Sat Mar 16 22:43:37 2019
+
+Rank 30 just past barrier at: Sat Mar 16 22:43:37 2019
+
+Rank 13 just past barrier at: Sat Mar 16 22:43:37 2019
+
+Rank 29 just past barrier at: Sat Mar 16 22:43:37 2019
+
+Rank 40 just past barrier at: Sat Mar 16 22:43:37 2019
+
+Rank 43 just past barrier at: Sat Mar 16 22:43:37 2019
+
+Rank 32 just past barrier at: Sat Mar 16 22:43:37 2019
+
+Rank 17 just past barrier at: Sat Mar 16 22:43:37 2019
+
+MPI Rank 0, thread 0 launched
+MPI Rank 0, thread 1 launched
+Calc done, MPI 0 thread 0 still exists
+Rank 34 ready to exit at: Sat Mar 16 22:43:38 2019
+
+Rank 18 ready to exit at: Sat Mar 16 22:43:38 2019
+
+Rank 33 ready to exit at: Sat Mar 16 22:43:38 2019
+
+Rank 22 ready to exit at: Sat Mar 16 22:43:38 2019
+
+Rank 26 ready to exit at: Sat Mar 16 22:43:38 2019
+
+Rank 42 ready to exit at: Sat Mar 16 22:43:38 2019
+
+Rank 2 ready to exit at: Sat Mar 16 22:43:38 2019
+
+Rank 17 ready to exit at: Sat Mar 16 22:43:38 2019
+
+Rank 19 ready to exit at: Sat Mar 16 22:43:38 2019
+
+Rank 1 ready to exit at: Sat Mar 16 22:43:38 2019
+
+Rank 41 ready to exit at: Sat Mar 16 22:43:38 2019
+
+Rank 20 ready to exit at: Sat Mar 16 22:43:38 2019
+
+Rank 10 ready to exit at: Sat Mar 16 22:43:38 2019
+
+Rank 30 ready to exit at: Sat Mar 16 22:43:38 2019
+
+Rank 37 ready to exit at: Sat Mar 16 22:43:38 2019
+
+Rank 43 ready to exit at: Sat Mar 16 22:43:38 2019
+
+Rank 27 ready to exit at: Sat Mar 16 22:43:38 2019
+
+Rank 36 ready to exit at: Sat Mar 16 22:43:38 2019
+
+Rank 25 ready to exit at: Sat Mar 16 22:43:38 2019
+
+Rank 38 ready to exit at: Sat Mar 16 22:43:38 2019
+
+Rank 6 ready to exit at: Sat Mar 16 22:43:38 2019
+
+Rank 44 ready to exit at: Sat Mar 16 22:43:38 2019
+
+Rank 21 ready to exit at: Sat Mar 16 22:43:38 2019
+
+Rank 24 ready to exit at: Sat Mar 16 22:43:38 2019
+
+Rank 35 ready to exit at: Sat Mar 16 22:43:38 2019
+
+Rank 45 ready to exit at: Sat Mar 16 22:43:38 2019
+
+Rank 46 ready to exit at: Sat Mar 16 22:43:38 2019
+
+Rank 14 ready to exit at: Sat Mar 16 22:43:38 2019
+
+Rank 3 ready to exit at: Sat Mar 16 22:43:38 2019
+
+Rank 9 ready to exit at: Sat Mar 16 22:43:38 2019
+
+Rank 5 ready to exit at: Sat Mar 16 22:43:38 2019
+
+Rank 39 ready to exit at: Sat Mar 16 22:43:38 2019
+
+Rank 4 ready to exit at: Sat Mar 16 22:43:38 2019
+
+Rank 11 ready to exit at: Sat Mar 16 22:43:38 2019
+
+Rank 23 ready to exit at: Sat Mar 16 22:43:38 2019
+
+Rank 29 ready to exit at: Sat Mar 16 22:43:38 2019
+
+Rank 40 ready to exit at: Sat Mar 16 22:43:38 2019
+
+Rank 28 ready to exit at: Sat Mar 16 22:43:38 2019
+
+Rank 12 ready to exit at: Sat Mar 16 22:43:38 2019
+
+Rank 7 ready to exit at: Sat Mar 16 22:43:38 2019
+
+Rank 8 ready to exit at: Sat Mar 16 22:43:38 2019
+
+Rank 47 ready to exit at: Sat Mar 16 22:43:38 2019
+
+Rank 31 ready to exit at: Sat Mar 16 22:43:38 2019
+
+Rank 13 ready to exit at: Sat Mar 16 22:43:38 2019
+
+Rank 15 ready to exit at: Sat Mar 16 22:43:38 2019
+
+Rank 16 ready to exit at: Sat Mar 16 22:43:38 2019
+
+Rank 32 ready to exit at: Sat Mar 16 22:43:38 2019
+
+Rank 0 ready to exit at: Sat Mar 16 22:43:38 2019
+
+Finding sum using 2 threads took: 557.800 ms, sum = 1.000000e+09
 TACC:  Shutdown complete. Exiting. 
-TACC:  Starting up job 3016184 
+TACC:  Starting up job 3129209 
 TACC:  Starting parallel tasks... 
-Finding sum using 2 threads took: 1611.810 ms, sum = 3.000000e+09
+MPI rank 4 / 48 launched
+Rank 3 before barrier at: Sat Mar 16 22:43:38 2019
+
+MPI rank 10 / 48 launched
+Rank 9 before barrier at: Sat Mar 16 22:43:38 2019
+
+MPI rank 14 / 48 launched
+Rank 13 before barrier at: Sat Mar 16 22:43:38 2019
+
+MPI rank 18 / 48 launched
+Rank 17 before barrier at: Sat Mar 16 22:43:38 2019
+
+MPI rank 20 / 48 launched
+Rank 19 before barrier at: Sat Mar 16 22:43:38 2019
+
+MPI rank 21 / 48 launched
+Rank 20 before barrier at: Sat Mar 16 22:43:38 2019
+
+MPI rank 28 / 48 launched
+Rank 27 before barrier at: Sat Mar 16 22:43:38 2019
+
+MPI rank 29 / 48 launched
+Rank 28 before barrier at: Sat Mar 16 22:43:38 2019
+
+MPI rank 35 / 48 launched
+Rank 34 before barrier at: Sat Mar 16 22:43:38 2019
+
+MPI rank 36 / 48 launched
+Rank 35 before barrier at: Sat Mar 16 22:43:38 2019
+
+MPI rank 39 / 48 launched
+Rank 38 before barrier at: Sat Mar 16 22:43:38 2019
+
+MPI rank 43 / 48 launched
+Rank 42 before barrier at: Sat Mar 16 22:43:38 2019
+
+MPI rank 1 / 48 launched
+MPI rank 2 / 48 launched
+Rank 1 before barrier at: Sat Mar 16 22:43:38 2019
+
+MPI rank 3 / 48 launched
+Rank 2 before barrier at: Sat Mar 16 22:43:38 2019
+
+MPI rank 5 / 48 launched
+Rank 4 before barrier at: Sat Mar 16 22:43:38 2019
+
+MPI rank 6 / 48 launched
+Rank 5 before barrier at: Sat Mar 16 22:43:38 2019
+
+MPI rank 7 / 48 launched
+Rank 6 before barrier at: Sat Mar 16 22:43:38 2019
+
+MPI rank 8 / 48 launched
+Rank 7 before barrier at: Sat Mar 16 22:43:38 2019
+
+MPI rank 9 / 48 launched
+Rank 8 before barrier at: Sat Mar 16 22:43:38 2019
+
+MPI rank 11 / 48 launched
+Rank 10 before barrier at: Sat Mar 16 22:43:38 2019
+
+MPI rank 12 / 48 launched
+Rank 11 before barrier at: Sat Mar 16 22:43:38 2019
+
+MPI rank 13 / 48 launched
+Rank 12 before barrier at: Sat Mar 16 22:43:38 2019
+
+MPI rank 15 / 48 launched
+Rank 14 before barrier at: Sat Mar 16 22:43:38 2019
+
+MPI rank 16 / 48 launched
+Rank 15 before barrier at: Sat Mar 16 22:43:38 2019
+
+MPI rank 17 / 48 launched
+Rank 16 before barrier at: Sat Mar 16 22:43:38 2019
+
+MPI rank 19 / 48 launched
+Rank 18 before barrier at: Sat Mar 16 22:43:38 2019
+
+MPI rank 23 / 48 launched
+Rank 22 before barrier at: Sat Mar 16 22:43:38 2019
+
+MPI rank 25 / 48 launched
+Rank 24 before barrier at: Sat Mar 16 22:43:38 2019
+
+MPI rank 26 / 48 launched
+Rank 25 before barrier at: Sat Mar 16 22:43:38 2019
+
+MPI rank 27 / 48 launched
+Rank 26 before barrier at: Sat Mar 16 22:43:38 2019
+
+MPI rank 30 / 48 launched
+Rank 29 before barrier at: Sat Mar 16 22:43:38 2019
+
+MPI rank 33 / 48 launched
+Rank 32 before barrier at: Sat Mar 16 22:43:38 2019
+
+MPI rank 34 / 48 launched
+Rank 33 before barrier at: Sat Mar 16 22:43:38 2019
+
+MPI rank 38 / 48 launched
+Rank 37 before barrier at: Sat Mar 16 22:43:38 2019
+
+MPI rank 40 / 48 launched
+Rank 39 before barrier at: Sat Mar 16 22:43:38 2019
+
+MPI rank 41 / 48 launched
+Rank 40 before barrier at: Sat Mar 16 22:43:38 2019
+
+MPI rank 42 / 48 launched
+Rank 41 before barrier at: Sat Mar 16 22:43:38 2019
+
+MPI rank 45 / 48 launched
+Rank 44 before barrier at: Sat Mar 16 22:43:38 2019
+
+MPI rank 46 / 48 launched
+Rank 45 before barrier at: Sat Mar 16 22:43:38 2019
+
+MPI rank 32 / 48 launched
+MPI rank 37 / 48 launched
+Rank 36 before barrier at: Sat Mar 16 22:43:38 2019
+
+MPI rank 47 / 48 launched
+Rank 46 before barrier at: Sat Mar 16 22:43:38 2019
+
+MPI rank 22 / 48 launched
+MPI rank 24 / 48 launched
+MPI rank 31 / 48 launched
+MPI rank 44 / 48 launched
+MPI rank 48 / 48 launched
+Rank 30 before barrier at: Sat Mar 16 22:43:38 2019
+
+Rank 31 before barrier at: Sat Mar 16 22:43:38 2019
+
+Rank 43 before barrier at: Sat Mar 16 22:43:38 2019
+
+Rank 21 before barrier at: Sat Mar 16 22:43:38 2019
+
+Rank 23 before barrier at: Sat Mar 16 22:43:38 2019
+
+Rank 47 before barrier at: Sat Mar 16 22:43:38 2019
+
+Rank 0 before barrier at: Sat Mar 16 22:43:41 2019
+
+Rank 0 just past barrier at: Sat Mar 16 22:43:41 2019
+
+Rank 5 just past barrier at: Sat Mar 16 22:43:41 2019
+
+Rank 7 just past barrier at: Sat Mar 16 22:43:41 2019
+
+Rank 9 just past barrier at: Sat Mar 16 22:43:41 2019
+
+Rank 12 just past barrier at: Sat Mar 16 22:43:41 2019
+
+Rank 13 just past barrier at: Sat Mar 16 22:43:41 2019
+
+Rank 14 just past barrier at: Sat Mar 16 22:43:41 2019
+
+Rank 18 just past barrier at: Sat Mar 16 22:43:41 2019
+
+Rank 19 just past barrier at: Sat Mar 16 22:43:41 2019
+
+Rank 20 just past barrier at: Sat Mar 16 22:43:41 2019
+
+Rank 22 just past barrier at: Sat Mar 16 22:43:41 2019
+
+Rank 23 just past barrier at: Sat Mar 16 22:43:41 2019
+
+Rank 24 just past barrier at: Sat Mar 16 22:43:41 2019
+
+Rank 25 just past barrier at: Sat Mar 16 22:43:41 2019
+
+Rank 33 just past barrier at: Sat Mar 16 22:43:41 2019
+
+Rank 34 just past barrier at: Sat Mar 16 22:43:41 2019
+
+Rank 36 just past barrier at: Sat Mar 16 22:43:41 2019
+
+Rank 40 just past barrier at: Sat Mar 16 22:43:41 2019
+
+Rank 41 just past barrier at: Sat Mar 16 22:43:41 2019
+
+Rank 44 just past barrier at: Sat Mar 16 22:43:41 2019
+
+Rank 45 just past barrier at: Sat Mar 16 22:43:41 2019
+
+Rank 8 just past barrier at: Sat Mar 16 22:43:41 2019
+
+Rank 1 just past barrier at: Sat Mar 16 22:43:41 2019
+
+Rank 2 just past barrier at: Sat Mar 16 22:43:41 2019
+
+Rank 6 just past barrier at: Sat Mar 16 22:43:41 2019
+
+Rank 10 just past barrier at: Sat Mar 16 22:43:41 2019
+
+Rank 11 just past barrier at: Sat Mar 16 22:43:41 2019
+
+Rank 30 just past barrier at: Sat Mar 16 22:43:41 2019
+
+Rank 4 just past barrier at: Sat Mar 16 22:43:41 2019
+
+Rank 27 just past barrier at: Sat Mar 16 22:43:41 2019
+
+Rank 16 just past barrier at: Sat Mar 16 22:43:41 2019
+
+Rank 29 just past barrier at: Sat Mar 16 22:43:41 2019
+
+Rank 32 just past barrier at: Sat Mar 16 22:43:41 2019
+
+Rank 38 just past barrier at: Sat Mar 16 22:43:41 2019
+
+Rank 39 just past barrier at: Sat Mar 16 22:43:41 2019
+
+Rank 42 just past barrier at: Sat Mar 16 22:43:41 2019
+
+Rank 43 just past barrier at: Sat Mar 16 22:43:41 2019
+
+Rank 47 just past barrier at: Sat Mar 16 22:43:41 2019
+
+Rank 3 just past barrier at: Sat Mar 16 22:43:41 2019
+
+Rank 15 just past barrier at: Sat Mar 16 22:43:41 2019
+
+Rank 17 just past barrier at: Sat Mar 16 22:43:41 2019
+
+Rank 21 just past barrier at: Sat Mar 16 22:43:41 2019
+
+Rank 26 just past barrier at: Sat Mar 16 22:43:41 2019
+
+Rank 28 just past barrier at: Sat Mar 16 22:43:41 2019
+
+Rank 31 just past barrier at: Sat Mar 16 22:43:41 2019
+
+Rank 35 just past barrier at: Sat Mar 16 22:43:41 2019
+
+Rank 37 just past barrier at: Sat Mar 16 22:43:41 2019
+
+Rank 46 just past barrier at: Sat Mar 16 22:43:41 2019
+
+MPI Rank 0, thread 0 launched
+MPI Rank 0, thread 1 launched
+Calc done, MPI 0 thread 0 still exists
+Rank 17 ready to exit at: Sat Mar 16 22:43:41 2019
+
+Rank 38 ready to exit at: Sat Mar 16 22:43:41 2019
+
+Rank 34 ready to exit at: Sat Mar 16 22:43:41 2019
+
+Rank 18 ready to exit at: Sat Mar 16 22:43:41 2019
+
+Rank 41 ready to exit at: Sat Mar 16 22:43:41 2019
+
+Rank 33 ready to exit at: Sat Mar 16 22:43:41 2019
+
+Rank 39 ready to exit at: Sat Mar 16 22:43:41 2019
+
+Rank 35 ready to exit at: Sat Mar 16 22:43:41 2019
+
+Rank 19 ready to exit at: Sat Mar 16 22:43:41 2019
+
+Rank 23 ready to exit at: Sat Mar 16 22:43:41 2019
+
+Rank 22 ready to exit at: Sat Mar 16 22:43:41 2019
+
+Rank 37 ready to exit at: Sat Mar 16 22:43:41 2019
+
+Rank 1 ready to exit at: Sat Mar 16 22:43:41 2019
+
+Rank 27 ready to exit at: Sat Mar 16 22:43:41 2019
+
+Rank 2 ready to exit at: Sat Mar 16 22:43:41 2019
+
+Rank 3 ready to exit at: Sat Mar 16 22:43:41 2019
+
+Rank 46 ready to exit at: Sat Mar 16 22:43:41 2019
+
+Rank 43 ready to exit at: Sat Mar 16 22:43:41 2019
+
+Rank 11 ready to exit at: Sat Mar 16 22:43:41 2019
+
+Rank 29 ready to exit at: Sat Mar 16 22:43:41 2019
+
+Rank 42 ready to exit at: Sat Mar 16 22:43:41 2019
+
+Rank 26 ready to exit at: Sat Mar 16 22:43:41 2019
+
+Rank 6 ready to exit at: Sat Mar 16 22:43:41 2019
+
+Rank 30 ready to exit at: Sat Mar 16 22:43:41 2019
+
+Rank 10 ready to exit at: Sat Mar 16 22:43:41 2019
+
+Rank 7 ready to exit at: Sat Mar 16 22:43:41 2019
+
+Rank 21 ready to exit at: Sat Mar 16 22:43:41 2019
+
+Rank 5 ready to exit at: Sat Mar 16 22:43:41 2019
+
+Rank 25 ready to exit at: Sat Mar 16 22:43:41 2019
+
+Rank 9 ready to exit at: Sat Mar 16 22:43:41 2019
+
+Rank 13 ready to exit at: Sat Mar 16 22:43:41 2019
+
+Rank 45 ready to exit at: Sat Mar 16 22:43:41 2019
+
+Rank 36 ready to exit at: Sat Mar 16 22:43:41 2019
+
+Rank 14 ready to exit at: Sat Mar 16 22:43:41 2019
+
+Rank 20 ready to exit at: Sat Mar 16 22:43:41 2019
+
+Rank 24 ready to exit at: Sat Mar 16 22:43:41 2019
+
+Rank 47 ready to exit at: Sat Mar 16 22:43:41 2019
+
+Rank 31 ready to exit at: Sat Mar 16 22:43:41 2019
+
+Rank 15 ready to exit at: Sat Mar 16 22:43:41 2019
+
+Rank 4 ready to exit at: Sat Mar 16 22:43:41 2019
+
+Rank 28 ready to exit at: Sat Mar 16 22:43:41 2019
+
+Rank 44 ready to exit at: Sat Mar 16 22:43:41 2019
+
+Rank 16 ready to exit at: Sat Mar 16 22:43:41 2019
+
+Rank 40 ready to exit at: Sat Mar 16 22:43:41 2019
+
+Rank 8 ready to exit at: Sat Mar 16 22:43:41 2019
+
+Rank 12 ready to exit at: Sat Mar 16 22:43:41 2019
+
+Rank 32 ready to exit at: Sat Mar 16 22:43:41 2019
+
+Rank 0 ready to exit at: Sat Mar 16 22:43:41 2019
+
+Finding sum using 2 threads took: 556.161 ms, sum = 1.000000e+09
 TACC:  Shutdown complete. Exiting. 
-TACC:  Starting up job 3016184 
+TACC:  Starting up job 3129209 
 TACC:  Starting parallel tasks... 
-Finding sum using 2 threads took: 1615.802 ms, sum = 3.000000e+09
+MPI rank 30 / 48 launched
+Rank 29 before barrier at: Sat Mar 16 22:43:42 2019
+
+MPI rank 31 / 48 launched
+Rank 30 before barrier at: Sat Mar 16 22:43:42 2019
+
+MPI rank 35 / 48 launched
+Rank 34 before barrier at: Sat Mar 16 22:43:42 2019
+
+MPI rank 45 / 48 launched
+Rank 44 before barrier at: Sat Mar 16 22:43:42 2019
+
+MPI rank 2 / 48 launched
+Rank 1 before barrier at: Sat Mar 16 22:43:42 2019
+
+MPI rank 8 / 48 launched
+MPI rank 11 / 48 launched
+Rank 10 before barrier at: Sat Mar 16 22:43:42 2019
+
+MPI rank 14 / 48 launched
+Rank 13 before barrier at: Sat Mar 16 22:43:42 2019
+
+MPI rank 16 / 48 launched
+Rank 15 before barrier at: Sat Mar 16 22:43:42 2019
+
+MPI rank 18 / 48 launched
+Rank 17 before barrier at: Sat Mar 16 22:43:42 2019
+
+MPI rank 20 / 48 launched
+Rank 19 before barrier at: Sat Mar 16 22:43:42 2019
+
+MPI rank 24 / 48 launched
+Rank 23 before barrier at: Sat Mar 16 22:43:42 2019
+
+MPI rank 25 / 48 launched
+Rank 24 before barrier at: Sat Mar 16 22:43:42 2019
+
+MPI rank 27 / 48 launched
+Rank 26 before barrier at: Sat Mar 16 22:43:42 2019
+
+MPI rank 32 / 48 launched
+Rank 31 before barrier at: Sat Mar 16 22:43:42 2019
+
+MPI rank 34 / 48 launched
+Rank 33 before barrier at: Sat Mar 16 22:43:42 2019
+
+MPI rank 38 / 48 launched
+Rank 37 before barrier at: Sat Mar 16 22:43:42 2019
+
+MPI rank 40 / 48 launched
+Rank 39 before barrier at: Sat Mar 16 22:43:42 2019
+
+MPI rank 41 / 48 launched
+Rank 40 before barrier at: Sat Mar 16 22:43:42 2019
+
+MPI rank 42 / 48 launched
+Rank 41 before barrier at: Sat Mar 16 22:43:42 2019
+
+MPI rank 43 / 48 launched
+Rank 42 before barrier at: Sat Mar 16 22:43:42 2019
+
+MPI rank 46 / 48 launched
+Rank 45 before barrier at: Sat Mar 16 22:43:42 2019
+
+MPI rank 5 / 48 launched
+Rank 4 before barrier at: Sat Mar 16 22:43:42 2019
+
+MPI rank 7 / 48 launched
+Rank 6 before barrier at: Sat Mar 16 22:43:42 2019
+
+Rank 7 before barrier at: Sat Mar 16 22:43:42 2019
+
+MPI rank 15 / 48 launched
+Rank 14 before barrier at: Sat Mar 16 22:43:42 2019
+
+MPI rank 17 / 48 launched
+Rank 16 before barrier at: Sat Mar 16 22:43:42 2019
+
+MPI rank 23 / 48 launched
+Rank 22 before barrier at: Sat Mar 16 22:43:42 2019
+
+MPI rank 28 / 48 launched
+Rank 27 before barrier at: Sat Mar 16 22:43:42 2019
+
+MPI rank 36 / 48 launched
+Rank 35 before barrier at: Sat Mar 16 22:43:42 2019
+
+MPI rank 44 / 48 launched
+MPI rank 47 / 48 launched
+MPI rank 12 / 48 launched
+MPI rank 26 / 48 launched
+MPI rank 33 / 48 launched
+Rank 32 before barrier at: Sat Mar 16 22:43:42 2019
+
+MPI rank 48 / 48 launched
+Rank 47 before barrier at: Sat Mar 16 22:43:42 2019
+
+MPI rank 1 / 48 launched
+MPI rank 4 / 48 launched
+MPI rank 10 / 48 launched
+MPI rank 13 / 48 launched
+Rank 12 before barrier at: Sat Mar 16 22:43:42 2019
+
+MPI rank 22 / 48 launched
+Rank 25 before barrier at: Sat Mar 16 22:43:42 2019
+
+MPI rank 29 / 48 launched
+MPI rank 37 / 48 launched
+MPI rank 39 / 48 launched
+Rank 38 before barrier at: Sat Mar 16 22:43:42 2019
+
+Rank 43 before barrier at: Sat Mar 16 22:43:42 2019
+
+Rank 46 before barrier at: Sat Mar 16 22:43:42 2019
+
+Rank 3 before barrier at: Sat Mar 16 22:43:42 2019
+
+MPI rank 6 / 48 launched
+Rank 5 before barrier at: Sat Mar 16 22:43:42 2019
+
+MPI rank 9 / 48 launched
+Rank 8 before barrier at: Sat Mar 16 22:43:42 2019
+
+Rank 9 before barrier at: Sat Mar 16 22:43:42 2019
+
+Rank 11 before barrier at: Sat Mar 16 22:43:42 2019
+
+MPI rank 21 / 48 launched
+Rank 21 before barrier at: Sat Mar 16 22:43:42 2019
+
+Rank 28 before barrier at: Sat Mar 16 22:43:42 2019
+
+Rank 36 before barrier at: Sat Mar 16 22:43:42 2019
+
+Rank 20 before barrier at: Sat Mar 16 22:43:42 2019
+
+MPI rank 3 / 48 launched
+Rank 2 before barrier at: Sat Mar 16 22:43:42 2019
+
+MPI rank 19 / 48 launched
+Rank 18 before barrier at: Sat Mar 16 22:43:42 2019
+
+Rank 0 before barrier at: Sat Mar 16 22:43:45 2019
+
+Rank 0 just past barrier at: Sat Mar 16 22:43:45 2019
+
+Rank 15 just past barrier at: Sat Mar 16 22:43:45 2019
+
+Rank 22 just past barrier at: Sat Mar 16 22:43:45 2019
+
+Rank 26 just past barrier at: Sat Mar 16 22:43:45 2019
+
+Rank 29 just past barrier at: Sat Mar 16 22:43:45 2019
+
+Rank 30 just past barrier at: Sat Mar 16 22:43:45 2019
+
+Rank 32 just past barrier at: Sat Mar 16 22:43:45 2019
+
+Rank 37 just past barrier at: Sat Mar 16 22:43:45 2019
+
+Rank 43 just past barrier at: Sat Mar 16 22:43:45 2019
+
+Rank 44 just past barrier at: Sat Mar 16 22:43:45 2019
+
+Rank 6 just past barrier at: Sat Mar 16 22:43:45 2019
+
+Rank 9 just past barrier at: Sat Mar 16 22:43:45 2019
+
+Rank 14 just past barrier at: Sat Mar 16 22:43:45 2019
+
+Rank 20 just past barrier at: Sat Mar 16 22:43:45 2019
+
+Rank 21 just past barrier at: Sat Mar 16 22:43:45 2019
+
+Rank 25 just past barrier at: Sat Mar 16 22:43:45 2019
+
+Rank 27 just past barrier at: Sat Mar 16 22:43:45 2019
+
+Rank 31 just past barrier at: Sat Mar 16 22:43:45 2019
+
+Rank 36 just past barrier at: Sat Mar 16 22:43:45 2019
+
+Rank 40 just past barrier at: Sat Mar 16 22:43:45 2019
+
+Rank 45 just past barrier at: Sat Mar 16 22:43:45 2019
+
+Rank 46 just past barrier at: Sat Mar 16 22:43:45 2019
+
+Rank 4 just past barrier at: Sat Mar 16 22:43:45 2019
+
+Rank 35 just past barrier at: Sat Mar 16 22:43:45 2019
+
+Rank 2 just past barrier at: Sat Mar 16 22:43:45 2019
+
+Rank 3 just past barrier at: Sat Mar 16 22:43:45 2019
+
+Rank 7 just past barrier at: Sat Mar 16 22:43:45 2019
+
+Rank 18 just past barrier at: Sat Mar 16 22:43:45 2019
+
+Rank 19 just past barrier at: Sat Mar 16 22:43:45 2019
+
+Rank 28 just past barrier at: Sat Mar 16 22:43:45 2019
+
+Rank 1 just past barrier at: Sat Mar 16 22:43:45 2019
+
+Rank 5 just past barrier at: Sat Mar 16 22:43:45 2019
+
+Rank 8 just past barrier at: Sat Mar 16 22:43:45 2019
+
+Rank 10 just past barrier at: Sat Mar 16 22:43:45 2019
+
+Rank 11 just past barrier at: Sat Mar 16 22:43:45 2019
+
+Rank 24 just past barrier at: Sat Mar 16 22:43:45 2019
+
+Rank 34 just past barrier at: Sat Mar 16 22:43:45 2019
+
+Rank 41 just past barrier at: Sat Mar 16 22:43:45 2019
+
+Rank 16 just past barrier at: Sat Mar 16 22:43:45 2019
+
+Rank 23 just past barrier at: Sat Mar 16 22:43:45 2019
+
+Rank 33 just past barrier at: Sat Mar 16 22:43:45 2019
+
+Rank 38 just past barrier at: Sat Mar 16 22:43:45 2019
+
+Rank 39 just past barrier at: Sat Mar 16 22:43:45 2019
+
+Rank 42 just past barrier at: Sat Mar 16 22:43:45 2019
+
+Rank 47 just past barrier at: Sat Mar 16 22:43:45 2019
+
+Rank 12 just past barrier at: Sat Mar 16 22:43:45 2019
+
+Rank 13 just past barrier at: Sat Mar 16 22:43:45 2019
+
+Rank 17 just past barrier at: Sat Mar 16 22:43:45 2019
+
+MPI Rank 0, thread 0 launched
+MPI Rank 0, thread 1 launched
+Calc done, MPI 0 thread 0 still exists
+Rank 34 ready to exit at: Sat Mar 16 22:43:45 2019
+
+Rank 41 ready to exit at: Sat Mar 16 22:43:45 2019
+
+Rank 33 ready to exit at: Sat Mar 16 22:43:45 2019
+
+Rank 17 ready to exit at: Sat Mar 16 22:43:45 2019
+
+Rank 18 ready to exit at: Sat Mar 16 22:43:45 2019
+
+Rank 19 ready to exit at: Sat Mar 16 22:43:45 2019
+
+Rank 42 ready to exit at: Sat Mar 16 22:43:45 2019
+
+Rank 37 ready to exit at: Sat Mar 16 22:43:45 2019
+
+Rank 29 ready to exit at: Sat Mar 16 22:43:45 2019
+
+Rank 31 ready to exit at: Sat Mar 16 22:43:45 2019
+
+Rank 1 ready to exit at: Sat Mar 16 22:43:45 2019
+
+Rank 45 ready to exit at: Sat Mar 16 22:43:45 2019
+
+Rank 36 ready to exit at: Sat Mar 16 22:43:45 2019
+
+Rank 25 ready to exit at: Sat Mar 16 22:43:45 2019
+
+Rank 35 ready to exit at: Sat Mar 16 22:43:45 2019
+
+Rank 9 ready to exit at: Sat Mar 16 22:43:45 2019
+
+Rank 26 ready to exit at: Sat Mar 16 22:43:45 2019
+
+Rank 21 ready to exit at: Sat Mar 16 22:43:45 2019
+
+Rank 2 ready to exit at: Sat Mar 16 22:43:45 2019
+
+Rank 23 ready to exit at: Sat Mar 16 22:43:45 2019
+
+Rank 47 ready to exit at: Sat Mar 16 22:43:45 2019
+
+Rank 39 ready to exit at: Sat Mar 16 22:43:45 2019
+
+Rank 3 ready to exit at: Sat Mar 16 22:43:45 2019
+
+Rank 7 ready to exit at: Sat Mar 16 22:43:45 2019
+
+Rank 5 ready to exit at: Sat Mar 16 22:43:45 2019
+
+Rank 13 ready to exit at: Sat Mar 16 22:43:45 2019
+
+Rank 10 ready to exit at: Sat Mar 16 22:43:45 2019
+
+Rank 38 ready to exit at: Sat Mar 16 22:43:45 2019
+
+Rank 28 ready to exit at: Sat Mar 16 22:43:45 2019
+
+Rank 22 ready to exit at: Sat Mar 16 22:43:45 2019
+
+Rank 15 ready to exit at: Sat Mar 16 22:43:45 2019
+
+Rank 43 ready to exit at: Sat Mar 16 22:43:45 2019
+
+Rank 27 ready to exit at: Sat Mar 16 22:43:45 2019
+
+Rank 44 ready to exit at: Sat Mar 16 22:43:45 2019
+
+Rank 20 ready to exit at: Sat Mar 16 22:43:45 2019
+
+Rank 4 ready to exit at: Sat Mar 16 22:43:45 2019
+
+Rank 30 ready to exit at: Sat Mar 16 22:43:45 2019
+
+Rank 6 ready to exit at: Sat Mar 16 22:43:45 2019
+
+Rank 11 ready to exit at: Sat Mar 16 22:43:45 2019
+
+Rank 12 ready to exit at: Sat Mar 16 22:43:45 2019
+
+Rank 24 ready to exit at: Sat Mar 16 22:43:45 2019
+
+Rank 46 ready to exit at: Sat Mar 16 22:43:45 2019
+
+Rank 14 ready to exit at: Sat Mar 16 22:43:45 2019
+
+Rank 40 ready to exit at: Sat Mar 16 22:43:45 2019
+
+Rank 8 ready to exit at: Sat Mar 16 22:43:45 2019
+
+Rank 16 ready to exit at: Sat Mar 16 22:43:45 2019
+
+Rank 32 ready to exit at: Sat Mar 16 22:43:45 2019
+
+Rank 0 ready to exit at: Sat Mar 16 22:43:45 2019
+
+Finding sum using 2 threads took: 556.474 ms, sum = 1.000000e+09
 TACC:  Shutdown complete. Exiting. 
-TACC:  Starting up job 3016184 
+TACC:  Starting up job 3129209 
 TACC:  Starting parallel tasks... 
-Finding sum using 2 threads took: 1617.201 ms, sum = 3.000000e+09
+MPI rank 28 / 48 launched
+MPI rank 46 / 48 launched
+MPI rank 47 / 48 launched
+Rank 46 before barrier at: Sat Mar 16 22:43:46 2019
+
+MPI rank 1 / 48 launched
+MPI rank 18 / 48 launched
+MPI rank 27 / 48 launched
+Rank 27 before barrier at: Sat Mar 16 22:43:46 2019
+
+MPI rank 29 / 48 launched
+Rank 28 before barrier at: Sat Mar 16 22:43:46 2019
+
+Rank 45 before barrier at: Sat Mar 16 22:43:46 2019
+
+Rank 17 before barrier at: Sat Mar 16 22:43:46 2019
+
+Rank 26 before barrier at: Sat Mar 16 22:43:46 2019
+
+MPI rank 32 / 48 launched
+Rank 31 before barrier at: Sat Mar 16 22:43:46 2019
+
+MPI rank 12 / 48 launched
+MPI rank 2 / 48 launched
+MPI rank 33 / 48 launched
+MPI rank 6 / 48 launched
+MPI rank 21 / 48 launched
+MPI rank 22 / 48 launched
+MPI rank 25 / 48 launched
+MPI rank 26 / 48 launched
+MPI rank 37 / 48 launched
+MPI rank 5 / 48 launched
+MPI rank 8 / 48 launched
+MPI rank 9 / 48 launched
+MPI rank 10 / 48 launched
+Rank 11 before barrier at: Sat Mar 16 22:43:46 2019
+
+MPI rank 13 / 48 launched
+MPI rank 14 / 48 launched
+MPI rank 17 / 48 launched
+MPI rank 30 / 48 launched
+Rank 32 before barrier at: Sat Mar 16 22:43:46 2019
+
+MPI rank 35 / 48 launched
+Rank 34 before barrier at: Sat Mar 16 22:43:46 2019
+
+MPI rank 39 / 48 launched
+Rank 38 before barrier at: Sat Mar 16 22:43:46 2019
+
+MPI rank 41 / 48 launched
+Rank 40 before barrier at: Sat Mar 16 22:43:46 2019
+
+MPI rank 43 / 48 launched
+Rank 42 before barrier at: Sat Mar 16 22:43:46 2019
+
+MPI rank 45 / 48 launched
+Rank 44 before barrier at: Sat Mar 16 22:43:46 2019
+
+Rank 1 before barrier at: Sat Mar 16 22:43:46 2019
+
+MPI rank 3 / 48 launched
+MPI rank 4 / 48 launched
+Rank 3 before barrier at: Sat Mar 16 22:43:46 2019
+
+Rank 4 before barrier at: Sat Mar 16 22:43:46 2019
+
+Rank 5 before barrier at: Sat Mar 16 22:43:46 2019
+
+MPI rank 7 / 48 launched
+Rank 7 before barrier at: Sat Mar 16 22:43:46 2019
+
+Rank 8 before barrier at: Sat Mar 16 22:43:46 2019
+
+Rank 9 before barrier at: Sat Mar 16 22:43:46 2019
+
+MPI rank 11 / 48 launched
+Rank 10 before barrier at: Sat Mar 16 22:43:46 2019
+
+Rank 12 before barrier at: Sat Mar 16 22:43:46 2019
+
+Rank 13 before barrier at: Sat Mar 16 22:43:46 2019
+
+MPI rank 15 / 48 launched
+Rank 14 before barrier at: Sat Mar 16 22:43:46 2019
+
+MPI rank 16 / 48 launched
+Rank 15 before barrier at: Sat Mar 16 22:43:46 2019
+
+Rank 16 before barrier at: Sat Mar 16 22:43:46 2019
+
+MPI rank 19 / 48 launched
+Rank 18 before barrier at: Sat Mar 16 22:43:46 2019
+
+MPI rank 20 / 48 launched
+Rank 19 before barrier at: Sat Mar 16 22:43:46 2019
+
+Rank 20 before barrier at: Sat Mar 16 22:43:46 2019
+
+Rank 21 before barrier at: Sat Mar 16 22:43:46 2019
+
+MPI rank 23 / 48 launched
+Rank 22 before barrier at: Sat Mar 16 22:43:46 2019
+
+MPI rank 24 / 48 launched
+Rank 23 before barrier at: Sat Mar 16 22:43:46 2019
+
+Rank 24 before barrier at: Sat Mar 16 22:43:46 2019
+
+Rank 25 before barrier at: Sat Mar 16 22:43:46 2019
+
+Rank 29 before barrier at: Sat Mar 16 22:43:46 2019
+
+MPI rank 31 / 48 launched
+Rank 30 before barrier at: Sat Mar 16 22:43:46 2019
+
+MPI rank 34 / 48 launched
+Rank 33 before barrier at: Sat Mar 16 22:43:46 2019
+
+MPI rank 36 / 48 launched
+Rank 35 before barrier at: Sat Mar 16 22:43:46 2019
+
+Rank 36 before barrier at: Sat Mar 16 22:43:46 2019
+
+MPI rank 38 / 48 launched
+Rank 37 before barrier at: Sat Mar 16 22:43:46 2019
+
+MPI rank 40 / 48 launched
+Rank 39 before barrier at: Sat Mar 16 22:43:46 2019
+
+MPI rank 42 / 48 launched
+Rank 41 before barrier at: Sat Mar 16 22:43:46 2019
+
+MPI rank 44 / 48 launched
+Rank 43 before barrier at: Sat Mar 16 22:43:46 2019
+
+MPI rank 48 / 48 launched
+Rank 47 before barrier at: Sat Mar 16 22:43:46 2019
+
+Rank 2 before barrier at: Sat Mar 16 22:43:46 2019
+
+Rank 6 before barrier at: Sat Mar 16 22:43:46 2019
+
+Rank 0 before barrier at: Sat Mar 16 22:43:48 2019
+
+Rank 0 just past barrier at: Sat Mar 16 22:43:48 2019
+
+Rank 27 just past barrier at: Sat Mar 16 22:43:48 2019
+
+Rank 46 just past barrier at: Sat Mar 16 22:43:48 2019
+
+Rank 2 just past barrier at: Sat Mar 16 22:43:48 2019
+
+Rank 3 just past barrier at: Sat Mar 16 22:43:48 2019
+
+Rank 6 just past barrier at: Sat Mar 16 22:43:48 2019
+
+Rank 8 just past barrier at: Sat Mar 16 22:43:48 2019
+
+Rank 9 just past barrier at: Sat Mar 16 22:43:48 2019
+
+Rank 10 just past barrier at: Sat Mar 16 22:43:48 2019
+
+Rank 16 just past barrier at: Sat Mar 16 22:43:48 2019
+
+Rank 18 just past barrier at: Sat Mar 16 22:43:48 2019
+
+Rank 20 just past barrier at: Sat Mar 16 22:43:48 2019
+
+Rank 22 just past barrier at: Sat Mar 16 22:43:48 2019
+
+Rank 26 just past barrier at: Sat Mar 16 22:43:48 2019
+
+Rank 35 just past barrier at: Sat Mar 16 22:43:48 2019
+
+Rank 36 just past barrier at: Sat Mar 16 22:43:48 2019
+
+Rank 37 just past barrier at: Sat Mar 16 22:43:48 2019
+
+Rank 39 just past barrier at: Sat Mar 16 22:43:48 2019
+
+Rank 40 just past barrier at: Sat Mar 16 22:43:48 2019
+
+Rank 43 just past barrier at: Sat Mar 16 22:43:48 2019
+
+Rank 45 just past barrier at: Sat Mar 16 22:43:48 2019
+
+Rank 17 just past barrier at: Sat Mar 16 22:43:48 2019
+
+Rank 19 just past barrier at: Sat Mar 16 22:43:48 2019
+
+Rank 44 just past barrier at: Sat Mar 16 22:43:48 2019
+
+Rank 7 just past barrier at: Sat Mar 16 22:43:48 2019
+
+Rank 11 just past barrier at: Sat Mar 16 22:43:48 2019
+
+Rank 28 just past barrier at: Sat Mar 16 22:43:48 2019
+
+Rank 24 just past barrier at: Sat Mar 16 22:43:48 2019
+
+Rank 31 just past barrier at: Sat Mar 16 22:43:48 2019
+
+Rank 5 just past barrier at: Sat Mar 16 22:43:48 2019
+
+Rank 12 just past barrier at: Sat Mar 16 22:43:48 2019
+
+Rank 14 just past barrier at: Sat Mar 16 22:43:48 2019
+
+Rank 15 just past barrier at: Sat Mar 16 22:43:48 2019
+
+Rank 25 just past barrier at: Sat Mar 16 22:43:48 2019
+
+Rank 30 just past barrier at: Sat Mar 16 22:43:48 2019
+
+Rank 33 just past barrier at: Sat Mar 16 22:43:48 2019
+
+Rank 34 just past barrier at: Sat Mar 16 22:43:48 2019
+
+Rank 41 just past barrier at: Sat Mar 16 22:43:48 2019
+
+Rank 42 just past barrier at: Sat Mar 16 22:43:48 2019
+
+Rank 4 just past barrier at: Sat Mar 16 22:43:48 2019
+
+Rank 13 just past barrier at: Sat Mar 16 22:43:48 2019
+
+Rank 21 just past barrier at: Sat Mar 16 22:43:48 2019
+
+Rank 23 just past barrier at: Sat Mar 16 22:43:48 2019
+
+Rank 29 just past barrier at: Sat Mar 16 22:43:48 2019
+
+Rank 32 just past barrier at: Sat Mar 16 22:43:48 2019
+
+Rank 38 just past barrier at: Sat Mar 16 22:43:48 2019
+
+Rank 1 just past barrier at: Sat Mar 16 22:43:48 2019
+
+Rank 47 just past barrier at: Sat Mar 16 22:43:48 2019
+
+MPI Rank 0, thread 0 launched
+MPI Rank 0, thread 1 launched
+Calc done, MPI 0 thread 0 still exists
+Rank 18 ready to exit at: Sat Mar 16 22:43:49 2019
+
+Rank 34 ready to exit at: Sat Mar 16 22:43:49 2019
+
+Rank 2 ready to exit at: Sat Mar 16 22:43:49 2019
+
+Rank 22 ready to exit at: Sat Mar 16 22:43:49 2019
+
+Rank 33 ready to exit at: Sat Mar 16 22:43:49 2019
+
+Rank 42 ready to exit at: Sat Mar 16 22:43:49 2019
+
+Rank 19 ready to exit at: Sat Mar 16 22:43:49 2019
+
+Rank 26 ready to exit at: Sat Mar 16 22:43:49 2019
+
+Rank 17 ready to exit at: Sat Mar 16 22:43:49 2019
+
+Rank 20 ready to exit at: Sat Mar 16 22:43:49 2019
+
+Rank 10 ready to exit at: Sat Mar 16 22:43:49 2019
+
+Rank 41 ready to exit at: Sat Mar 16 22:43:49 2019
+
+Rank 38 ready to exit at: Sat Mar 16 22:43:49 2019
+
+Rank 21 ready to exit at: Sat Mar 16 22:43:49 2019
+
+Rank 1 ready to exit at: Sat Mar 16 22:43:49 2019
+
+Rank 27 ready to exit at: Sat Mar 16 22:43:49 2019
+
+Rank 29 ready to exit at: Sat Mar 16 22:43:49 2019
+
+Rank 35 ready to exit at: Sat Mar 16 22:43:49 2019
+
+Rank 25 ready to exit at: Sat Mar 16 22:43:49 2019
+
+Rank 45 ready to exit at: Sat Mar 16 22:43:49 2019
+
+Rank 6 ready to exit at: Sat Mar 16 22:43:49 2019
+
+Rank 3 ready to exit at: Sat Mar 16 22:43:49 2019
+
+Rank 46 ready to exit at: Sat Mar 16 22:43:49 2019
+
+Rank 37 ready to exit at: Sat Mar 16 22:43:49 2019
+
+Rank 4 ready to exit at: Sat Mar 16 22:43:49 2019
+
+Rank 36 ready to exit at: Sat Mar 16 22:43:49 2019
+
+Rank 43 ready to exit at: Sat Mar 16 22:43:49 2019
+
+Rank 44 ready to exit at: Sat Mar 16 22:43:49 2019
+
+Rank 5 ready to exit at: Sat Mar 16 22:43:49 2019
+
+Rank 11 ready to exit at: Sat Mar 16 22:43:49 2019
+
+Rank 47 ready to exit at: Sat Mar 16 22:43:49 2019
+
+Rank 24 ready to exit at: Sat Mar 16 22:43:49 2019
+
+Rank 28 ready to exit at: Sat Mar 16 22:43:49 2019
+
+Rank 13 ready to exit at: Sat Mar 16 22:43:49 2019
+
+Rank 30 ready to exit at: Sat Mar 16 22:43:49 2019
+
+Rank 14 ready to exit at: Sat Mar 16 22:43:49 2019
+
+Rank 23 ready to exit at: Sat Mar 16 22:43:49 2019
+
+Rank 39 ready to exit at: Sat Mar 16 22:43:49 2019
+
+Rank 9 ready to exit at: Sat Mar 16 22:43:49 2019
+
+Rank 7 ready to exit at: Sat Mar 16 22:43:49 2019
+
+Rank 40 ready to exit at: Sat Mar 16 22:43:49 2019
+
+Rank 12 ready to exit at: Sat Mar 16 22:43:49 2019
+
+Rank 8 ready to exit at: Sat Mar 16 22:43:49 2019
+
+Rank 31 ready to exit at: Sat Mar 16 22:43:49 2019
+
+Rank 15 ready to exit at: Sat Mar 16 22:43:49 2019
+
+Rank 16 ready to exit at: Sat Mar 16 22:43:49 2019
+
+Rank 32 ready to exit at: Sat Mar 16 22:43:49 2019
+
+Rank 0 ready to exit at: Sat Mar 16 22:43:49 2019
+
+Finding sum using 2 threads took: 462.024 ms, sum = 1.000000e+09
 TACC:  Shutdown complete. Exiting. 
 =======================================================================
-TACC:  Starting up job 3016184 
+TACC:  Starting up job 3129209 
 TACC:  Starting parallel tasks... 
-Finding sum using 4 threads took: 924.831 ms, sum = 3.000000e+09
+MPI rank 37 / 48 launched
+MPI rank 46 / 48 launched
+Rank 45 before barrier at: Sat Mar 16 22:43:50 2019
+
+MPI rank 11 / 48 launched
+MPI rank 19 / 48 launched
+MPI rank 22 / 48 launched
+MPI rank 33 / 48 launched
+Rank 32 before barrier at: Sat Mar 16 22:43:50 2019
+
+Rank 36 before barrier at: Sat Mar 16 22:43:50 2019
+
+MPI rank 36 / 48 launched
+MPI rank 44 / 48 launched
+Rank 10 before barrier at: Sat Mar 16 22:43:50 2019
+
+Rank 18 before barrier at: Sat Mar 16 22:43:50 2019
+
+Rank 21 before barrier at: Sat Mar 16 22:43:50 2019
+
+Rank 35 before barrier at: Sat Mar 16 22:43:50 2019
+
+Rank 43 before barrier at: Sat Mar 16 22:43:50 2019
+
+MPI rank 6 / 48 launched
+MPI rank 43 / 48 launched
+MPI rank 5 / 48 launched
+MPI rank 28 / 48 launched
+Rank 5 before barrier at: Sat Mar 16 22:43:50 2019
+
+MPI rank 34 / 48 launched
+MPI rank 38 / 48 launched
+Rank 42 before barrier at: Sat Mar 16 22:43:50 2019
+
+MPI rank 47 / 48 launched
+MPI rank 3 / 48 launched
+Rank 4 before barrier at: Sat Mar 16 22:43:50 2019
+
+MPI rank 13 / 48 launched
+MPI rank 24 / 48 launched
+Rank 27 before barrier at: Sat Mar 16 22:43:50 2019
+
+MPI rank 30 / 48 launched
+MPI rank 41 / 48 launched
+MPI rank 1 / 48 launched
+MPI rank 2 / 48 launched
+Rank 1 before barrier at: Sat Mar 16 22:43:50 2019
+
+MPI rank 4 / 48 launched
+MPI rank 8 / 48 launched
+MPI rank 14 / 48 launched
+MPI rank 15 / 48 launched
+MPI rank 16 / 48 launched
+Rank 15 before barrier at: Sat Mar 16 22:43:50 2019
+
+MPI rank 18 / 48 launched
+MPI rank 20 / 48 launched
+Rank 19 before barrier at: Sat Mar 16 22:43:50 2019
+
+MPI rank 21 / 48 launched
+MPI rank 27 / 48 launched
+Rank 26 before barrier at: Sat Mar 16 22:43:50 2019
+
+Rank 33 before barrier at: Sat Mar 16 22:43:50 2019
+
+MPI rank 35 / 48 launched
+Rank 34 before barrier at: Sat Mar 16 22:43:50 2019
+
+Rank 37 before barrier at: Sat Mar 16 22:43:50 2019
+
+MPI rank 39 / 48 launched
+Rank 38 before barrier at: Sat Mar 16 22:43:50 2019
+
+MPI rank 40 / 48 launched
+Rank 39 before barrier at: Sat Mar 16 22:43:50 2019
+
+Rank 46 before barrier at: Sat Mar 16 22:43:50 2019
+
+MPI rank 48 / 48 launched
+Rank 47 before barrier at: Sat Mar 16 22:43:50 2019
+
+Rank 2 before barrier at: Sat Mar 16 22:43:50 2019
+
+Rank 3 before barrier at: Sat Mar 16 22:43:50 2019
+
+MPI rank 7 / 48 launched
+Rank 6 before barrier at: Sat Mar 16 22:43:50 2019
+
+Rank 7 before barrier at: Sat Mar 16 22:43:50 2019
+
+MPI rank 9 / 48 launched
+Rank 8 before barrier at: Sat Mar 16 22:43:50 2019
+
+MPI rank 10 / 48 launched
+Rank 9 before barrier at: Sat Mar 16 22:43:50 2019
+
+MPI rank 12 / 48 launched
+Rank 11 before barrier at: Sat Mar 16 22:43:50 2019
+
+Rank 12 before barrier at: Sat Mar 16 22:43:50 2019
+
+Rank 13 before barrier at: Sat Mar 16 22:43:50 2019
+
+Rank 14 before barrier at: Sat Mar 16 22:43:50 2019
+
+MPI rank 17 / 48 launched
+Rank 16 before barrier at: Sat Mar 16 22:43:50 2019
+
+Rank 17 before barrier at: Sat Mar 16 22:43:50 2019
+
+Rank 20 before barrier at: Sat Mar 16 22:43:50 2019
+
+MPI rank 23 / 48 launched
+Rank 22 before barrier at: Sat Mar 16 22:43:50 2019
+
+Rank 23 before barrier at: Sat Mar 16 22:43:50 2019
+
+MPI rank 25 / 48 launched
+Rank 24 before barrier at: Sat Mar 16 22:43:50 2019
+
+MPI rank 26 / 48 launched
+Rank 25 before barrier at: Sat Mar 16 22:43:50 2019
+
+MPI rank 29 / 48 launched
+Rank 28 before barrier at: Sat Mar 16 22:43:50 2019
+
+Rank 29 before barrier at: Sat Mar 16 22:43:50 2019
+
+MPI rank 31 / 48 launched
+Rank 30 before barrier at: Sat Mar 16 22:43:50 2019
+
+MPI rank 32 / 48 launched
+Rank 31 before barrier at: Sat Mar 16 22:43:50 2019
+
+Rank 40 before barrier at: Sat Mar 16 22:43:50 2019
+
+MPI rank 42 / 48 launched
+Rank 41 before barrier at: Sat Mar 16 22:43:50 2019
+
+MPI rank 45 / 48 launched
+Rank 44 before barrier at: Sat Mar 16 22:43:50 2019
+
+Rank 0 before barrier at: Sat Mar 16 22:43:52 2019
+
+Rank 0 just past barrier at: Sat Mar 16 22:43:52 2019
+
+Rank 4 just past barrier at: Sat Mar 16 22:43:52 2019
+
+Rank 5 just past barrier at: Sat Mar 16 22:43:52 2019
+
+Rank 9 just past barrier at: Sat Mar 16 22:43:52 2019
+
+Rank 10 just past barrier at: Sat Mar 16 22:43:52 2019
+
+Rank 15 just past barrier at: Sat Mar 16 22:43:52 2019
+
+Rank 20 just past barrier at: Sat Mar 16 22:43:52 2019
+
+Rank 36 just past barrier at: Sat Mar 16 22:43:52 2019
+
+Rank 37 just past barrier at: Sat Mar 16 22:43:52 2019
+
+Rank 39 just past barrier at: Sat Mar 16 22:43:52 2019
+
+Rank 45 just past barrier at: Sat Mar 16 22:43:52 2019
+
+Rank 1 just past barrier at: Sat Mar 16 22:43:52 2019
+
+Rank 2 just past barrier at: Sat Mar 16 22:43:52 2019
+
+Rank 8 just past barrier at: Sat Mar 16 22:43:52 2019
+
+Rank 14 just past barrier at: Sat Mar 16 22:43:52 2019
+
+Rank 16 just past barrier at: Sat Mar 16 22:43:52 2019
+
+Rank 17 just past barrier at: Sat Mar 16 22:43:52 2019
+
+Rank 19 just past barrier at: Sat Mar 16 22:43:52 2019
+
+Rank 21 just past barrier at: Sat Mar 16 22:43:52 2019
+
+Rank 26 just past barrier at: Sat Mar 16 22:43:52 2019
+
+Rank 27 just past barrier at: Sat Mar 16 22:43:52 2019
+
+Rank 28 just past barrier at: Sat Mar 16 22:43:52 2019
+
+Rank 30 just past barrier at: Sat Mar 16 22:43:52 2019
+
+Rank 31 just past barrier at: Sat Mar 16 22:43:52 2019
+
+Rank 40 just past barrier at: Sat Mar 16 22:43:52 2019
+
+Rank 44 just past barrier at: Sat Mar 16 22:43:52 2019
+
+Rank 46 just past barrier at: Sat Mar 16 22:43:52 2019
+
+Rank 7 just past barrier at: Sat Mar 16 22:43:52 2019
+
+Rank 32 just past barrier at: Sat Mar 16 22:43:52 2019
+
+Rank 42 just past barrier at: Sat Mar 16 22:43:52 2019
+
+Rank 29 just past barrier at: Sat Mar 16 22:43:52 2019
+
+Rank 43 just past barrier at: Sat Mar 16 22:43:52 2019
+
+Rank 13 just past barrier at: Sat Mar 16 22:43:52 2019
+
+Rank 24 just past barrier at: Sat Mar 16 22:43:52 2019
+
+Rank 11 just past barrier at: Sat Mar 16 22:43:52 2019
+
+Rank 23 just past barrier at: Sat Mar 16 22:43:52 2019
+
+Rank 35 just past barrier at: Sat Mar 16 22:43:52 2019
+
+Rank 41 just past barrier at: Sat Mar 16 22:43:52 2019
+
+Rank 3 just past barrier at: Sat Mar 16 22:43:52 2019
+
+Rank 6 just past barrier at: Sat Mar 16 22:43:52 2019
+
+Rank 18 just past barrier at: Sat Mar 16 22:43:52 2019
+
+Rank 22 just past barrier at: Sat Mar 16 22:43:52 2019
+
+Rank 34 just past barrier at: Sat Mar 16 22:43:52 2019
+
+Rank 38 just past barrier at: Sat Mar 16 22:43:52 2019
+
+Rank 12 just past barrier at: Sat Mar 16 22:43:52 2019
+
+Rank 25 just past barrier at: Sat Mar 16 22:43:52 2019
+
+Rank 47 just past barrier at: Sat Mar 16 22:43:52 2019
+
+Rank 33 just past barrier at: Sat Mar 16 22:43:52 2019
+
+MPI Rank 0, thread 0 launched
+MPI Rank 0, thread 1 launched
+MPI Rank 0, thread 2 launched
+MPI Rank 0, thread 3 launched
+Calc done, MPI 0 thread 0 still exists
+Rank 17 ready to exit at: Sat Mar 16 22:43:52 2019
+
+Rank 42 ready to exit at: Sat Mar 16 22:43:52 2019
+
+Rank 26 ready to exit at: Sat Mar 16 22:43:52 2019
+
+Rank 33 ready to exit at: Sat Mar 16 22:43:52 2019
+
+Rank 22 ready to exit at: Sat Mar 16 22:43:52 2019
+
+Rank 34 ready to exit at: Sat Mar 16 22:43:52 2019
+
+Rank 18 ready to exit at: Sat Mar 16 22:43:52 2019
+
+Rank 30 ready to exit at: Sat Mar 16 22:43:52 2019
+
+Rank 35 ready to exit at: Sat Mar 16 22:43:52 2019
+
+Rank 37 ready to exit at: Sat Mar 16 22:43:52 2019
+
+Rank 46 ready to exit at: Sat Mar 16 22:43:52 2019
+
+Rank 1 ready to exit at: Sat Mar 16 22:43:52 2019
+
+Rank 2 ready to exit at: Sat Mar 16 22:43:52 2019
+
+Rank 38 ready to exit at: Sat Mar 16 22:43:52 2019
+
+Rank 10 ready to exit at: Sat Mar 16 22:43:52 2019
+
+Rank 20 ready to exit at: Sat Mar 16 22:43:52 2019
+
+Rank 28 ready to exit at: Sat Mar 16 22:43:52 2019
+
+Rank 25 ready to exit at: Sat Mar 16 22:43:52 2019
+
+Rank 19 ready to exit at: Sat Mar 16 22:43:52 2019
+
+Rank 21 ready to exit at: Sat Mar 16 22:43:52 2019
+
+Rank 6 ready to exit at: Sat Mar 16 22:43:52 2019
+
+Rank 41 ready to exit at: Sat Mar 16 22:43:52 2019
+
+Rank 23 ready to exit at: Sat Mar 16 22:43:52 2019
+
+Rank 39 ready to exit at: Sat Mar 16 22:43:52 2019
+
+Rank 5 ready to exit at: Sat Mar 16 22:43:52 2019
+
+Rank 14 ready to exit at: Sat Mar 16 22:43:52 2019
+
+Rank 27 ready to exit at: Sat Mar 16 22:43:52 2019
+
+Rank 36 ready to exit at: Sat Mar 16 22:43:52 2019
+
+Rank 3 ready to exit at: Sat Mar 16 22:43:52 2019
+
+Rank 24 ready to exit at: Sat Mar 16 22:43:52 2019
+
+Rank 40 ready to exit at: Sat Mar 16 22:43:52 2019
+
+Rank 29 ready to exit at: Sat Mar 16 22:43:52 2019
+
+Rank 4 ready to exit at: Sat Mar 16 22:43:52 2019
+
+Rank 45 ready to exit at: Sat Mar 16 22:43:52 2019
+
+Rank 44 ready to exit at: Sat Mar 16 22:43:52 2019
+
+Rank 9 ready to exit at: Sat Mar 16 22:43:52 2019
+
+Rank 43 ready to exit at: Sat Mar 16 22:43:52 2019
+
+Rank 7 ready to exit at: Sat Mar 16 22:43:52 2019
+
+Rank 12 ready to exit at: Sat Mar 16 22:43:52 2019
+
+Rank 31 ready to exit at: Sat Mar 16 22:43:52 2019
+
+Rank 16 ready to exit at: Sat Mar 16 22:43:52 2019
+
+Rank 8 ready to exit at: Sat Mar 16 22:43:52 2019
+
+Rank 13 ready to exit at: Sat Mar 16 22:43:52 2019
+
+Rank 11 ready to exit at: Sat Mar 16 22:43:52 2019
+
+Rank 47 ready to exit at: Sat Mar 16 22:43:52 2019
+
+Rank 15 ready to exit at: Sat Mar 16 22:43:52 2019
+
+Rank 32 ready to exit at: Sat Mar 16 22:43:52 2019
+
+Rank 0 ready to exit at: Sat Mar 16 22:43:52 2019
+
+Finding sum using 4 threads took: 325.090 ms, sum = 1.000000e+09
 TACC:  Shutdown complete. Exiting. 
-TACC:  Starting up job 3016184 
+TACC:  Starting up job 3129209 
 TACC:  Starting parallel tasks... 
-Finding sum using 4 threads took: 964.232 ms, sum = 3.000000e+09
+MPI rank 27 / 48 launched
+Rank 26 before barrier at: Sat Mar 16 22:43:53 2019
+
+MPI rank 46 / 48 launched
+Rank 45 before barrier at: Sat Mar 16 22:43:53 2019
+
+MPI rank 47 / 48 launched
+MPI rank 4 / 48 launched
+MPI rank 6 / 48 launched
+MPI rank 13 / 48 launched
+Rank 12 before barrier at: Sat Mar 16 22:43:53 2019
+
+MPI rank 21 / 48 launched
+Rank 20 before barrier at: Sat Mar 16 22:43:53 2019
+
+MPI rank 32 / 48 launched
+MPI rank 40 / 48 launched
+Rank 39 before barrier at: Sat Mar 16 22:43:53 2019
+
+Rank 3 before barrier at: Sat Mar 16 22:43:53 2019
+
+Rank 5 before barrier at: Sat Mar 16 22:43:53 2019
+
+MPI rank 8 / 48 launched
+Rank 7 before barrier at: Sat Mar 16 22:43:53 2019
+
+MPI rank 20 / 48 launched
+Rank 31 before barrier at: Sat Mar 16 22:43:53 2019
+
+Rank 46 before barrier at: Sat Mar 16 22:43:53 2019
+
+Rank 19 before barrier at: Sat Mar 16 22:43:53 2019
+
+MPI rank 14 / 48 launched
+MPI rank 31 / 48 launched
+MPI rank 42 / 48 launched
+MPI rank 3 / 48 launched
+Rank 2 before barrier at: Sat Mar 16 22:43:53 2019
+
+MPI rank 5 / 48 launched
+Rank 4 before barrier at: Sat Mar 16 22:43:53 2019
+
+MPI rank 7 / 48 launched
+Rank 6 before barrier at: Sat Mar 16 22:43:53 2019
+
+MPI rank 9 / 48 launched
+Rank 8 before barrier at: Sat Mar 16 22:43:53 2019
+
+MPI rank 11 / 48 launched
+Rank 10 before barrier at: Sat Mar 16 22:43:53 2019
+
+MPI rank 12 / 48 launched
+Rank 11 before barrier at: Sat Mar 16 22:43:53 2019
+
+Rank 13 before barrier at: Sat Mar 16 22:43:53 2019
+
+MPI rank 15 / 48 launched
+Rank 14 before barrier at: Sat Mar 16 22:43:53 2019
+
+MPI rank 16 / 48 launched
+Rank 15 before barrier at: Sat Mar 16 22:43:53 2019
+
+MPI rank 17 / 48 launched
+Rank 16 before barrier at: Sat Mar 16 22:43:53 2019
+
+MPI rank 22 / 48 launched
+Rank 21 before barrier at: Sat Mar 16 22:43:53 2019
+
+MPI rank 23 / 48 launched
+Rank 22 before barrier at: Sat Mar 16 22:43:53 2019
+
+MPI rank 28 / 48 launched
+Rank 27 before barrier at: Sat Mar 16 22:43:53 2019
+
+MPI rank 29 / 48 launched
+Rank 28 before barrier at: Sat Mar 16 22:43:53 2019
+
+MPI rank 30 / 48 launched
+Rank 29 before barrier at: Sat Mar 16 22:43:53 2019
+
+Rank 30 before barrier at: Sat Mar 16 22:43:53 2019
+
+MPI rank 33 / 48 launched
+Rank 32 before barrier at: Sat Mar 16 22:43:53 2019
+
+MPI rank 34 / 48 launched
+Rank 33 before barrier at: Sat Mar 16 22:43:53 2019
+
+MPI rank 35 / 48 launched
+Rank 34 before barrier at: Sat Mar 16 22:43:53 2019
+
+MPI rank 36 / 48 launched
+Rank 35 before barrier at: Sat Mar 16 22:43:53 2019
+
+MPI rank 38 / 48 launched
+Rank 37 before barrier at: Sat Mar 16 22:43:53 2019
+
+MPI rank 39 / 48 launched
+Rank 38 before barrier at: Sat Mar 16 22:43:53 2019
+
+Rank 41 before barrier at: Sat Mar 16 22:43:53 2019
+
+MPI rank 43 / 48 launched
+Rank 42 before barrier at: Sat Mar 16 22:43:53 2019
+
+MPI rank 44 / 48 launched
+Rank 43 before barrier at: Sat Mar 16 22:43:53 2019
+
+MPI rank 48 / 48 launched
+Rank 47 before barrier at: Sat Mar 16 22:43:53 2019
+
+MPI rank 1 / 48 launched
+MPI rank 10 / 48 launched
+Rank 9 before barrier at: Sat Mar 16 22:43:53 2019
+
+MPI rank 18 / 48 launched
+Rank 17 before barrier at: Sat Mar 16 22:43:53 2019
+
+MPI rank 19 / 48 launched
+Rank 18 before barrier at: Sat Mar 16 22:43:53 2019
+
+MPI rank 24 / 48 launched
+Rank 23 before barrier at: Sat Mar 16 22:43:53 2019
+
+MPI rank 25 / 48 launched
+Rank 24 before barrier at: Sat Mar 16 22:43:53 2019
+
+MPI rank 26 / 48 launched
+Rank 25 before barrier at: Sat Mar 16 22:43:53 2019
+
+MPI rank 37 / 48 launched
+Rank 36 before barrier at: Sat Mar 16 22:43:53 2019
+
+MPI rank 41 / 48 launched
+Rank 40 before barrier at: Sat Mar 16 22:43:53 2019
+
+MPI rank 45 / 48 launched
+Rank 44 before barrier at: Sat Mar 16 22:43:53 2019
+
+MPI rank 2 / 48 launched
+Rank 1 before barrier at: Sat Mar 16 22:43:53 2019
+
+Rank 0 before barrier at: Sat Mar 16 22:43:56 2019
+
+Rank 0 just past barrier at: Sat Mar 16 22:43:56 2019
+
+Rank 18 just past barrier at: Sat Mar 16 22:43:56 2019
+
+Rank 20 just past barrier at: Sat Mar 16 22:43:56 2019
+
+Rank 26 just past barrier at: Sat Mar 16 22:43:56 2019
+
+Rank 45 just past barrier at: Sat Mar 16 22:43:56 2019
+
+Rank 1 just past barrier at: Sat Mar 16 22:43:56 2019
+
+Rank 2 just past barrier at: Sat Mar 16 22:43:56 2019
+
+Rank 4 just past barrier at: Sat Mar 16 22:43:56 2019
+
+Rank 6 just past barrier at: Sat Mar 16 22:43:56 2019
+
+Rank 7 just past barrier at: Sat Mar 16 22:43:56 2019
+
+Rank 9 just past barrier at: Sat Mar 16 22:43:56 2019
+
+Rank 11 just past barrier at: Sat Mar 16 22:43:56 2019
+
+Rank 13 just past barrier at: Sat Mar 16 22:43:56 2019
+
+Rank 22 just past barrier at: Sat Mar 16 22:43:56 2019
+
+Rank 24 just past barrier at: Sat Mar 16 22:43:56 2019
+
+Rank 28 just past barrier at: Sat Mar 16 22:43:56 2019
+
+Rank 32 just past barrier at: Sat Mar 16 22:43:56 2019
+
+Rank 34 just past barrier at: Sat Mar 16 22:43:56 2019
+
+Rank 35 just past barrier at: Sat Mar 16 22:43:56 2019
+
+Rank 36 just past barrier at: Sat Mar 16 22:43:56 2019
+
+Rank 37 just past barrier at: Sat Mar 16 22:43:56 2019
+
+Rank 39 just past barrier at: Sat Mar 16 22:43:56 2019
+
+Rank 40 just past barrier at: Sat Mar 16 22:43:56 2019
+
+Rank 44 just past barrier at: Sat Mar 16 22:43:56 2019
+
+Rank 47 just past barrier at: Sat Mar 16 22:43:56 2019
+
+Rank 38 just past barrier at: Sat Mar 16 22:43:56 2019
+
+Rank 46 just past barrier at: Sat Mar 16 22:43:56 2019
+
+Rank 8 just past barrier at: Sat Mar 16 22:43:56 2019
+
+Rank 12 just past barrier at: Sat Mar 16 22:43:56 2019
+
+Rank 19 just past barrier at: Sat Mar 16 22:43:56 2019
+
+Rank 3 just past barrier at: Sat Mar 16 22:43:56 2019
+
+Rank 15 just past barrier at: Sat Mar 16 22:43:56 2019
+
+Rank 23 just past barrier at: Sat Mar 16 22:43:56 2019
+
+Rank 29 just past barrier at: Sat Mar 16 22:43:56 2019
+
+Rank 41 just past barrier at: Sat Mar 16 22:43:56 2019
+
+Rank 5 just past barrier at: Sat Mar 16 22:43:56 2019
+
+Rank 10 just past barrier at: Sat Mar 16 22:43:56 2019
+
+Rank 14 just past barrier at: Sat Mar 16 22:43:56 2019
+
+Rank 17 just past barrier at: Sat Mar 16 22:43:56 2019
+
+Rank 25 just past barrier at: Sat Mar 16 22:43:56 2019
+
+Rank 30 just past barrier at: Sat Mar 16 22:43:56 2019
+
+Rank 42 just past barrier at: Sat Mar 16 22:43:56 2019
+
+Rank 43 just past barrier at: Sat Mar 16 22:43:56 2019
+
+Rank 16 just past barrier at: Sat Mar 16 22:43:56 2019
+
+Rank 21 just past barrier at: Sat Mar 16 22:43:56 2019
+
+Rank 27 just past barrier at: Sat Mar 16 22:43:56 2019
+
+Rank 31 just past barrier at: Sat Mar 16 22:43:56 2019
+
+Rank 33 just past barrier at: Sat Mar 16 22:43:56 2019
+
+MPI Rank 0, thread 0 launched
+MPI Rank 0, thread 2 launched
+MPI Rank 0, thread 1 launched
+MPI Rank 0, thread 3 launched
+Calc done, MPI 0 thread 0 still exists
+Rank 18 ready to exit at: Sat Mar 16 22:43:56 2019
+
+Rank 33 ready to exit at: Sat Mar 16 22:43:56 2019
+
+Rank 20 ready to exit at: Sat Mar 16 22:43:56 2019
+
+Rank 36 ready to exit at: Sat Mar 16 22:43:56 2019
+
+Rank 38 ready to exit at: Sat Mar 16 22:43:56 2019
+
+Rank 34 ready to exit at: Sat Mar 16 22:43:56 2019
+
+Rank 35 ready to exit at: Sat Mar 16 22:43:56 2019
+
+Rank 2 ready to exit at: Sat Mar 16 22:43:56 2019
+
+Rank 1 ready to exit at: Sat Mar 16 22:43:56 2019
+
+Rank 17 ready to exit at: Sat Mar 16 22:43:56 2019
+
+Rank 37 ready to exit at: Sat Mar 16 22:43:56 2019
+
+Rank 22 ready to exit at: Sat Mar 16 22:43:56 2019
+
+Rank 25 ready to exit at: Sat Mar 16 22:43:56 2019
+
+Rank 28 ready to exit at: Sat Mar 16 22:43:56 2019
+
+Rank 21 ready to exit at: Sat Mar 16 22:43:56 2019
+
+Rank 5 ready to exit at: Sat Mar 16 22:43:56 2019
+
+Rank 4 ready to exit at: Sat Mar 16 22:43:56 2019
+
+Rank 29 ready to exit at: Sat Mar 16 22:43:56 2019
+
+Rank 30 ready to exit at: Sat Mar 16 22:43:56 2019
+
+Rank 39 ready to exit at: Sat Mar 16 22:43:56 2019
+
+Rank 41 ready to exit at: Sat Mar 16 22:43:56 2019
+
+Rank 44 ready to exit at: Sat Mar 16 22:43:56 2019
+
+Rank 45 ready to exit at: Sat Mar 16 22:43:56 2019
+
+Rank 19 ready to exit at: Sat Mar 16 22:43:56 2019
+
+Rank 6 ready to exit at: Sat Mar 16 22:43:56 2019
+
+Rank 3 ready to exit at: Sat Mar 16 22:43:56 2019
+
+Rank 9 ready to exit at: Sat Mar 16 22:43:56 2019
+
+Rank 27 ready to exit at: Sat Mar 16 22:43:56 2019
+
+Rank 42 ready to exit at: Sat Mar 16 22:43:56 2019
+
+Rank 13 ready to exit at: Sat Mar 16 22:43:56 2019
+
+Rank 24 ready to exit at: Sat Mar 16 22:43:56 2019
+
+Rank 23 ready to exit at: Sat Mar 16 22:43:56 2019
+
+Rank 8 ready to exit at: Sat Mar 16 22:43:56 2019
+
+Rank 26 ready to exit at: Sat Mar 16 22:43:56 2019
+
+Rank 10 ready to exit at: Sat Mar 16 22:43:56 2019
+
+Rank 40 ready to exit at: Sat Mar 16 22:43:56 2019
+
+Rank 12 ready to exit at: Sat Mar 16 22:43:56 2019
+
+Rank 46 ready to exit at: Sat Mar 16 22:43:56 2019
+
+Rank 43 ready to exit at: Sat Mar 16 22:43:56 2019
+
+Rank 14 ready to exit at: Sat Mar 16 22:43:56 2019
+
+Rank 7 ready to exit at: Sat Mar 16 22:43:56 2019
+
+Rank 16 ready to exit at: Sat Mar 16 22:43:56 2019
+
+Rank 31 ready to exit at: Sat Mar 16 22:43:56 2019
+
+Rank 47 ready to exit at: Sat Mar 16 22:43:56 2019
+
+Rank 11 ready to exit at: Sat Mar 16 22:43:56 2019
+
+Rank 15 ready to exit at: Sat Mar 16 22:43:56 2019
+
+Rank 32 ready to exit at: Sat Mar 16 22:43:56 2019
+
+Rank 0 ready to exit at: Sat Mar 16 22:43:56 2019
+
+Finding sum using 4 threads took: 325.294 ms, sum = 1.000000e+09
 TACC:  Shutdown complete. Exiting. 
-TACC:  Starting up job 3016184 
+TACC:  Starting up job 3129209 
 TACC:  Starting parallel tasks... 
-Finding sum using 4 threads took: 965.215 ms, sum = 3.000000e+09
+MPI rank 7 / 48 launched
+Rank 6 before barrier at: Sat Mar 16 22:43:57 2019
+
+MPI rank 18 / 48 launched
+MPI rank 20 / 48 launched
+Rank 19 before barrier at: Sat Mar 16 22:43:57 2019
+
+MPI rank 1 / 48 launched
+Rank 17 before barrier at: Sat Mar 16 22:43:57 2019
+
+MPI rank 48 / 48 launched
+MPI rank 9 / 48 launched
+Rank 8 before barrier at: Sat Mar 16 22:43:57 2019
+
+Rank 47 before barrier at: Sat Mar 16 22:43:57 2019
+
+MPI rank 8 / 48 launched
+MPI rank 32 / 48 launched
+MPI rank 36 / 48 launched
+MPI rank 38 / 48 launched
+MPI rank 46 / 48 launched
+MPI rank 11 / 48 launched
+MPI rank 26 / 48 launched
+MPI rank 41 / 48 launched
+MPI rank 42 / 48 launched
+MPI rank 5 / 48 launched
+Rank 7 before barrier at: Sat Mar 16 22:43:57 2019
+
+MPI rank 14 / 48 launched
+MPI rank 17 / 48 launched
+MPI rank 21 / 48 launched
+Rank 31 before barrier at: Sat Mar 16 22:43:57 2019
+
+Rank 35 before barrier at: Sat Mar 16 22:43:57 2019
+
+Rank 37 before barrier at: Sat Mar 16 22:43:57 2019
+
+MPI rank 40 / 48 launched
+Rank 39 before barrier at: Sat Mar 16 22:43:57 2019
+
+Rank 45 before barrier at: Sat Mar 16 22:43:57 2019
+
+MPI rank 2 / 48 launched
+MPI rank 4 / 48 launched
+MPI rank 6 / 48 launched
+MPI rank 10 / 48 launched
+Rank 10 before barrier at: Sat Mar 16 22:43:57 2019
+
+MPI rank 13 / 48 launched
+Rank 13 before barrier at: Sat Mar 16 22:43:57 2019
+
+MPI rank 15 / 48 launched
+Rank 14 before barrier at: Sat Mar 16 22:43:57 2019
+
+MPI rank 16 / 48 launched
+Rank 15 before barrier at: Sat Mar 16 22:43:57 2019
+
+MPI rank 19 / 48 launched
+Rank 18 before barrier at: Sat Mar 16 22:43:57 2019
+
+Rank 20 before barrier at: Sat Mar 16 22:43:57 2019
+
+MPI rank 22 / 48 launched
+Rank 21 before barrier at: Sat Mar 16 22:43:57 2019
+
+MPI rank 23 / 48 launched
+Rank 22 before barrier at: Sat Mar 16 22:43:57 2019
+
+MPI rank 24 / 48 launched
+Rank 23 before barrier at: Sat Mar 16 22:43:57 2019
+
+MPI rank 25 / 48 launched
+Rank 24 before barrier at: Sat Mar 16 22:43:57 2019
+
+Rank 25 before barrier at: Sat Mar 16 22:43:57 2019
+
+MPI rank 27 / 48 launched
+Rank 26 before barrier at: Sat Mar 16 22:43:57 2019
+
+MPI rank 28 / 48 launched
+Rank 27 before barrier at: Sat Mar 16 22:43:57 2019
+
+MPI rank 29 / 48 launched
+Rank 28 before barrier at: Sat Mar 16 22:43:57 2019
+
+MPI rank 30 / 48 launched
+Rank 29 before barrier at: Sat Mar 16 22:43:57 2019
+
+MPI rank 31 / 48 launched
+Rank 30 before barrier at: Sat Mar 16 22:43:57 2019
+
+MPI rank 33 / 48 launched
+Rank 32 before barrier at: Sat Mar 16 22:43:57 2019
+
+MPI rank 34 / 48 launched
+Rank 33 before barrier at: Sat Mar 16 22:43:57 2019
+
+MPI rank 35 / 48 launched
+Rank 34 before barrier at: Sat Mar 16 22:43:57 2019
+
+MPI rank 37 / 48 launched
+Rank 36 before barrier at: Sat Mar 16 22:43:57 2019
+
+MPI rank 39 / 48 launched
+Rank 38 before barrier at: Sat Mar 16 22:43:57 2019
+
+Rank 40 before barrier at: Sat Mar 16 22:43:57 2019
+
+Rank 41 before barrier at: Sat Mar 16 22:43:57 2019
+
+MPI rank 45 / 48 launched
+Rank 44 before barrier at: Sat Mar 16 22:43:57 2019
+
+MPI rank 47 / 48 launched
+Rank 46 before barrier at: Sat Mar 16 22:43:57 2019
+
+Rank 1 before barrier at: Sat Mar 16 22:43:57 2019
+
+MPI rank 3 / 48 launched
+Rank 2 before barrier at: Sat Mar 16 22:43:57 2019
+
+Rank 3 before barrier at: Sat Mar 16 22:43:57 2019
+
+Rank 4 before barrier at: Sat Mar 16 22:43:57 2019
+
+Rank 5 before barrier at: Sat Mar 16 22:43:57 2019
+
+Rank 9 before barrier at: Sat Mar 16 22:43:57 2019
+
+MPI rank 12 / 48 launched
+Rank 11 before barrier at: Sat Mar 16 22:43:57 2019
+
+Rank 12 before barrier at: Sat Mar 16 22:43:57 2019
+
+Rank 16 before barrier at: Sat Mar 16 22:43:57 2019
+
+MPI rank 43 / 48 launched
+Rank 42 before barrier at: Sat Mar 16 22:43:57 2019
+
+MPI rank 44 / 48 launched
+Rank 43 before barrier at: Sat Mar 16 22:43:57 2019
+
+Rank 0 before barrier at: Sat Mar 16 22:43:59 2019
+
+Rank 0 just past barrier at: Sat Mar 16 22:43:59 2019
+
+Rank 1 just past barrier at: Sat Mar 16 22:43:59 2019
+
+Rank 11 just past barrier at: Sat Mar 16 22:43:59 2019
+
+Rank 12 just past barrier at: Sat Mar 16 22:43:59 2019
+
+Rank 13 just past barrier at: Sat Mar 16 22:43:59 2019
+
+Rank 15 just past barrier at: Sat Mar 16 22:43:59 2019
+
+Rank 19 just past barrier at: Sat Mar 16 22:43:59 2019
+
+Rank 23 just past barrier at: Sat Mar 16 22:43:59 2019
+
+Rank 25 just past barrier at: Sat Mar 16 22:43:59 2019
+
+Rank 28 just past barrier at: Sat Mar 16 22:43:59 2019
+
+Rank 29 just past barrier at: Sat Mar 16 22:43:59 2019
+
+Rank 30 just past barrier at: Sat Mar 16 22:43:59 2019
+
+Rank 34 just past barrier at: Sat Mar 16 22:43:59 2019
+
+Rank 35 just past barrier at: Sat Mar 16 22:43:59 2019
+
+Rank 36 just past barrier at: Sat Mar 16 22:43:59 2019
+
+Rank 40 just past barrier at: Sat Mar 16 22:43:59 2019
+
+Rank 44 just past barrier at: Sat Mar 16 22:43:59 2019
+
+Rank 20 just past barrier at: Sat Mar 16 22:43:59 2019
+
+Rank 38 just past barrier at: Sat Mar 16 22:43:59 2019
+
+Rank 6 just past barrier at: Sat Mar 16 22:43:59 2019
+
+Rank 8 just past barrier at: Sat Mar 16 22:43:59 2019
+
+Rank 32 just past barrier at: Sat Mar 16 22:43:59 2019
+
+Rank 3 just past barrier at: Sat Mar 16 22:43:59 2019
+
+Rank 5 just past barrier at: Sat Mar 16 22:43:59 2019
+
+Rank 7 just past barrier at: Sat Mar 16 22:43:59 2019
+
+Rank 37 just past barrier at: Sat Mar 16 22:43:59 2019
+
+Rank 45 just past barrier at: Sat Mar 16 22:43:59 2019
+
+Rank 2 just past barrier at: Sat Mar 16 22:43:59 2019
+
+Rank 9 just past barrier at: Sat Mar 16 22:43:59 2019
+
+Rank 16 just past barrier at: Sat Mar 16 22:43:59 2019
+
+Rank 26 just past barrier at: Sat Mar 16 22:43:59 2019
+
+Rank 27 just past barrier at: Sat Mar 16 22:43:59 2019
+
+Rank 39 just past barrier at: Sat Mar 16 22:43:59 2019
+
+Rank 10 just past barrier at: Sat Mar 16 22:43:59 2019
+
+Rank 46 just past barrier at: Sat Mar 16 22:43:59 2019
+
+Rank 4 just past barrier at: Sat Mar 16 22:43:59 2019
+
+Rank 14 just past barrier at: Sat Mar 16 22:43:59 2019
+
+Rank 17 just past barrier at: Sat Mar 16 22:43:59 2019
+
+Rank 18 just past barrier at: Sat Mar 16 22:43:59 2019
+
+Rank 21 just past barrier at: Sat Mar 16 22:43:59 2019
+
+Rank 31 just past barrier at: Sat Mar 16 22:43:59 2019
+
+Rank 41 just past barrier at: Sat Mar 16 22:43:59 2019
+
+Rank 42 just past barrier at: Sat Mar 16 22:43:59 2019
+
+Rank 22 just past barrier at: Sat Mar 16 22:43:59 2019
+
+Rank 33 just past barrier at: Sat Mar 16 22:43:59 2019
+
+Rank 47 just past barrier at: Sat Mar 16 22:43:59 2019
+
+Rank 24 just past barrier at: Sat Mar 16 22:43:59 2019
+
+Rank 43 just past barrier at: Sat Mar 16 22:43:59 2019
+
+MPI Rank 0, thread 0 launched
+MPI Rank 0, thread 1 launched
+MPI Rank 0, thread 2 launched
+MPI Rank 0, thread 3 launched
+Calc done, MPI 0 thread 0 still exists
+Rank 17 ready to exit at: Sat Mar 16 22:43:59 2019
+
+Rank 26 ready to exit at: Sat Mar 16 22:43:59 2019
+
+Rank 41 ready to exit at: Sat Mar 16 22:43:59 2019
+
+Rank 42 ready to exit at: Sat Mar 16 22:43:59 2019
+
+Rank 25 ready to exit at: Sat Mar 16 22:43:59 2019
+
+Rank 33 ready to exit at: Sat Mar 16 22:43:59 2019
+
+Rank 35 ready to exit at: Sat Mar 16 22:43:59 2019
+
+Rank 18 ready to exit at: Sat Mar 16 22:43:59 2019
+
+Rank 1 ready to exit at: Sat Mar 16 22:43:59 2019
+
+Rank 27 ready to exit at: Sat Mar 16 22:43:59 2019
+
+Rank 34 ready to exit at: Sat Mar 16 22:43:59 2019
+
+Rank 19 ready to exit at: Sat Mar 16 22:43:59 2019
+
+Rank 37 ready to exit at: Sat Mar 16 22:43:59 2019
+
+Rank 20 ready to exit at: Sat Mar 16 22:43:59 2019
+
+Rank 2 ready to exit at: Sat Mar 16 22:43:59 2019
+
+Rank 3 ready to exit at: Sat Mar 16 22:43:59 2019
+
+Rank 10 ready to exit at: Sat Mar 16 22:43:59 2019
+
+Rank 9 ready to exit at: Sat Mar 16 22:43:59 2019
+
+Rank 21 ready to exit at: Sat Mar 16 22:43:59 2019
+
+Rank 22 ready to exit at: Sat Mar 16 22:43:59 2019
+
+Rank 36 ready to exit at: Sat Mar 16 22:43:59 2019
+
+Rank 43 ready to exit at: Sat Mar 16 22:43:59 2019
+
+Rank 23 ready to exit at: Sat Mar 16 22:43:59 2019
+
+Rank 5 ready to exit at: Sat Mar 16 22:43:59 2019
+
+Rank 11 ready to exit at: Sat Mar 16 22:43:59 2019
+
+Rank 45 ready to exit at: Sat Mar 16 22:43:59 2019
+
+Rank 29 ready to exit at: Sat Mar 16 22:43:59 2019
+
+Rank 4 ready to exit at: Sat Mar 16 22:43:59 2019
+
+Rank 38 ready to exit at: Sat Mar 16 22:43:59 2019
+
+Rank 13 ready to exit at: Sat Mar 16 22:43:59 2019
+
+Rank 44 ready to exit at: Sat Mar 16 22:43:59 2019
+
+Rank 46 ready to exit at: Sat Mar 16 22:43:59 2019
+
+Rank 28 ready to exit at: Sat Mar 16 22:43:59 2019
+
+Rank 39 ready to exit at: Sat Mar 16 22:43:59 2019
+
+Rank 7 ready to exit at: Sat Mar 16 22:43:59 2019
+
+Rank 30 ready to exit at: Sat Mar 16 22:43:59 2019
+
+Rank 6 ready to exit at: Sat Mar 16 22:43:59 2019
+
+Rank 47 ready to exit at: Sat Mar 16 22:43:59 2019
+
+Rank 24 ready to exit at: Sat Mar 16 22:43:59 2019
+
+Rank 31 ready to exit at: Sat Mar 16 22:43:59 2019
+
+Rank 14 ready to exit at: Sat Mar 16 22:44:00 2019
+
+Rank 40 ready to exit at: Sat Mar 16 22:44:00 2019
+
+Rank 12 ready to exit at: Sat Mar 16 22:44:00 2019
+
+Rank 15 ready to exit at: Sat Mar 16 22:44:00 2019
+
+Rank 16 ready to exit at: Sat Mar 16 22:44:00 2019
+
+Rank 8 ready to exit at: Sat Mar 16 22:44:00 2019
+
+Rank 32 ready to exit at: Sat Mar 16 22:44:00 2019
+
+Rank 0 ready to exit at: Sat Mar 16 22:44:00 2019
+
+Finding sum using 4 threads took: 323.456 ms, sum = 1.000000e+09
 TACC:  Shutdown complete. Exiting. 
-TACC:  Starting up job 3016184 
+TACC:  Starting up job 3129209 
 TACC:  Starting parallel tasks... 
-Finding sum using 4 threads took: 853.970 ms, sum = 3.000000e+09
+MPI rank 15 / 48 launched
+MPI rank 39 / 48 launched
+Rank 38 before barrier at: Sat Mar 16 22:44:00 2019
+
+MPI rank 41 / 48 launched
+Rank 40 before barrier at: Sat Mar 16 22:44:00 2019
+
+MPI rank 2 / 48 launched
+Rank 1 before barrier at: Sat Mar 16 22:44:00 2019
+
+MPI rank 5 / 48 launched
+MPI rank 11 / 48 launched
+Rank 14 before barrier at: Sat Mar 16 22:44:00 2019
+
+MPI rank 23 / 48 launched
+MPI rank 27 / 48 launched
+Rank 26 before barrier at: Sat Mar 16 22:44:00 2019
+
+MPI rank 33 / 48 launched
+Rank 32 before barrier at: Sat Mar 16 22:44:00 2019
+
+MPI rank 42 / 48 launched
+Rank 41 before barrier at: Sat Mar 16 22:44:00 2019
+
+MPI rank 43 / 48 launched
+Rank 42 before barrier at: Sat Mar 16 22:44:00 2019
+
+MPI rank 45 / 48 launched
+Rank 44 before barrier at: Sat Mar 16 22:44:00 2019
+
+MPI rank 46 / 48 launched
+Rank 45 before barrier at: Sat Mar 16 22:44:00 2019
+
+Rank 4 before barrier at: Sat Mar 16 22:44:00 2019
+
+MPI rank 6 / 48 launched
+MPI rank 7 / 48 launched
+Rank 6 before barrier at: Sat Mar 16 22:44:00 2019
+
+MPI rank 8 / 48 launched
+Rank 7 before barrier at: Sat Mar 16 22:44:00 2019
+
+MPI rank 10 / 48 launched
+Rank 9 before barrier at: Sat Mar 16 22:44:00 2019
+
+Rank 10 before barrier at: Sat Mar 16 22:44:00 2019
+
+MPI rank 12 / 48 launched
+Rank 11 before barrier at: Sat Mar 16 22:44:00 2019
+
+MPI rank 13 / 48 launched
+MPI rank 14 / 48 launched
+Rank 13 before barrier at: Sat Mar 16 22:44:00 2019
+
+MPI rank 16 / 48 launched
+Rank 15 before barrier at: Sat Mar 16 22:44:00 2019
+
+MPI rank 19 / 48 launched
+Rank 18 before barrier at: Sat Mar 16 22:44:00 2019
+
+MPI rank 21 / 48 launched
+Rank 20 before barrier at: Sat Mar 16 22:44:00 2019
+
+Rank 22 before barrier at: Sat Mar 16 22:44:00 2019
+
+MPI rank 24 / 48 launched
+Rank 23 before barrier at: Sat Mar 16 22:44:00 2019
+
+MPI rank 25 / 48 launched
+Rank 24 before barrier at: Sat Mar 16 22:44:00 2019
+
+MPI rank 28 / 48 launched
+Rank 27 before barrier at: Sat Mar 16 22:44:00 2019
+
+MPI rank 29 / 48 launched
+Rank 28 before barrier at: Sat Mar 16 22:44:00 2019
+
+MPI rank 38 / 48 launched
+Rank 37 before barrier at: Sat Mar 16 22:44:00 2019
+
+MPI rank 44 / 48 launched
+Rank 43 before barrier at: Sat Mar 16 22:44:00 2019
+
+MPI rank 47 / 48 launched
+Rank 46 before barrier at: Sat Mar 16 22:44:00 2019
+
+MPI rank 3 / 48 launched
+Rank 2 before barrier at: Sat Mar 16 22:44:00 2019
+
+Rank 5 before barrier at: Sat Mar 16 22:44:00 2019
+
+Rank 12 before barrier at: Sat Mar 16 22:44:00 2019
+
+MPI rank 17 / 48 launched
+MPI rank 26 / 48 launched
+MPI rank 48 / 48 launched
+Rank 47 before barrier at: Sat Mar 16 22:44:00 2019
+
+Rank 16 before barrier at: Sat Mar 16 22:44:00 2019
+
+MPI rank 40 / 48 launched
+Rank 25 before barrier at: Sat Mar 16 22:44:00 2019
+
+MPI rank 32 / 48 launched
+MPI rank 36 / 48 launched
+Rank 39 before barrier at: Sat Mar 16 22:44:00 2019
+
+MPI rank 4 / 48 launched
+MPI rank 9 / 48 launched
+MPI rank 18 / 48 launched
+MPI rank 20 / 48 launched
+MPI rank 31 / 48 launched
+MPI rank 34 / 48 launched
+MPI rank 1 / 48 launched
+Rank 3 before barrier at: Sat Mar 16 22:44:00 2019
+
+Rank 8 before barrier at: Sat Mar 16 22:44:00 2019
+
+Rank 19 before barrier at: Sat Mar 16 22:44:00 2019
+
+MPI rank 22 / 48 launched
+Rank 21 before barrier at: Sat Mar 16 22:44:00 2019
+
+MPI rank 30 / 48 launched
+Rank 30 before barrier at: Sat Mar 16 22:44:00 2019
+
+Rank 31 before barrier at: Sat Mar 16 22:44:00 2019
+
+MPI rank 35 / 48 launched
+Rank 35 before barrier at: Sat Mar 16 22:44:00 2019
+
+MPI rank 37 / 48 launched
+Rank 17 before barrier at: Sat Mar 16 22:44:00 2019
+
+Rank 29 before barrier at: Sat Mar 16 22:44:00 2019
+
+Rank 33 before barrier at: Sat Mar 16 22:44:00 2019
+
+Rank 34 before barrier at: Sat Mar 16 22:44:00 2019
+
+Rank 36 before barrier at: Sat Mar 16 22:44:00 2019
+
+Rank 0 before barrier at: Sat Mar 16 22:44:03 2019
+
+Rank 0 just past barrier at: Sat Mar 16 22:44:03 2019
+
+Rank 4 just past barrier at: Sat Mar 16 22:44:03 2019
+
+Rank 6 just past barrier at: Sat Mar 16 22:44:03 2019
+
+Rank 7 just past barrier at: Sat Mar 16 22:44:03 2019
+
+Rank 11 just past barrier at: Sat Mar 16 22:44:03 2019
+
+Rank 12 just past barrier at: Sat Mar 16 22:44:03 2019
+
+Rank 16 just past barrier at: Sat Mar 16 22:44:03 2019
+
+Rank 17 just past barrier at: Sat Mar 16 22:44:03 2019
+
+Rank 21 just past barrier at: Sat Mar 16 22:44:03 2019
+
+Rank 22 just past barrier at: Sat Mar 16 22:44:03 2019
+
+Rank 23 just past barrier at: Sat Mar 16 22:44:03 2019
+
+Rank 24 just past barrier at: Sat Mar 16 22:44:03 2019
+
+Rank 26 just past barrier at: Sat Mar 16 22:44:03 2019
+
+Rank 27 just past barrier at: Sat Mar 16 22:44:03 2019
+
+Rank 30 just past barrier at: Sat Mar 16 22:44:03 2019
+
+Rank 32 just past barrier at: Sat Mar 16 22:44:03 2019
+
+Rank 34 just past barrier at: Sat Mar 16 22:44:03 2019
+
+Rank 35 just past barrier at: Sat Mar 16 22:44:03 2019
+
+Rank 38 just past barrier at: Sat Mar 16 22:44:03 2019
+
+Rank 40 just past barrier at: Sat Mar 16 22:44:03 2019
+
+Rank 41 just past barrier at: Sat Mar 16 22:44:03 2019
+
+Rank 42 just past barrier at: Sat Mar 16 22:44:03 2019
+
+Rank 43 just past barrier at: Sat Mar 16 22:44:03 2019
+
+Rank 45 just past barrier at: Sat Mar 16 22:44:03 2019
+
+Rank 3 just past barrier at: Sat Mar 16 22:44:03 2019
+
+Rank 28 just past barrier at: Sat Mar 16 22:44:03 2019
+
+Rank 29 just past barrier at: Sat Mar 16 22:44:03 2019
+
+Rank 33 just past barrier at: Sat Mar 16 22:44:03 2019
+
+Rank 1 just past barrier at: Sat Mar 16 22:44:03 2019
+
+Rank 5 just past barrier at: Sat Mar 16 22:44:03 2019
+
+Rank 31 just past barrier at: Sat Mar 16 22:44:03 2019
+
+Rank 44 just past barrier at: Sat Mar 16 22:44:03 2019
+
+Rank 8 just past barrier at: Sat Mar 16 22:44:03 2019
+
+Rank 18 just past barrier at: Sat Mar 16 22:44:03 2019
+
+Rank 20 just past barrier at: Sat Mar 16 22:44:03 2019
+
+Rank 36 just past barrier at: Sat Mar 16 22:44:03 2019
+
+Rank 9 just past barrier at: Sat Mar 16 22:44:03 2019
+
+Rank 14 just past barrier at: Sat Mar 16 22:44:03 2019
+
+Rank 25 just past barrier at: Sat Mar 16 22:44:03 2019
+
+Rank 2 just past barrier at: Sat Mar 16 22:44:03 2019
+
+Rank 10 just past barrier at: Sat Mar 16 22:44:03 2019
+
+Rank 13 just past barrier at: Sat Mar 16 22:44:03 2019
+
+Rank 39 just past barrier at: Sat Mar 16 22:44:03 2019
+
+Rank 15 just past barrier at: Sat Mar 16 22:44:03 2019
+
+Rank 19 just past barrier at: Sat Mar 16 22:44:03 2019
+
+Rank 37 just past barrier at: Sat Mar 16 22:44:03 2019
+
+Rank 46 just past barrier at: Sat Mar 16 22:44:03 2019
+
+Rank 47 just past barrier at: Sat Mar 16 22:44:03 2019
+
+MPI Rank 0, thread 0 launched
+MPI Rank 0, thread 1 launched
+MPI Rank 0, thread 2 launched
+MPI Rank 0, thread 3 launched
+Calc done, MPI 0 thread 0 still exists
+Rank 33 ready to exit at: Sat Mar 16 22:44:03 2019
+
+Rank 18 ready to exit at: Sat Mar 16 22:44:03 2019
+
+Rank 37 ready to exit at: Sat Mar 16 22:44:03 2019
+
+Rank 42 ready to exit at: Sat Mar 16 22:44:03 2019
+
+Rank 45 ready to exit at: Sat Mar 16 22:44:03 2019
+
+Rank 35 ready to exit at: Sat Mar 16 22:44:03 2019
+
+Rank 21 ready to exit at: Sat Mar 16 22:44:03 2019
+
+Rank 27 ready to exit at: Sat Mar 16 22:44:03 2019
+
+Rank 17 ready to exit at: Sat Mar 16 22:44:03 2019
+
+Rank 43 ready to exit at: Sat Mar 16 22:44:03 2019
+
+Rank 26 ready to exit at: Sat Mar 16 22:44:03 2019
+
+Rank 23 ready to exit at: Sat Mar 16 22:44:03 2019
+
+Rank 34 ready to exit at: Sat Mar 16 22:44:03 2019
+
+Rank 29 ready to exit at: Sat Mar 16 22:44:03 2019
+
+Rank 1 ready to exit at: Sat Mar 16 22:44:03 2019
+
+Rank 2 ready to exit at: Sat Mar 16 22:44:03 2019
+
+Rank 28 ready to exit at: Sat Mar 16 22:44:03 2019
+
+Rank 5 ready to exit at: Sat Mar 16 22:44:03 2019
+
+Rank 20 ready to exit at: Sat Mar 16 22:44:03 2019
+
+Rank 36 ready to exit at: Sat Mar 16 22:44:03 2019
+
+Rank 19 ready to exit at: Sat Mar 16 22:44:03 2019
+
+Rank 25 ready to exit at: Sat Mar 16 22:44:03 2019
+
+Rank 47 ready to exit at: Sat Mar 16 22:44:03 2019
+
+Rank 10 ready to exit at: Sat Mar 16 22:44:03 2019
+
+Rank 13 ready to exit at: Sat Mar 16 22:44:03 2019
+
+Rank 39 ready to exit at: Sat Mar 16 22:44:03 2019
+
+Rank 41 ready to exit at: Sat Mar 16 22:44:03 2019
+
+Rank 9 ready to exit at: Sat Mar 16 22:44:03 2019
+
+Rank 22 ready to exit at: Sat Mar 16 22:44:03 2019
+
+Rank 3 ready to exit at: Sat Mar 16 22:44:03 2019
+
+Rank 7 ready to exit at: Sat Mar 16 22:44:03 2019
+
+Rank 11 ready to exit at: Sat Mar 16 22:44:03 2019
+
+Rank 44 ready to exit at: Sat Mar 16 22:44:03 2019
+
+Rank 31 ready to exit at: Sat Mar 16 22:44:03 2019
+
+Rank 38 ready to exit at: Sat Mar 16 22:44:03 2019
+
+Rank 6 ready to exit at: Sat Mar 16 22:44:03 2019
+
+Rank 4 ready to exit at: Sat Mar 16 22:44:03 2019
+
+Rank 12 ready to exit at: Sat Mar 16 22:44:03 2019
+
+Rank 30 ready to exit at: Sat Mar 16 22:44:03 2019
+
+Rank 15 ready to exit at: Sat Mar 16 22:44:03 2019
+
+Rank 46 ready to exit at: Sat Mar 16 22:44:03 2019
+
+Rank 40 ready to exit at: Sat Mar 16 22:44:03 2019
+
+Rank 16 ready to exit at: Sat Mar 16 22:44:03 2019
+
+Rank 24 ready to exit at: Sat Mar 16 22:44:03 2019
+
+Rank 14 ready to exit at: Sat Mar 16 22:44:03 2019
+
+Rank 8 ready to exit at: Sat Mar 16 22:44:03 2019
+
+Rank 32 ready to exit at: Sat Mar 16 22:44:03 2019
+
+Rank 0 ready to exit at: Sat Mar 16 22:44:03 2019
+
+Finding sum using 4 threads took: 326.848 ms, sum = 1.000000e+09
 TACC:  Shutdown complete. Exiting. 
-TACC:  Starting up job 3016184 
+TACC:  Starting up job 3129209 
 TACC:  Starting parallel tasks... 
-Finding sum using 4 threads took: 977.713 ms, sum = 3.000000e+09
+MPI rank 2 / 48 launched
+Rank 1 before barrier at: Sat Mar 16 22:44:04 2019
+
+MPI rank 9 / 48 launched
+Rank 8 before barrier at: Sat Mar 16 22:44:04 2019
+
+MPI rank 12 / 48 launched
+Rank 11 before barrier at: Sat Mar 16 22:44:04 2019
+
+MPI rank 13 / 48 launched
+Rank 12 before barrier at: Sat Mar 16 22:44:04 2019
+
+MPI rank 14 / 48 launched
+Rank 13 before barrier at: Sat Mar 16 22:44:04 2019
+
+MPI rank 16 / 48 launched
+Rank 15 before barrier at: Sat Mar 16 22:44:04 2019
+
+MPI rank 17 / 48 launched
+Rank 16 before barrier at: Sat Mar 16 22:44:04 2019
+
+MPI rank 18 / 48 launched
+Rank 17 before barrier at: Sat Mar 16 22:44:04 2019
+
+MPI rank 30 / 48 launched
+Rank 29 before barrier at: Sat Mar 16 22:44:04 2019
+
+MPI rank 35 / 48 launched
+Rank 34 before barrier at: Sat Mar 16 22:44:04 2019
+
+MPI rank 39 / 48 launched
+Rank 38 before barrier at: Sat Mar 16 22:44:04 2019
+
+MPI rank 42 / 48 launched
+Rank 41 before barrier at: Sat Mar 16 22:44:04 2019
+
+MPI rank 45 / 48 launched
+Rank 44 before barrier at: Sat Mar 16 22:44:04 2019
+
+MPI rank 48 / 48 launched
+Rank 47 before barrier at: Sat Mar 16 22:44:04 2019
+
+MPI rank 5 / 48 launched
+Rank 4 before barrier at: Sat Mar 16 22:44:04 2019
+
+MPI rank 8 / 48 launched
+Rank 7 before barrier at: Sat Mar 16 22:44:04 2019
+
+MPI rank 11 / 48 launched
+Rank 10 before barrier at: Sat Mar 16 22:44:04 2019
+
+MPI rank 19 / 48 launched
+Rank 18 before barrier at: Sat Mar 16 22:44:04 2019
+
+MPI rank 27 / 48 launched
+Rank 26 before barrier at: Sat Mar 16 22:44:04 2019
+
+MPI rank 28 / 48 launched
+Rank 27 before barrier at: Sat Mar 16 22:44:04 2019
+
+MPI rank 31 / 48 launched
+Rank 30 before barrier at: Sat Mar 16 22:44:04 2019
+
+MPI rank 37 / 48 launched
+Rank 36 before barrier at: Sat Mar 16 22:44:04 2019
+
+MPI rank 22 / 48 launched
+MPI rank 29 / 48 launched
+MPI rank 7 / 48 launched
+MPI rank 20 / 48 launched
+MPI rank 21 / 48 launched
+MPI rank 26 / 48 launched
+MPI rank 6 / 48 launched
+MPI rank 10 / 48 launched
+Rank 21 before barrier at: Sat Mar 16 22:44:04 2019
+
+MPI rank 25 / 48 launched
+Rank 28 before barrier at: Sat Mar 16 22:44:04 2019
+
+MPI rank 33 / 48 launched
+MPI rank 38 / 48 launched
+MPI rank 41 / 48 launched
+MPI rank 43 / 48 launched
+MPI rank 47 / 48 launched
+Rank 46 before barrier at: Sat Mar 16 22:44:04 2019
+
+MPI rank 1 / 48 launched
+MPI rank 3 / 48 launched
+Rank 2 before barrier at: Sat Mar 16 22:44:04 2019
+
+MPI rank 4 / 48 launched
+Rank 6 before barrier at: Sat Mar 16 22:44:04 2019
+
+Rank 9 before barrier at: Sat Mar 16 22:44:04 2019
+
+MPI rank 15 / 48 launched
+Rank 14 before barrier at: Sat Mar 16 22:44:04 2019
+
+Rank 19 before barrier at: Sat Mar 16 22:44:04 2019
+
+Rank 20 before barrier at: Sat Mar 16 22:44:04 2019
+
+MPI rank 23 / 48 launched
+Rank 22 before barrier at: Sat Mar 16 22:44:04 2019
+
+MPI rank 24 / 48 launched
+Rank 23 before barrier at: Sat Mar 16 22:44:04 2019
+
+Rank 24 before barrier at: Sat Mar 16 22:44:04 2019
+
+Rank 25 before barrier at: Sat Mar 16 22:44:04 2019
+
+MPI rank 32 / 48 launched
+Rank 31 before barrier at: Sat Mar 16 22:44:04 2019
+
+Rank 32 before barrier at: Sat Mar 16 22:44:04 2019
+
+MPI rank 34 / 48 launched
+Rank 33 before barrier at: Sat Mar 16 22:44:04 2019
+
+MPI rank 36 / 48 launched
+Rank 35 before barrier at: Sat Mar 16 22:44:04 2019
+
+Rank 37 before barrier at: Sat Mar 16 22:44:04 2019
+
+MPI rank 40 / 48 launched
+Rank 39 before barrier at: Sat Mar 16 22:44:04 2019
+
+Rank 42 before barrier at: Sat Mar 16 22:44:04 2019
+
+MPI rank 44 / 48 launched
+Rank 43 before barrier at: Sat Mar 16 22:44:04 2019
+
+MPI rank 46 / 48 launched
+Rank 45 before barrier at: Sat Mar 16 22:44:04 2019
+
+Rank 3 before barrier at: Sat Mar 16 22:44:04 2019
+
+Rank 5 before barrier at: Sat Mar 16 22:44:04 2019
+
+Rank 40 before barrier at: Sat Mar 16 22:44:04 2019
+
+Rank 0 before barrier at: Sat Mar 16 22:44:06 2019
+
+Rank 0 just past barrier at: Sat Mar 16 22:44:06 2019
+
+Rank 4 just past barrier at: Sat Mar 16 22:44:06 2019
+
+Rank 5 just past barrier at: Sat Mar 16 22:44:06 2019
+
+Rank 6 just past barrier at: Sat Mar 16 22:44:06 2019
+
+Rank 8 just past barrier at: Sat Mar 16 22:44:06 2019
+
+Rank 9 just past barrier at: Sat Mar 16 22:44:06 2019
+
+Rank 11 just past barrier at: Sat Mar 16 22:44:06 2019
+
+Rank 12 just past barrier at: Sat Mar 16 22:44:06 2019
+
+Rank 14 just past barrier at: Sat Mar 16 22:44:06 2019
+
+Rank 16 just past barrier at: Sat Mar 16 22:44:06 2019
+
+Rank 19 just past barrier at: Sat Mar 16 22:44:06 2019
+
+Rank 21 just past barrier at: Sat Mar 16 22:44:06 2019
+
+Rank 24 just past barrier at: Sat Mar 16 22:44:06 2019
+
+Rank 26 just past barrier at: Sat Mar 16 22:44:06 2019
+
+Rank 27 just past barrier at: Sat Mar 16 22:44:06 2019
+
+Rank 31 just past barrier at: Sat Mar 16 22:44:06 2019
+
+Rank 33 just past barrier at: Sat Mar 16 22:44:06 2019
+
+Rank 37 just past barrier at: Sat Mar 16 22:44:06 2019
+
+Rank 39 just past barrier at: Sat Mar 16 22:44:06 2019
+
+Rank 40 just past barrier at: Sat Mar 16 22:44:06 2019
+
+Rank 45 just past barrier at: Sat Mar 16 22:44:06 2019
+
+Rank 47 just past barrier at: Sat Mar 16 22:44:06 2019
+
+Rank 10 just past barrier at: Sat Mar 16 22:44:06 2019
+
+Rank 28 just past barrier at: Sat Mar 16 22:44:06 2019
+
+Rank 44 just past barrier at: Sat Mar 16 22:44:06 2019
+
+Rank 29 just past barrier at: Sat Mar 16 22:44:06 2019
+
+Rank 13 just past barrier at: Sat Mar 16 22:44:06 2019
+
+Rank 15 just past barrier at: Sat Mar 16 22:44:06 2019
+
+Rank 20 just past barrier at: Sat Mar 16 22:44:06 2019
+
+Rank 34 just past barrier at: Sat Mar 16 22:44:06 2019
+
+Rank 35 just past barrier at: Sat Mar 16 22:44:06 2019
+
+Rank 36 just past barrier at: Sat Mar 16 22:44:06 2019
+
+Rank 42 just past barrier at: Sat Mar 16 22:44:06 2019
+
+Rank 1 just past barrier at: Sat Mar 16 22:44:06 2019
+
+Rank 3 just past barrier at: Sat Mar 16 22:44:06 2019
+
+Rank 7 just past barrier at: Sat Mar 16 22:44:06 2019
+
+Rank 17 just past barrier at: Sat Mar 16 22:44:06 2019
+
+Rank 18 just past barrier at: Sat Mar 16 22:44:06 2019
+
+Rank 30 just past barrier at: Sat Mar 16 22:44:06 2019
+
+Rank 43 just past barrier at: Sat Mar 16 22:44:06 2019
+
+Rank 22 just past barrier at: Sat Mar 16 22:44:06 2019
+
+Rank 25 just past barrier at: Sat Mar 16 22:44:06 2019
+
+Rank 32 just past barrier at: Sat Mar 16 22:44:06 2019
+
+Rank 38 just past barrier at: Sat Mar 16 22:44:06 2019
+
+Rank 41 just past barrier at: Sat Mar 16 22:44:06 2019
+
+Rank 46 just past barrier at: Sat Mar 16 22:44:06 2019
+
+Rank 2 just past barrier at: Sat Mar 16 22:44:06 2019
+
+Rank 23 just past barrier at: Sat Mar 16 22:44:06 2019
+
+MPI Rank 0, thread 0 launched
+MPI Rank 0, thread 1 launched
+MPI Rank 0, thread 3 launched
+MPI Rank 0, thread 2 launched
+Calc done, MPI 0 thread 0 still exists
+Rank 17 ready to exit at: Sat Mar 16 22:44:07 2019
+
+Rank 33 ready to exit at: Sat Mar 16 22:44:07 2019
+
+Rank 22 ready to exit at: Sat Mar 16 22:44:07 2019
+
+Rank 25 ready to exit at: Sat Mar 16 22:44:07 2019
+
+Rank 18 ready to exit at: Sat Mar 16 22:44:07 2019
+
+Rank 46 ready to exit at: Sat Mar 16 22:44:07 2019
+
+Rank 30 ready to exit at: Sat Mar 16 22:44:07 2019
+
+Rank 34 ready to exit at: Sat Mar 16 22:44:07 2019
+
+Rank 35 ready to exit at: Sat Mar 16 22:44:07 2019
+
+Rank 41 ready to exit at: Sat Mar 16 22:44:07 2019
+
+Rank 38 ready to exit at: Sat Mar 16 22:44:07 2019
+
+Rank 2 ready to exit at: Sat Mar 16 22:44:07 2019
+
+Rank 19 ready to exit at: Sat Mar 16 22:44:07 2019
+
+Rank 26 ready to exit at: Sat Mar 16 22:44:07 2019
+
+Rank 21 ready to exit at: Sat Mar 16 22:44:07 2019
+
+Rank 42 ready to exit at: Sat Mar 16 22:44:07 2019
+
+Rank 1 ready to exit at: Sat Mar 16 22:44:07 2019
+
+Rank 6 ready to exit at: Sat Mar 16 22:44:07 2019
+
+Rank 3 ready to exit at: Sat Mar 16 22:44:07 2019
+
+Rank 9 ready to exit at: Sat Mar 16 22:44:07 2019
+
+Rank 27 ready to exit at: Sat Mar 16 22:44:07 2019
+
+Rank 37 ready to exit at: Sat Mar 16 22:44:07 2019
+
+Rank 47 ready to exit at: Sat Mar 16 22:44:07 2019
+
+Rank 10 ready to exit at: Sat Mar 16 22:44:07 2019
+
+Rank 31 ready to exit at: Sat Mar 16 22:44:07 2019
+
+Rank 14 ready to exit at: Sat Mar 16 22:44:07 2019
+
+Rank 23 ready to exit at: Sat Mar 16 22:44:07 2019
+
+Rank 43 ready to exit at: Sat Mar 16 22:44:07 2019
+
+Rank 20 ready to exit at: Sat Mar 16 22:44:07 2019
+
+Rank 39 ready to exit at: Sat Mar 16 22:44:07 2019
+
+Rank 7 ready to exit at: Sat Mar 16 22:44:07 2019
+
+Rank 5 ready to exit at: Sat Mar 16 22:44:07 2019
+
+Rank 11 ready to exit at: Sat Mar 16 22:44:07 2019
+
+Rank 24 ready to exit at: Sat Mar 16 22:44:07 2019
+
+Rank 36 ready to exit at: Sat Mar 16 22:44:07 2019
+
+Rank 15 ready to exit at: Sat Mar 16 22:44:07 2019
+
+Rank 45 ready to exit at: Sat Mar 16 22:44:07 2019
+
+Rank 28 ready to exit at: Sat Mar 16 22:44:07 2019
+
+Rank 4 ready to exit at: Sat Mar 16 22:44:07 2019
+
+Rank 44 ready to exit at: Sat Mar 16 22:44:07 2019
+
+Rank 29 ready to exit at: Sat Mar 16 22:44:07 2019
+
+Rank 8 ready to exit at: Sat Mar 16 22:44:07 2019
+
+Rank 40 ready to exit at: Sat Mar 16 22:44:07 2019
+
+Rank 12 ready to exit at: Sat Mar 16 22:44:07 2019
+
+Rank 16 ready to exit at: Sat Mar 16 22:44:07 2019
+
+Rank 13 ready to exit at: Sat Mar 16 22:44:07 2019
+
+Rank 32 ready to exit at: Sat Mar 16 22:44:07 2019
+
+Rank 0 ready to exit at: Sat Mar 16 22:44:07 2019
+
+Finding sum using 4 threads took: 325.756 ms, sum = 1.000000e+09
 TACC:  Shutdown complete. Exiting. 
 =======================================================================
-TACC:  Starting up job 3016184 
+TACC:  Starting up job 3129209 
 TACC:  Starting parallel tasks... 
-Finding sum using 8 threads took: 513.782 ms, sum = 3.000000e+09
+MPI rank 2 / 48 launched
+Rank 1 before barrier at: Sat Mar 16 22:44:07 2019
+
+MPI rank 3 / 48 launched
+Rank 2 before barrier at: Sat Mar 16 22:44:07 2019
+
+MPI rank 12 / 48 launched
+Rank 11 before barrier at: Sat Mar 16 22:44:07 2019
+
+MPI rank 23 / 48 launched
+Rank 22 before barrier at: Sat Mar 16 22:44:07 2019
+
+MPI rank 25 / 48 launched
+Rank 24 before barrier at: Sat Mar 16 22:44:07 2019
+
+MPI rank 26 / 48 launched
+Rank 25 before barrier at: Sat Mar 16 22:44:07 2019
+
+MPI rank 37 / 48 launched
+Rank 36 before barrier at: Sat Mar 16 22:44:07 2019
+
+MPI rank 42 / 48 launched
+Rank 41 before barrier at: Sat Mar 16 22:44:07 2019
+
+MPI rank 1 / 48 launched
+MPI rank 5 / 48 launched
+Rank 4 before barrier at: Sat Mar 16 22:44:07 2019
+
+MPI rank 6 / 48 launched
+Rank 5 before barrier at: Sat Mar 16 22:44:07 2019
+
+MPI rank 7 / 48 launched
+Rank 6 before barrier at: Sat Mar 16 22:44:07 2019
+
+MPI rank 8 / 48 launched
+Rank 7 before barrier at: Sat Mar 16 22:44:07 2019
+
+MPI rank 9 / 48 launched
+Rank 8 before barrier at: Sat Mar 16 22:44:07 2019
+
+MPI rank 10 / 48 launched
+Rank 9 before barrier at: Sat Mar 16 22:44:07 2019
+
+MPI rank 11 / 48 launched
+Rank 10 before barrier at: Sat Mar 16 22:44:07 2019
+
+MPI rank 14 / 48 launched
+Rank 13 before barrier at: Sat Mar 16 22:44:07 2019
+
+MPI rank 15 / 48 launched
+Rank 14 before barrier at: Sat Mar 16 22:44:07 2019
+
+MPI rank 17 / 48 launched
+Rank 16 before barrier at: Sat Mar 16 22:44:07 2019
+
+MPI rank 18 / 48 launched
+Rank 17 before barrier at: Sat Mar 16 22:44:07 2019
+
+MPI rank 19 / 48 launched
+Rank 18 before barrier at: Sat Mar 16 22:44:07 2019
+
+MPI rank 21 / 48 launched
+Rank 20 before barrier at: Sat Mar 16 22:44:07 2019
+
+MPI rank 22 / 48 launched
+Rank 21 before barrier at: Sat Mar 16 22:44:07 2019
+
+MPI rank 24 / 48 launched
+Rank 23 before barrier at: Sat Mar 16 22:44:07 2019
+
+MPI rank 28 / 48 launched
+Rank 27 before barrier at: Sat Mar 16 22:44:07 2019
+
+MPI rank 34 / 48 launched
+Rank 33 before barrier at: Sat Mar 16 22:44:07 2019
+
+MPI rank 35 / 48 launched
+Rank 34 before barrier at: Sat Mar 16 22:44:07 2019
+
+MPI rank 36 / 48 launched
+Rank 35 before barrier at: Sat Mar 16 22:44:07 2019
+
+MPI rank 38 / 48 launched
+Rank 37 before barrier at: Sat Mar 16 22:44:07 2019
+
+MPI rank 40 / 48 launched
+Rank 39 before barrier at: Sat Mar 16 22:44:07 2019
+
+MPI rank 43 / 48 launched
+Rank 42 before barrier at: Sat Mar 16 22:44:07 2019
+
+MPI rank 44 / 48 launched
+Rank 43 before barrier at: Sat Mar 16 22:44:07 2019
+
+MPI rank 46 / 48 launched
+Rank 45 before barrier at: Sat Mar 16 22:44:07 2019
+
+MPI rank 47 / 48 launched
+Rank 46 before barrier at: Sat Mar 16 22:44:07 2019
+
+MPI rank 48 / 48 launched
+Rank 47 before barrier at: Sat Mar 16 22:44:07 2019
+
+MPI rank 4 / 48 launched
+Rank 3 before barrier at: Sat Mar 16 22:44:07 2019
+
+MPI rank 16 / 48 launched
+Rank 15 before barrier at: Sat Mar 16 22:44:07 2019
+
+MPI rank 32 / 48 launched
+Rank 31 before barrier at: Sat Mar 16 22:44:07 2019
+
+MPI rank 39 / 48 launched
+MPI rank 45 / 48 launched
+Rank 44 before barrier at: Sat Mar 16 22:44:07 2019
+
+MPI rank 20 / 48 launched
+MPI rank 27 / 48 launched
+MPI rank 29 / 48 launched
+MPI rank 30 / 48 launched
+MPI rank 33 / 48 launched
+MPI rank 41 / 48 launched
+Rank 40 before barrier at: Sat Mar 16 22:44:07 2019
+
+MPI rank 13 / 48 launched
+Rank 19 before barrier at: Sat Mar 16 22:44:07 2019
+
+Rank 26 before barrier at: Sat Mar 16 22:44:07 2019
+
+Rank 28 before barrier at: Sat Mar 16 22:44:07 2019
+
+MPI rank 31 / 48 launched
+Rank 32 before barrier at: Sat Mar 16 22:44:07 2019
+
+Rank 38 before barrier at: Sat Mar 16 22:44:07 2019
+
+Rank 12 before barrier at: Sat Mar 16 22:44:07 2019
+
+Rank 29 before barrier at: Sat Mar 16 22:44:07 2019
+
+Rank 30 before barrier at: Sat Mar 16 22:44:07 2019
+
+Rank 0 before barrier at: Sat Mar 16 22:44:10 2019
+
+Rank 0 just past barrier at: Sat Mar 16 22:44:10 2019
+
+Rank 26 just past barrier at: Sat Mar 16 22:44:10 2019
+
+Rank 1 just past barrier at: Sat Mar 16 22:44:10 2019
+
+Rank 2 just past barrier at: Sat Mar 16 22:44:10 2019
+
+Rank 5 just past barrier at: Sat Mar 16 22:44:10 2019
+
+Rank 6 just past barrier at: Sat Mar 16 22:44:10 2019
+
+Rank 8 just past barrier at: Sat Mar 16 22:44:10 2019
+
+Rank 10 just past barrier at: Sat Mar 16 22:44:10 2019
+
+Rank 11 just past barrier at: Sat Mar 16 22:44:10 2019
+
+Rank 12 just past barrier at: Sat Mar 16 22:44:10 2019
+
+Rank 19 just past barrier at: Sat Mar 16 22:44:10 2019
+
+Rank 21 just past barrier at: Sat Mar 16 22:44:10 2019
+
+Rank 24 just past barrier at: Sat Mar 16 22:44:10 2019
+
+Rank 27 just past barrier at: Sat Mar 16 22:44:10 2019
+
+Rank 28 just past barrier at: Sat Mar 16 22:44:10 2019
+
+Rank 29 just past barrier at: Sat Mar 16 22:44:10 2019
+
+Rank 32 just past barrier at: Sat Mar 16 22:44:10 2019
+
+Rank 34 just past barrier at: Sat Mar 16 22:44:10 2019
+
+Rank 36 just past barrier at: Sat Mar 16 22:44:10 2019
+
+Rank 39 just past barrier at: Sat Mar 16 22:44:10 2019
+
+Rank 41 just past barrier at: Sat Mar 16 22:44:10 2019
+
+Rank 44 just past barrier at: Sat Mar 16 22:44:10 2019
+
+Rank 45 just past barrier at: Sat Mar 16 22:44:10 2019
+
+Rank 47 just past barrier at: Sat Mar 16 22:44:10 2019
+
+Rank 4 just past barrier at: Sat Mar 16 22:44:10 2019
+
+Rank 38 just past barrier at: Sat Mar 16 22:44:10 2019
+
+Rank 3 just past barrier at: Sat Mar 16 22:44:10 2019
+
+Rank 15 just past barrier at: Sat Mar 16 22:44:10 2019
+
+Rank 25 just past barrier at: Sat Mar 16 22:44:10 2019
+
+Rank 14 just past barrier at: Sat Mar 16 22:44:10 2019
+
+Rank 33 just past barrier at: Sat Mar 16 22:44:10 2019
+
+Rank 7 just past barrier at: Sat Mar 16 22:44:10 2019
+
+Rank 13 just past barrier at: Sat Mar 16 22:44:10 2019
+
+Rank 17 just past barrier at: Sat Mar 16 22:44:10 2019
+
+Rank 20 just past barrier at: Sat Mar 16 22:44:10 2019
+
+Rank 30 just past barrier at: Sat Mar 16 22:44:10 2019
+
+Rank 9 just past barrier at: Sat Mar 16 22:44:10 2019
+
+Rank 16 just past barrier at: Sat Mar 16 22:44:10 2019
+
+Rank 18 just past barrier at: Sat Mar 16 22:44:10 2019
+
+Rank 22 just past barrier at: Sat Mar 16 22:44:10 2019
+
+Rank 23 just past barrier at: Sat Mar 16 22:44:10 2019
+
+Rank 31 just past barrier at: Sat Mar 16 22:44:10 2019
+
+Rank 35 just past barrier at: Sat Mar 16 22:44:10 2019
+
+Rank 40 just past barrier at: Sat Mar 16 22:44:10 2019
+
+Rank 42 just past barrier at: Sat Mar 16 22:44:10 2019
+
+Rank 43 just past barrier at: Sat Mar 16 22:44:10 2019
+
+Rank 37 just past barrier at: Sat Mar 16 22:44:10 2019
+
+Rank 46 just past barrier at: Sat Mar 16 22:44:10 2019
+
+MPI Rank 0, thread 0 launched
+MPI Rank 0, thread 7 launched
+MPI Rank 0, thread 2 launched
+MPI Rank 0, thread 6 launched
+MPI Rank 0, thread 3 launched
+MPI Rank 0, thread 1 launched
+MPI Rank 0, thread 5 launched
+MPI Rank 0, thread 4 launched
+Calc done, MPI 0 thread 0 still exists
+Rank 34 ready to exit at: Sat Mar 16 22:44:10 2019
+
+Rank 22 ready to exit at: Sat Mar 16 22:44:10 2019
+
+Rank 17 ready to exit at: Sat Mar 16 22:44:10 2019
+
+Rank 33 ready to exit at: Sat Mar 16 22:44:10 2019
+
+Rank 38 ready to exit at: Sat Mar 16 22:44:10 2019
+
+Rank 18 ready to exit at: Sat Mar 16 22:44:10 2019
+
+Rank 30 ready to exit at: Sat Mar 16 22:44:10 2019
+
+Rank 2 ready to exit at: Sat Mar 16 22:44:10 2019
+
+Rank 26 ready to exit at: Sat Mar 16 22:44:10 2019
+
+Rank 6 ready to exit at: Sat Mar 16 22:44:10 2019
+
+Rank 19 ready to exit at: Sat Mar 16 22:44:10 2019
+
+Rank 42 ready to exit at: Sat Mar 16 22:44:10 2019
+
+Rank 35 ready to exit at: Sat Mar 16 22:44:10 2019
+
+Rank 27 ready to exit at: Sat Mar 16 22:44:10 2019
+
+Rank 41 ready to exit at: Sat Mar 16 22:44:10 2019
+
+Rank 10 ready to exit at: Sat Mar 16 22:44:10 2019
+
+Rank 1 ready to exit at: Sat Mar 16 22:44:10 2019
+
+Rank 25 ready to exit at: Sat Mar 16 22:44:10 2019
+
+Rank 23 ready to exit at: Sat Mar 16 22:44:10 2019
+
+Rank 43 ready to exit at: Sat Mar 16 22:44:10 2019
+
+Rank 37 ready to exit at: Sat Mar 16 22:44:10 2019
+
+Rank 46 ready to exit at: Sat Mar 16 22:44:10 2019
+
+Rank 3 ready to exit at: Sat Mar 16 22:44:10 2019
+
+Rank 31 ready to exit at: Sat Mar 16 22:44:10 2019
+
+Rank 14 ready to exit at: Sat Mar 16 22:44:10 2019
+
+Rank 39 ready to exit at: Sat Mar 16 22:44:10 2019
+
+Rank 24 ready to exit at: Sat Mar 16 22:44:10 2019
+
+Rank 7 ready to exit at: Sat Mar 16 22:44:10 2019
+
+Rank 21 ready to exit at: Sat Mar 16 22:44:10 2019
+
+Rank 29 ready to exit at: Sat Mar 16 22:44:10 2019
+
+Rank 9 ready to exit at: Sat Mar 16 22:44:10 2019
+
+Rank 11 ready to exit at: Sat Mar 16 22:44:10 2019
+
+Rank 45 ready to exit at: Sat Mar 16 22:44:10 2019
+
+Rank 47 ready to exit at: Sat Mar 16 22:44:10 2019
+
+Rank 5 ready to exit at: Sat Mar 16 22:44:10 2019
+
+Rank 15 ready to exit at: Sat Mar 16 22:44:10 2019
+
+Rank 28 ready to exit at: Sat Mar 16 22:44:10 2019
+
+Rank 36 ready to exit at: Sat Mar 16 22:44:10 2019
+
+Rank 13 ready to exit at: Sat Mar 16 22:44:10 2019
+
+Rank 40 ready to exit at: Sat Mar 16 22:44:10 2019
+
+Rank 20 ready to exit at: Sat Mar 16 22:44:10 2019
+
+Rank 44 ready to exit at: Sat Mar 16 22:44:10 2019
+
+Rank 8 ready to exit at: Sat Mar 16 22:44:10 2019
+
+Rank 12 ready to exit at: Sat Mar 16 22:44:10 2019
+
+Rank 16 ready to exit at: Sat Mar 16 22:44:10 2019
+
+Rank 4 ready to exit at: Sat Mar 16 22:44:10 2019
+
+Rank 32 ready to exit at: Sat Mar 16 22:44:10 2019
+
+Rank 0 ready to exit at: Sat Mar 16 22:44:10 2019
+
+Finding sum using 8 threads took: 221.963 ms, sum = 1.000000e+09
 TACC:  Shutdown complete. Exiting. 
-TACC:  Starting up job 3016184 
+TACC:  Starting up job 3129209 
 TACC:  Starting parallel tasks... 
-Finding sum using 8 threads took: 505.500 ms, sum = 3.000000e+09
+MPI rank 2 / 48 launched
+Rank 1 before barrier at: Sat Mar 16 22:44:11 2019
+
+MPI rank 6 / 48 launched
+Rank 5 before barrier at: Sat Mar 16 22:44:11 2019
+
+MPI rank 7 / 48 launched
+Rank 6 before barrier at: Sat Mar 16 22:44:11 2019
+
+MPI rank 9 / 48 launched
+Rank 8 before barrier at: Sat Mar 16 22:44:11 2019
+
+MPI rank 16 / 48 launched
+Rank 15 before barrier at: Sat Mar 16 22:44:11 2019
+
+MPI rank 20 / 48 launched
+Rank 19 before barrier at: Sat Mar 16 22:44:11 2019
+
+MPI rank 23 / 48 launched
+Rank 22 before barrier at: Sat Mar 16 22:44:11 2019
+
+MPI rank 32 / 48 launched
+Rank 31 before barrier at: Sat Mar 16 22:44:11 2019
+
+MPI rank 33 / 48 launched
+Rank 32 before barrier at: Sat Mar 16 22:44:11 2019
+
+MPI rank 34 / 48 launched
+Rank 33 before barrier at: Sat Mar 16 22:44:11 2019
+
+MPI rank 44 / 48 launched
+Rank 43 before barrier at: Sat Mar 16 22:44:11 2019
+
+MPI rank 46 / 48 launched
+Rank 45 before barrier at: Sat Mar 16 22:44:11 2019
+
+MPI rank 47 / 48 launched
+Rank 46 before barrier at: Sat Mar 16 22:44:11 2019
+
+MPI rank 48 / 48 launched
+Rank 47 before barrier at: Sat Mar 16 22:44:11 2019
+
+MPI rank 1 / 48 launched
+MPI rank 5 / 48 launched
+Rank 4 before barrier at: Sat Mar 16 22:44:11 2019
+
+MPI rank 8 / 48 launched
+Rank 7 before barrier at: Sat Mar 16 22:44:11 2019
+
+MPI rank 10 / 48 launched
+Rank 9 before barrier at: Sat Mar 16 22:44:11 2019
+
+MPI rank 11 / 48 launched
+Rank 10 before barrier at: Sat Mar 16 22:44:11 2019
+
+MPI rank 12 / 48 launched
+Rank 11 before barrier at: Sat Mar 16 22:44:11 2019
+
+MPI rank 13 / 48 launched
+Rank 12 before barrier at: Sat Mar 16 22:44:11 2019
+
+MPI rank 14 / 48 launched
+Rank 13 before barrier at: Sat Mar 16 22:44:11 2019
+
+MPI rank 15 / 48 launched
+Rank 14 before barrier at: Sat Mar 16 22:44:11 2019
+
+MPI rank 17 / 48 launched
+Rank 16 before barrier at: Sat Mar 16 22:44:11 2019
+
+MPI rank 21 / 48 launched
+Rank 20 before barrier at: Sat Mar 16 22:44:11 2019
+
+MPI rank 22 / 48 launched
+Rank 21 before barrier at: Sat Mar 16 22:44:11 2019
+
+MPI rank 24 / 48 launched
+Rank 23 before barrier at: Sat Mar 16 22:44:11 2019
+
+MPI rank 25 / 48 launched
+Rank 24 before barrier at: Sat Mar 16 22:44:11 2019
+
+MPI rank 26 / 48 launched
+Rank 25 before barrier at: Sat Mar 16 22:44:11 2019
+
+MPI rank 27 / 48 launched
+Rank 26 before barrier at: Sat Mar 16 22:44:11 2019
+
+MPI rank 31 / 48 launched
+Rank 30 before barrier at: Sat Mar 16 22:44:11 2019
+
+MPI rank 39 / 48 launched
+Rank 38 before barrier at: Sat Mar 16 22:44:11 2019
+
+MPI rank 41 / 48 launched
+Rank 40 before barrier at: Sat Mar 16 22:44:11 2019
+
+MPI rank 43 / 48 launched
+Rank 42 before barrier at: Sat Mar 16 22:44:11 2019
+
+MPI rank 45 / 48 launched
+Rank 44 before barrier at: Sat Mar 16 22:44:11 2019
+
+MPI rank 3 / 48 launched
+Rank 2 before barrier at: Sat Mar 16 22:44:11 2019
+
+MPI rank 19 / 48 launched
+MPI rank 28 / 48 launched
+MPI rank 36 / 48 launched
+MPI rank 37 / 48 launched
+MPI rank 18 / 48 launched
+MPI rank 30 / 48 launched
+Rank 35 before barrier at: Sat Mar 16 22:44:11 2019
+
+MPI rank 40 / 48 launched
+MPI rank 42 / 48 launched
+MPI rank 4 / 48 launched
+Rank 17 before barrier at: Sat Mar 16 22:44:11 2019
+
+Rank 18 before barrier at: Sat Mar 16 22:44:11 2019
+
+Rank 27 before barrier at: Sat Mar 16 22:44:11 2019
+
+MPI rank 35 / 48 launched
+Rank 36 before barrier at: Sat Mar 16 22:44:11 2019
+
+Rank 39 before barrier at: Sat Mar 16 22:44:11 2019
+
+Rank 3 before barrier at: Sat Mar 16 22:44:11 2019
+
+MPI rank 29 / 48 launched
+Rank 29 before barrier at: Sat Mar 16 22:44:11 2019
+
+Rank 34 before barrier at: Sat Mar 16 22:44:11 2019
+
+MPI rank 38 / 48 launched
+Rank 41 before barrier at: Sat Mar 16 22:44:11 2019
+
+Rank 28 before barrier at: Sat Mar 16 22:44:11 2019
+
+Rank 37 before barrier at: Sat Mar 16 22:44:11 2019
+
+Rank 0 before barrier at: Sat Mar 16 22:44:13 2019
+
+Rank 0 just past barrier at: Sat Mar 16 22:44:13 2019
+
+Rank 1 just past barrier at: Sat Mar 16 22:44:13 2019
+
+Rank 3 just past barrier at: Sat Mar 16 22:44:13 2019
+
+Rank 4 just past barrier at: Sat Mar 16 22:44:13 2019
+
+Rank 5 just past barrier at: Sat Mar 16 22:44:13 2019
+
+Rank 9 just past barrier at: Sat Mar 16 22:44:13 2019
+
+Rank 10 just past barrier at: Sat Mar 16 22:44:13 2019
+
+Rank 12 just past barrier at: Sat Mar 16 22:44:13 2019
+
+Rank 15 just past barrier at: Sat Mar 16 22:44:13 2019
+
+Rank 16 just past barrier at: Sat Mar 16 22:44:13 2019
+
+Rank 17 just past barrier at: Sat Mar 16 22:44:13 2019
+
+Rank 20 just past barrier at: Sat Mar 16 22:44:13 2019
+
+Rank 21 just past barrier at: Sat Mar 16 22:44:13 2019
+
+Rank 22 just past barrier at: Sat Mar 16 22:44:13 2019
+
+Rank 23 just past barrier at: Sat Mar 16 22:44:13 2019
+
+Rank 26 just past barrier at: Sat Mar 16 22:44:13 2019
+
+Rank 27 just past barrier at: Sat Mar 16 22:44:13 2019
+
+Rank 28 just past barrier at: Sat Mar 16 22:44:13 2019
+
+Rank 30 just past barrier at: Sat Mar 16 22:44:13 2019
+
+Rank 31 just past barrier at: Sat Mar 16 22:44:13 2019
+
+Rank 37 just past barrier at: Sat Mar 16 22:44:13 2019
+
+Rank 39 just past barrier at: Sat Mar 16 22:44:13 2019
+
+Rank 45 just past barrier at: Sat Mar 16 22:44:13 2019
+
+Rank 47 just past barrier at: Sat Mar 16 22:44:13 2019
+
+Rank 32 just past barrier at: Sat Mar 16 22:44:13 2019
+
+Rank 38 just past barrier at: Sat Mar 16 22:44:13 2019
+
+Rank 42 just past barrier at: Sat Mar 16 22:44:13 2019
+
+Rank 14 just past barrier at: Sat Mar 16 22:44:13 2019
+
+Rank 40 just past barrier at: Sat Mar 16 22:44:13 2019
+
+Rank 41 just past barrier at: Sat Mar 16 22:44:13 2019
+
+Rank 44 just past barrier at: Sat Mar 16 22:44:13 2019
+
+Rank 2 just past barrier at: Sat Mar 16 22:44:13 2019
+
+Rank 8 just past barrier at: Sat Mar 16 22:44:13 2019
+
+Rank 19 just past barrier at: Sat Mar 16 22:44:13 2019
+
+Rank 33 just past barrier at: Sat Mar 16 22:44:13 2019
+
+Rank 35 just past barrier at: Sat Mar 16 22:44:13 2019
+
+Rank 43 just past barrier at: Sat Mar 16 22:44:13 2019
+
+Rank 6 just past barrier at: Sat Mar 16 22:44:13 2019
+
+Rank 7 just past barrier at: Sat Mar 16 22:44:13 2019
+
+Rank 13 just past barrier at: Sat Mar 16 22:44:13 2019
+
+Rank 18 just past barrier at: Sat Mar 16 22:44:13 2019
+
+Rank 24 just past barrier at: Sat Mar 16 22:44:13 2019
+
+Rank 25 just past barrier at: Sat Mar 16 22:44:13 2019
+
+Rank 29 just past barrier at: Sat Mar 16 22:44:13 2019
+
+Rank 34 just past barrier at: Sat Mar 16 22:44:13 2019
+
+Rank 36 just past barrier at: Sat Mar 16 22:44:13 2019
+
+Rank 46 just past barrier at: Sat Mar 16 22:44:13 2019
+
+Rank 11 just past barrier at: Sat Mar 16 22:44:13 2019
+
+MPI Rank 0, thread 0 launched
+MPI Rank 0, thread 2 launched
+MPI Rank 0, thread 4 launched
+MPI Rank 0, thread 6 launched
+MPI Rank 0, thread 1 launched
+MPI Rank 0, thread 7 launched
+MPI Rank 0, thread 5 launched
+MPI Rank 0, thread 3 launched
+Calc done, MPI 0 thread 0 still exists
+Rank 18 ready to exit at: Sat Mar 16 22:44:13 2019
+
+Rank 26 ready to exit at: Sat Mar 16 22:44:13 2019
+
+Rank 33 ready to exit at: Sat Mar 16 22:44:13 2019
+
+Rank 22 ready to exit at: Sat Mar 16 22:44:13 2019
+
+Rank 30 ready to exit at: Sat Mar 16 22:44:13 2019
+
+Rank 38 ready to exit at: Sat Mar 16 22:44:13 2019
+
+Rank 42 ready to exit at: Sat Mar 16 22:44:13 2019
+
+Rank 21 ready to exit at: Sat Mar 16 22:44:13 2019
+
+Rank 34 ready to exit at: Sat Mar 16 22:44:13 2019
+
+Rank 1 ready to exit at: Sat Mar 16 22:44:13 2019
+
+Rank 2 ready to exit at: Sat Mar 16 22:44:13 2019
+
+Rank 17 ready to exit at: Sat Mar 16 22:44:13 2019
+
+Rank 37 ready to exit at: Sat Mar 16 22:44:13 2019
+
+Rank 10 ready to exit at: Sat Mar 16 22:44:13 2019
+
+Rank 44 ready to exit at: Sat Mar 16 22:44:13 2019
+
+Rank 20 ready to exit at: Sat Mar 16 22:44:13 2019
+
+Rank 28 ready to exit at: Sat Mar 16 22:44:13 2019
+
+Rank 19 ready to exit at: Sat Mar 16 22:44:13 2019
+
+Rank 36 ready to exit at: Sat Mar 16 22:44:13 2019
+
+Rank 46 ready to exit at: Sat Mar 16 22:44:13 2019
+
+Rank 6 ready to exit at: Sat Mar 16 22:44:13 2019
+
+Rank 25 ready to exit at: Sat Mar 16 22:44:13 2019
+
+Rank 41 ready to exit at: Sat Mar 16 22:44:13 2019
+
+Rank 35 ready to exit at: Sat Mar 16 22:44:13 2019
+
+Rank 14 ready to exit at: Sat Mar 16 22:44:13 2019
+
+Rank 23 ready to exit at: Sat Mar 16 22:44:13 2019
+
+Rank 27 ready to exit at: Sat Mar 16 22:44:13 2019
+
+Rank 39 ready to exit at: Sat Mar 16 22:44:13 2019
+
+Rank 45 ready to exit at: Sat Mar 16 22:44:13 2019
+
+Rank 4 ready to exit at: Sat Mar 16 22:44:13 2019
+
+Rank 47 ready to exit at: Sat Mar 16 22:44:13 2019
+
+Rank 9 ready to exit at: Sat Mar 16 22:44:13 2019
+
+Rank 29 ready to exit at: Sat Mar 16 22:44:13 2019
+
+Rank 5 ready to exit at: Sat Mar 16 22:44:13 2019
+
+Rank 12 ready to exit at: Sat Mar 16 22:44:13 2019
+
+Rank 3 ready to exit at: Sat Mar 16 22:44:13 2019
+
+Rank 43 ready to exit at: Sat Mar 16 22:44:13 2019
+
+Rank 7 ready to exit at: Sat Mar 16 22:44:13 2019
+
+Rank 13 ready to exit at: Sat Mar 16 22:44:13 2019
+
+Rank 11 ready to exit at: Sat Mar 16 22:44:13 2019
+
+Rank 15 ready to exit at: Sat Mar 16 22:44:13 2019
+
+Rank 31 ready to exit at: Sat Mar 16 22:44:13 2019
+
+Rank 16 ready to exit at: Sat Mar 16 22:44:13 2019
+
+Rank 40 ready to exit at: Sat Mar 16 22:44:13 2019
+
+Rank 24 ready to exit at: Sat Mar 16 22:44:13 2019
+
+Rank 8 ready to exit at: Sat Mar 16 22:44:13 2019
+
+Rank 32 ready to exit at: Sat Mar 16 22:44:13 2019
+
+Rank 0 ready to exit at: Sat Mar 16 22:44:13 2019
+
+Finding sum using 8 threads took: 222.390 ms, sum = 1.000000e+09
 TACC:  Shutdown complete. Exiting. 
-TACC:  Starting up job 3016184 
+TACC:  Starting up job 3129209 
 TACC:  Starting parallel tasks... 
-Finding sum using 8 threads took: 508.192 ms, sum = 3.000000e+09
+MPI rank 2 / 48 launched
+Rank 1 before barrier at: Sat Mar 16 22:44:14 2019
+
+MPI rank 9 / 48 launched
+Rank 8 before barrier at: Sat Mar 16 22:44:14 2019
+
+MPI rank 10 / 48 launched
+Rank 9 before barrier at: Sat Mar 16 22:44:14 2019
+
+MPI rank 18 / 48 launched
+Rank 17 before barrier at: Sat Mar 16 22:44:14 2019
+
+MPI rank 25 / 48 launched
+Rank 24 before barrier at: Sat Mar 16 22:44:14 2019
+
+MPI rank 26 / 48 launched
+Rank 25 before barrier at: Sat Mar 16 22:44:14 2019
+
+MPI rank 33 / 48 launched
+Rank 32 before barrier at: Sat Mar 16 22:44:14 2019
+
+MPI rank 37 / 48 launched
+Rank 36 before barrier at: Sat Mar 16 22:44:14 2019
+
+MPI rank 41 / 48 launched
+Rank 40 before barrier at: Sat Mar 16 22:44:14 2019
+
+MPI rank 45 / 48 launched
+Rank 44 before barrier at: Sat Mar 16 22:44:14 2019
+
+MPI rank 1 / 48 launched
+MPI rank 17 / 48 launched
+Rank 16 before barrier at: Sat Mar 16 22:44:14 2019
+
+MPI rank 4 / 48 launched
+MPI rank 15 / 48 launched
+MPI rank 16 / 48 launched
+MPI rank 40 / 48 launched
+MPI rank 42 / 48 launched
+MPI rank 48 / 48 launched
+MPI rank 3 / 48 launched
+Rank 2 before barrier at: Sat Mar 16 22:44:14 2019
+
+Rank 3 before barrier at: Sat Mar 16 22:44:14 2019
+
+MPI rank 5 / 48 launched
+Rank 4 before barrier at: Sat Mar 16 22:44:14 2019
+
+MPI rank 6 / 48 launched
+Rank 14 before barrier at: Sat Mar 16 22:44:14 2019
+
+MPI rank 19 / 48 launched
+Rank 18 before barrier at: Sat Mar 16 22:44:14 2019
+
+MPI rank 20 / 48 launched
+MPI rank 32 / 48 launched
+Rank 31 before barrier at: Sat Mar 16 22:44:14 2019
+
+MPI rank 34 / 48 launched
+Rank 33 before barrier at: Sat Mar 16 22:44:14 2019
+
+MPI rank 35 / 48 launched
+MPI rank 36 / 48 launched
+Rank 35 before barrier at: Sat Mar 16 22:44:14 2019
+
+MPI rank 39 / 48 launched
+Rank 38 before barrier at: Sat Mar 16 22:44:14 2019
+
+Rank 39 before barrier at: Sat Mar 16 22:44:14 2019
+
+Rank 41 before barrier at: Sat Mar 16 22:44:14 2019
+
+Rank 47 before barrier at: Sat Mar 16 22:44:14 2019
+
+Rank 5 before barrier at: Sat Mar 16 22:44:14 2019
+
+MPI rank 7 / 48 launched
+Rank 6 before barrier at: Sat Mar 16 22:44:14 2019
+
+MPI rank 11 / 48 launched
+Rank 10 before barrier at: Sat Mar 16 22:44:14 2019
+
+MPI rank 12 / 48 launched
+Rank 11 before barrier at: Sat Mar 16 22:44:14 2019
+
+Rank 15 before barrier at: Sat Mar 16 22:44:14 2019
+
+Rank 19 before barrier at: Sat Mar 16 22:44:14 2019
+
+MPI rank 23 / 48 launched
+Rank 22 before barrier at: Sat Mar 16 22:44:14 2019
+
+MPI rank 24 / 48 launched
+Rank 23 before barrier at: Sat Mar 16 22:44:14 2019
+
+MPI rank 27 / 48 launched
+Rank 26 before barrier at: Sat Mar 16 22:44:14 2019
+
+MPI rank 28 / 48 launched
+Rank 27 before barrier at: Sat Mar 16 22:44:14 2019
+
+MPI rank 29 / 48 launched
+Rank 28 before barrier at: Sat Mar 16 22:44:14 2019
+
+Rank 34 before barrier at: Sat Mar 16 22:44:14 2019
+
+MPI rank 38 / 48 launched
+Rank 37 before barrier at: Sat Mar 16 22:44:14 2019
+
+MPI rank 43 / 48 launched
+Rank 42 before barrier at: Sat Mar 16 22:44:14 2019
+
+MPI rank 46 / 48 launched
+Rank 45 before barrier at: Sat Mar 16 22:44:14 2019
+
+MPI rank 30 / 48 launched
+Rank 29 before barrier at: Sat Mar 16 22:44:14 2019
+
+MPI rank 31 / 48 launched
+Rank 30 before barrier at: Sat Mar 16 22:44:14 2019
+
+MPI rank 8 / 48 launched
+MPI rank 14 / 48 launched
+MPI rank 21 / 48 launched
+MPI rank 22 / 48 launched
+MPI rank 47 / 48 launched
+Rank 7 before barrier at: Sat Mar 16 22:44:14 2019
+
+Rank 13 before barrier at: Sat Mar 16 22:44:14 2019
+
+MPI rank 44 / 48 launched
+Rank 46 before barrier at: Sat Mar 16 22:44:14 2019
+
+Rank 20 before barrier at: Sat Mar 16 22:44:14 2019
+
+Rank 21 before barrier at: Sat Mar 16 22:44:14 2019
+
+Rank 43 before barrier at: Sat Mar 16 22:44:14 2019
+
+MPI rank 13 / 48 launched
+Rank 12 before barrier at: Sat Mar 16 22:44:14 2019
+
+Rank 0 before barrier at: Sat Mar 16 22:44:17 2019
+
+Rank 0 just past barrier at: Sat Mar 16 22:44:17 2019
+
+Rank 2 just past barrier at: Sat Mar 16 22:44:17 2019
+
+Rank 3 just past barrier at: Sat Mar 16 22:44:17 2019
+
+Rank 4 just past barrier at: Sat Mar 16 22:44:17 2019
+
+Rank 5 just past barrier at: Sat Mar 16 22:44:17 2019
+
+Rank 6 just past barrier at: Sat Mar 16 22:44:17 2019
+
+Rank 8 just past barrier at: Sat Mar 16 22:44:17 2019
+
+Rank 9 just past barrier at: Sat Mar 16 22:44:17 2019
+
+Rank 11 just past barrier at: Sat Mar 16 22:44:17 2019
+
+Rank 15 just past barrier at: Sat Mar 16 22:44:17 2019
+
+Rank 18 just past barrier at: Sat Mar 16 22:44:17 2019
+
+Rank 24 just past barrier at: Sat Mar 16 22:44:17 2019
+
+Rank 25 just past barrier at: Sat Mar 16 22:44:17 2019
+
+Rank 26 just past barrier at: Sat Mar 16 22:44:17 2019
+
+Rank 27 just past barrier at: Sat Mar 16 22:44:17 2019
+
+Rank 29 just past barrier at: Sat Mar 16 22:44:17 2019
+
+Rank 31 just past barrier at: Sat Mar 16 22:44:17 2019
+
+Rank 33 just past barrier at: Sat Mar 16 22:44:17 2019
+
+Rank 35 just past barrier at: Sat Mar 16 22:44:17 2019
+
+Rank 37 just past barrier at: Sat Mar 16 22:44:17 2019
+
+Rank 39 just past barrier at: Sat Mar 16 22:44:17 2019
+
+Rank 45 just past barrier at: Sat Mar 16 22:44:17 2019
+
+Rank 34 just past barrier at: Sat Mar 16 22:44:17 2019
+
+Rank 36 just past barrier at: Sat Mar 16 22:44:17 2019
+
+Rank 44 just past barrier at: Sat Mar 16 22:44:17 2019
+
+Rank 42 just past barrier at: Sat Mar 16 22:44:17 2019
+
+Rank 10 just past barrier at: Sat Mar 16 22:44:17 2019
+
+Rank 16 just past barrier at: Sat Mar 16 22:44:17 2019
+
+Rank 22 just past barrier at: Sat Mar 16 22:44:17 2019
+
+Rank 28 just past barrier at: Sat Mar 16 22:44:17 2019
+
+Rank 47 just past barrier at: Sat Mar 16 22:44:17 2019
+
+Rank 1 just past barrier at: Sat Mar 16 22:44:17 2019
+
+Rank 7 just past barrier at: Sat Mar 16 22:44:17 2019
+
+Rank 13 just past barrier at: Sat Mar 16 22:44:17 2019
+
+Rank 14 just past barrier at: Sat Mar 16 22:44:17 2019
+
+Rank 17 just past barrier at: Sat Mar 16 22:44:17 2019
+
+Rank 19 just past barrier at: Sat Mar 16 22:44:17 2019
+
+Rank 20 just past barrier at: Sat Mar 16 22:44:17 2019
+
+Rank 21 just past barrier at: Sat Mar 16 22:44:17 2019
+
+Rank 30 just past barrier at: Sat Mar 16 22:44:17 2019
+
+Rank 32 just past barrier at: Sat Mar 16 22:44:17 2019
+
+Rank 38 just past barrier at: Sat Mar 16 22:44:17 2019
+
+Rank 41 just past barrier at: Sat Mar 16 22:44:17 2019
+
+Rank 43 just past barrier at: Sat Mar 16 22:44:17 2019
+
+Rank 46 just past barrier at: Sat Mar 16 22:44:17 2019
+
+Rank 12 just past barrier at: Sat Mar 16 22:44:17 2019
+
+Rank 23 just past barrier at: Sat Mar 16 22:44:17 2019
+
+Rank 40 just past barrier at: Sat Mar 16 22:44:17 2019
+
+MPI Rank 0, thread 0 launched
+MPI Rank 0, thread 3 launched
+MPI Rank 0, thread 6 launched
+MPI Rank 0, thread 5 launched
+MPI Rank 0, thread 7 launched
+MPI Rank 0, thread 4 launched
+MPI Rank 0, thread 2 launched
+MPI Rank 0, thread 1 launched
+Calc done, MPI 0 thread 0 still exists
+Rank 19 ready to exit at: Sat Mar 16 22:44:17 2019
+
+Rank 42 ready to exit at: Sat Mar 16 22:44:17 2019
+
+Rank 27 ready to exit at: Sat Mar 16 22:44:17 2019
+
+Rank 39 ready to exit at: Sat Mar 16 22:44:17 2019
+
+Rank 34 ready to exit at: Sat Mar 16 22:44:17 2019
+
+Rank 20 ready to exit at: Sat Mar 16 22:44:17 2019
+
+Rank 33 ready to exit at: Sat Mar 16 22:44:17 2019
+
+Rank 35 ready to exit at: Sat Mar 16 22:44:17 2019
+
+Rank 18 ready to exit at: Sat Mar 16 22:44:17 2019
+
+Rank 25 ready to exit at: Sat Mar 16 22:44:17 2019
+
+Rank 2 ready to exit at: Sat Mar 16 22:44:17 2019
+
+Rank 26 ready to exit at: Sat Mar 16 22:44:17 2019
+
+Rank 22 ready to exit at: Sat Mar 16 22:44:17 2019
+
+Rank 38 ready to exit at: Sat Mar 16 22:44:17 2019
+
+Rank 17 ready to exit at: Sat Mar 16 22:44:17 2019
+
+Rank 36 ready to exit at: Sat Mar 16 22:44:17 2019
+
+Rank 23 ready to exit at: Sat Mar 16 22:44:17 2019
+
+Rank 43 ready to exit at: Sat Mar 16 22:44:17 2019
+
+Rank 1 ready to exit at: Sat Mar 16 22:44:17 2019
+
+Rank 3 ready to exit at: Sat Mar 16 22:44:17 2019
+
+Rank 10 ready to exit at: Sat Mar 16 22:44:17 2019
+
+Rank 28 ready to exit at: Sat Mar 16 22:44:17 2019
+
+Rank 4 ready to exit at: Sat Mar 16 22:44:17 2019
+
+Rank 41 ready to exit at: Sat Mar 16 22:44:17 2019
+
+Rank 45 ready to exit at: Sat Mar 16 22:44:17 2019
+
+Rank 11 ready to exit at: Sat Mar 16 22:44:17 2019
+
+Rank 7 ready to exit at: Sat Mar 16 22:44:17 2019
+
+Rank 29 ready to exit at: Sat Mar 16 22:44:17 2019
+
+Rank 9 ready to exit at: Sat Mar 16 22:44:17 2019
+
+Rank 37 ready to exit at: Sat Mar 16 22:44:17 2019
+
+Rank 31 ready to exit at: Sat Mar 16 22:44:17 2019
+
+Rank 21 ready to exit at: Sat Mar 16 22:44:17 2019
+
+Rank 5 ready to exit at: Sat Mar 16 22:44:17 2019
+
+Rank 6 ready to exit at: Sat Mar 16 22:44:17 2019
+
+Rank 46 ready to exit at: Sat Mar 16 22:44:17 2019
+
+Rank 13 ready to exit at: Sat Mar 16 22:44:17 2019
+
+Rank 44 ready to exit at: Sat Mar 16 22:44:17 2019
+
+Rank 30 ready to exit at: Sat Mar 16 22:44:17 2019
+
+Rank 40 ready to exit at: Sat Mar 16 22:44:17 2019
+
+Rank 12 ready to exit at: Sat Mar 16 22:44:17 2019
+
+Rank 14 ready to exit at: Sat Mar 16 22:44:17 2019
+
+Rank 24 ready to exit at: Sat Mar 16 22:44:17 2019
+
+Rank 47 ready to exit at: Sat Mar 16 22:44:17 2019
+
+Rank 15 ready to exit at: Sat Mar 16 22:44:17 2019
+
+Rank 8 ready to exit at: Sat Mar 16 22:44:17 2019
+
+Rank 16 ready to exit at: Sat Mar 16 22:44:17 2019
+
+Rank 32 ready to exit at: Sat Mar 16 22:44:17 2019
+
+Rank 0 ready to exit at: Sat Mar 16 22:44:17 2019
+
+Finding sum using 8 threads took: 222.412 ms, sum = 1.000000e+09
 TACC:  Shutdown complete. Exiting. 
-TACC:  Starting up job 3016184 
+TACC:  Starting up job 3129209 
 TACC:  Starting parallel tasks... 
-Finding sum using 8 threads took: 495.816 ms, sum = 3.000000e+09
+MPI rank 9 / 48 launched
+Rank 8 before barrier at: Sat Mar 16 22:44:18 2019
+
+MPI rank 18 / 48 launched
+MPI rank 11 / 48 launched
+Rank 17 before barrier at: Sat Mar 16 22:44:18 2019
+
+MPI rank 6 / 48 launched
+Rank 10 before barrier at: Sat Mar 16 22:44:18 2019
+
+MPI rank 21 / 48 launched
+MPI rank 24 / 48 launched
+MPI rank 34 / 48 launched
+MPI rank 38 / 48 launched
+MPI rank 43 / 48 launched
+MPI rank 13 / 48 launched
+MPI rank 17 / 48 launched
+Rank 20 before barrier at: Sat Mar 16 22:44:18 2019
+
+MPI rank 26 / 48 launched
+Rank 33 before barrier at: Sat Mar 16 22:44:18 2019
+
+MPI rank 39 / 48 launched
+MPI rank 41 / 48 launched
+MPI rank 47 / 48 launched
+MPI rank 48 / 48 launched
+Rank 47 before barrier at: Sat Mar 16 22:44:18 2019
+
+MPI rank 1 / 48 launched
+MPI rank 2 / 48 launched
+MPI rank 5 / 48 launched
+Rank 5 before barrier at: Sat Mar 16 22:44:18 2019
+
+Rank 12 before barrier at: Sat Mar 16 22:44:18 2019
+
+MPI rank 16 / 48 launched
+Rank 15 before barrier at: Sat Mar 16 22:44:18 2019
+
+Rank 16 before barrier at: Sat Mar 16 22:44:18 2019
+
+Rank 23 before barrier at: Sat Mar 16 22:44:18 2019
+
+MPI rank 25 / 48 launched
+Rank 25 before barrier at: Sat Mar 16 22:44:18 2019
+
+MPI rank 30 / 48 launched
+MPI rank 32 / 48 launched
+Rank 31 before barrier at: Sat Mar 16 22:44:18 2019
+
+MPI rank 33 / 48 launched
+Rank 32 before barrier at: Sat Mar 16 22:44:18 2019
+
+MPI rank 35 / 48 launched
+MPI rank 37 / 48 launched
+Rank 36 before barrier at: Sat Mar 16 22:44:18 2019
+
+Rank 37 before barrier at: Sat Mar 16 22:44:18 2019
+
+Rank 40 before barrier at: Sat Mar 16 22:44:18 2019
+
+Rank 42 before barrier at: Sat Mar 16 22:44:18 2019
+
+MPI rank 45 / 48 launched
+Rank 44 before barrier at: Sat Mar 16 22:44:18 2019
+
+Rank 46 before barrier at: Sat Mar 16 22:44:18 2019
+
+Rank 1 before barrier at: Sat Mar 16 22:44:18 2019
+
+Rank 4 before barrier at: Sat Mar 16 22:44:18 2019
+
+MPI rank 8 / 48 launched
+MPI rank 10 / 48 launched
+Rank 9 before barrier at: Sat Mar 16 22:44:18 2019
+
+MPI rank 14 / 48 launched
+Rank 13 before barrier at: Sat Mar 16 22:44:18 2019
+
+MPI rank 22 / 48 launched
+Rank 21 before barrier at: Sat Mar 16 22:44:18 2019
+
+Rank 24 before barrier at: Sat Mar 16 22:44:18 2019
+
+MPI rank 29 / 48 launched
+Rank 28 before barrier at: Sat Mar 16 22:44:18 2019
+
+Rank 29 before barrier at: Sat Mar 16 22:44:18 2019
+
+Rank 34 before barrier at: Sat Mar 16 22:44:18 2019
+
+MPI rank 36 / 48 launched
+Rank 35 before barrier at: Sat Mar 16 22:44:18 2019
+
+Rank 38 before barrier at: Sat Mar 16 22:44:18 2019
+
+MPI rank 3 / 48 launched
+MPI rank 4 / 48 launched
+MPI rank 7 / 48 launched
+Rank 7 before barrier at: Sat Mar 16 22:44:18 2019
+
+MPI rank 15 / 48 launched
+MPI rank 19 / 48 launched
+MPI rank 20 / 48 launched
+Rank 19 before barrier at: Sat Mar 16 22:44:18 2019
+
+MPI rank 27 / 48 launched
+MPI rank 42 / 48 launched
+Rank 41 before barrier at: Sat Mar 16 22:44:18 2019
+
+MPI rank 46 / 48 launched
+Rank 45 before barrier at: Sat Mar 16 22:44:18 2019
+
+Rank 2 before barrier at: Sat Mar 16 22:44:18 2019
+
+Rank 3 before barrier at: Sat Mar 16 22:44:18 2019
+
+Rank 6 before barrier at: Sat Mar 16 22:44:18 2019
+
+MPI rank 12 / 48 launched
+Rank 14 before barrier at: Sat Mar 16 22:44:18 2019
+
+Rank 18 before barrier at: Sat Mar 16 22:44:18 2019
+
+MPI rank 23 / 48 launched
+Rank 26 before barrier at: Sat Mar 16 22:44:18 2019
+
+MPI rank 28 / 48 launched
+MPI rank 31 / 48 launched
+MPI rank 40 / 48 launched
+Rank 39 before barrier at: Sat Mar 16 22:44:18 2019
+
+MPI rank 44 / 48 launched
+Rank 11 before barrier at: Sat Mar 16 22:44:18 2019
+
+Rank 27 before barrier at: Sat Mar 16 22:44:18 2019
+
+Rank 30 before barrier at: Sat Mar 16 22:44:18 2019
+
+Rank 43 before barrier at: Sat Mar 16 22:44:18 2019
+
+Rank 22 before barrier at: Sat Mar 16 22:44:18 2019
+
+Rank 0 before barrier at: Sat Mar 16 22:44:20 2019
+
+Rank 0 just past barrier at: Sat Mar 16 22:44:20 2019
+
+Rank 4 just past barrier at: Sat Mar 16 22:44:20 2019
+
+Rank 8 just past barrier at: Sat Mar 16 22:44:20 2019
+
+Rank 10 just past barrier at: Sat Mar 16 22:44:20 2019
+
+Rank 11 just past barrier at: Sat Mar 16 22:44:20 2019
+
+Rank 12 just past barrier at: Sat Mar 16 22:44:20 2019
+
+Rank 16 just past barrier at: Sat Mar 16 22:44:20 2019
+
+Rank 21 just past barrier at: Sat Mar 16 22:44:20 2019
+
+Rank 23 just past barrier at: Sat Mar 16 22:44:20 2019
+
+Rank 30 just past barrier at: Sat Mar 16 22:44:20 2019
+
+Rank 36 just past barrier at: Sat Mar 16 22:44:20 2019
+
+Rank 37 just past barrier at: Sat Mar 16 22:44:20 2019
+
+Rank 3 just past barrier at: Sat Mar 16 22:44:20 2019
+
+Rank 13 just past barrier at: Sat Mar 16 22:44:20 2019
+
+Rank 15 just past barrier at: Sat Mar 16 22:44:20 2019
+
+Rank 27 just past barrier at: Sat Mar 16 22:44:20 2019
+
+Rank 42 just past barrier at: Sat Mar 16 22:44:20 2019
+
+Rank 45 just past barrier at: Sat Mar 16 22:44:20 2019
+
+Rank 46 just past barrier at: Sat Mar 16 22:44:20 2019
+
+Rank 28 just past barrier at: Sat Mar 16 22:44:20 2019
+
+Rank 5 just past barrier at: Sat Mar 16 22:44:20 2019
+
+Rank 18 just past barrier at: Sat Mar 16 22:44:20 2019
+
+Rank 7 just past barrier at: Sat Mar 16 22:44:20 2019
+
+Rank 17 just past barrier at: Sat Mar 16 22:44:20 2019
+
+Rank 35 just past barrier at: Sat Mar 16 22:44:20 2019
+
+Rank 20 just past barrier at: Sat Mar 16 22:44:20 2019
+
+Rank 33 just past barrier at: Sat Mar 16 22:44:20 2019
+
+Rank 41 just past barrier at: Sat Mar 16 22:44:20 2019
+
+Rank 1 just past barrier at: Sat Mar 16 22:44:20 2019
+
+Rank 22 just past barrier at: Sat Mar 16 22:44:20 2019
+
+Rank 24 just past barrier at: Sat Mar 16 22:44:20 2019
+
+Rank 26 just past barrier at: Sat Mar 16 22:44:20 2019
+
+Rank 32 just past barrier at: Sat Mar 16 22:44:20 2019
+
+Rank 40 just past barrier at: Sat Mar 16 22:44:20 2019
+
+Rank 9 just past barrier at: Sat Mar 16 22:44:20 2019
+
+Rank 14 just past barrier at: Sat Mar 16 22:44:20 2019
+
+Rank 19 just past barrier at: Sat Mar 16 22:44:20 2019
+
+Rank 31 just past barrier at: Sat Mar 16 22:44:20 2019
+
+Rank 39 just past barrier at: Sat Mar 16 22:44:20 2019
+
+Rank 44 just past barrier at: Sat Mar 16 22:44:20 2019
+
+Rank 47 just past barrier at: Sat Mar 16 22:44:20 2019
+
+Rank 2 just past barrier at: Sat Mar 16 22:44:20 2019
+
+Rank 6 just past barrier at: Sat Mar 16 22:44:20 2019
+
+Rank 25 just past barrier at: Sat Mar 16 22:44:20 2019
+
+Rank 29 just past barrier at: Sat Mar 16 22:44:20 2019
+
+Rank 34 just past barrier at: Sat Mar 16 22:44:20 2019
+
+Rank 38 just past barrier at: Sat Mar 16 22:44:20 2019
+
+Rank 43 just past barrier at: Sat Mar 16 22:44:20 2019
+
+MPI Rank 0, thread 0 launched
+MPI Rank 0, thread 2 launched
+MPI Rank 0, thread 3 launched
+MPI Rank 0, thread 1 launched
+MPI Rank 0, thread 4 launched
+MPI Rank 0, thread 6 launched
+MPI Rank 0, thread 7 launched
+MPI Rank 0, thread 5 launched
+Calc done, MPI 0 thread 0 still exists
+Rank 18 ready to exit at: Sat Mar 16 22:44:20 2019
+
+Rank 34 ready to exit at: Sat Mar 16 22:44:20 2019
+
+Rank 22 ready to exit at: Sat Mar 16 22:44:20 2019
+
+Rank 35 ready to exit at: Sat Mar 16 22:44:20 2019
+
+Rank 33 ready to exit at: Sat Mar 16 22:44:20 2019
+
+Rank 17 ready to exit at: Sat Mar 16 22:44:20 2019
+
+Rank 25 ready to exit at: Sat Mar 16 22:44:20 2019
+
+Rank 28 ready to exit at: Sat Mar 16 22:44:20 2019
+
+Rank 41 ready to exit at: Sat Mar 16 22:44:20 2019
+
+Rank 39 ready to exit at: Sat Mar 16 22:44:20 2019
+
+Rank 1 ready to exit at: Sat Mar 16 22:44:20 2019
+
+Rank 20 ready to exit at: Sat Mar 16 22:44:20 2019
+
+Rank 9 ready to exit at: Sat Mar 16 22:44:20 2019
+
+Rank 19 ready to exit at: Sat Mar 16 22:44:20 2019
+
+Rank 2 ready to exit at: Sat Mar 16 22:44:20 2019
+
+Rank 30 ready to exit at: Sat Mar 16 22:44:20 2019
+
+Rank 44 ready to exit at: Sat Mar 16 22:44:20 2019
+
+Rank 36 ready to exit at: Sat Mar 16 22:44:20 2019
+
+Rank 38 ready to exit at: Sat Mar 16 22:44:20 2019
+
+Rank 21 ready to exit at: Sat Mar 16 22:44:20 2019
+
+Rank 3 ready to exit at: Sat Mar 16 22:44:20 2019
+
+Rank 4 ready to exit at: Sat Mar 16 22:44:20 2019
+
+Rank 42 ready to exit at: Sat Mar 16 22:44:20 2019
+
+Rank 6 ready to exit at: Sat Mar 16 22:44:20 2019
+
+Rank 37 ready to exit at: Sat Mar 16 22:44:20 2019
+
+Rank 46 ready to exit at: Sat Mar 16 22:44:20 2019
+
+Rank 26 ready to exit at: Sat Mar 16 22:44:20 2019
+
+Rank 10 ready to exit at: Sat Mar 16 22:44:20 2019
+
+Rank 23 ready to exit at: Sat Mar 16 22:44:20 2019
+
+Rank 27 ready to exit at: Sat Mar 16 22:44:20 2019
+
+Rank 43 ready to exit at: Sat Mar 16 22:44:20 2019
+
+Rank 5 ready to exit at: Sat Mar 16 22:44:20 2019
+
+Rank 12 ready to exit at: Sat Mar 16 22:44:20 2019
+
+Rank 29 ready to exit at: Sat Mar 16 22:44:20 2019
+
+Rank 7 ready to exit at: Sat Mar 16 22:44:20 2019
+
+Rank 47 ready to exit at: Sat Mar 16 22:44:20 2019
+
+Rank 24 ready to exit at: Sat Mar 16 22:44:20 2019
+
+Rank 14 ready to exit at: Sat Mar 16 22:44:20 2019
+
+Rank 31 ready to exit at: Sat Mar 16 22:44:20 2019
+
+Rank 45 ready to exit at: Sat Mar 16 22:44:20 2019
+
+Rank 11 ready to exit at: Sat Mar 16 22:44:20 2019
+
+Rank 8 ready to exit at: Sat Mar 16 22:44:20 2019
+
+Rank 15 ready to exit at: Sat Mar 16 22:44:20 2019
+
+Rank 40 ready to exit at: Sat Mar 16 22:44:20 2019
+
+Rank 13 ready to exit at: Sat Mar 16 22:44:20 2019
+
+Rank 16 ready to exit at: Sat Mar 16 22:44:20 2019
+
+Rank 32 ready to exit at: Sat Mar 16 22:44:20 2019
+
+Rank 0 ready to exit at: Sat Mar 16 22:44:20 2019
+
+Finding sum using 8 threads took: 235.520 ms, sum = 1.000000e+09
 TACC:  Shutdown complete. Exiting. 
-TACC:  Starting up job 3016184 
+TACC:  Starting up job 3129209 
 TACC:  Starting parallel tasks... 
-Finding sum using 8 threads took: 481.148 ms, sum = 3.000000e+09
+MPI rank 10 / 48 launched
+MPI rank 17 / 48 launched
+MPI rank 22 / 48 launched
+MPI rank 25 / 48 launched
+Rank 24 before barrier at: Sat Mar 16 22:44:21 2019
+
+MPI rank 26 / 48 launched
+Rank 25 before barrier at: Sat Mar 16 22:44:21 2019
+
+MPI rank 30 / 48 launched
+MPI rank 6 / 48 launched
+Rank 9 before barrier at: Sat Mar 16 22:44:21 2019
+
+Rank 16 before barrier at: Sat Mar 16 22:44:21 2019
+
+Rank 21 before barrier at: Sat Mar 16 22:44:21 2019
+
+Rank 29 before barrier at: Sat Mar 16 22:44:21 2019
+
+Rank 5 before barrier at: Sat Mar 16 22:44:21 2019
+
+MPI rank 2 / 48 launched
+MPI rank 14 / 48 launched
+MPI rank 29 / 48 launched
+MPI rank 9 / 48 launched
+MPI rank 21 / 48 launched
+MPI rank 43 / 48 launched
+Rank 13 before barrier at: Sat Mar 16 22:44:21 2019
+
+Rank 28 before barrier at: Sat Mar 16 22:44:21 2019
+
+MPI rank 41 / 48 launched
+Rank 1 before barrier at: Sat Mar 16 22:44:21 2019
+
+Rank 8 before barrier at: Sat Mar 16 22:44:21 2019
+
+MPI rank 13 / 48 launched
+MPI rank 19 / 48 launched
+Rank 20 before barrier at: Sat Mar 16 22:44:21 2019
+
+MPI rank 28 / 48 launched
+MPI rank 33 / 48 launched
+MPI rank 36 / 48 launched
+Rank 35 before barrier at: Sat Mar 16 22:44:21 2019
+
+MPI rank 40 / 48 launched
+Rank 42 before barrier at: Sat Mar 16 22:44:21 2019
+
+MPI rank 44 / 48 launched
+Rank 43 before barrier at: Sat Mar 16 22:44:21 2019
+
+MPI rank 5 / 48 launched
+MPI rank 18 / 48 launched
+Rank 18 before barrier at: Sat Mar 16 22:44:21 2019
+
+Rank 27 before barrier at: Sat Mar 16 22:44:21 2019
+
+MPI rank 35 / 48 launched
+MPI rank 39 / 48 launched
+Rank 38 before barrier at: Sat Mar 16 22:44:21 2019
+
+Rank 39 before barrier at: Sat Mar 16 22:44:21 2019
+
+Rank 40 before barrier at: Sat Mar 16 22:44:21 2019
+
+MPI rank 45 / 48 launched
+Rank 44 before barrier at: Sat Mar 16 22:44:21 2019
+
+MPI rank 47 / 48 launched
+Rank 46 before barrier at: Sat Mar 16 22:44:21 2019
+
+MPI rank 48 / 48 launched
+MPI rank 3 / 48 launched
+Rank 4 before barrier at: Sat Mar 16 22:44:21 2019
+
+Rank 12 before barrier at: Sat Mar 16 22:44:21 2019
+
+Rank 17 before barrier at: Sat Mar 16 22:44:21 2019
+
+MPI rank 20 / 48 launched
+Rank 19 before barrier at: Sat Mar 16 22:44:21 2019
+
+MPI rank 31 / 48 launched
+Rank 30 before barrier at: Sat Mar 16 22:44:21 2019
+
+Rank 32 before barrier at: Sat Mar 16 22:44:21 2019
+
+MPI rank 34 / 48 launched
+Rank 33 before barrier at: Sat Mar 16 22:44:21 2019
+
+Rank 34 before barrier at: Sat Mar 16 22:44:21 2019
+
+MPI rank 37 / 48 launched
+Rank 36 before barrier at: Sat Mar 16 22:44:21 2019
+
+MPI rank 42 / 48 launched
+Rank 41 before barrier at: Sat Mar 16 22:44:21 2019
+
+Rank 47 before barrier at: Sat Mar 16 22:44:21 2019
+
+MPI rank 1 / 48 launched
+Rank 2 before barrier at: Sat Mar 16 22:44:21 2019
+
+MPI rank 27 / 48 launched
+MPI rank 4 / 48 launched
+MPI rank 11 / 48 launched
+MPI rank 12 / 48 launched
+MPI rank 15 / 48 launched
+MPI rank 24 / 48 launched
+Rank 11 before barrier at: Sat Mar 16 22:44:21 2019
+
+Rank 23 before barrier at: Sat Mar 16 22:44:21 2019
+
+Rank 26 before barrier at: Sat Mar 16 22:44:21 2019
+
+Rank 3 before barrier at: Sat Mar 16 22:44:21 2019
+
+MPI rank 7 / 48 launched
+Rank 10 before barrier at: Sat Mar 16 22:44:21 2019
+
+Rank 14 before barrier at: Sat Mar 16 22:44:21 2019
+
+MPI rank 38 / 48 launched
+Rank 6 before barrier at: Sat Mar 16 22:44:21 2019
+
+MPI rank 8 / 48 launched
+MPI rank 16 / 48 launched
+MPI rank 23 / 48 launched
+MPI rank 32 / 48 launched
+MPI rank 46 / 48 launched
+Rank 37 before barrier at: Sat Mar 16 22:44:21 2019
+
+Rank 7 before barrier at: Sat Mar 16 22:44:21 2019
+
+Rank 15 before barrier at: Sat Mar 16 22:44:21 2019
+
+Rank 22 before barrier at: Sat Mar 16 22:44:21 2019
+
+Rank 31 before barrier at: Sat Mar 16 22:44:21 2019
+
+Rank 45 before barrier at: Sat Mar 16 22:44:21 2019
+
+Rank 0 before barrier at: Sat Mar 16 22:44:24 2019
+
+Rank 0 just past barrier at: Sat Mar 16 22:44:24 2019
+
+Rank 1 just past barrier at: Sat Mar 16 22:44:24 2019
+
+Rank 2 just past barrier at: Sat Mar 16 22:44:24 2019
+
+Rank 5 just past barrier at: Sat Mar 16 22:44:24 2019
+
+Rank 6 just past barrier at: Sat Mar 16 22:44:24 2019
+
+Rank 7 just past barrier at: Sat Mar 16 22:44:24 2019
+
+Rank 9 just past barrier at: Sat Mar 16 22:44:24 2019
+
+Rank 10 just past barrier at: Sat Mar 16 22:44:24 2019
+
+Rank 11 just past barrier at: Sat Mar 16 22:44:24 2019
+
+Rank 13 just past barrier at: Sat Mar 16 22:44:24 2019
+
+Rank 15 just past barrier at: Sat Mar 16 22:44:24 2019
+
+Rank 17 just past barrier at: Sat Mar 16 22:44:24 2019
+
+Rank 18 just past barrier at: Sat Mar 16 22:44:24 2019
+
+Rank 19 just past barrier at: Sat Mar 16 22:44:24 2019
+
+Rank 22 just past barrier at: Sat Mar 16 22:44:24 2019
+
+Rank 23 just past barrier at: Sat Mar 16 22:44:24 2019
+
+Rank 24 just past barrier at: Sat Mar 16 22:44:24 2019
+
+Rank 25 just past barrier at: Sat Mar 16 22:44:24 2019
+
+Rank 26 just past barrier at: Sat Mar 16 22:44:24 2019
+
+Rank 27 just past barrier at: Sat Mar 16 22:44:24 2019
+
+Rank 28 just past barrier at: Sat Mar 16 22:44:24 2019
+
+Rank 32 just past barrier at: Sat Mar 16 22:44:24 2019
+
+Rank 38 just past barrier at: Sat Mar 16 22:44:24 2019
+
+Rank 40 just past barrier at: Sat Mar 16 22:44:24 2019
+
+Rank 46 just past barrier at: Sat Mar 16 22:44:24 2019
+
+Rank 35 just past barrier at: Sat Mar 16 22:44:24 2019
+
+Rank 43 just past barrier at: Sat Mar 16 22:44:24 2019
+
+Rank 39 just past barrier at: Sat Mar 16 22:44:24 2019
+
+Rank 36 just past barrier at: Sat Mar 16 22:44:24 2019
+
+Rank 4 just past barrier at: Sat Mar 16 22:44:24 2019
+
+Rank 16 just past barrier at: Sat Mar 16 22:44:24 2019
+
+Rank 29 just past barrier at: Sat Mar 16 22:44:24 2019
+
+Rank 37 just past barrier at: Sat Mar 16 22:44:24 2019
+
+Rank 41 just past barrier at: Sat Mar 16 22:44:24 2019
+
+Rank 42 just past barrier at: Sat Mar 16 22:44:24 2019
+
+Rank 8 just past barrier at: Sat Mar 16 22:44:24 2019
+
+Rank 30 just past barrier at: Sat Mar 16 22:44:24 2019
+
+Rank 34 just past barrier at: Sat Mar 16 22:44:24 2019
+
+Rank 47 just past barrier at: Sat Mar 16 22:44:24 2019
+
+Rank 3 just past barrier at: Sat Mar 16 22:44:24 2019
+
+Rank 14 just past barrier at: Sat Mar 16 22:44:24 2019
+
+Rank 20 just past barrier at: Sat Mar 16 22:44:24 2019
+
+Rank 31 just past barrier at: Sat Mar 16 22:44:24 2019
+
+Rank 12 just past barrier at: Sat Mar 16 22:44:24 2019
+
+Rank 21 just past barrier at: Sat Mar 16 22:44:24 2019
+
+Rank 44 just past barrier at: Sat Mar 16 22:44:24 2019
+
+Rank 45 just past barrier at: Sat Mar 16 22:44:24 2019
+
+Rank 33 just past barrier at: Sat Mar 16 22:44:24 2019
+
+MPI Rank 0, thread 0 launched
+MPI Rank 0, thread 3 launched
+MPI Rank 0, thread 5 launched
+MPI Rank 0, thread 7 launched
+MPI Rank 0, thread 2 launched
+MPI Rank 0, thread 1 launched
+MPI Rank 0, thread 4 launched
+MPI Rank 0, thread 6 launched
+Calc done, MPI 0 thread 0 still exists
+Rank 19 ready to exit at: Sat Mar 16 22:44:24 2019
+
+Rank 33 ready to exit at: Sat Mar 16 22:44:24 2019
+
+Rank 26 ready to exit at: Sat Mar 16 22:44:24 2019
+
+Rank 17 ready to exit at: Sat Mar 16 22:44:24 2019
+
+Rank 18 ready to exit at: Sat Mar 16 22:44:24 2019
+
+Rank 35 ready to exit at: Sat Mar 16 22:44:24 2019
+
+Rank 34 ready to exit at: Sat Mar 16 22:44:24 2019
+
+Rank 37 ready to exit at: Sat Mar 16 22:44:24 2019
+
+Rank 21 ready to exit at: Sat Mar 16 22:44:24 2019
+
+Rank 42 ready to exit at: Sat Mar 16 22:44:24 2019
+
+Rank 41 ready to exit at: Sat Mar 16 22:44:24 2019
+
+Rank 1 ready to exit at: Sat Mar 16 22:44:24 2019
+
+Rank 2 ready to exit at: Sat Mar 16 22:44:24 2019
+
+Rank 3 ready to exit at: Sat Mar 16 22:44:24 2019
+
+Rank 27 ready to exit at: Sat Mar 16 22:44:24 2019
+
+Rank 29 ready to exit at: Sat Mar 16 22:44:24 2019
+
+Rank 5 ready to exit at: Sat Mar 16 22:44:24 2019
+
+Rank 39 ready to exit at: Sat Mar 16 22:44:24 2019
+
+Rank 25 ready to exit at: Sat Mar 16 22:44:24 2019
+
+Rank 23 ready to exit at: Sat Mar 16 22:44:24 2019
+
+Rank 13 ready to exit at: Sat Mar 16 22:44:24 2019
+
+Rank 45 ready to exit at: Sat Mar 16 22:44:24 2019
+
+Rank 7 ready to exit at: Sat Mar 16 22:44:24 2019
+
+Rank 9 ready to exit at: Sat Mar 16 22:44:24 2019
+
+Rank 10 ready to exit at: Sat Mar 16 22:44:24 2019
+
+Rank 22 ready to exit at: Sat Mar 16 22:44:24 2019
+
+Rank 47 ready to exit at: Sat Mar 16 22:44:24 2019
+
+Rank 43 ready to exit at: Sat Mar 16 22:44:24 2019
+
+Rank 30 ready to exit at: Sat Mar 16 22:44:24 2019
+
+Rank 20 ready to exit at: Sat Mar 16 22:44:24 2019
+
+Rank 38 ready to exit at: Sat Mar 16 22:44:24 2019
+
+Rank 46 ready to exit at: Sat Mar 16 22:44:24 2019
+
+Rank 31 ready to exit at: Sat Mar 16 22:44:24 2019
+
+Rank 11 ready to exit at: Sat Mar 16 22:44:24 2019
+
+Rank 6 ready to exit at: Sat Mar 16 22:44:24 2019
+
+Rank 15 ready to exit at: Sat Mar 16 22:44:24 2019
+
+Rank 36 ready to exit at: Sat Mar 16 22:44:24 2019
+
+Rank 14 ready to exit at: Sat Mar 16 22:44:24 2019
+
+Rank 44 ready to exit at: Sat Mar 16 22:44:24 2019
+
+Rank 4 ready to exit at: Sat Mar 16 22:44:24 2019
+
+Rank 24 ready to exit at: Sat Mar 16 22:44:24 2019
+
+Rank 40 ready to exit at: Sat Mar 16 22:44:24 2019
+
+Rank 16 ready to exit at: Sat Mar 16 22:44:24 2019
+
+Rank 28 ready to exit at: Sat Mar 16 22:44:24 2019
+
+Rank 12 ready to exit at: Sat Mar 16 22:44:24 2019
+
+Rank 8 ready to exit at: Sat Mar 16 22:44:24 2019
+
+Rank 32 ready to exit at: Sat Mar 16 22:44:24 2019
+
+Rank 0 ready to exit at: Sat Mar 16 22:44:24 2019
+
+Finding sum using 8 threads took: 206.593 ms, sum = 1.000000e+09
 TACC:  Shutdown complete. Exiting. 
 =======================================================================

@@ -11,10 +11,12 @@ int main(int argc, char *argv[])
 {
     MPI_Init(&argc, &argv); // Initialize MPI
     
-    int rank, nproc, i, N;
+    int rank, nproc, i, N, irepeat;
     double t1, t2;
+    time_t curr_t;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank );
     MPI_Comm_size(MPI_COMM_WORLD, &nproc);
+    printf("MPI rank %d / %d launched\n", rank + 1, nproc);
     
     N = 1000000000; // 1e9
     
@@ -39,8 +41,15 @@ int main(int argc, char *argv[])
     if (env_ntheads != NULL) my_nthreads = atoi(env_ntheads);
     if (my_nthreads < 1) my_nthreads = 1;
     
+    curr_t = time(NULL);
+    printf("Rank %d before barrier at: %s\n", rank, ctime(&curr_t));
+    
     MPI_Request req;
     MPI_Barrier(MPI_COMM_WORLD);
+    
+    curr_t = time(NULL);
+    printf("Rank %d just past barrier at: %s\n", rank, ctime(&curr_t));
+    
     t1 = MPI_Wtime();
     // start finding sum of array A on rank 0
     if (rank == 0) 
@@ -50,15 +59,17 @@ int main(int argc, char *argv[])
         
         #pragma omp parallel
         {
-            for (int irepeat = 0; irepeat < 3; irepeat++)
-            {
-                #pragma omp for reduction(+:sum) 
-                for (i = 0; i < N; i++) {
-                   sum += A[i];
-                }
+            printf("MPI Rank 0, thread %d launched\n", omp_get_thread_num());
+
+            #pragma omp for reduction(+:sum) 
+            for (i = 0; i < N; i++) {
+               sum += A[i];
             }
+            
             #pragma omp barrier
         }
+        
+        printf("Calc done, MPI 0 thread %d still exists\n", omp_get_thread_num());
         
         //MPI_Barrier(MPI_COMM_WORLD);
         MPI_Ibarrier(MPI_COMM_WORLD, &req);
@@ -87,6 +98,9 @@ int main(int argc, char *argv[])
 	}
 
     t2 = MPI_Wtime();
+    
+    curr_t = time(NULL);
+    printf("Rank %d ready to exit at: %s\n", rank, ctime(&curr_t));
     
     if (rank == 0) 
     {

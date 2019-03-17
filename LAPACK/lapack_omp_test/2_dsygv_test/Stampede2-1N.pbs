@@ -11,14 +11,14 @@ export MAT_SIZE=2400
 export I_MPI_PIN=0
 
 export NTHREADS=1
-ibrun  ./test_dsygv_omp > out_n$MAT_SIZE.log
+ibrun -n 48 -o 0   ./test_dsygv_omp > out_n$MAT_SIZE.log
 echo "=======================================================================" >> out_n$MAT_SIZE.log
 export NTHREADS=2
-ibrun  ./test_dsygv_omp >> out_n$MAT_SIZE.log
+ibrun -n 48 -o 0   ./test_dsygv_omp >> out_n$MAT_SIZE.log
 echo "=======================================================================" >> out_n$MAT_SIZE.log
 export NTHREADS=4
-ibrun  ./test_dsygv_omp >> out_n$MAT_SIZE.log
+ibrun -n 48 -o 0   ./test_dsygv_omp >> out_n$MAT_SIZE.log
 echo "=======================================================================" >> out_n$MAT_SIZE.log
 export NTHREADS=8
-ibrun  ./test_dsygv_omp >> out_n$MAT_SIZE.log
+ibrun -n 48 -o 0   ./test_dsygv_omp >> out_n$MAT_SIZE.log
 echo "=======================================================================" >> out_n$MAT_SIZE.log

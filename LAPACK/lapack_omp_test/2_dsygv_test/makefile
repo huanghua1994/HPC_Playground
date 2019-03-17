@@ -10,7 +10,7 @@ FFLAGS =
 #CPPFLAGS = -m64 -I${MKLROOT}/include -I include/ -L${MKLROOT}/lib/intel64 -Wl,--no-as-needed -lmkl_scalapack_lp64 -lmkl_intel_lp64 -lmkl_intel_thread -lmkl_core -liomp5 -lmkl_blacs_intelmpi_lp64 -lpthread -ldl -lrt -O3 -fopenmp
 
 # add -fopenmp if explicit OpenMP instructions are used in the code
-CPPFLAGS =  -I${MKLROOT}/include -L${MKLROOT}/lib/intel64 -lmkl_scalapack_lp64 -lmkl_intel_lp64 -lmkl_intel_thread -lmkl_core -lmkl_blacs_intelmpi_lp64 -liomp5 -lpthread -ldl -lrt -O3
+CPPFLAGS =  -I${MKLROOT}/include -L${MKLROOT}/lib/intel64 -lmkl_scalapack_lp64 -lmkl_intel_lp64 -lmkl_intel_thread -lmkl_core -lmkl_blacs_intelmpi_lp64 -liomp5 -lpthread -ldl -lrt -O3 -fopenmp -std=gnu99
 
 #CPPFLAGS = -m64 -I${MKLROOT}/include -I include/ -L${MKLROOT}/lib/intel64 -Wl,--no-as-needed -lmkl_scalapack_lp64 -lmkl_intel_lp64 -lmkl_sequential -lmkl_core -lmkl_blacs_intelmpi_lp64 -lpthread -ldl -lrt -O0 -fopenmp
 
@@ -24,7 +24,7 @@ OBJSC = test_dsygv_omp.o
 
 LIBBASE = test_dsygv_omp
 
-override CC=mpiicc
+override CC=mpicc
 
 all: test_dsygv_omp
 

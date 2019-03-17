@@ -42,12 +42,12 @@ int main(int argc, char **argv)
     // Use x = 0 as initial guess
     memset(x, 0, nxyz_msize);
     BiCGStab(nxyz, res_tol, max_iter, b, x);
+    */
     
     printf("Starting classic CG...\n");
     // Use x = 0 as initial guess
     memset(x, 0, nxyz_msize);
     CG_classic(nxyz, res_tol, max_iter, b, x);
-    */
     
     printf("Starting AAR...\n");
     // Use x = 0 as initial guess
