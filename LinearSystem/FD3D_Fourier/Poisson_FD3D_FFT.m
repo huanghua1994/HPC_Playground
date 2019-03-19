@@ -35,9 +35,9 @@ f = reshape(f, [N1, N2, N3]);
 %------------------------------------------------------
 % Solve the 3D Poisson equation using FFT
 %------------------------------------------------------
-[u_fft, fft_t, d_t] = Poisson_FFTsolver(N1, N2, N3, w2_x, w2_y, w2_z, FDn, f);
+[u_fft, fft_t, d_t] = Poisson_FD3D_PBC_FFT_Solver(N1, N2, N3, w2_x, w2_y, w2_z, FDn, f);
 u_fft = u_fft(:);  % flatten the result for comparison
-fprintf('Poisson_FFTsolver done, fft time = %f, d_hat time = %f, total time = %f\n', fft_t, d_t, fft_t + d_t);
+fprintf('Poisson_FD3D_PBC_FFT_Solver done, fft time = %f, d_hat time = %f, total time = %f\n', fft_t, d_t, fft_t + d_t);
 
 
 %------------------------------------------------------
@@ -46,7 +46,7 @@ fprintf('Poisson_FFTsolver done, fft time = %f, d_hat time = %f, total time = %f
 f = f(:); % Reshape f to a vector
 t_fd = tic;
 % Lap has an eigenvalue 0, it's not full-rank. Cannot use CG to solve it.
-Lap = DiscreteLaplacian(L1, L2, L3, N1, N2, N3, FDn, 2);
+Lap = DiscreteLaplacian3D(L1, L2, L3, N1, N2, N3, FDn, 2);
 u_fd = gmres(Lap, -f, 10, 1e-10, min(1000, N));
 fprintf('GMRES solver done, used time = %f\n', toc(t_fd));
 % Shift the results by a constant

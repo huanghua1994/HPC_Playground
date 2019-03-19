@@ -1,4 +1,4 @@
-function [x, fft_t, d_t] = Poisson_FFTsolver(nx, ny, nz, w2_x, w2_y, w2_z, radius, f)
+function [x, fft_t, d_t] = Poisson_FD3D_PBC_FFT_Solver(nx, ny, nz, w2_x, w2_y, w2_z, radius, f)
 % Credit: Qimen Xu <qimenxu@gatech.edu>
 % Solve Poisson equation -\nabla^2 * x = f with period boundary condition 
 % \nabla^2 is discretized with order-(2*radius) finite difference

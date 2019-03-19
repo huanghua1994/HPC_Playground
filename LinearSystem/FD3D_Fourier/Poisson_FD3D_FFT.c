@@ -4,7 +4,7 @@
 #include <assert.h>
 #include <math.h>
 
-#include "Poisson_FFT_Solver.h"
+#include "Poisson_FD3D_PBC_FFT_Solver.h"
 
 double fract(const int n, const int k) 
 {
@@ -79,7 +79,10 @@ int main()
     fclose(u_ref_inf);
     
     // Solve Poisson equation with PBC using FFT
-    Poisson_PBC_FFT_Solver(nx, ny, nz, radius, w2_x_coef, w2_y_coef, w2_z_coef, f_rhs, u_fft);
+    printf("FFT warm-up running:\n");
+    Poisson_FD3D_PBC_FFT_Solver(nx, ny, nz, radius, w2_x_coef, w2_y_coef, w2_z_coef, f_rhs, u_fft);
+    printf("Performance test running:\n");
+    Poisson_FD3D_PBC_FFT_Solver(nx, ny, nz, radius, w2_x_coef, w2_y_coef, w2_z_coef, f_rhs, u_fft);
     
     // Compare the results
     double relerr = calcL2NormRelErr(nd, u_ref, u_fft);

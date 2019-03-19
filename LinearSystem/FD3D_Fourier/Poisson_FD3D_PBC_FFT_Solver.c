@@ -9,7 +9,7 @@
 // See https://software.intel.com/en-us/mkl-developer-reference-c-fft-functions
 #include "mkl_dfti.h"
 
-#include "Poisson_FFT_Solver.h"
+#include "Poisson_FD3D_PBC_FFT_Solver.h"
 
 #ifndef M_PI
 #define M_PI 3.14159265358979323846
@@ -37,7 +37,7 @@ void unpackMKLDftiForward3DInplace(const int nz, const int ny, const int nx, dou
 }
 
 // Solve a Poisson equation -\nabla^2 u = f with period boundary condition
-void Poisson_PBC_FFT_Solver(
+void Poisson_FD3D_PBC_FFT_Solver(
     const int nx, const int ny, const int nz, const int radius, 
     const double *w2_x, const double *w2_y, const double *w2_z, 
     double *f_rhs, double *u_sol
