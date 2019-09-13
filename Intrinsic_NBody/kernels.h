@@ -2,6 +2,12 @@
 #define __KERNELS_H__
 
 #include "x86_intrin_wrapper.h" 
+#include <math.h>
+
+#define DTYPE    double
+#define DSQRT    sqrt
+#define VEC_T    vec_t_d
+#define SIMD_LEN SIMD_LEN_D
 
 // Pointer to function that performs kernel matrix matvec using given sets of 
 // points and given input vector. The kernel function must be symmetric.
@@ -50,6 +56,42 @@ static void reciprocal_matvec_ref(
             sum += x_in[j] / DSQRT(r2);
         }
         x_out[i] += sum;
+    }
+}
+
+static void reciprocal_matvec_avx_aligned(
+    const DTYPE *coord0, const int ld0, const int n0,
+    const DTYPE *coord1, const int ld1, const int n1,
+    const DTYPE *x_in, DTYPE *x_out
+)
+{
+    const DTYPE *x0 = coord0 + ld0 * 0;
+    const DTYPE *y0 = coord0 + ld0 * 1;
+    const DTYPE *z0 = coord0 + ld0 * 2;
+    const DTYPE *x1 = coord1 + ld1 * 0;
+    const DTYPE *y1 = coord1 + ld1 * 1;
+    const DTYPE *z1 = coord1 + ld1 * 2;
+    for (int i = 0; i < n0; i += SIMD_LEN)
+    {
+        vec_t_d tx = intrin_load_d(x0 + i);
+        vec_t_d ty = intrin_load_d(y0 + i);
+        vec_t_d tz = intrin_load_d(z0 + i);
+        vec_t_d tv = intrin_zero_d();
+        for (int j = 0; j < n1; j++)
+        {
+            vec_t_d dx = intrin_sub_d(tx, intrin_bcast_d(x1 + j));
+            vec_t_d dy = intrin_sub_d(ty, intrin_bcast_d(y1 + j));
+            vec_t_d dz = intrin_sub_d(tz, intrin_bcast_d(z1 + j));
+            
+            vec_t_d r2 = intrin_mul_d(dx, dx);
+            r2 = intrin_fmadd_d(dy, dy, r2);
+            r2 = intrin_fmadd_d(dz, dz, r2);
+            
+            vec_t_d sv   = intrin_bcast_d(x_in + j);
+            vec_t_d rinv = intrin_div_d(sv, intrin_sqrt_d(r2));
+            tv = intrin_add_d(rinv, tv);
+        }
+        intrin_store_d(x_out + i, tv);
     }
 }
 

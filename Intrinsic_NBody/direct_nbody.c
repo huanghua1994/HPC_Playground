@@ -13,14 +13,19 @@ void test_direct_nbody(
 )
 {
     int nthread = omp_get_max_threads();
+    int n_trg_SIMD = n_trg / SIMD_LEN;
+    
     for (int k = 0; k < 5; k++)
     {
         double st = omp_get_wtime();
         #pragma omp parallel 
         {
             int tid = omp_get_thread_num();
-            int trg_sidx = tid * n_trg / nthread;
-            int trg_eidx = (tid + 1) * n_trg / nthread;
+            int trg_SIMD_sidx = tid * n_trg_SIMD / nthread;
+            int trg_SIMD_eidx = (tid + 1) * n_trg_SIMD / nthread;
+            
+            int trg_sidx = trg_SIMD_sidx * SIMD_LEN;
+            int trg_eidx = trg_SIMD_eidx * SIMD_LEN;
             int n_trg_thread = trg_eidx - trg_sidx;
             krnl_matvec(
                 trg_coord + trg_sidx, n_trg, n_trg_thread, 
@@ -49,25 +54,46 @@ int main(int argc, char **argv)
         scanf("%d", &n_trg);
     }
     
-    DTYPE *src_coord = (DTYPE*) malloc(sizeof(DTYPE) * n_src * 3);
-    DTYPE *trg_coord = (DTYPE*) malloc(sizeof(DTYPE) * n_trg * 3);
-    DTYPE *src_val   = (DTYPE*) malloc(sizeof(DTYPE) * n_src);
-    DTYPE *trg_val   = (DTYPE*) malloc(sizeof(DTYPE) * n_src);
+    int n_src_SIMD = (n_src + SIMD_LEN - 1) / SIMD_LEN * SIMD_LEN;
+    int n_trg_SIMD = (n_trg + SIMD_LEN - 1) / SIMD_LEN * SIMD_LEN;
+    DTYPE *src_coord = (DTYPE*) _mm_malloc(sizeof(DTYPE) * n_src_SIMD * 3, 64);
+    DTYPE *trg_coord = (DTYPE*) _mm_malloc(sizeof(DTYPE) * n_trg_SIMD * 3, 64);
+    DTYPE *src_val   = (DTYPE*) _mm_malloc(sizeof(DTYPE) * n_src_SIMD, 64);
+    DTYPE *trg_val   = (DTYPE*) _mm_malloc(sizeof(DTYPE) * n_trg_SIMD, 64);
     srand48(time(NULL));
-    for (int i = 0; i < n_src * 3; i++) src_coord[i] = drand48();
-    for (int i = 0; i < n_trg * 3; i++) trg_coord[i] = drand48();
-    for (int i = 0; i < n_src; i++) src_val[i] = drand48();
+    for (int i = 0; i < n_src; i++) 
+    {
+        src_coord[i + n_src_SIMD * 0] = drand48();
+        src_coord[i + n_src_SIMD * 1] = drand48();
+        src_coord[i + n_src_SIMD * 2] = drand48();
+        src_val[i] = drand48();
+    }
+    for (int i = 0; i < n_trg; i++) 
+    {
+        trg_coord[i + n_trg_SIMD * 0] = drand48();
+        trg_coord[i + n_trg_SIMD * 1] = drand48();
+        trg_coord[i + n_trg_SIMD * 2] = drand48();
+    }
     
-    kernel_matvec_fptr krnl_matvec = reciprocal_matvec_ref;
+    printf("Reference auto-vectorized kernel:\n");
+    kernel_matvec_fptr ref_matvec = reciprocal_matvec_ref;
     test_direct_nbody(
         n_src, src_coord, src_val,
         n_trg, trg_coord, trg_val, 
-        krnl_matvec
+        ref_matvec
     );
     
-    free(src_coord);
-    free(trg_coord);
-    free(src_val);
-    free(trg_val);
+    printf("AVX intrinsic kernel:\n");
+    kernel_matvec_fptr avx_matvec = reciprocal_matvec_avx_aligned;
+    test_direct_nbody(
+        n_src, src_coord, src_val,
+        n_trg, trg_coord, trg_val, 
+        avx_matvec
+    );
+    
+    _mm_free(src_coord);
+    _mm_free(trg_coord);
+    _mm_free(src_val);
+    _mm_free(trg_val);
     return 0;
 }
