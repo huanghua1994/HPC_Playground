@@ -6,7 +6,7 @@
 
 #define DTYPE    double
 #define DSQRT    sqrt
-#define VEC_T    vec_t_d
+#define VEC_T    vec_d
 #define SIMD_LEN SIMD_LEN_D
 
 // Pointer to function that performs kernel matrix matvec using given sets of 
@@ -27,7 +27,7 @@ typedef void (*kernel_matvec_fptr) (
     const DTYPE *x_in, DTYPE *x_out
 );
 
-static void reciprocal_matvec_ref(
+static void reciprocal_matvec_std(
     const DTYPE *coord0, const int ld0, const int n0,
     const DTYPE *coord1, const int ld1, const int n1,
     const DTYPE *x_in, DTYPE *x_out
@@ -59,7 +59,7 @@ static void reciprocal_matvec_ref(
     }
 }
 
-static void reciprocal_matvec_avx_aligned(
+static void reciprocal_matvec_avx(
     const DTYPE *coord0, const int ld0, const int n0,
     const DTYPE *coord1, const int ld1, const int n1,
     const DTYPE *x_in, DTYPE *x_out
@@ -71,34 +71,41 @@ static void reciprocal_matvec_avx_aligned(
     const DTYPE *x1 = coord1 + ld1 * 0;
     const DTYPE *y1 = coord1 + ld1 * 1;
     const DTYPE *z1 = coord1 + ld1 * 2;
-    vec_t_d frsqrt_pf = intrin_frsqrt_pf_d();
-    for (int i = 0; i < n0; i += SIMD_LEN)
+    vec_d frsqrt_pf = vec_frsqrt_pf_d();
+    int i;
+    const int blk_size = 1024;
+    for (int j_sidx = 0; j_sidx < n1; j_sidx += blk_size)
     {
-        vec_t_d tx = intrin_load_d(x0 + i);
-        vec_t_d ty = intrin_load_d(y0 + i);
-        vec_t_d tz = intrin_load_d(z0 + i);
-        vec_t_d tv = intrin_zero_d();
-        for (int j = 0; j < n1; j++)
+        int j_eidx = (j_sidx + blk_size > n1) ? n1 : (j_sidx + blk_size);
+        for (i = 0; i <= n0 - SIMD_LEN; i += SIMD_LEN)
         {
-            vec_t_d dx = intrin_sub_d(tx, intrin_bcast_d(x1 + j));
-            vec_t_d dy = intrin_sub_d(ty, intrin_bcast_d(y1 + j));
-            vec_t_d dz = intrin_sub_d(tz, intrin_bcast_d(z1 + j));
-            
-            vec_t_d r2 = intrin_mul_d(dx, dx);
-            r2 = intrin_fmadd_d(dy, dy, r2);
-            r2 = intrin_fmadd_d(dz, dz, r2);
-            
-            //vec_t_d sv = intrin_bcast_d(x_in + j);
-            //vec_t_d rinv = intrin_div_d(sv, intrin_sqrt_d(r2));
-            //tv = intrin_add_d(rinv, tv);
-            
-            vec_t_d sv = intrin_mul_d(intrin_bcast_d(x_in + j), frsqrt_pf);
-            vec_t_d rinv = intrin_frsqrt_d(r2);
-            tv = intrin_fmadd_d(rinv, sv, tv);
+            vec_d tx = vec_loadu_d(x0 + i);
+            vec_d ty = vec_loadu_d(y0 + i);
+            vec_d tz = vec_loadu_d(z0 + i);
+            vec_d tv = vec_zero_d();
+            for (int j = j_sidx; j < j_eidx; j++)
+            {
+                vec_d dx = vec_sub_d(tx, vec_bcast_d(x1 + j));
+                vec_d dy = vec_sub_d(ty, vec_bcast_d(y1 + j));
+                vec_d dz = vec_sub_d(tz, vec_bcast_d(z1 + j));
+                
+                vec_d r2 = vec_mul_d(dx, dx);
+                r2 = vec_fmadd_d(dy, dy, r2);
+                r2 = vec_fmadd_d(dz, dz, r2);
+                
+                vec_d sv = vec_mul_d(vec_bcast_d(x_in + j), frsqrt_pf);
+                vec_d rinv = vec_frsqrt_d(r2);
+                tv = vec_fmadd_d(rinv, sv, tv);
+            }
+            vec_d outval = vec_loadu_d(x_out + i);
+            vec_storeu_d(x_out + i, vec_add_d(outval, tv));
         }
-        vec_t_d outval = intrin_load_d(x_out + i);
-        intrin_store_d(x_out + i, intrin_add_d(outval, tv));
     }
+    reciprocal_matvec_std(
+        coord0 + i, ld0, n0 - i,
+        coord1, ld1, n1,
+        x_in, x_out + i
+    );
 }
 
 #endif
