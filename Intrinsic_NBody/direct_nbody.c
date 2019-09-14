@@ -30,7 +30,7 @@ void test_direct_nbody(
             krnl_matvec(
                 trg_coord + trg_sidx, n_trg, n_trg_thread, 
                 src_coord, n_src, n_src, 
-                src_val, trg_val
+                src_val, trg_val + trg_sidx
             );
         }
         double et = omp_get_wtime();
@@ -59,7 +59,8 @@ int main(int argc, char **argv)
     DTYPE *src_coord = (DTYPE*) _mm_malloc(sizeof(DTYPE) * n_src_SIMD * 3, 64);
     DTYPE *trg_coord = (DTYPE*) _mm_malloc(sizeof(DTYPE) * n_trg_SIMD * 3, 64);
     DTYPE *src_val   = (DTYPE*) _mm_malloc(sizeof(DTYPE) * n_src_SIMD, 64);
-    DTYPE *trg_val   = (DTYPE*) _mm_malloc(sizeof(DTYPE) * n_trg_SIMD, 64);
+    DTYPE *trg_val0  = (DTYPE*) _mm_malloc(sizeof(DTYPE) * n_trg_SIMD, 64);
+    DTYPE *trg_val1  = (DTYPE*) _mm_malloc(sizeof(DTYPE) * n_trg_SIMD, 64);
     srand48(time(NULL));
     for (int i = 0; i < n_src; i++) 
     {
@@ -68,18 +69,27 @@ int main(int argc, char **argv)
         src_coord[i + n_src_SIMD * 2] = drand48();
         src_val[i] = drand48();
     }
+    for (int i = n_src; i < n_src_SIMD; i++)
+        {
+        src_coord[i + n_src_SIMD * 0] = 0;
+        src_coord[i + n_src_SIMD * 1] = 0;
+        src_coord[i + n_src_SIMD * 2] = 0;
+        src_val[i] = 0;
+    }
     for (int i = 0; i < n_trg; i++) 
     {
         trg_coord[i + n_trg_SIMD * 0] = drand48();
         trg_coord[i + n_trg_SIMD * 1] = drand48();
         trg_coord[i + n_trg_SIMD * 2] = drand48();
+        trg_val0[i] = 0.0;
+        trg_val1[i] = 0.0;
     }
     
     printf("Reference auto-vectorized kernel:\n");
     kernel_matvec_fptr ref_matvec = reciprocal_matvec_ref;
     test_direct_nbody(
         n_src, src_coord, src_val,
-        n_trg, trg_coord, trg_val, 
+        n_trg, trg_coord, trg_val0, 
         ref_matvec
     );
     
@@ -87,13 +97,25 @@ int main(int argc, char **argv)
     kernel_matvec_fptr avx_matvec = reciprocal_matvec_avx_aligned;
     test_direct_nbody(
         n_src, src_coord, src_val,
-        n_trg, trg_coord, trg_val, 
+        n_trg, trg_coord, trg_val1, 
         avx_matvec
     );
+    
+    DTYPE ref_l2 = 0.0, err_l2 = 0.0;
+    for (int i = 0; i < n_trg; i++)
+    {
+        DTYPE diff = trg_val0[i] - trg_val1[i];
+        ref_l2 += trg_val0[i] * trg_val0[i];
+        err_l2 += diff * diff;
+    }
+    ref_l2 = DSQRT(ref_l2);
+    err_l2 = DSQRT(err_l2);
+    printf("AVX intrinsic kernel result relative L2 error = %e\n", err_l2 / ref_l2);
     
     _mm_free(src_coord);
     _mm_free(trg_coord);
     _mm_free(src_val);
-    _mm_free(trg_val);
+    _mm_free(trg_val0);
+    _mm_free(trg_val1);
     return 0;
 }

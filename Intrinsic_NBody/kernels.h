@@ -52,8 +52,8 @@ static void reciprocal_matvec_ref(
             DTYPE dy = y0_i - y1[j];
             DTYPE dz = z0_i - z1[j];
             DTYPE r2 = dx * dx + dy * dy + dz * dz;
-            if (r2 < 1e-20) r2 = 1.0;
-            sum += x_in[j] / DSQRT(r2);
+            DTYPE res = (r2 == 0.0) ? 0.0 : (x_in[j] / DSQRT(r2));
+            sum += res;
         }
         x_out[i] += sum;
     }
@@ -71,6 +71,7 @@ static void reciprocal_matvec_avx_aligned(
     const DTYPE *x1 = coord1 + ld1 * 0;
     const DTYPE *y1 = coord1 + ld1 * 1;
     const DTYPE *z1 = coord1 + ld1 * 2;
+    vec_t_d frsqrt_pf = intrin_frsqrt_pf_d();
     for (int i = 0; i < n0; i += SIMD_LEN)
     {
         vec_t_d tx = intrin_load_d(x0 + i);
@@ -87,11 +88,16 @@ static void reciprocal_matvec_avx_aligned(
             r2 = intrin_fmadd_d(dy, dy, r2);
             r2 = intrin_fmadd_d(dz, dz, r2);
             
-            vec_t_d sv   = intrin_bcast_d(x_in + j);
-            vec_t_d rinv = intrin_div_d(sv, intrin_sqrt_d(r2));
-            tv = intrin_add_d(rinv, tv);
+            //vec_t_d sv = intrin_bcast_d(x_in + j);
+            //vec_t_d rinv = intrin_div_d(sv, intrin_sqrt_d(r2));
+            //tv = intrin_add_d(rinv, tv);
+            
+            vec_t_d sv = intrin_mul_d(intrin_bcast_d(x_in + j), frsqrt_pf);
+            vec_t_d rinv = intrin_frsqrt_d(r2);
+            tv = intrin_fmadd_d(rinv, sv, tv);
         }
-        intrin_store_d(x_out + i, tv);
+        vec_t_d outval = intrin_load_d(x_out + i);
+        intrin_store_d(x_out + i, intrin_add_d(outval, tv));
     }
 }
 
