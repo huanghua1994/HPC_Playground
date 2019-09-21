@@ -18,6 +18,7 @@
     vec_div_*        : Divide intrinsic vector a by b
     vec_sqrt_*       : Return the square root of an intrisic vector's each lane
     vec_fmadd_*      : Fused Multiply-Add intrinsic vectors a * b + c
+    vec_fnmadd_*     : Fused negative Multiply-Add intrinsic vectors -(a * b) + c
     vec_fmsub_*      : Fused Multiply-Sub intrinsic vectors a * b - c
     vec_max_*        : Return each lane's maximum values of two intrinsic vectors 
     vec_min_*        : Return each lane's minimum values of two intrinsic vectors   
@@ -97,11 +98,17 @@ static inline __m256d vec_sqrt_d(const __m256d a) { return _mm256_sqrt_pd(a); }
 static inline __m256  vec_fmadd_s(const __m256  a, const __m256  b, const __m256  c) { return _mm256_fmadd_ps(a, b, c); }
 static inline __m256d vec_fmadd_d(const __m256d a, const __m256d b, const __m256d c) { return _mm256_fmadd_pd(a, b, c); }
 
+static inline __m256  vec_fnmadd_s(const __m256  a, const __m256  b, const __m256  c) { return _mm256_fnmadd_ps(a, b, c); }
+static inline __m256d vec_fnmadd_d(const __m256d a, const __m256d b, const __m256d c) { return _mm256_fnmadd_pd(a, b, c); }
+
 static inline __m256  vec_fmsub_s(const __m256  a, const __m256  b, const __m256  c) { return _mm256_fmsub_ps(a, b, c); }
 static inline __m256d vec_fmsub_d(const __m256d a, const __m256d b, const __m256d c) { return _mm256_fmsub_pd(a, b, c); }
 #else
 static inline __m256  vec_fmadd_s(const __m256  a, const __m256  b, const __m256  c) { return _mm256_add_ps(_mm256_mul_ps(a, b), c); }
 static inline __m256d vec_fmadd_d(const __m256d a, const __m256d b, const __m256d c) { return _mm256_add_pd(_mm256_mul_pd(a, b), c); }
+
+static inline __m256  vec_fnmadd_s(const __m256  a, const __m256  b, const __m256  c) { return _mm256_sub_ps(c, _mm256_mul_ps(a, b)); }
+static inline __m256d vec_fnmadd_d(const __m256d a, const __m256d b, const __m256d c) { return _mm256_sub_pd(c, _mm256_mul_pd(a, b)); }
 
 static inline __m256  vec_fmsub_s(const __m256  a, const __m256  b, const __m256  c) { return _mm256_sub_ps(_mm256_mul_ps(a, b), c); }
 static inline __m256d vec_fmsub_d(const __m256d a, const __m256d b, const __m256d c) { return _mm256_sub_pd(_mm256_mul_pd(a, b), c); }
