@@ -1,8 +1,6 @@
 #ifndef __X86_INTRIN_WRAPPER_H__
 #define __X86_INTRIN_WRAPPER_H__
 
-// Reference: https://software.intel.com/sites/landingpage/IntrinsicsGuide/
-
 #include <x86intrin.h>
 
 /*
@@ -29,6 +27,7 @@
     vec_cmp_le_*     : Return in each lane if a <= b
     vec_cmp_gt_*     : Return in each lane if a >  b
     vec_cmp_ge_*     : Return in each lane if a >= b
+    vec_reduce_add_* : Return the sum of values in an intrinsic vector
     vec_arsqrt_*     : Approximate reverse squart root, returns 0 if r2 == 0
     vec_rsqrt_ntit_* : Newton iteration step for reverse squart root,
                        rsqrt' = 0.5 * rsqrt * (C - r2 * rsqrt^2),
@@ -37,6 +36,13 @@
     vec_frsqrt_*     : Fast reverse squart root using Newton iteration, 
                        returns 0 if r2 == 0, otherwise result need to be 
                        multipled with vec_ntfrac_*() to get the correct one.
+
+    Reference:
+    1. Intel Intrinsic Guide: https://software.intel.com/sites/landingpage/IntrinsicsGuide/
+    2. Compiler Explorer: https://godbolt.org/
+    3. For AVX vec_reduce_add_s: https://stackoverflow.com/questions/13219146/how-to-sum-m256-horizontally
+    4. For AVX vec_reduce_add_d: https://www.oipapio.com/question-771803
+    5. For fast inverse square root: https://en.wikipedia.org/wiki/Fast_inverse_square_root
 */ 
 
 #ifndef NEWTON_ITER
@@ -124,6 +130,28 @@ static inline __m256d vec_cmp_gt_d (const __m256d a, const __m256d b) { return _
 
 static inline __m256  vec_cmp_ge_s (const __m256  a, const __m256  b) { return _mm256_cmp_ps(a, b, _CMP_GE_OS);  }
 static inline __m256d vec_cmp_ge_d (const __m256d a, const __m256d b) { return _mm256_cmp_pd(a, b, _CMP_GE_OS);  }
+
+static inline float vec_reduce_add_s(const __m256  a) 
+{
+    __m128 hi4  = _mm256_extractf128_ps(a, 1);
+    __m128 lo4  = _mm256_castps256_ps128(a);
+    __m128 sum4 = _mm_add_ps(lo4, hi4);
+    __m128 lo2  = sum4;
+    __m128 hi2  = _mm_movehl_ps(sum4, sum4);
+    __m128 sum2 = _mm_add_ps(lo2, hi2);
+    __m128 lo   = sum2;
+    __m128 hi   = _mm_shuffle_ps(sum2, sum2, 0x1);
+    __m128 sum  = _mm_add_ss(lo, hi);
+    return _mm_cvtss_f32(sum);
+}
+static inline double vec_reduce_add_d(const __m256d a) 
+{
+    __m128d lo = _mm256_castpd256_pd128(a);
+    __m128d hi = _mm256_extractf128_pd(a, 1); 
+    lo = _mm_add_pd(lo, hi);
+    __m128d hi64 = _mm_unpackhi_pd(lo, lo);
+    return  _mm_cvtsd_f64(_mm_add_sd(lo, hi64));
+}
 
 static inline __m256  vec_arsqrt_s(const __m256  r2)
 {
@@ -217,6 +245,9 @@ static inline __mmask8  vec_cmp_gt_d (const __m512d a, const __m512d b) { return
 
 static inline __mmask16 vec_cmp_ge_s (const __m512  a, const __m512  b) { return _mm512_cmp_ps_mask(a, b, _CMP_GE_OS);  }
 static inline __mmask8  vec_cmp_ge_d (const __m512d a, const __m512d b) { return _mm512_cmp_pd_mask(a, b, _CMP_GE_OS);  }
+
+static inline float  vec_reduce_add_s(const __m512  a) { return _mm512_reduce_add_ps(a); }
+static inline double vec_reduce_add_d(const __m512d a) { return _mm512_reduce_add_pd(a); }
 
 #ifdef __AVX512ER__
 static inline __m512  vec_arsqrt_s(const __m512  r2)

@@ -4,11 +4,12 @@
 #include <time.h>
 #include <omp.h>
 
-#include "kernels.h"
+#include "reciprocal_kernel.h"
+#include "RPY_kernel.h"
 
 void test_direct_nbody(
-    const int n_src, const DTYPE *src_coord, DTYPE *src_val, 
-    const int n_trg, const DTYPE *trg_coord, DTYPE *trg_val,
+    const int n_src, const double *src_coord, double *src_val, 
+    const int n_trg, const double *trg_coord, double *trg_val,
     kernel_matvec_fptr krnl_matvec
 )
 {
@@ -51,13 +52,13 @@ int main(int argc, char **argv)
         scanf("%d", &n_trg);
     }
     
-    int n_src_SIMD = (n_src + SIMD_LEN - 1) / SIMD_LEN * SIMD_LEN;
-    int n_trg_SIMD = (n_trg + SIMD_LEN - 1) / SIMD_LEN * SIMD_LEN;
-    DTYPE *src_coord = (DTYPE*) malloc(sizeof(DTYPE) * n_src_SIMD * 3);
-    DTYPE *trg_coord = (DTYPE*) malloc(sizeof(DTYPE) * n_trg_SIMD * 3);
-    DTYPE *src_val   = (DTYPE*) malloc(sizeof(DTYPE) * n_src_SIMD);
-    DTYPE *trg_val0  = (DTYPE*) malloc(sizeof(DTYPE) * n_trg_SIMD);
-    DTYPE *trg_val1  = (DTYPE*) malloc(sizeof(DTYPE) * n_trg_SIMD);
+    int n_src_SIMD = (n_src + SIMD_LEN_D - 1) / SIMD_LEN_D * SIMD_LEN_D;
+    int n_trg_SIMD = (n_trg + SIMD_LEN_D - 1) / SIMD_LEN_D * SIMD_LEN_D;
+    double *src_coord = (double*) malloc(sizeof(double) * n_src_SIMD * 3);
+    double *trg_coord = (double*) malloc(sizeof(double) * n_trg_SIMD * 3);
+    double *src_val   = (double*) malloc(sizeof(double) * n_src_SIMD * 3);
+    double *trg_val0  = (double*) malloc(sizeof(double) * n_trg_SIMD * 3);
+    double *trg_val1  = (double*) malloc(sizeof(double) * n_trg_SIMD * 3);
     srand48(time(NULL));
     for (int i = 0; i < n_src; i++) 
     {
@@ -76,7 +77,7 @@ int main(int argc, char **argv)
     }
     
     printf("Standard auto-vectorized kernel:\n");
-    kernel_matvec_fptr ref_matvec = reciprocal_matvec_std;
+    kernel_matvec_fptr ref_matvec = RPY_matvec_std;
     test_direct_nbody(
         n_src, src_coord, src_val,
         n_trg, trg_coord, trg_val0, 
@@ -84,22 +85,22 @@ int main(int argc, char **argv)
     );
     
     printf("AVX intrinsic kernel:\n");
-    kernel_matvec_fptr avx_matvec = reciprocal_matvec_avx;
+    kernel_matvec_fptr avx_matvec = RPY_matvec_std;
     test_direct_nbody(
         n_src, src_coord, src_val,
         n_trg, trg_coord, trg_val1, 
         avx_matvec
     );
     
-    DTYPE ref_l2 = 0.0, err_l2 = 0.0;
+    double ref_l2 = 0.0, err_l2 = 0.0;
     for (int i = 0; i < n_trg; i++)
     {
-        DTYPE diff = trg_val0[i] - trg_val1[i];
+        double diff = trg_val0[i] - trg_val1[i];
         ref_l2 += trg_val0[i] * trg_val0[i];
         err_l2 += diff * diff;
     }
-    ref_l2 = DSQRT(ref_l2);
-    err_l2 = DSQRT(err_l2);
+    ref_l2 = sqrt(ref_l2);
+    err_l2 = sqrt(err_l2);
     printf("AVX intrinsic kernel result relative L2 error = %e\n", err_l2 / ref_l2);
     
     free(src_coord);
