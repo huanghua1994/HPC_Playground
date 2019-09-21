@@ -19,4 +19,11 @@ typedef void (*kernel_matvec_fptr) (
     const double *x_in, double *x_out
 );
 
+typedef void (*kernel_symm_matvec_fptr) (
+    const double *coord0, const int ld0, const int n0,
+    const double *coord1, const int ld1, const int n1,
+    const double *x_in_0, const double *x_in_1,
+    double *x_out_0, double *x_out_1
+);
+
 #endif

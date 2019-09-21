@@ -119,25 +119,23 @@ int main(int argc, char **argv)
     }
     
     int krnl_flops = 46;  
-    int kernel_dim = 3;
+    int krnl_dim = 3;
     
-    int n_src_SIMD = (n_src + SIMD_LEN_D - 1) / SIMD_LEN_D * SIMD_LEN_D;
-    int n_trg_SIMD = (n_trg + SIMD_LEN_D - 1) / SIMD_LEN_D * SIMD_LEN_D;
-    double *src_coord = (double*) malloc(sizeof(double) * n_src_SIMD * 3);
-    double *trg_coord = (double*) malloc(sizeof(double) * n_trg_SIMD * 3);
-    double *src_val   = (double*) malloc(sizeof(double) * n_src_SIMD * kernel_dim);
-    double *src_val_t = (double*) malloc(sizeof(double) * n_src_SIMD * kernel_dim);
-    double *trg_val0  = (double*) malloc(sizeof(double) * n_trg_SIMD * kernel_dim);
-    double *trg_val_t = (double*) malloc(sizeof(double) * n_trg_SIMD * kernel_dim);
-    double *trg_val1  = (double*) malloc(sizeof(double) * n_trg_SIMD * kernel_dim);
+    double *src_coord = (double*) malloc(sizeof(double) * n_src * 3);
+    double *trg_coord = (double*) malloc(sizeof(double) * n_trg * 3);
+    double *src_val   = (double*) malloc(sizeof(double) * n_src * krnl_dim);
+    double *src_val_t = (double*) malloc(sizeof(double) * n_src * krnl_dim);
+    double *trg_val0  = (double*) malloc(sizeof(double) * n_trg * krnl_dim);
+    double *trg_val_t = (double*) malloc(sizeof(double) * n_trg * krnl_dim);
+    double *trg_val1  = (double*) malloc(sizeof(double) * n_trg * krnl_dim);
     srand48(time(NULL));
     for (int i = 0; i < n_src; i++) 
     {
         src_coord[i + n_src * 0] = drand48();
         src_coord[i + n_src * 1] = drand48();
         src_coord[i + n_src * 2] = drand48();
-        src_val[i] = drand48();
     }
+    for (int i = 0; i < n_src * krnl_dim; i++) src_val[i] = drand48();
     for (int i = 0; i < n_trg; i++) 
     {
         trg_coord[i + n_trg * 0] = drand48();
@@ -148,26 +146,24 @@ int main(int argc, char **argv)
         trg_val_t[i] = 0.0;
     }
     
-    
-    
-    printf("Standard auto-vectorized kernel:\n");
-    kernel_matvec_fptr ref_matvec = RPY_matvec_std;
+    printf("Standard kernel:\n");
+    kernel_matvec_fptr ref_matvec = RPY_matvec_nt_std;
     test_direct_nbody(
         n_src, src_coord, src_val,
         n_trg, trg_coord, trg_val0, 
-        ref_matvec, kernel_dim, krnl_flops
+        ref_matvec, krnl_dim, krnl_flops
     );
     
     printf("AVX intrinsic kernel:\n");
-    kernel_matvec_fptr avx_matvec = RPY_matvec_intrin;
+    kernel_matvec_fptr avx_matvec = RPY_matvec_nt_intrin;
     test_direct_nbody_trans(
         n_src, src_coord, src_val, src_val_t, 
         n_trg, trg_coord, trg_val1, trg_val_t, 
-        avx_matvec, kernel_dim, krnl_flops
+        avx_matvec, krnl_dim, krnl_flops
     );
     
     double ref_l2 = 0.0, err_l2 = 0.0;
-    for (int i = 0; i < n_trg; i++)
+    for (int i = 0; i < n_trg * krnl_dim; i++)
     {
         double diff = trg_val0[i] - trg_val1[i];
         ref_l2 += trg_val0[i] * trg_val0[i];
