@@ -11,7 +11,7 @@ static void RPY_matvec_std(
     const double *x_in_0, double *x_out_0
 )
 {
-    const double a = 1.0, eta = 1.0;
+    const double a = 0.2, eta = 1.0;
     const double C   = 1.0 / (6.0 * M_PI * a * eta);
     const double a2  = 2.0 * a;
     const double aa2 = a * a * 2.0;
@@ -76,7 +76,7 @@ static void RPY_matvec_intrin(
     const double *x_in_0, double *x_out_0
 )
 {
-    const double a = 1.0, eta = 1.0;
+    const double a = 0.2, eta = 1.0;
     const double C   = 1.0 / (6.0 * M_PI * a * eta);
     const double a2  = 2.0 * a;
     const double aa2 = a * a * 2.0;
@@ -117,22 +117,20 @@ static void RPY_matvec_intrin(
             dy = vec_mul_d(dy, inv_r);
             dz = vec_mul_d(dz, inv_r);
             
-            vec_d tmp0, tmp1, t1, t2;
-            vec_d r_lt_a2   = vec_cmp_lt_d(r, vec_set1_d(a2));
+            vec_cmp_d r_lt_a2 = vec_cmp_lt_d(r, vec_set1_d(a2));
             vec_d C_075_o_r = vec_mul_d(vec_set1_d(C_075), inv_r);
-            vec_d inv_r2    = vec_mul_d(inv_r, inv_r);
+            vec_d inv_r2 = vec_mul_d(inv_r, inv_r);
             
+            vec_d tmp0, tmp1, t1, t2;
             tmp0 = vec_fnmadd_d(vec_set1_d(C_9o32oa), r, vec_set1_d(C));
             tmp1 = vec_fmadd_d(vec_set1_d(aa_2o3), inv_r2, vec_set1_d(1));
             tmp1 = vec_mul_d(C_075_o_r, tmp1);
-            t1 = _mm256_and_pd(r_lt_a2, tmp0);
-            t1 = vec_add_d(t1, _mm256_andnot_pd(r_lt_a2, tmp1));
+            t1   = vec_blend_d(tmp1, tmp0, r_lt_a2);
             
             tmp0 = vec_mul_d(vec_set1_d(C_3o32oa), r);
             tmp1 = vec_fnmadd_d(vec_set1_d(aa2), inv_r2, vec_set1_d(1));
             tmp1 = vec_mul_d(C_075_o_r, tmp1);
-            t2 = _mm256_and_pd(r_lt_a2, tmp0);
-            t2 = vec_add_d(t2, _mm256_andnot_pd(r_lt_a2, tmp1));
+            t2   = vec_blend_d(tmp1, tmp0, r_lt_a2);
             
             vec_d x_in_0_j0 = vec_loadu_d(x_in_0 + j);
             vec_d x_in_0_j1 = vec_loadu_d(x_in_0 + j + ld1);
