@@ -168,7 +168,7 @@ int main(int argc, char **argv)
     );
     
     printf("AVX intrinsic kernel:\n");
-    kernel_symm_matvec_fptr avx_matvec = RPY_symm_matvec_autovec;
+    kernel_symm_matvec_fptr avx_matvec = RPY_symm_matvec_intrin;
     test_direct_nbody_symm_trans(
         n_src, src_coord, n_trg, trg_coord, 
         src_val0, src_val0_t, src_val1, src_val1_t, 
