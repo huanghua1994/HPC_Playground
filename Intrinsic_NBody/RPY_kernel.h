@@ -306,10 +306,11 @@ static void RPY_matvec_nt_t_autovec(
             x_in_0_j[2] = x_in_0[j + 2 * ld1];
             
             double tmp0 = 0.0, tmp1 = 0.0, tmp2 = 0.0;
-            double k0, k1, k2;
-            k0 = (t2 * dx * dx + t1);
-            k1 = (t2 * dx * dy);
-            k2 = (t2 * dx * dz);
+            double tmp, k0, k1, k2;
+            tmp = t2 * dx;
+            k0 = (tmp * dx + t1);
+            k1 = (tmp * dy);
+            k2 = (tmp * dz);
             res[0] += k0 * x_in_0_j[0];
             res[0] += k1 * x_in_0_j[1];
             res[0] += k2 * x_in_0_j[2];
@@ -317,9 +318,10 @@ static void RPY_matvec_nt_t_autovec(
             tmp1 += k1 * x_in_1_i[0];
             tmp2 += k2 * x_in_1_i[0];
             
-            k0 = (t2 * dy * dx);
-            k1 = (t2 * dy * dy + t1);
-            k2 = (t2 * dy * dz);
+            tmp = t2 * dy;
+            k0 = (tmp * dx);
+            k1 = (tmp * dy + t1);
+            k2 = (tmp * dz);
             res[1] += k0 * x_in_0_j[0];
             res[1] += k1 * x_in_0_j[1];
             res[1] += k2 * x_in_0_j[2];
@@ -327,9 +329,10 @@ static void RPY_matvec_nt_t_autovec(
             tmp1 += k1 * x_in_1_i[1];
             tmp2 += k2 * x_in_1_i[1];
             
-            k0 = (t2 * dz * dx);
-            k1 = (t2 * dz * dy);
-            k2 = (t2 * dz * dz + t1);
+            tmp = t2 * dz;
+            k0 = (tmp * dx);
+            k1 = (tmp * dy);
+            k2 = (tmp * dz + t1);
             res[2] += k0 * x_in_0_j[0];
             res[2] += k1 * x_in_0_j[1];
             res[2] += k2 * x_in_0_j[2];

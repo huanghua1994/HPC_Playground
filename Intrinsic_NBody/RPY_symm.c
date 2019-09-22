@@ -164,7 +164,7 @@ int main(int argc, char **argv)
     test_direct_nbody_symm(
         n_src, src_coord, src_val0, src_val1, 
         n_trg, trg_coord, trg_val0, trg_val1,
-        ref_matvec, krnl_dim, krnl_flops
+        ref_matvec, krnl_dim, 78
     );
     
     printf("AVX intrinsic kernel:\n");
@@ -173,7 +173,7 @@ int main(int argc, char **argv)
         n_src, src_coord, n_trg, trg_coord, 
         src_val0, src_val0_t, src_val1, src_val1_t, 
         trg_val2, trg_val2_t, trg_val3, trg_val3_t, 
-        avx_matvec, krnl_dim, krnl_flops + 9
+        avx_matvec, krnl_dim, 98
     );
     
     double ref_l2_0 = 0.0, err_l2_0 = 0.0;
