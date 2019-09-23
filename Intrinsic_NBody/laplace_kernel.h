@@ -86,6 +86,7 @@ static void laplace_matvec_avx(
     );
 }
 
+#ifdef USE_AVX
 static inline __m256d laplace_matvec_4x4d(
     __m256d tx, __m256d ty, __m256d tz, 
     __m256d sx, __m256d sy, __m256d sz, __m256d sv
@@ -148,6 +149,136 @@ static inline __m256d laplace_matvec_4x4d(
     
     return res;
 }
+#endif  // End of #ifdef USE_AVX
+
+#ifdef USE_AVX512
+static inline __m512d laplace_matvec_8x8d(
+    __m512d tx, __m512d ty, __m512d tz, 
+    __m512d sx, __m512d sy, __m512d sz, __m512d sv
+)
+{
+    __m512d dx, dy, dz, r2, res;
+    
+    res = vec_zero_d();
+    
+    // (0) [x0, x1, x2, x3, x4, x5, x6, x7]
+    dx = vec_sub_d(tx, sx);
+    dy = vec_sub_d(ty, sy);
+    dz = vec_sub_d(tz, sz);
+    r2 = vec_mul_d(dx, dx);
+    r2 = vec_fmadd_d(dy, dy, r2);
+    r2 = vec_fmadd_d(dz, dz, r2);
+    r2 = vec_frsqrt_d(r2);
+    res = vec_fmadd_d(sv, r2, res);
+    
+    // (1) [x1, x0, x3, x2, x5, x4, x7, x6]
+    // 0x55 = 0b01010101
+    sx = _mm512_shuffle_pd(sx, sx, 0x55);
+    sy = _mm512_shuffle_pd(sy, sy, 0x55);
+    sz = _mm512_shuffle_pd(sz, sz, 0x55);
+    sv = _mm512_shuffle_pd(sv, sv, 0x55);
+    dx = vec_sub_d(tx, sx);
+    dy = vec_sub_d(ty, sy);
+    dz = vec_sub_d(tz, sz);
+    r2 = vec_mul_d(dx, dx);
+    r2 = vec_fmadd_d(dy, dy, r2);
+    r2 = vec_fmadd_d(dz, dz, r2);
+    r2 = vec_frsqrt_d(r2);
+    res = vec_fmadd_d(sv, r2, res);
+    
+    // (2) [x3, x2, x1, x0, x7, x6, x5, x4]
+    // 0xB1 = 0b10110001
+    sx = _mm512_shuffle_f64x2(sx, sx, 0xB1);
+    sy = _mm512_shuffle_f64x2(sy, sy, 0xB1);
+    sz = _mm512_shuffle_f64x2(sz, sz, 0xB1);
+    sv = _mm512_shuffle_f64x2(sv, sv, 0xB1);
+    dx = vec_sub_d(tx, sx);
+    dy = vec_sub_d(ty, sy);
+    dz = vec_sub_d(tz, sz);
+    r2 = vec_mul_d(dx, dx);
+    r2 = vec_fmadd_d(dy, dy, r2);
+    r2 = vec_fmadd_d(dz, dz, r2);
+    r2 = vec_frsqrt_d(r2);
+    res = vec_fmadd_d(sv, r2, res);
+    
+    // (3) [x2, x3, x0, x1, x6, x7, x4, x5]
+    // 0x55 = 0b01010101
+    sx = _mm512_shuffle_pd(sx, sx, 0x55);
+    sy = _mm512_shuffle_pd(sy, sy, 0x55);
+    sz = _mm512_shuffle_pd(sz, sz, 0x55);
+    sv = _mm512_shuffle_pd(sv, sv, 0x55);
+    dx = vec_sub_d(tx, sx);
+    dy = vec_sub_d(ty, sy);
+    dz = vec_sub_d(tz, sz);
+    r2 = vec_mul_d(dx, dx);
+    r2 = vec_fmadd_d(dy, dy, r2);
+    r2 = vec_fmadd_d(dz, dz, r2);
+    r2 = vec_frsqrt_d(r2);
+    res = vec_fmadd_d(sv, r2, res);
+    
+    // (4) [x6, x7, x4, x5, x2, x3, x0, x1]
+    __m512i swap256 = _mm512_set_epi64(3, 2, 1, 0, 7, 6, 5, 4);
+    sx = _mm512_permutexvar_pd(swap256, sx);
+    sy = _mm512_permutexvar_pd(swap256, sy);
+    sz = _mm512_permutexvar_pd(swap256, sz);
+    sv = _mm512_permutexvar_pd(swap256, sv);
+    dx = vec_sub_d(tx, sx);
+    dy = vec_sub_d(ty, sy);
+    dz = vec_sub_d(tz, sz);
+    r2 = vec_mul_d(dx, dx);
+    r2 = vec_fmadd_d(dy, dy, r2);
+    r2 = vec_fmadd_d(dz, dz, r2);
+    r2 = vec_frsqrt_d(r2);
+    res = vec_fmadd_d(sv, r2, res);
+    
+    // (5) [x7, x6, x5, x4, x3, x2, x1, x0]
+    // 0x55 = 0b01010101
+    sx = _mm512_shuffle_pd(sx, sx, 0x55);
+    sy = _mm512_shuffle_pd(sy, sy, 0x55);
+    sz = _mm512_shuffle_pd(sz, sz, 0x55);
+    sv = _mm512_shuffle_pd(sv, sv, 0x55);
+    dx = vec_sub_d(tx, sx);
+    dy = vec_sub_d(ty, sy);
+    dz = vec_sub_d(tz, sz);
+    r2 = vec_mul_d(dx, dx);
+    r2 = vec_fmadd_d(dy, dy, r2);
+    r2 = vec_fmadd_d(dz, dz, r2);
+    r2 = vec_frsqrt_d(r2);
+    res = vec_fmadd_d(sv, r2, res);
+    
+    // (6) [x5, x4, x7, x6, x1, x0, x3, x2]
+    // 0xB1 = 0b10110001
+    sx = _mm512_shuffle_f64x2(sx, sx, 0xB1);
+    sy = _mm512_shuffle_f64x2(sy, sy, 0xB1);
+    sz = _mm512_shuffle_f64x2(sz, sz, 0xB1);
+    sv = _mm512_shuffle_f64x2(sv, sv, 0xB1);
+    dx = vec_sub_d(tx, sx);
+    dy = vec_sub_d(ty, sy);
+    dz = vec_sub_d(tz, sz);
+    r2 = vec_mul_d(dx, dx);
+    r2 = vec_fmadd_d(dy, dy, r2);
+    r2 = vec_fmadd_d(dz, dz, r2);
+    r2 = vec_frsqrt_d(r2);
+    res = vec_fmadd_d(sv, r2, res);
+    
+    // (7) [x4, x5, x6, x7, x0, x1, x2, x3]
+    // 0x55 = 0b01010101
+    sx = _mm512_shuffle_pd(sx, sx, 0x55);
+    sy = _mm512_shuffle_pd(sy, sy, 0x55);
+    sz = _mm512_shuffle_pd(sz, sz, 0x55);
+    sv = _mm512_shuffle_pd(sv, sv, 0x55);
+    dx = vec_sub_d(tx, sx);
+    dy = vec_sub_d(ty, sy);
+    dz = vec_sub_d(tz, sz);
+    r2 = vec_mul_d(dx, dx);
+    r2 = vec_fmadd_d(dy, dy, r2);
+    r2 = vec_fmadd_d(dz, dz, r2);
+    r2 = vec_frsqrt_d(r2);
+    res = vec_fmadd_d(sv, r2, res);
+    
+    return res;
+}
+#endif  // End of #ifdef USE_AVX512
 
 static void laplace_matvec_avx_new(
     const double *coord0, const int ld0, const int n0,
@@ -181,7 +312,12 @@ static void laplace_matvec_avx_new(
                 vec_d sz = vec_loadu_d(z1 + j);
                 vec_d sv = vec_loadu_d(x_in + j);
                 
+                #ifdef USE_AVX
                 vec_d tmp = laplace_matvec_4x4d(tx, ty, tz, sx, sy, sz, sv);
+                #endif
+                #ifdef USE_AVX512
+                vec_d tmp = laplace_matvec_8x8d(tx, ty, tz, sx, sy, sz, sv);
+                #endif
                 tv = vec_add_d(tmp, tv);
             }
             tv = vec_mul_d(tv, frsqrt_pf);

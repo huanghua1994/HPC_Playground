@@ -5,7 +5,6 @@
 #include <omp.h>
 
 #include "laplace_kernel.h"
-#include "RPY_kernel.h"
 
 void test_direct_nbody(
     const int n_src, const double *src_coord, double *src_val, 
