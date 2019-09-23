@@ -1,0 +1,204 @@
+#ifndef __LAPLACE_KERNEL_H__
+#define __LAPLACE_KERNEL_H__
+
+#include <math.h>
+#include "x86_intrin_wrapper.h"
+#include "kernel_ptr.h"
+
+static void laplace_matvec_std(
+    const double *coord0, const int ld0, const int n0,
+    const double *coord1, const int ld1, const int n1,
+    const double *x_in, double *x_out
+)
+{
+    const double *x0 = coord0 + ld0 * 0;
+    const double *y0 = coord0 + ld0 * 1;
+    const double *z0 = coord0 + ld0 * 2;
+    const double *x1 = coord1 + ld1 * 0;
+    const double *y1 = coord1 + ld1 * 1;
+    const double *z1 = coord1 + ld1 * 2;
+    for (int i = 0; i < n0; i++)
+    {
+        const double x0_i = x0[i];
+        const double y0_i = y0[i];
+        const double z0_i = z0[i];
+        double sum = 0.0;
+        #pragma omp simd
+        for (int j = 0; j < n1; j++)
+        {
+            double dx = x0_i - x1[j];
+            double dy = y0_i - y1[j];
+            double dz = z0_i - z1[j];
+            double r2 = dx * dx + dy * dy + dz * dz;
+            double res = (r2 == 0.0) ? 0.0 : (x_in[j] / sqrt(r2));
+            sum += res;
+        }
+        x_out[i] += sum;
+    }
+}
+
+static void laplace_matvec_avx(
+    const double *coord0, const int ld0, const int n0,
+    const double *coord1, const int ld1, const int n1,
+    const double *x_in, double *x_out
+)
+{
+    const double *x0 = coord0 + ld0 * 0;
+    const double *y0 = coord0 + ld0 * 1;
+    const double *z0 = coord0 + ld0 * 2;
+    const double *x1 = coord1 + ld1 * 0;
+    const double *y1 = coord1 + ld1 * 1;
+    const double *z1 = coord1 + ld1 * 2;
+    vec_d frsqrt_pf = vec_frsqrt_pf_d();
+    int i;
+    const int blk_size = 1024;
+    for (int j_sidx = 0; j_sidx < n1; j_sidx += blk_size)
+    {
+        int j_eidx = (j_sidx + blk_size > n1) ? n1 : (j_sidx + blk_size);
+        for (i = 0; i <= n0 - SIMD_LEN_D; i += SIMD_LEN_D)
+        {
+            vec_d tx = vec_loadu_d(x0 + i);
+            vec_d ty = vec_loadu_d(y0 + i);
+            vec_d tz = vec_loadu_d(z0 + i);
+            vec_d tv = vec_zero_d();
+            for (int j = j_sidx; j < j_eidx; j++)
+            {
+                vec_d dx = vec_sub_d(tx, vec_bcast_d(x1 + j));
+                vec_d dy = vec_sub_d(ty, vec_bcast_d(y1 + j));
+                vec_d dz = vec_sub_d(tz, vec_bcast_d(z1 + j));
+                
+                vec_d r2 = vec_mul_d(dx, dx);
+                r2 = vec_fmadd_d(dy, dy, r2);
+                r2 = vec_fmadd_d(dz, dz, r2);
+                
+                vec_d sv = vec_mul_d(vec_bcast_d(x_in + j), frsqrt_pf);
+                vec_d rinv = vec_frsqrt_d(r2);
+                tv = vec_fmadd_d(rinv, sv, tv);
+            }
+            vec_d outval = vec_loadu_d(x_out + i);
+            vec_storeu_d(x_out + i, vec_add_d(outval, tv));
+        }
+    }
+    laplace_matvec_std(
+        coord0 + i, ld0, n0 - i,
+        coord1, ld1, n1,
+        x_in, x_out + i
+    );
+}
+
+static inline __m256d laplace_matvec_4x4d(
+    __m256d tx, __m256d ty, __m256d tz, 
+    __m256d sx, __m256d sy, __m256d sz, __m256d sv
+)
+{
+    __m256d dx, dy, dz, r2, res;
+    
+    res = vec_zero_d();
+    
+    dx = vec_sub_d(tx, sx);
+    dy = vec_sub_d(ty, sy);
+    dz = vec_sub_d(tz, sz);
+    r2 = vec_mul_d(dx, dx);
+    r2 = vec_fmadd_d(dy, dy, r2);
+    r2 = vec_fmadd_d(dz, dz, r2);
+    r2 = vec_frsqrt_d(r2);
+    res = vec_fmadd_d(sv, r2, res);
+    
+    sx = _mm256_shuffle_pd(sx, sx, 0x5);
+    sy = _mm256_shuffle_pd(sy, sy, 0x5);
+    sz = _mm256_shuffle_pd(sz, sz, 0x5);
+    sv = _mm256_shuffle_pd(sv, sv, 0x5);
+    
+    dx = vec_sub_d(tx, sx);
+    dy = vec_sub_d(ty, sy);
+    dz = vec_sub_d(tz, sz);
+    r2 = vec_mul_d(dx, dx);
+    r2 = vec_fmadd_d(dy, dy, r2);
+    r2 = vec_fmadd_d(dz, dz, r2);
+    r2 = vec_frsqrt_d(r2);
+    res = vec_fmadd_d(sv, r2, res);
+    
+    sx = _mm256_permute2f128_pd(sx, sx, 0x1);
+    sy = _mm256_permute2f128_pd(sy, sy, 0x1);
+    sz = _mm256_permute2f128_pd(sz, sz, 0x1);
+    sv = _mm256_permute2f128_pd(sv, sv, 0x1);
+    
+    dx = vec_sub_d(tx, sx);
+    dy = vec_sub_d(ty, sy);
+    dz = vec_sub_d(tz, sz);
+    r2 = vec_mul_d(dx, dx);
+    r2 = vec_fmadd_d(dy, dy, r2);
+    r2 = vec_fmadd_d(dz, dz, r2);
+    r2 = vec_frsqrt_d(r2);
+    res = vec_fmadd_d(sv, r2, res);
+    
+    sx = _mm256_shuffle_pd(sx, sx, 0x5);
+    sy = _mm256_shuffle_pd(sy, sy, 0x5);
+    sz = _mm256_shuffle_pd(sz, sz, 0x5);
+    sv = _mm256_shuffle_pd(sv, sv, 0x5);
+    
+    dx = vec_sub_d(tx, sx);
+    dy = vec_sub_d(ty, sy);
+    dz = vec_sub_d(tz, sz);
+    r2 = vec_mul_d(dx, dx);
+    r2 = vec_fmadd_d(dy, dy, r2);
+    r2 = vec_fmadd_d(dz, dz, r2);
+    r2 = vec_frsqrt_d(r2);
+    res = vec_fmadd_d(sv, r2, res);
+    
+    return res;
+}
+
+static void laplace_matvec_avx_new(
+    const double *coord0, const int ld0, const int n0,
+    const double *coord1, const int ld1, const int n1,
+    const double *x_in, double *x_out
+)
+{
+    const double *x0 = coord0 + ld0 * 0;
+    const double *y0 = coord0 + ld0 * 1;
+    const double *z0 = coord0 + ld0 * 2;
+    const double *x1 = coord1 + ld1 * 0;
+    const double *y1 = coord1 + ld1 * 1;
+    const double *z1 = coord1 + ld1 * 2;
+    vec_d frsqrt_pf = vec_frsqrt_pf_d();
+    const int blk_size = 1024;
+    int n0_SIMD = (n0 / SIMD_LEN_D) * SIMD_LEN_D;
+    int n1_SIMD = (n1 / SIMD_LEN_D) * SIMD_LEN_D;
+    for (int j_sidx = 0; j_sidx < n1_SIMD; j_sidx += blk_size)
+    {
+        int j_eidx = (j_sidx + blk_size > n1_SIMD) ? n1_SIMD : (j_sidx + blk_size);
+        for (int i = 0; i < n0_SIMD; i += SIMD_LEN_D)
+        {
+            vec_d tx = vec_loadu_d(x0 + i);
+            vec_d ty = vec_loadu_d(y0 + i);
+            vec_d tz = vec_loadu_d(z0 + i);
+            vec_d tv = vec_zero_d();
+            for (int j = j_sidx; j < j_eidx; j += SIMD_LEN_D)
+            {
+                vec_d sx = vec_loadu_d(x1 + j);
+                vec_d sy = vec_loadu_d(y1 + j);
+                vec_d sz = vec_loadu_d(z1 + j);
+                vec_d sv = vec_loadu_d(x_in + j);
+                
+                vec_d tmp = laplace_matvec_4x4d(tx, ty, tz, sx, sy, sz, sv);
+                tv = vec_add_d(tmp, tv);
+            }
+            tv = vec_mul_d(tv, frsqrt_pf);
+            vec_d outval = vec_loadu_d(x_out + i);
+            vec_storeu_d(x_out + i, vec_add_d(outval, tv));
+        }
+    }
+    laplace_matvec_std(
+        coord0, ld0, n0_SIMD,
+        coord1 + n1_SIMD, ld1, n1 - n1_SIMD,
+        x_in + n1_SIMD, x_out
+    );
+    laplace_matvec_std(
+        coord0 + n0_SIMD, ld0, n0 - n0_SIMD,
+        coord1, ld1, n1,
+        x_in, x_out + n0_SIMD
+    );
+}
+
+#endif
