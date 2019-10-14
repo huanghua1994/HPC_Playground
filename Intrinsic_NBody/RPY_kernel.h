@@ -197,7 +197,8 @@ static void RPY_matvec_nt_autovec(
         double txs = x0[i];
         double tys = y0[i];
         double tzs = z0[i];
-        double res[3] = {0, 0, 0};
+        double xo0_0 = 0, xo0_1 = 0, xo0_2 = 0;
+        #pragma omp simd  
         for (int j = 0; j < n1; j++)
         {
             double dx = txs - x1[j];
@@ -205,7 +206,7 @@ static void RPY_matvec_nt_autovec(
             double dz = tzs - z1[j];
             double r2 = dx * dx + dy * dy + dz * dz;
             double r  = sqrt(r2);
-            double inv_r = (r < 1e-15) ? 0.0 : 1.0 / r;
+            double inv_r = (r == 0.0) ? 0.0 : 1.0 / r;
             
             dx *= inv_r;
             dy *= inv_r;
@@ -217,28 +218,23 @@ static void RPY_matvec_nt_autovec(
                 t1 = C - C_9o32oa * r;
                 t2 =     C_3o32oa * r;
             } else {
-                t1 = C_075 * inv_r * (1 + aa_2o3 / r2);
-                t2 = C_075 * inv_r * (1 - aa2    / r2); 
+                t1 = C_075 * inv_r * (1 + aa_2o3 * inv_r * inv_r);
+                t2 = C_075 * inv_r * (1 - aa2    * inv_r * inv_r); 
             }
             
-            double x_in_0_j[3];
-            x_in_0_j[0] = x_in_0[j + 0 * ld1];
-            x_in_0_j[1] = x_in_0[j + 1 * ld1];
-            x_in_0_j[2] = x_in_0[j + 2 * ld1];
+            double x_in_0_j0 = x_in_0[j + 0 * ld1];
+            double x_in_0_j1 = x_in_0[j + 1 * ld1];
+            double x_in_0_j2 = x_in_0[j + 2 * ld1];
             
-            res[0] += (t2 * dx * dx + t1) * x_in_0_j[0];
-            res[0] += (t2 * dx * dy)      * x_in_0_j[1];
-            res[0] += (t2 * dx * dz)      * x_in_0_j[2];
-            res[1] += (t2 * dy * dx)      * x_in_0_j[0];
-            res[1] += (t2 * dy * dy + t1) * x_in_0_j[1];
-            res[1] += (t2 * dy * dz)      * x_in_0_j[2];
-            res[2] += (t2 * dz * dx)      * x_in_0_j[0];
-            res[2] += (t2 * dz * dy)      * x_in_0_j[1];
-            res[2] += (t2 * dz * dz + t1) * x_in_0_j[2];
+            double k1 = t2 * (x_in_0_j0 * dx + x_in_0_j1 * dy + x_in_0_j2 * dz);
+            
+            xo0_0 += dx * k1 + t1 * x_in_0_j0;
+            xo0_1 += dy * k1 + t1 * x_in_0_j1;
+            xo0_2 += dz * k1 + t1 * x_in_0_j2;
         }
-        x_out_0[i + 0 * ld0] += res[0];
-        x_out_0[i + 1 * ld0] += res[1];
-        x_out_0[i + 2 * ld0] += res[2];
+        x_out_0[i + 0 * ld0] += xo0_0;
+        x_out_0[i + 1 * ld0] += xo0_1;
+        x_out_0[i + 2 * ld0] += xo0_2;
     }
 }
 
@@ -270,13 +266,11 @@ static void RPY_matvec_nt_t_autovec(
         double txs = x0[i];
         double tys = y0[i];
         double tzs = z0[i];
-        double x_in_1_i[3];
-        x_in_1_i[0] = x_in_1[i + 0 * ld0];
-        x_in_1_i[1] = x_in_1[i + 1 * ld0];
-        x_in_1_i[2] = x_in_1[i + 2 * ld0];
-        double res[3] = {0, 0, 0};
-        // Don't know why ICC cannot vectorize this loop correctly
-        //#pragma omp simd  
+        double x_in_1_i0 = x_in_1[i + 0 * ld0];
+        double x_in_1_i1 = x_in_1[i + 1 * ld0];
+        double x_in_1_i2 = x_in_1[i + 2 * ld0];
+        double xo0_0 = 0, xo0_1 = 0, xo0_2 = 0;
+        #pragma omp simd  
         for (int j = 0; j < n1; j++)
         {
             double dx = txs - x1[j];
@@ -284,7 +278,7 @@ static void RPY_matvec_nt_t_autovec(
             double dz = tzs - z1[j];
             double r2 = dx * dx + dy * dy + dz * dz;
             double r  = sqrt(r2);
-            double inv_r = (r < 1e-15) ? 0.0 : 1.0 / r;
+            double inv_r = (r == 0.0) ? 0.0 : 1.0 / r;
             
             dx *= inv_r;
             dy *= inv_r;
@@ -296,57 +290,31 @@ static void RPY_matvec_nt_t_autovec(
                 t1 = C - C_9o32oa * r;
                 t2 =     C_3o32oa * r;
             } else {
-                t1 = C_075 * inv_r * (1 + aa_2o3 / r2);
-                t2 = C_075 * inv_r * (1 - aa2    / r2); 
+                t1 = C_075 * inv_r * (1 + aa_2o3 * inv_r * inv_r);
+                t2 = C_075 * inv_r * (1 - aa2    * inv_r * inv_r); 
             }
             
-            double x_in_0_j[3];
-            x_in_0_j[0] = x_in_0[j + 0 * ld1];
-            x_in_0_j[1] = x_in_0[j + 1 * ld1];
-            x_in_0_j[2] = x_in_0[j + 2 * ld1];
+            double x_in_0_j0 = x_in_0[j + 0 * ld1];
+            double x_in_0_j1 = x_in_0[j + 1 * ld1];
+            double x_in_0_j2 = x_in_0[j + 2 * ld1];
             
-            double tmp0 = 0.0, tmp1 = 0.0, tmp2 = 0.0;
-            double tmp, k0, k1, k2;
-            tmp = t2 * dx;
-            k0 = (tmp * dx + t1);
-            k1 = (tmp * dy);
-            k2 = (tmp * dz);
-            res[0] += k0 * x_in_0_j[0];
-            res[0] += k1 * x_in_0_j[1];
-            res[0] += k2 * x_in_0_j[2];
-            tmp0 += k0 * x_in_1_i[0];
-            tmp1 += k1 * x_in_1_i[0];
-            tmp2 += k2 * x_in_1_i[0];
+            double k0 = t2 * (x_in_0_j0 * dx + x_in_0_j1 * dy + x_in_0_j2 * dz);
+            double k1 = t2 * (x_in_1_i0 * dx + x_in_1_i1 * dy + x_in_1_i2 * dz);
             
-            tmp = t2 * dy;
-            k0 = (tmp * dx);
-            k1 = (tmp * dy + t1);
-            k2 = (tmp * dz);
-            res[1] += k0 * x_in_0_j[0];
-            res[1] += k1 * x_in_0_j[1];
-            res[1] += k2 * x_in_0_j[2];
-            tmp0 += k0 * x_in_1_i[1];
-            tmp1 += k1 * x_in_1_i[1];
-            tmp2 += k2 * x_in_1_i[1];
+            xo0_0 += dx * k0 + t1 * x_in_0_j0;
+            xo0_1 += dy * k0 + t1 * x_in_0_j1;
+            xo0_2 += dz * k0 + t1 * x_in_0_j2;
+            double xo1_0 = dx * k1 + t1 * x_in_1_i0;
+            double xo1_1 = dy * k1 + t1 * x_in_1_i1;
+            double xo1_2 = dz * k1 + t1 * x_in_1_i2;
             
-            tmp = t2 * dz;
-            k0 = (tmp * dx);
-            k1 = (tmp * dy);
-            k2 = (tmp * dz + t1);
-            res[2] += k0 * x_in_0_j[0];
-            res[2] += k1 * x_in_0_j[1];
-            res[2] += k2 * x_in_0_j[2];
-            tmp0 += k0 * x_in_1_i[2];
-            tmp1 += k1 * x_in_1_i[2];
-            tmp2 += k2 * x_in_1_i[2];
-            
-            x_out_1[j + 0 * ld1] += tmp0;
-            x_out_1[j + 1 * ld1] += tmp1;
-            x_out_1[j + 2 * ld1] += tmp2;
+            x_out_1[j + 0 * ld1] += xo1_0;
+            x_out_1[j + 1 * ld1] += xo1_1;
+            x_out_1[j + 2 * ld1] += xo1_2;
         }
-        x_out_0[i + 0 * ld0] += res[0];
-        x_out_0[i + 1 * ld0] += res[1];
-        x_out_0[i + 2 * ld0] += res[2];
+        x_out_0[i + 0 * ld0] += xo0_0;
+        x_out_0[i + 1 * ld0] += xo0_1;
+        x_out_0[i + 2 * ld0] += xo0_2;
     }
 }
 
