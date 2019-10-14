@@ -330,10 +330,7 @@ static void RPY_symm_matvec_autovec(
     {
         RPY_matvec_nt_autovec(coord0, ld0, n0, coord1, ld1, n1, x_in_0, x_out_0);
     } else {
-        //RPY_matvec_nt_t_autovec(coord0, ld0, n0, coord1, ld1, n1, x_in_0, x_in_1, x_out_0, x_out_1);
-        // The following is actually faster since they can be auto vectorized
-        RPY_matvec_nt_autovec(coord0, ld0, n0, coord1, ld1, n1, x_in_0, x_out_0);
-        RPY_matvec_nt_autovec(coord1, ld1, n1, coord0, ld0, n0, x_in_1, x_out_1);
+        RPY_matvec_nt_t_autovec(coord0, ld0, n0, coord1, ld1, n1, x_in_0, x_in_1, x_out_0, x_out_1);
     }
 }
 
@@ -367,9 +364,9 @@ static void RPY_matvec_nt_intrin(
         vec_d txv = vec_bcast_d(x0 + i);
         vec_d tyv = vec_bcast_d(y0 + i);
         vec_d tzv = vec_bcast_d(z0 + i);
-        vec_d res0 = vec_zero_d();
-        vec_d res1 = vec_zero_d();
-        vec_d res2 = vec_zero_d();
+        vec_d xo0_0 = vec_zero_d();
+        vec_d xo0_1 = vec_zero_d();
+        vec_d xo0_2 = vec_zero_d();
         vec_d frsqrt_pf = vec_frsqrt_pf_d();
         for (int j = 0; j < n1_SIMD; j += SIMD_LEN_D)
         {
@@ -405,23 +402,22 @@ static void RPY_matvec_nt_intrin(
             vec_d x_in_0_j1 = vec_loadu_d(x_in_0 + j + ld1);
             vec_d x_in_0_j2 = vec_loadu_d(x_in_0 + j + ld1 * 2);
             
-            tmp0 = vec_mul_d(t2, dx);
-            res0 = vec_fmadd_d(vec_fmadd_d(tmp0, dx, t1), x_in_0_j0, res0);
-            res0 = vec_fmadd_d(vec_mul_d(tmp0, dy),       x_in_0_j1, res0);
-            res0 = vec_fmadd_d(vec_mul_d(tmp0, dz),       x_in_0_j2, res0);
-            tmp0 = vec_mul_d(t2, dy);
-            res1 = vec_fmadd_d(vec_mul_d(tmp0, dx),       x_in_0_j0, res1);
-            res1 = vec_fmadd_d(vec_fmadd_d(tmp0, dy, t1), x_in_0_j1, res1);
-            res1 = vec_fmadd_d(vec_mul_d(tmp0, dz),       x_in_0_j2, res1);
-            tmp0 = vec_mul_d(t2, dz);
-            res2 = vec_fmadd_d(vec_mul_d(tmp0, dx),       x_in_0_j0, res2);
-            res2 = vec_fmadd_d(vec_mul_d(tmp0, dy),       x_in_0_j1, res2);
-            res2 = vec_fmadd_d(vec_fmadd_d(tmp0, dz, t1), x_in_0_j2, res2);
+            tmp0 = vec_mul_d(x_in_0_j0, dx);
+            tmp0 = vec_fmadd_d(x_in_0_j1, dy, tmp0);
+            tmp0 = vec_fmadd_d(x_in_0_j2, dz, tmp0);
+            tmp0 = vec_mul_d(t2, tmp0);
+            
+            xo0_0 = vec_fmadd_d(dx, tmp0, xo0_0);
+            xo0_1 = vec_fmadd_d(dy, tmp0, xo0_1);
+            xo0_2 = vec_fmadd_d(dz, tmp0, xo0_2);
+            xo0_0 = vec_fmadd_d(t1, x_in_0_j0, xo0_0);
+            xo0_1 = vec_fmadd_d(t1, x_in_0_j1, xo0_1);
+            xo0_2 = vec_fmadd_d(t1, x_in_0_j2, xo0_2);
         }
         
-        x_out_0[i + 0 * ld0] += vec_reduce_add_d(res0);
-        x_out_0[i + 1 * ld0] += vec_reduce_add_d(res1);
-        x_out_0[i + 2 * ld0] += vec_reduce_add_d(res2);
+        x_out_0[i + 0 * ld0] += vec_reduce_add_d(xo0_0);
+        x_out_0[i + 1 * ld0] += vec_reduce_add_d(xo0_1);
+        x_out_0[i + 2 * ld0] += vec_reduce_add_d(xo0_2);
         RPY_matvec_nt_autovec(
             coord0 + i, ld0, 1, 
             coord1 + n1_SIMD, ld1, n1 - n1_SIMD, 
@@ -462,9 +458,9 @@ static void RPY_matvec_nt_t_intrin(
         vec_d x_in_1_i0 = vec_bcast_d(x_in_1 + i + 0 * ld0);
         vec_d x_in_1_i1 = vec_bcast_d(x_in_1 + i + 1 * ld0);
         vec_d x_in_1_i2 = vec_bcast_d(x_in_1 + i + 2 * ld0);
-        vec_d res0 = vec_zero_d();
-        vec_d res1 = vec_zero_d();
-        vec_d res2 = vec_zero_d();
+        vec_d xo0_0 = vec_zero_d();
+        vec_d xo0_1 = vec_zero_d();
+        vec_d xo0_2 = vec_zero_d();
         vec_d frsqrt_pf = vec_frsqrt_pf_d();
         for (int j = 0; j < n1_SIMD; j += SIMD_LEN_D)
         {
@@ -500,54 +496,49 @@ static void RPY_matvec_nt_t_intrin(
             vec_d x_in_0_j1 = vec_loadu_d(x_in_0 + j + ld1);
             vec_d x_in_0_j2 = vec_loadu_d(x_in_0 + j + ld1 * 2);
             
-            vec_d k0, k1, k2, tmp;
-            tmp0 = vec_zero_d();
-            tmp1 = vec_zero_d();
-            tmp2 = vec_zero_d();
+            #define xo1_0 tmp0
+            #define xo1_1 tmp1
+            #define xo1_2 tmp2
+            #define k0    C_075_o_r
+            #define k1    inv_r2
+            k0 = vec_mul_d(x_in_0_j0, dx);
+            k0 = vec_fmadd_d(x_in_0_j1, dy, k0);
+            k0 = vec_fmadd_d(x_in_0_j2, dz, k0);
+            k0 = vec_mul_d(t2, k0);
+            k1 = vec_mul_d(x_in_1_i0, dx);
+            k1 = vec_fmadd_d(x_in_1_i1, dy, k1);
+            k1 = vec_fmadd_d(x_in_1_i2, dz, k1);
+            k1 = vec_mul_d(t2, k1);
             
-            tmp  = vec_mul_d(t2, dx);
-            k0   = vec_fmadd_d(tmp, dx, t1);
-            k1   = vec_mul_d(tmp, dy);
-            k2   = vec_mul_d(tmp, dz);
-            res0 = vec_fmadd_d(k0, x_in_0_j0, res0);
-            res0 = vec_fmadd_d(k1, x_in_0_j1, res0);
-            res0 = vec_fmadd_d(k2, x_in_0_j2, res0);
-            tmp0 = vec_fmadd_d(k0, x_in_1_i0, tmp0);
-            tmp1 = vec_fmadd_d(k1, x_in_1_i0, tmp1);
-            tmp2 = vec_fmadd_d(k2, x_in_1_i0, tmp2);
+            xo0_0 = vec_fmadd_d(dx, k0, xo0_0);
+            xo0_1 = vec_fmadd_d(dy, k0, xo0_1);
+            xo0_2 = vec_fmadd_d(dz, k0, xo0_2);
+            xo0_0 = vec_fmadd_d(t1, x_in_0_j0, xo0_0);
+            xo0_1 = vec_fmadd_d(t1, x_in_0_j1, xo0_1);
+            xo0_2 = vec_fmadd_d(t1, x_in_0_j2, xo0_2);
             
-            tmp  = vec_mul_d(t2, dy);
-            k0   = vec_mul_d(tmp, dx);
-            k1   = vec_fmadd_d(tmp, dy, t1);
-            k2   = vec_mul_d(tmp, dz);
-            res1 = vec_fmadd_d(k0, x_in_0_j0, res1);
-            res1 = vec_fmadd_d(k1, x_in_0_j1, res1);
-            res1 = vec_fmadd_d(k2, x_in_0_j2, res1);
-            tmp0 = vec_fmadd_d(k0, x_in_1_i1, tmp0);
-            tmp1 = vec_fmadd_d(k1, x_in_1_i1, tmp1);
-            tmp2 = vec_fmadd_d(k2, x_in_1_i1, tmp2);
-            
-            tmp  = vec_mul_d(t2, dz);
-            k0   = vec_mul_d(tmp, dx);
-            k1   = vec_mul_d(tmp, dy);
-            k2   = vec_fmadd_d(tmp, dz, t1);
-            res2 = vec_fmadd_d(k0, x_in_0_j0, res2);
-            res2 = vec_fmadd_d(k1, x_in_0_j1, res2);
-            res2 = vec_fmadd_d(k2, x_in_0_j2, res2);
-            tmp0 = vec_fmadd_d(k0, x_in_1_i2, tmp0);
-            tmp1 = vec_fmadd_d(k1, x_in_1_i2, tmp1);
-            tmp2 = vec_fmadd_d(k2, x_in_1_i2, tmp2);
-            
+            xo1_0 = vec_mul_d(dx, k1);
+            xo1_1 = vec_mul_d(dy, k1);
+            xo1_2 = vec_mul_d(dz, k1);
+            xo1_0 = vec_fmadd_d(t1, x_in_1_i0, xo1_0);
+            xo1_1 = vec_fmadd_d(t1, x_in_1_i1, xo1_1);
+            xo1_2 = vec_fmadd_d(t1, x_in_1_i2, xo1_2);
+
             double *x_out_1_0 = x_out_1 + j + 0 * ld1;
             double *x_out_1_1 = x_out_1 + j + 1 * ld1;
             double *x_out_1_2 = x_out_1 + j + 2 * ld1;
-            vec_storeu_d(x_out_1_0, vec_add_d(tmp0, vec_loadu_d(x_out_1_0)));
-            vec_storeu_d(x_out_1_1, vec_add_d(tmp1, vec_loadu_d(x_out_1_1)));
-            vec_storeu_d(x_out_1_2, vec_add_d(tmp2, vec_loadu_d(x_out_1_2)));
+            vec_storeu_d(x_out_1_0, vec_add_d(xo1_0, vec_loadu_d(x_out_1_0)));
+            vec_storeu_d(x_out_1_1, vec_add_d(xo1_1, vec_loadu_d(x_out_1_1)));
+            vec_storeu_d(x_out_1_2, vec_add_d(xo1_2, vec_loadu_d(x_out_1_2)));
+            #undef xo1_0
+            #undef xo1_1
+            #undef xo1_2
+            #undef k0
+            #undef k1
         }
-        x_out_0[i + 0 * ld0] += vec_reduce_add_d(res0);
-        x_out_0[i + 1 * ld0] += vec_reduce_add_d(res1);
-        x_out_0[i + 2 * ld0] += vec_reduce_add_d(res2);
+        x_out_0[i + 0 * ld0] += vec_reduce_add_d(xo0_0);
+        x_out_0[i + 1 * ld0] += vec_reduce_add_d(xo0_1);
+        x_out_0[i + 2 * ld0] += vec_reduce_add_d(xo0_2);
         
         RPY_symm_matvec_autovec(
             coord0 + i, ld0, 1, 
