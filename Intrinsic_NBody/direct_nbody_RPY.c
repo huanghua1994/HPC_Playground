@@ -117,7 +117,7 @@ int main(int argc, char **argv)
         scanf("%d", &n_trg);
     }
     
-    int krnl_flops = 46;  
+    int krnl_flops = 44;  
     int krnl_dim = 3;
     
     double *src_coord = (double*) malloc(sizeof(double) * n_src * 3);

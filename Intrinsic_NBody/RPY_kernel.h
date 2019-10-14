@@ -5,6 +5,22 @@
 #include "x86_intrin_wrapper.h" 
 #include "kernel_ptr.h"
 
+#define RPY_INIT() \
+    const double a = 0.2, eta = 1.0;                    \
+    const double C   = 1.0 / (6.0 * M_PI * a * eta);    \
+    const double a2  = 2.0 * a;                         \
+    const double aa2 = a * a * 2.0;                     \
+    const double aa_2o3   = aa2 / 3.0;                  \
+    const double C_075    = C * 0.75;                   \
+    const double C_9o32oa = C * 9.0 / 32.0 / a;         \
+    const double C_3o32oa = C * 3.0 / 32.0 / a;         \
+    const double *x0 = coord0 + ld0 * 0;                \
+    const double *y0 = coord0 + ld0 * 1;                \
+    const double *z0 = coord0 + ld0 * 2;                \
+    const double *x1 = coord1 + ld1 * 0;                \
+    const double *y1 = coord1 + ld1 * 1;                \
+    const double *z1 = coord1 + ld1 * 2;
+
 // ===== Input & output vector are not transposed (npoint * 3 matrices) =====
 
 static void RPY_matvec_nt_std(
@@ -13,28 +29,23 @@ static void RPY_matvec_nt_std(
     const double *x_in_0, double *x_out_0
 )
 {
-    const double a = 0.2, eta = 1.0;
-    const double C   = 1.0 / (6.0 * M_PI * a * eta);
-    const double a2  = 2.0 * a;
-    const double aa2 = a * a * 2.0;
-    const double aa_2o3   = aa2 / 3.0;
-    const double C_075    = C * 0.75;
-    const double C_9o32oa = C * 9.0 / 32.0 / a;
-    const double C_3o32oa = C * 3.0 / 32.0 / a;
+    RPY_INIT();
+    
     for (int i = 0; i < n0; i++)
     {
-        double tx = coord0[i];
-        double ty = coord0[i + ld0];
-        double tz = coord0[i + ld0 * 2];
-        double res[3] = {0.0, 0.0, 0.0};
+        double txs = x0[i];
+        double tys = y0[i];
+        double tzs = z0[i];
+        double xo0_0 = 0, xo0_1 = 0, xo0_2 = 0;
+        #pragma omp simd  
         for (int j = 0; j < n1; j++)
         {
-            double dx = tx - coord1[j];
-            double dy = ty - coord1[j + ld1];
-            double dz = tz - coord1[j + ld1 * 2];
+            double dx = txs - x1[j];
+            double dy = tys - y1[j];
+            double dz = tzs - z1[j];
             double r2 = dx * dx + dy * dy + dz * dz;
             double r  = sqrt(r2);
-            double inv_r = (r < 1e-15) ? 0.0 : 1.0 / r;
+            double inv_r = (r == 0.0) ? 0.0 : 1.0 / r;
             
             dx *= inv_r;
             dy *= inv_r;
@@ -46,28 +57,23 @@ static void RPY_matvec_nt_std(
                 t1 = C - C_9o32oa * r;
                 t2 =     C_3o32oa * r;
             } else {
-                t1 = C_075 * inv_r * (1 + aa_2o3 / r2);
-                t2 = C_075 * inv_r * (1 - aa2    / r2); 
+                t1 = C_075 * inv_r * (1 + aa_2o3 * inv_r * inv_r);
+                t2 = C_075 * inv_r * (1 - aa2    * inv_r * inv_r); 
             }
             
-            double x_in_0_j[3];
-            x_in_0_j[0] = x_in_0[j * 3 + 0];
-            x_in_0_j[1] = x_in_0[j * 3 + 1];
-            x_in_0_j[2] = x_in_0[j * 3 + 2];
+            double x_in_0_j0 = x_in_0[j * 3 + 0];
+            double x_in_0_j1 = x_in_0[j * 3 + 1];
+            double x_in_0_j2 = x_in_0[j * 3 + 2];
             
-            res[0] += (t2 * dx * dx + t1) * x_in_0_j[0];
-            res[0] += (t2 * dx * dy)      * x_in_0_j[1];
-            res[0] += (t2 * dx * dz)      * x_in_0_j[2];
-            res[1] += (t2 * dy * dx)      * x_in_0_j[0];
-            res[1] += (t2 * dy * dy + t1) * x_in_0_j[1];
-            res[1] += (t2 * dy * dz)      * x_in_0_j[2];
-            res[2] += (t2 * dz * dx)      * x_in_0_j[0];
-            res[2] += (t2 * dz * dy)      * x_in_0_j[1];
-            res[2] += (t2 * dz * dz + t1) * x_in_0_j[2];
+            double k1 = t2 * (x_in_0_j0 * dx + x_in_0_j1 * dy + x_in_0_j2 * dz);
+            
+            xo0_0 += dx * k1 + t1 * x_in_0_j0;
+            xo0_1 += dy * k1 + t1 * x_in_0_j1;
+            xo0_2 += dz * k1 + t1 * x_in_0_j2;
         }
-        x_out_0[i * 3 + 0] += res[0];
-        x_out_0[i * 3 + 1] += res[1];
-        x_out_0[i * 3 + 2] += res[2];
+        x_out_0[i * 3 + 0] += xo0_0;
+        x_out_0[i * 3 + 1] += xo0_1;
+        x_out_0[i * 3 + 2] += xo0_2;
     }
 }
 
@@ -78,34 +84,26 @@ static void RPY_matvec_nt_t_std(
     double *x_out_0, double *x_out_1
 )
 {
-    const double a = 0.2, eta = 1.0;
-    const double C   = 1.0 / (6.0 * M_PI * a * eta);
-    const double a2  = 2.0 * a;
-    const double aa2 = a * a * 2.0;
-    const double aa_2o3   = aa2 / 3.0;
-    const double C_075    = C * 0.75;
-    const double C_9o32oa = C * 9.0 / 32.0 / a;
-    const double C_3o32oa = C * 3.0 / 32.0 / a;
+    RPY_INIT();
     
     for (int i = 0; i < n0; i++)
     {
-        double tx = coord0[i];
-        double ty = coord0[i + ld0];
-        double tz = coord0[i + ld0 * 2];
-        double x_in_1_i[3];
-        int i3 = i * 3;
-        x_in_1_i[0] = x_in_1[i3 + 0];
-        x_in_1_i[1] = x_in_1[i3 + 1];
-        x_in_1_i[2] = x_in_1[i3 + 2];
-        double res[3] = {0.0, 0.0, 0.0};
+        double txs = x0[i];
+        double tys = y0[i];
+        double tzs = z0[i];
+        double x_in_1_i0 = x_in_1[i * 3 + 0];
+        double x_in_1_i1 = x_in_1[i * 3 + 1];
+        double x_in_1_i2 = x_in_1[i * 3 + 2];
+        double xo0_0 = 0, xo0_1 = 0, xo0_2 = 0;
+        #pragma omp simd  
         for (int j = 0; j < n1; j++)
         {
-            double dx = tx - coord1[j];
-            double dy = ty - coord1[j + ld1];
-            double dz = tz - coord1[j + ld1 * 2];
+            double dx = txs - x1[j];
+            double dy = tys - y1[j];
+            double dz = tzs - z1[j];
             double r2 = dx * dx + dy * dy + dz * dz;
             double r  = sqrt(r2);
-            double inv_r = (r < 1e-15) ? 0.0 : 1.0 / r;
+            double inv_r = (r == 0.0) ? 0.0 : 1.0 / r;
             
             dx *= inv_r;
             dy *= inv_r;
@@ -117,39 +115,31 @@ static void RPY_matvec_nt_t_std(
                 t1 = C - C_9o32oa * r;
                 t2 =     C_3o32oa * r;
             } else {
-                t1 = C_075 * inv_r * (1 + aa_2o3 / r2);
-                t2 = C_075 * inv_r * (1 - aa2    / r2); 
+                t1 = C_075 * inv_r * (1 + aa_2o3 * inv_r * inv_r);
+                t2 = C_075 * inv_r * (1 - aa2    * inv_r * inv_r); 
             }
             
-            double x_in_0_j[3];
-            x_in_0_j[0] = x_in_0[j * 3 + 0];
-            x_in_0_j[1] = x_in_0[j * 3 + 1];
-            x_in_0_j[2] = x_in_0[j * 3 + 2];
+            double x_in_0_j0 = x_in_0[j * 3 + 0];
+            double x_in_0_j1 = x_in_0[j * 3 + 1];
+            double x_in_0_j2 = x_in_0[j * 3 + 2];
             
-            res[0] += (t2 * dx * dx + t1) * x_in_0_j[0];
-            res[0] += (t2 * dx * dy)      * x_in_0_j[1];
-            res[0] += (t2 * dx * dz)      * x_in_0_j[2];
-            res[1] += (t2 * dy * dx)      * x_in_0_j[0];
-            res[1] += (t2 * dy * dy + t1) * x_in_0_j[1];
-            res[1] += (t2 * dy * dz)      * x_in_0_j[2];
-            res[2] += (t2 * dz * dx)      * x_in_0_j[0];
-            res[2] += (t2 * dz * dy)      * x_in_0_j[1];
-            res[2] += (t2 * dz * dz + t1) * x_in_0_j[2];
+            double k0 = t2 * (x_in_0_j0 * dx + x_in_0_j1 * dy + x_in_0_j2 * dz);
+            double k1 = t2 * (x_in_1_i0 * dx + x_in_1_i1 * dy + x_in_1_i2 * dz);
             
-            int j3 = j * 3;
-            x_out_1[j3 + 0] += (t2 * dx * dx + t1) * x_in_1_i[0];
-            x_out_1[j3 + 0] += (t2 * dy * dx)      * x_in_1_i[1];
-            x_out_1[j3 + 0] += (t2 * dz * dx)      * x_in_1_i[2];
-            x_out_1[j3 + 1] += (t2 * dx * dy)      * x_in_1_i[0];
-            x_out_1[j3 + 1] += (t2 * dy * dy + t1) * x_in_1_i[1];
-            x_out_1[j3 + 1] += (t2 * dz * dy)      * x_in_1_i[2];
-            x_out_1[j3 + 2] += (t2 * dx * dz)      * x_in_1_i[0];
-            x_out_1[j3 + 2] += (t2 * dy * dz)      * x_in_1_i[1];
-            x_out_1[j3 + 2] += (t2 * dz * dz + t1) * x_in_1_i[2];
+            xo0_0 += dx * k0 + t1 * x_in_0_j0;
+            xo0_1 += dy * k0 + t1 * x_in_0_j1;
+            xo0_2 += dz * k0 + t1 * x_in_0_j2;
+            double xo1_0 = dx * k1 + t1 * x_in_1_i0;
+            double xo1_1 = dy * k1 + t1 * x_in_1_i1;
+            double xo1_2 = dz * k1 + t1 * x_in_1_i2;
+            
+            x_out_1[j * 3 + 0] += xo1_0;
+            x_out_1[j * 3 + 1] += xo1_1;
+            x_out_1[j * 3 + 2] += xo1_2;
         }
-        x_out_0[i * 3 + 0] += res[0];
-        x_out_0[i * 3 + 1] += res[1];
-        x_out_0[i * 3 + 2] += res[2];
+        x_out_0[i * 3 + 0] += xo0_0;
+        x_out_0[i * 3 + 1] += xo0_1;
+        x_out_0[i * 3 + 2] += xo0_2;
     }
 }
 
@@ -162,7 +152,7 @@ static void RPY_symm_matvec_std(
 {
     if (x_in_1 == NULL)
     {
-        RPY_matvec_nt_std(coord0, ld0, n0, coord1, ld1, n1, x_in_0, x_out_0);
+        RPY_matvec_nt_std  (coord0, ld0, n0, coord1, ld1, n1, x_in_0,         x_out_0);
     } else {
         RPY_matvec_nt_t_std(coord0, ld0, n0, coord1, ld1, n1, x_in_0, x_in_1, x_out_0, x_out_1);
     }
@@ -176,21 +166,7 @@ static void RPY_matvec_nt_autovec(
     const double *x_in_0, double *x_out_0
 )
 {
-    const double a = 0.2, eta = 1.0;
-    const double C   = 1.0 / (6.0 * M_PI * a * eta);
-    const double a2  = 2.0 * a;
-    const double aa2 = a * a * 2.0;
-    const double aa_2o3   = aa2 / 3.0;
-    const double C_075    = C * 0.75;
-    const double C_9o32oa = C * 9.0 / 32.0 / a;
-    const double C_3o32oa = C * 3.0 / 32.0 / a;
-    
-    const double *x0 = coord0 + ld0 * 0;
-    const double *y0 = coord0 + ld0 * 1;
-    const double *z0 = coord0 + ld0 * 2;
-    const double *x1 = coord1 + ld1 * 0;
-    const double *y1 = coord1 + ld1 * 1;
-    const double *z1 = coord1 + ld1 * 2;
+    RPY_INIT();
 
     for (int i = 0; i < n0; i++)
     {
@@ -245,21 +221,7 @@ static void RPY_matvec_nt_t_autovec(
     double *x_out_0, double *x_out_1
 )
 {
-    const double a = 0.2, eta = 1.0;
-    const double C   = 1.0 / (6.0 * M_PI * a * eta);
-    const double a2  = 2.0 * a;
-    const double aa2 = a * a * 2.0;
-    const double aa_2o3   = aa2 / 3.0;
-    const double C_075    = C * 0.75;
-    const double C_9o32oa = C * 9.0 / 32.0 / a;
-    const double C_3o32oa = C * 3.0 / 32.0 / a;
-    
-    const double *x0 = coord0 + ld0 * 0;
-    const double *y0 = coord0 + ld0 * 1;
-    const double *z0 = coord0 + ld0 * 2;
-    const double *x1 = coord1 + ld1 * 0;
-    const double *y1 = coord1 + ld1 * 1;
-    const double *z1 = coord1 + ld1 * 2;
+    RPY_INIT();
 
     for (int i = 0; i < n0; i++)
     {
@@ -328,7 +290,7 @@ static void RPY_symm_matvec_autovec(
 {
     if (x_in_1 == NULL)
     {
-        RPY_matvec_nt_autovec(coord0, ld0, n0, coord1, ld1, n1, x_in_0, x_out_0);
+        RPY_matvec_nt_autovec  (coord0, ld0, n0, coord1, ld1, n1, x_in_0,         x_out_0);
     } else {
         RPY_matvec_nt_t_autovec(coord0, ld0, n0, coord1, ld1, n1, x_in_0, x_in_1, x_out_0, x_out_1);
     }
@@ -342,21 +304,7 @@ static void RPY_matvec_nt_intrin(
     const double *x_in_0, double *x_out_0
 )
 {
-    const double a = 0.2, eta = 1.0;
-    const double C   = 1.0 / (6.0 * M_PI * a * eta);
-    const double a2  = 2.0 * a;
-    const double aa2 = a * a * 2.0;
-    const double aa_2o3   = aa2 / 3.0;
-    const double C_075    = C * 0.75;
-    const double C_9o32oa = C * 9.0 / 32.0 / a;
-    const double C_3o32oa = C * 3.0 / 32.0 / a;
-    
-    const double *x0 = coord0 + ld0 * 0;
-    const double *y0 = coord0 + ld0 * 1;
-    const double *z0 = coord0 + ld0 * 2;
-    const double *x1 = coord1 + ld1 * 0;
-    const double *y1 = coord1 + ld1 * 1;
-    const double *z1 = coord1 + ld1 * 2;
+    RPY_INIT();
 
     for (int i = 0; i < n0; i++)
     {
@@ -433,21 +381,7 @@ static void RPY_matvec_nt_t_intrin(
     double *x_out_0, double *x_out_1
 )
 {
-    const double a = 0.2, eta = 1.0;
-    const double C   = 1.0 / (6.0 * M_PI * a * eta);
-    const double a2  = 2.0 * a;
-    const double aa2 = a * a * 2.0;
-    const double aa_2o3   = aa2 / 3.0;
-    const double C_075    = C * 0.75;
-    const double C_9o32oa = C * 9.0 / 32.0 / a;
-    const double C_3o32oa = C * 3.0 / 32.0 / a;
-    
-    const double *x0 = coord0 + ld0 * 0;
-    const double *y0 = coord0 + ld0 * 1;
-    const double *z0 = coord0 + ld0 * 2;
-    const double *x1 = coord1 + ld1 * 0;
-    const double *y1 = coord1 + ld1 * 1;
-    const double *z1 = coord1 + ld1 * 2;
+    RPY_INIT();
 
     for (int i = 0; i < n0; i++)
     {
@@ -558,7 +492,7 @@ static void RPY_symm_matvec_intrin(
 {
     if (x_in_1 == NULL)
     {
-        RPY_matvec_nt_intrin(coord0, ld0, n0, coord1, ld1, n1, x_in_0, x_out_0);
+        RPY_matvec_nt_intrin  (coord0, ld0, n0, coord1, ld1, n1, x_in_0,         x_out_0);
     } else {
         RPY_matvec_nt_t_intrin(coord0, ld0, n0, coord1, ld1, n1, x_in_0, x_in_1, x_out_0, x_out_1);
     }
