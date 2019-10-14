@@ -4,7 +4,7 @@
 #include <time.h>
 #include <omp.h>
 
-#include "RPY_kernel.h"
+#include "Stokes_kernel.h"
 
 void test_direct_nbody_symm(
     const int n_src, const double *src_coord, double *src_val0, double *src_val1, 
@@ -159,20 +159,20 @@ int main(int argc, char **argv)
     }
     
     printf("Standard auto-vectorized kernel:\n");
-    kernel_symm_matvec_fptr ref_matvec = RPY_symm_matvec_std;
+    kernel_symm_matvec_fptr ref_matvec = Stokes_symm_matvec_std;
     test_direct_nbody_symm(
         n_src, src_coord, src_val0, src_val1, 
         n_trg, trg_coord, trg_val0, trg_val1,
-        ref_matvec, krnl_dim, 62
+        ref_matvec, krnl_dim, 48
     );
     
     printf("AVX intrinsic kernel:\n");
-    kernel_symm_matvec_fptr avx_matvec = RPY_symm_matvec_intrin;
+    kernel_symm_matvec_fptr avx_matvec = Stokes_symm_matvec_intrin;
     test_direct_nbody_symm_trans(
         n_src, src_coord, n_trg, trg_coord, 
         src_val0, src_val0_t, src_val1, src_val1_t, 
         trg_val2, trg_val2_t, trg_val3, trg_val3_t, 
-        avx_matvec, krnl_dim, 62
+        avx_matvec, krnl_dim, 48
     );
     
     double ref_l2_0 = 0.0, err_l2_0 = 0.0;
