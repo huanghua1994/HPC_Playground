@@ -5,11 +5,11 @@ function multigrid_test
 % - along Dirichlet dimensions: Nx particularly good: 15, 31, ...
 % - along Dirichlet dimensions: Nx particularly bad:  24, 32, 40
 
-Nx = 32;
-Ny = 32;
-Nz = 31;
+Nx = 48;
+Ny = 50;
+Nz = 50;
 
-BCs = [0 0 1]; % 0 means periodic, 1 means Dirichlet
+BCs = [0 1 1]; % 0 means periodic, 1 means Dirichlet
 
 L1 = (Nx-BCs(1))*0.4;
 L2 = (Ny-BCs(2))*0.4;
@@ -20,7 +20,9 @@ gridsizes = [Nx Ny Nz];
 latVecs = eye(3); % not yet handling nonorthogonal lattices
 FDn = 6;
 
+tic;
 mg = multigrid_setup(cellDims, gridsizes, latVecs, BCs, FDn);
+toc
 
 rng(0);
 b = rand(Nx*Ny*Nz,1)-.5;
@@ -44,8 +46,10 @@ x = multigrid_solve(mg, b, x0);
 function mg = multigrid_setup(cellDims, gridsizes, latVecs, BCs, FDn)
 % Set up the multigrid method for the given FD mesh configuration.
 
-A = GenDiscreteLaplacian(cellDims, gridsizes, latVecs, BCs, FDn);
+%A = GenDiscreteLaplacian(cellDims, gridsizes, latVecs, BCs, FDn);
+[A, ~, ~, ~] = gen_fd_lap_orth(cellDims, gridsizes, BCs, FDn);
 mg.A{1} = A;
+mg.M{1} = 0.75 ./ full(diag(A));
 
 Nx = gridsizes(1);
 Ny = gridsizes(2);
@@ -58,12 +62,14 @@ while (Nx > 7 && Ny > 7 && Nz > 7)
 
   mg.P{level} = P;
   mg.R{level} = R;
-  mg.M{level} = (1/0.75)*diag(diag(A));
 
   % use low order discretization to form coarse matrix
-  Alow = GenDiscreteLaplacian(cellDims, [Nx Ny Nz], latVecs, BCs, 1);
+  %Alow = GenDiscreteLaplacian(cellDims, [Nx Ny Nz], latVecs, BCs, 1);
+  [Alow, rowptr, colidx, val] = gen_fd_lap_orth(cellDims, [Nx Ny Nz], BCs, 1);
   A = R*Alow*P;
   mg.A{level+1} = A;
+  %mg.M{level+1} = 0.75 ./ full(diag(A));
+  mg.M{level+1} = get_RAP_diag([Nx Ny Nz], BCs, rowptr, colidx, val);
 
   Nx = length(2:2:Nx);
   Ny = length(2:2:Ny);
@@ -81,13 +87,14 @@ function x = multigrid_solve(mg, b, x0)
 x = x0;
 
 % take 10 V-cycles
-for k = 1:10
+for k = 1:40
 
   r{1} = b-mg.A{1}*x;
 
   % downward pass
   for level = 1:mg.numlevels-1
-    e{level} = mg.M{level} \ r{level}; % pre-smoothing
+    %e{level} = mg.M{level} \ r{level}; % pre-smoothing
+    e{level} = mg.M{level} .* r{level}; % pre-smoothing
     r{level+1} = mg.R{level} * (r{level}-mg.A{level}*e{level}); % restrict the residual
   end
 
@@ -97,7 +104,8 @@ for k = 1:10
   % upward pass
   for level = mg.numlevels-1:-1:1
     e{level} = e{level} + mg.P{level} * e{level+1}; % prolong the correction
-    e{level} = e{level} + mg.M{level} \ (r{level}-mg.A{level}*e{level}); % post-smoothing
+    %e{level} = e{level} + mg.M{level} \ (r{level}-mg.A{level}*e{level}); % post-smoothing
+    e{level} = e{level} + mg.M{level} .* (r{level}-mg.A{level}*e{level}); % post-smoothing
   end
 
   x = x + e{1};
