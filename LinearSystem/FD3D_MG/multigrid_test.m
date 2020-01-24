@@ -6,10 +6,10 @@ function multigrid_test
 % - along Dirichlet dimensions: Nx particularly bad:  24, 32, 40
 
 Nx = 48;
-Ny = 50;
+Ny = 48;
 Nz = 50;
 
-BCs = [0 1 1]; % 0 means periodic, 1 means Dirichlet
+BCs = [0 0 1]; % 0 means periodic, 1 means Dirichlet
 
 L1 = (Nx-BCs(1))*0.4;
 L2 = (Ny-BCs(2))*0.4;
@@ -60,14 +60,14 @@ while (Nx > 7 && Ny > 7 && Nz > 7)
   P = prolong(Nx, Ny, Nz, BCs);
   R = 0.125*P';
 
-  mg.P{level} = P;
-  mg.R{level} = R;
+  mg.P{level+1} = P;
+  mg.R{level+1} = R;
 
   % use low order discretization to form coarse matrix
   %Alow = GenDiscreteLaplacian(cellDims, [Nx Ny Nz], latVecs, BCs, 1);
   [Alow, rowptr, colidx, val] = gen_fd_lap_orth(cellDims, [Nx Ny Nz], BCs, 1);
-  A = R*Alow*P;
-  mg.A{level+1} = A;
+  %A = R * Alow * P;
+  mg.A{level+1} = Alow;
   %mg.M{level+1} = 0.75 ./ full(diag(A));
   mg.M{level+1} = get_RAP_diag([Nx Ny Nz], BCs, rowptr, colidx, val);
 
@@ -78,6 +78,7 @@ while (Nx > 7 && Ny > 7 && Nz > 7)
   level = level + 1;
 end
 mg.numlevels = level;
+mg.lastA = mg.R{level} * mg.A{level} * mg.P{level};
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 function x = multigrid_solve(mg, b, x0)
@@ -85,34 +86,50 @@ function x = multigrid_solve(mg, b, x0)
 % and initial guess x0.  The structure mg is from multigrid_setup.
 
 x = x0;
+r{1} = b - mg.A{1}*x;
 
-% take 10 V-cycles
+% take 40 V-cycles
+tic;
 for k = 1:40
-
-  r{1} = b-mg.A{1}*x;
-
-  % downward pass
+  % Downward pass
   for level = 1:mg.numlevels-1
-    %e{level} = mg.M{level} \ r{level}; % pre-smoothing
-    e{level} = mg.M{level} .* r{level}; % pre-smoothing
-    r{level+1} = mg.R{level} * (r{level}-mg.A{level}*e{level}); % restrict the residual
+    % Pre-smoothing
+    e{level} = mg.M{level} .* r{level}; 
+    % Restrict the residual
+    if (level == 1)
+      r{level+1} = mg.R{level+1} * (r{level} - mg.A{level} * e{level}); 
+    else
+      t0 = mg.P{level} * e{level};
+      t1 = mg.A{level} * t0;
+      t2 = mg.R{level} * t1;
+      r{level+1} = mg.R{level+1} * (r{level} - t2);
+    end
   end
 
-  % solve on the coarsest level
-  e{level+1} = mg.A{mg.numlevels} \ r{mg.numlevels};
+  % Solve on the coarsest level
+  e{level+1} = mg.lastA \ r{mg.numlevels};
 
-  % upward pass
+  % Upward pass
   for level = mg.numlevels-1:-1:1
-    e{level} = e{level} + mg.P{level} * e{level+1}; % prolong the correction
-    %e{level} = e{level} + mg.M{level} \ (r{level}-mg.A{level}*e{level}); % post-smoothing
-    e{level} = e{level} + mg.M{level} .* (r{level}-mg.A{level}*e{level}); % post-smoothing
+    % Prolong the correction
+    e{level} = e{level} + mg.P{level+1} * e{level+1}; 
+    % Post-smoothing
+    if (level == 1)
+      e{level} = e{level} + mg.M{level} .* (r{level} - mg.A{level} * e{level}); 
+    else
+      t0 = mg.P{level} * e{level};
+      t1 = mg.A{level} * t0;
+      t2 = mg.R{level} * t1;
+      e{level} = e{level} + mg.M{level} .* (r{level} - t2);
+    end
   end
-
+  
   x = x + e{1};
-
-  fprintf('%2d   %e\n', k, norm(b-mg.A{1}*x)/norm(b));
-
+  
+  r{1} = b - mg.A{1}*x;
+  fprintf('%2d   %e\n', k, norm(r{1}) / norm(b));
 end
+toc;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 function p = prolong(Nx, Ny, Nz, BCs)
