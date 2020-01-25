@@ -45,40 +45,29 @@ x = multigrid_solve(mg, b, x0);
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 function mg = multigrid_setup(cellDims, gridsizes, latVecs, BCs, FDn)
 % Set up the multigrid method for the given FD mesh configuration.
-
-%A = GenDiscreteLaplacian(cellDims, gridsizes, latVecs, BCs, FDn);
-[A, ~, ~, ~] = gen_fd_lap_orth(cellDims, gridsizes, BCs, FDn);
-mg.A{1} = A;
-mg.M{1} = 0.75 ./ full(diag(A));
-
 Nx = gridsizes(1);
 Ny = gridsizes(2);
 Nz = gridsizes(3);
 
 level = 1;
 while (Nx > 7 && Ny > 7 && Nz > 7)
-  P = prolong(Nx, Ny, Nz, BCs);
-  R = 0.125*P';
-
-  mg.P{level+1} = P;
-  mg.R{level+1} = R;
-
-  % use low order discretization to form coarse matrix
-  %Alow = GenDiscreteLaplacian(cellDims, [Nx Ny Nz], latVecs, BCs, 1);
-  [Alow, rowptr, colidx, val] = gen_fd_lap_orth(cellDims, [Nx Ny Nz], BCs, 1);
-  %A = R * Alow * P;
-  mg.A{level+1} = Alow;
-  %mg.M{level+1} = 0.75 ./ full(diag(A));
+  mg.P{level+1} = prolong(Nx, Ny, Nz, BCs);
+  mg.R{level+1} = 0.125 * mg.P{level+1}';
+  [mg.A{level+1}, rowptr, colidx, val] = gen_fd_lap_orth(cellDims, [Nx Ny Nz], BCs, FDn);  
   mg.M{level+1} = get_RAP_diag([Nx Ny Nz], BCs, rowptr, colidx, val);
 
-  Nx = length(2:2:Nx);
-  Ny = length(2:2:Ny);
-  Nz = length(2:2:Nz);
+  Nx = floor(Nx / 2);
+  Ny = floor(Ny / 2);
+  Nz = floor(Nz / 2);
 
   level = level + 1;
 end
+
+mg.A{1} = mg.A{2};
+mg.M{1} = ones(size(mg.A{1}, 1), 1) .* (0.75 / mg.A{1}(1, 1));
+
 mg.numlevels = level;
-mg.lastA = mg.R{level} * mg.A{level} * mg.P{level};
+[mg.lastA_L, mg.lastA_U] = lu(full(mg.R{level} * mg.A{level} * mg.P{level}));
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 function x = multigrid_solve(mg, b, x0)
@@ -107,7 +96,7 @@ for k = 1:40
   end
 
   % Solve on the coarsest level
-  e{level+1} = mg.lastA \ r{mg.numlevels};
+  e{level+1} = mg.lastA_U \ (mg.lastA_L \ r{mg.numlevels});
 
   % Upward pass
   for level = mg.numlevels-1:-1:1
