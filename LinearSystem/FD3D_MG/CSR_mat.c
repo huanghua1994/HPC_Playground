@@ -101,9 +101,9 @@ void CSR_mat_to_dense_mat(CSR_mat_t csr_mat, double **mat_)
     for (int irow = 0; irow < nrow; irow++)
     {
         double *mat_irow = mat + irow * ncol;
-        #pragma omp simd
+        #pragma novector
         for (int i = row_ptr[irow]; i < row_ptr[irow + 1]; i++)
-            mat_irow[col[i]] = val[i];
+            mat_irow[col[i]] += val[i];  // col[i1] == col[i2] is possible
     }
 
     *mat_ = mat;

@@ -31,7 +31,7 @@ void MG_init(
 
 void MG_destroy(mg_data_t mg_data);
 
-void MG_solve(mg_data_t mg_data, const double *x, double *b, const double reltol);
+void MG_solve(mg_data_t mg_data, const double *b, double *x, const double reltol);
 
 #ifdef __cplusplus
 };

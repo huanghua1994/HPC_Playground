@@ -152,7 +152,7 @@ void MG_init(
     );
     // LU decomposition, the data in lastA_LU and lastA_ipiv can be 
     // directly used in LAPACKE_dgetrs later
-    LAPACKE_dgetrf(LAPACK_ROW_MAJOR, Nd, Nd, lastA_LU, Nd, lastA_ipiv);
+    LAPACKE_dgetrf(LAPACK_ROW_MAJOR, last_Nd, last_Nd, lastA_LU, last_Nd, lastA_ipiv);
     free(last_R);
     free(last_A);
     free(last_P);
@@ -164,7 +164,7 @@ void MG_init(
 void MG_solve(mg_data_t mg_data, const double *b, double *x, const double reltol)
 {
     int n_0 = mg_data->vec_len[0];
-    int max_vcycle = 50;
+    int max_vcycle = 100;
     
     double b_l2_norm = 0.0;
     #pragma omp parallel for simd reduction(+:b_l2_norm)
@@ -263,7 +263,7 @@ void MG_solve(mg_data_t mg_data, const double *b, double *x, const double reltol
             // e{level} = e{level} + mg.M{level} .* (r{level} - t)
             #pragma omp parallel for simd
             for (int i = 0; i < n_lvl; i++)
-                ev_lvl[i] =  M_lvl[i] * (rv_lvl[i] - tv_lvl[i]);
+                ev_lvl[i] += M_lvl[i] * (rv_lvl[i] - tv_lvl[i]);
         }  // End of lvl loop
         
         // 4. Correct the finest grid solution, calculate the new residual,

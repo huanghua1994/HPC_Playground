@@ -110,9 +110,9 @@ void gen_fd_Lap_orth(
                 {
                     if (r == 0) continue;
                     int shift_r = r + FDn;
-                    int iyr  = shift_iy[shift_r];
-                    int izr  = shift_iz[shift_r];
-                    int ixr  = periodic_pos(ix + r, Nx, BCx);
+                    int iyr = shift_iy[shift_r];
+                    int izr = shift_iz[shift_r];
+                    int ixr = periodic_pos(ix + r, Nx, BCx);
                     if (ixr != -1)
                     {
                         col[nnz] = ixr + iy * Nx + iz * Nx * Ny;
@@ -147,7 +147,7 @@ void gen_fd_Lap_orth(
     free(shift_iz);
 }
 
-const double pow_neg_2[4] = {1.0, 0.5, 0.25, 0.125};
+const double pow_2_neg[4] = {1.0, 0.5, 0.25, 0.125};
 
 static int gen_R_row_nnz(
     const int ix0, const int iy0, const int iz0,
@@ -171,7 +171,7 @@ static int gen_R_row_nnz(
                 if (ix == -1) continue;
                 int dist = abs(iz1 - iz0) + abs(iy1 - iy0) + abs(ix1 - ix0);
                 col[nnz] = ix + iy * Nx + iz * Nx * Ny;
-                val[nnz] = pow_neg_2[dist];
+                val[nnz] = 0.125 * pow_2_neg[dist];
                 nnz++;
             }
         }

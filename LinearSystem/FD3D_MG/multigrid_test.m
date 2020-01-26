@@ -90,13 +90,13 @@ function x = multigrid_solve(mg, b, x0)
             mg.e{level} = mg.M{level} .* mg.r{level}; 
             % Restrict the residual
             if (level == 1)
-                mg.r{level+1} = mg.R{level+1} * (mg.r{level} - mg.A{level} * mg.e{level}); 
+                t = mg.A{level} * mg.e{level}; 
             else
                 t0 = mg.P{level} * mg.e{level};
                 t1 = mg.A{level} * t0;
-                t2 = mg.R{level} * t1;
-                mg.r{level+1} = mg.R{level+1} * (mg.r{level} - t2);
+                t  = mg.R{level} * t1;
             end
+            mg.r{level+1} = mg.R{level+1} * (mg.r{level} - t);
         end
 
         % Solve on the coarsest level
@@ -108,13 +108,13 @@ function x = multigrid_solve(mg, b, x0)
             mg.e{level} = mg.e{level} + mg.P{level+1} * mg.e{level+1}; 
             % Post-smoothing
             if (level == 1)
-                mg.e{level} = mg.e{level} + mg.M{level} .* (mg.r{level} - mg.A{level} * mg.e{level}); 
+                t = mg.A{level} * mg.e{level}; 
             else
                 t0 = mg.P{level} * mg.e{level};
                 t1 = mg.A{level} * t0;
-                t2 = mg.R{level} * t1;
-                mg.e{level} = mg.e{level} + mg.M{level} .* (mg.r{level} - t2);
+                t  = mg.R{level} * t1;
             end
+            mg.e{level} = mg.e{level} + mg.M{level} .* (mg.r{level} - t);
         end
       
         x = x + mg.e{1};
