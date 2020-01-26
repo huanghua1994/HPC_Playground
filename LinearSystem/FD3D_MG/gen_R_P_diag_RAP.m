@@ -5,7 +5,7 @@ function [R, P, M] = gen_R_P_diag_RAP(grid_sizes, BCs, A_rowptr, A_col, A_val)
 %   grid_sizes : Number of grid points on x, y, z direction
 %   BCs        : Boundary condition on x, y, z direction, 0 - periodic, 1 - Dirichlet
 %   A_rowptr : A matrix in CSR format, row_ptr array
-%   A_col    : A matrix in CSR format, col_idx array
+%   A_col    : A matrix in CSR format, col array
 %   A_val    : A matrix in CSR format, val array
 % Output parameters:
 %   R : 3D trilinear restriction matrix R
@@ -71,10 +71,10 @@ function [R, P, M] = gen_R_P_diag_RAP(grid_sizes, BCs, A_rowptr, A_col, A_val)
     P = 8 * R';
 end
 
-function [val, col_idx] = gen_R_row_nnz(ix0, iy0, iz0, Nx, Ny, Nz, BCx, BCy, BCz)
+function [val, col] = gen_R_row_nnz(ix0, iy0, iz0, Nx, Ny, Nz, BCx, BCy, BCz)
     nnz = 0;
     val = zeros(27, 1);
-    col_idx = zeros(27, 1);
+    col = zeros(27, 1);
     for iz1 = iz0-1 : iz0+1
         iz = periodic_pos(iz1, Nz, BCz);
         if (iz == -1), continue; end
@@ -86,13 +86,13 @@ function [val, col_idx] = gen_R_row_nnz(ix0, iy0, iz0, Nx, Ny, Nz, BCx, BCy, BCz
                 if (ix == -1), continue; end
                 dist = abs(iz1 - iz0) + abs(iy1 - iy0) + abs(ix1 - ix0);
                 nnz = nnz + 1;
-                col_idx(nnz) = ix + (iy - 1) * Nx + (iz - 1) * Nx * Ny;
+                col(nnz) = ix + (iy - 1) * Nx + (iz - 1) * Nx * Ny;
                 val(nnz) = 0.125 * 2.^(-dist);
             end
         end
     end
     val = val(1 : nnz);
-    col_idx = col_idx(1 : nnz);
+    col = col(1 : nnz);
 end
 
 function ix = periodic_pos(ix1, Nx, BCx)
