@@ -54,9 +54,8 @@ function mg = multigrid_setup(cell_dims, grid_sizes, latVecs, BCs, FDn)
     nlevel = 1;
     while (Nx > 7 && Ny > 7 && Nz > 7)
         nlevel = nlevel + 1;
-        [mg.A{nlevel}, A_rowptr, A_colidx, A_val] = gen_fd_lap_orth(cell_dims, [Nx Ny Nz], BCs, FDn);  
-        [mg.P{nlevel}, mg.M{nlevel}] = gen_P_RAP_diag([Nx Ny Nz], BCs, A_rowptr, A_colidx, A_val);
-        mg.R{nlevel} = 0.125 * mg.P{nlevel}';
+        [mg.A{nlevel}, A_rowptr, A_col, A_val]     = gen_fd_lap_orth(cell_dims, [Nx Ny Nz], BCs, FDn);
+        [mg.R{nlevel}, mg.P{nlevel}, mg.M{nlevel}] = gen_R_P_diag_RAP([Nx Ny Nz], BCs, A_rowptr, A_col, A_val);
 
         Nx = floor(Nx / 2);
         Ny = floor(Ny / 2);
