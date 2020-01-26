@@ -231,6 +231,7 @@ void gen_R_P_diag_RAP(
                 {
                     int row = R_col_ixyz[k];
                     double res = 0.0;
+                    #pragma omp simd
                     for (int j = A_row_ptr[row]; j < A_row_ptr[row + 1]; j++)
                         res += A_val[j] * R_vec[A_col[j]];
                     M_val += res * R_val_ixyz[k];

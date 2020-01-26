@@ -1,35 +1,32 @@
-function multigrid_test
-    % To improve convergence, choose number of grid points Nx (or Ny, Nz) as follows:
-    % - along periodic dimensions: Nx divisible by 2 many times
-    % - along Dirichlet dimensions: Nx particularly good: 15, 31, ...
-    % - along Dirichlet dimensions: Nx particularly bad:  24, 32, 40
-    Nx = 48;
-    Ny = 48;
-    Nz = 50;
+function multigrid_test(grid_sizes, BCs)
+% Test geometry multigrid solver for Poisson equation
+% Input parameters:
+%   grid_sizes : Number of the finite difference grid points, [Nx, Ny, Nz]
+%   BCs        : Boundary condition on each direction, [BCx, BCy, BCz]
+%                BC* = 0 is periodic, 1 is Dirichlet
+% To improve convergence, choose Nx (Ny, Nz) as follows:
+% - along periodic dimensions:  Nx divisible by 2 many times
+% - along Dirichlet dimensions: Nx particularly good: 15, 31, ...
+% - along Dirichlet dimensions: Nx particularly bad:  24, 32, 40
 
-    BCs = [0 0 1];  % 0 - periodic, 1 - Dirichlet
-
-    L1  = (Nx-BCs(1))*0.4;
-    L2  = (Ny-BCs(2))*0.4;
-    L3  = (Nz-BCs(3))*0.4;
+    cell_dims(1) = (grid_sizes(1) - BCs(1)) * 0.4;
+    cell_dims(2) = (grid_sizes(2) - BCs(2)) * 0.4;
+    cell_dims(3) = (grid_sizes(3) - BCs(3)) * 0.4;
     FDn = 6;
-
-    cell_dims  = [L1 L2 L3];
-    grid_sizes = [Nx Ny Nz];
-    latVecs    = eye(3);   % Not yet handling nonorthogonal lattices
+    latVecs = eye(3);   % Not yet handling nonorthogonal lattices
 
     tic;
     mg = multigrid_setup(cell_dims, grid_sizes, latVecs, BCs, FDn);
     toc;
 
     rng(0);
-    b = rand(Nx * Ny * Nz, 1) - 0.5;
+    Nd = prod(grid_sizes);
+    b = rand(Nd, 1) - 0.5;
 
     % If all periodic boundaries, then project b such that the system is consistent
     if norm(BCs) == 0
-        e = ones(size(b));
-        e = e / norm(e);
-        b = b - e * (e' * b);
+        t = sum(b) / Nd;
+        b = b - t;
     end
 
     x0 = zeros(size(b));  % initial guess
@@ -73,7 +70,14 @@ function mg = multigrid_setup(cell_dims, grid_sizes, latVecs, BCs, FDn)
         mg.r{level} = zeros(mg.vec_len(level), 1);
     end
     
-    [mg.lastA_L, mg.lastA_U] = lu(full(mg.R{nlevel} * mg.A{nlevel} * mg.P{nlevel}));
+    lastA = full(mg.R{nlevel} * mg.A{nlevel} * mg.P{nlevel});
+    if (norm(BCs) == 0)
+        mg.lastA_pinv = pinv(lastA);
+        mg.use_pinv = 1;
+    else
+        [mg.lastA_L, mg.lastA_U] = lu(lastA);
+        mg.use_pinv = 0;
+    end
 end
 
 function x = multigrid_solve(mg, b, x0)
@@ -100,7 +104,11 @@ function x = multigrid_solve(mg, b, x0)
         end
 
         % Solve on the coarsest level
-        mg.e{level+1} = mg.lastA_U \ (mg.lastA_L \ mg.r{mg.nlevel});
+        if (mg.use_pinv == 0)
+            mg.e{level+1} = mg.lastA_U \ (mg.lastA_L \ mg.r{mg.nlevel});
+        else
+            mg.e{level+1} = mg.lastA_pinv * mg.r{mg.nlevel};
+        end
 
         % Upward pass
         for level = mg.nlevel-1:-1:1
@@ -122,28 +130,3 @@ function x = multigrid_solve(mg, b, x0)
         fprintf('%2d   %e\n', k, norm(mg.r{1}) / norm(b));
     end
 end
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%{
-function p = prolong(Nx, Ny, Nz, BCs)
-% 3D prolongator using trilinear interpolation
-% Nx = grid dim in x direction at this level (not global Nx), etc.
-e = ones(Nx,1); x = spdiags([e 2*e e], -1:1, Nx, Nx); if BCs(1) == 0, x(1,end)=1; x(end,1)=1; end
-e = ones(Ny,1); y = spdiags([e 2*e e], -1:1, Ny, Ny); if BCs(2) == 0, y(1,end)=1; y(end,1)=1; end
-e = ones(Nz,1); z = spdiags([e 2*e e], -1:1, Nz, Nz); if BCs(3) == 0, z(1,end)=1; z(end,1)=1; end
-p = 0.125*kron(kron(z,y),x);
-
-% select columns corresponding to coarse grid points
-len = length(2:2:Nx)*length(2:2:Ny)*length(2:2:Nz);
-cpts = zeros(len,1);
-l = 0;
-for i=2:2:Nz
-for j=2:2:Ny
-for k=2:2:Nx
-  l = l + 1;
-  cpts(l) = (i-1)*Ny*Nx + (j-1)*Nx + k;
-end
-end
-end
-p = p(:,cpts);
-%}
