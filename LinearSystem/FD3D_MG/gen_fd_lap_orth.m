@@ -15,10 +15,14 @@ function [Lap, rowptr, colidx, val] = gen_fd_lap_orth(cell_dims, grid_sizes, BCs
 
     % Finite difference weights for 2nd order derivative
     w2 = zeros(1, FDn+1); 
+    c1 = factorial(FDn)^2;
     for k = 1 : FDn
-        w2(k+1) = (2*(-1)^(k+1))*(factorial(FDn)^2) / ...
-                    (k * k * factorial(FDn-k) * factorial(FDn+k));
-        w2(1) = w2(1)-2*(1/(k*k));
+        c2 = 2 * (-1)^(k+1);
+        c3 = 1.0 / (k * k);
+        c4 = factorial(FDn - k);
+        c5 = factorial(FDn + k);
+        w2(k+1) = c1 * c2 * c3 / (c4 * c5);
+        w2(1) = w2(1) - 2 * c3;
     end
     
     % Cell lengths
@@ -55,81 +59,77 @@ function [Lap, rowptr, colidx, val] = gen_fd_lap_orth(cell_dims, grid_sizes, BCs
         coef_dyy(shift_r) = w2(1 + abs(r)) ./ (dy^2);
         coef_dzz(shift_r) = w2(1 + abs(r)) ./ (dz^2);
     end
+    coef_0 = coef_dxx(FDn+1) + coef_dyy(FDn+1) + coef_dzz(FDn+1);
 
     max_nnz = Nd * (6 * FDn + 1);
     row = zeros(max_nnz, 1);
     col = zeros(max_nnz, 1);
     val = zeros(max_nnz, 1);
     rowptr = zeros(Nd + 1, 1);
-    cnt = 0;
+    nnz = 0;
     for iz = 1 : Nz
         shift_iz = calc_fd_shift_pos(iz, Nz, BCz, FDn);
         for iy = 1 : Ny
             shift_iy = calc_fd_shift_pos(iy, Ny, BCy, FDn);
             for ix = 1 : Nx
-                shift_ix = calc_fd_shift_pos(ix, Nx, BCx, FDn);
                 % (ix, iy, iz)
-                curr_row_idx = ix + (iy - 1) * Nx + (iz - 1) * Ny * Nx;
-                cnt = cnt + 1;
-                row(cnt) = curr_row_idx;
-                col(cnt) = curr_row_idx;
-                val(cnt) = coef_dxx(FDn+1) + coef_dyy(FDn+1) + coef_dzz(FDn+1);
-                rowptr(curr_row_idx) = cnt;
+                curr_row = ix + (iy - 1) * Nx + (iz - 1) * Ny * Nx;
+                nnz = nnz + 1;
+                row(nnz) = curr_row;
+                col(nnz) = curr_row;
+                val(nnz) = coef_0;
+                rowptr(curr_row) = nnz;
                 % (ix +- r, iy, iz)
                 % (ix, iy +- r, iz)
                 % (ix, iy, iz +- r)
                 for r = -FDn : FDn
                     if (r == 0), continue; end
                     shift_r = FDn + 1 + r;
-                    ix1 = shift_ix(shift_r);
-                    iy1 = shift_iy(shift_r);
-                    iz1 = shift_iz(shift_r);
-                    if (ix1 ~= -1)
-                        cnt = cnt + 1;
-                        row(cnt) = curr_row_idx;
-                        col(cnt) = ix1 + (iy - 1) * Nx + (iz - 1) * Ny * Nx;
-                        val(cnt) = coef_dxx(shift_r);
+                    iyr  = shift_iy(shift_r);
+                    izr  = shift_iz(shift_r);
+                    ixr  = -1;
+                    ixr0 = ix + r;
+                    if ((1 <= ixr0) && (ixr0 <= Nx)), ixr = ixr0;      end
+                    if ((ixr0 <  1) && (BCx == 0)),   ixr = ixr0 + Nx; end
+                    if ((ixr0 > Nx) && (BCx == 0)),   ixr = ixr0 - Nx; end
+                    if (ixr ~= -1)
+                        nnz = nnz + 1;
+                        row(nnz) = curr_row;
+                        col(nnz) = ixr + (iy - 1) * Nx + (iz - 1) * Ny * Nx;
+                        val(nnz) = coef_dxx(shift_r);
                     end
-                    if (iy1 ~= -1)
-                        cnt = cnt + 1;
-                        row(cnt) = curr_row_idx;
-                        col(cnt) = ix + (iy1 - 1) * Nx + (iz - 1) * Ny * Nx;
-                        val(cnt) = coef_dyy(shift_r);
+                    if (iyr ~= -1)
+                        nnz = nnz + 1;
+                        row(nnz) = curr_row;
+                        col(nnz) = ix + (iyr - 1) * Nx + (iz - 1) * Ny * Nx;
+                        val(nnz) = coef_dyy(shift_r);
                     end
-                    if (iz1 ~= -1)
-                        cnt = cnt + 1;
-                        row(cnt) = curr_row_idx;
-                        col(cnt) = ix + (iy - 1) * Nx + (iz1 - 1) * Ny * Nx;
-                        val(cnt) = coef_dzz(shift_r);
+                    if (izr ~= -1)
+                        nnz = nnz + 1;
+                        row(nnz) = curr_row;
+                        col(nnz) = ix + (iy - 1) * Nx + (izr - 1) * Ny * Nx;
+                        val(nnz) = coef_dzz(shift_r);
                     end
                 end
             end
         end
     end
-    rowptr(Nd + 1) = cnt + 1;
+    rowptr(Nd + 1) = nnz + 1;
     
-    row = row(1 : cnt);
-    col = col(1 : cnt);
-    val = val(1 : cnt);
-    Lap = sparse(row, col, val, Nd, Nd, cnt);
+    row = row(1 : nnz);
+    col = col(1 : nnz);
+    val = val(1 : nnz);
+    Lap = sparse(row, col, val, Nd, Nd, nnz);
     colidx = col;
 end
 
-function ix_shift = calc_fd_shift_pos(ix0, Nx, BCx, FDn)
-    ix_shift = zeros(2 * FDn + 1, 1) - 1;
+function shift_ix = calc_fd_shift_pos(ix, Nx, BCx, FDn)
+    shift_ix = zeros(2 * FDn + 1, 1) - 1;
     for r = -FDn : FDn
         shift_r = FDn + 1 + r;
-        ix0pr = ix0 + r;
-        if ((1 <= ix0pr) && (ix0pr <= Nx))
-            ix_shift(shift_r) = ix0pr;
-        end
-        if ((ix0pr <  1) && (BCx == 0))
-            ix0pr = ix0pr + Nx;
-            ix_shift(shift_r) = ix0pr;
-        end
-        if ((ix0pr > Nx) && (BCx == 0))
-            ix0pr = ix0pr - Nx;
-            ix_shift(shift_r) = ix0pr;
-        end
+        ixr = ix + r;
+        if ((1 <= ixr) && (ixr <= Nx)), shift_ix(shift_r) = ixr;      end
+        if ((ixr <  1) && (BCx == 0)),  shift_ix(shift_r) = ixr + Nx; end
+        if ((ixr > Nx) && (BCx == 0)),  shift_ix(shift_r) = ixr - Nx; end
     end
 end
