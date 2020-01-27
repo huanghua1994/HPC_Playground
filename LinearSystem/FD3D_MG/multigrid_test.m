@@ -45,37 +45,36 @@ function mg = multigrid_setup(cell_dims, grid_sizes, latVecs, BCs, FDn)
     Nx = grid_sizes(1);
     Ny = grid_sizes(2);
     Nz = grid_sizes(3);
-    Nd = Nx * Ny * Nz;
-    mg.vec_len(1) = Nd;
 
-    nlevel = 1;
+    mg.A{1} = gen_fd_lap_orth(cell_dims, [Nx Ny Nz], BCs, FDn);
+    mg.M{1} = ones(size(mg.A{1}, 1), 1) .* (0.75 / mg.A{1}(1, 1));
+    mg.vec_len(1) = Nx * Ny * Nz;
+
+    level = 1;
     while (Nx > 7 && Ny > 7 && Nz > 7)
-        nlevel = nlevel + 1;
-        [mg.A{nlevel}, A_rowptr, A_col, A_val]     = gen_fd_lap_orth(cell_dims, [Nx Ny Nz], BCs, FDn);
-        [mg.R{nlevel}, mg.P{nlevel}, mg.M{nlevel}] = gen_R_P_diag_RAP([Nx Ny Nz], BCs, A_rowptr, A_col, A_val);
-
+        mg.R{level} = gen_trilin_R([Nx Ny Nz], BCs);
+        mg.P{level} = 8 * mg.R{level}';
+        mg.M{level} = 0.75 ./ full(diag(mg.A{level}));
+        mg.A{level+1} = mg.R{level} * mg.A{level} * mg.P{level};
+        
         Nx = floor(Nx / 2);
         Ny = floor(Ny / 2);
         Nz = floor(Nz / 2);
-        Nd = Nx * Ny * Nz;
-        mg.vec_len(nlevel) = Nd;
+        level = level + 1;
+        mg.vec_len(level) = Nx * Ny * Nz;  
     end
-    mg.nlevel = nlevel;
-
-    mg.A{1} = mg.A{2};
-    mg.M{1} = ones(size(mg.A{1}, 1), 1) .* (0.75 / mg.A{1}(1, 1));
+    mg.nlevel = level;
     
-    for level = 1 : nlevel
+    for level = 1 : mg.nlevel
         mg.e{level} = zeros(mg.vec_len(level), 1);
         mg.r{level} = zeros(mg.vec_len(level), 1);
     end
     
-    lastA = full(mg.R{nlevel} * mg.A{nlevel} * mg.P{nlevel});
     if (norm(BCs) == 0)
-        mg.lastA_pinv = pinv(lastA);
+        mg.lastA_pinv = pinv(mg.A{mg.nlevel});
         mg.use_pinv = 1;
     else
-        [mg.lastA_L, mg.lastA_U] = lu(lastA);
+        [mg.lastA_L, mg.lastA_U] = lu(mg.A{mg.nlevel});
         mg.use_pinv = 0;
     end
 end
@@ -93,14 +92,8 @@ function x = multigrid_solve(mg, b, x0)
             % Pre-smoothing
             mg.e{level} = mg.M{level} .* mg.r{level}; 
             % Restrict the residual
-            if (level == 1)
-                t = mg.A{level} * mg.e{level}; 
-            else
-                t0 = mg.P{level} * mg.e{level};
-                t1 = mg.A{level} * t0;
-                t  = mg.R{level} * t1;
-            end
-            mg.r{level+1} = mg.R{level+1} * (mg.r{level} - t);
+            t = mg.A{level} * mg.e{level};
+            mg.r{level+1} = mg.R{level} * (mg.r{level} - t);
         end
 
         % Solve on the coarsest level
@@ -113,15 +106,9 @@ function x = multigrid_solve(mg, b, x0)
         % Upward pass
         for level = mg.nlevel-1:-1:1
             % Prolong the correction
-            mg.e{level} = mg.e{level} + mg.P{level+1} * mg.e{level+1}; 
+            mg.e{level} = mg.e{level} + mg.P{level} * mg.e{level+1}; 
             % Post-smoothing
-            if (level == 1)
-                t = mg.A{level} * mg.e{level}; 
-            else
-                t0 = mg.P{level} * mg.e{level};
-                t1 = mg.A{level} * t0;
-                t  = mg.R{level} * t1;
-            end
+            t = mg.A{level} * mg.e{level}; 
             mg.e{level} = mg.e{level} + mg.M{level} .* (mg.r{level} - t);
         end
       

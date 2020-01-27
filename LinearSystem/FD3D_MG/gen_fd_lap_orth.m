@@ -1,4 +1,4 @@
-function [Lap, rowptr, colidx, val] = gen_fd_lap_orth(cell_dims, grid_sizes, BCs, FDn)
+function Lap = gen_fd_lap_orth(cell_dims, grid_sizes, BCs, FDn)
 % Generate finite difference Laplacian matrix for orthogonal
 % and equal spacing 3D grid
 % Input parameters:
@@ -11,7 +11,6 @@ function [Lap, rowptr, colidx, val] = gen_fd_lap_orth(cell_dims, grid_sizes, BCs
 % Output parameter:
 %   Lap : A sparse Laplacian matrix. Grid (ix, iy, iz) corresponds to row 
 %         ix + (iy-1) * grid_sizes(1) + (iz-1) * grid_sizes(1) * grid_sizes(2)
-%   rowptr, colidx, val : Lap stored in the CSR format
 
     % Finite difference weights for 2nd order derivative
     w2 = zeros(1, FDn+1); 
@@ -65,8 +64,7 @@ function [Lap, rowptr, colidx, val] = gen_fd_lap_orth(cell_dims, grid_sizes, BCs
     row = zeros(max_nnz, 1);
     col = zeros(max_nnz, 1);
     val = zeros(max_nnz, 1);
-    rowptr = zeros(Nd + 1, 1);
-    nnz = 0;
+    cnt = 0;
     for iz = 1 : Nz
         shift_iz = calc_fd_shift_pos(iz, Nz, BCz, FDn);
         for iy = 1 : Ny
@@ -74,11 +72,10 @@ function [Lap, rowptr, colidx, val] = gen_fd_lap_orth(cell_dims, grid_sizes, BCs
             for ix = 1 : Nx
                 % (ix, iy, iz)
                 curr_row = ix + (iy - 1) * Nx + (iz - 1) * Ny * Nx;
-                nnz = nnz + 1;
-                row(nnz) = curr_row;
-                col(nnz) = curr_row;
-                val(nnz) = coef_0;
-                rowptr(curr_row) = nnz;
+                cnt = cnt + 1;
+                row(cnt) = curr_row;
+                col(cnt) = curr_row;
+                val(cnt) = coef_0;
                 % (ix +- r, iy, iz)
                 % (ix, iy +- r, iz)
                 % (ix, iy, iz +- r)
@@ -93,34 +90,33 @@ function [Lap, rowptr, colidx, val] = gen_fd_lap_orth(cell_dims, grid_sizes, BCs
                     if ((ixr0 <  1) && (BCx == 0)),   ixr = ixr0 + Nx; end
                     if ((ixr0 > Nx) && (BCx == 0)),   ixr = ixr0 - Nx; end
                     if (ixr ~= -1)
-                        nnz = nnz + 1;
-                        row(nnz) = curr_row;
-                        col(nnz) = ixr + (iy - 1) * Nx + (iz - 1) * Ny * Nx;
-                        val(nnz) = coef_dxx(shift_r);
+                        cnt = cnt + 1;
+                        row(cnt) = curr_row;
+                        col(cnt) = ixr + (iy - 1) * Nx + (iz - 1) * Ny * Nx;
+                        val(cnt) = coef_dxx(shift_r);
                     end
                     if (iyr ~= -1)
-                        nnz = nnz + 1;
-                        row(nnz) = curr_row;
-                        col(nnz) = ix + (iyr - 1) * Nx + (iz - 1) * Ny * Nx;
-                        val(nnz) = coef_dyy(shift_r);
+                        cnt = cnt + 1;
+                        row(cnt) = curr_row;
+                        col(cnt) = ix + (iyr - 1) * Nx + (iz - 1) * Ny * Nx;
+                        val(cnt) = coef_dyy(shift_r);
                     end
                     if (izr ~= -1)
-                        nnz = nnz + 1;
-                        row(nnz) = curr_row;
-                        col(nnz) = ix + (iy - 1) * Nx + (izr - 1) * Ny * Nx;
-                        val(nnz) = coef_dzz(shift_r);
+                        cnt = cnt + 1;
+                        row(cnt) = curr_row;
+                        col(cnt) = ix + (iy - 1) * Nx + (izr - 1) * Ny * Nx;
+                        val(cnt) = coef_dzz(shift_r);
                     end
                 end
             end
         end
     end
-    rowptr(Nd + 1) = nnz + 1;
+    rowptr(Nd + 1) = cnt + 1;
     
-    row = row(1 : nnz);
-    col = col(1 : nnz);
-    val = val(1 : nnz);
-    Lap = sparse(row, col, val, Nd, Nd, nnz);
-    colidx = col;
+    row = row(1 : cnt);
+    col = col(1 : cnt);
+    val = val(1 : cnt);
+    Lap = sparse(row, col, val, Nd, Nd, cnt);
 end
 
 function shift_ix = calc_fd_shift_pos(ix, Nx, BCx, FDn)
