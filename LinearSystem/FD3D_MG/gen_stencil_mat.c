@@ -179,10 +179,10 @@ static int gen_R_row_nnz(
     return nnz;
 }
 
-void gen_R_P_diag_RAP(
+void gen_trilin_R_P(
     const int Nx,  const int Ny,  const int Nz, 
     const int BCx, const int BCy, const int BCz,
-    CSR_mat_t A,   CSR_mat_t *R_, CSR_mat_t *P_, double **M_
+    CSR_mat_t *R_, CSR_mat_t *P_
 )
 {
     int Nd   = Nx * Ny * Nz;
@@ -196,13 +196,7 @@ void gen_R_P_diag_RAP(
     int R_nnz = 0;
     int *R_row_ptr = R->row_ptr;
     int *R_col     = R->col;
-    int *A_row_ptr = A->row_ptr;
-    int *A_col     = A->col;
     double *R_val  = R->val;
-    double *A_val  = A->val;
-    double *R_vec  = (double *) malloc(sizeof(double) * Nd);
-    double *M      = (double *) malloc(sizeof(double) * M_Nd);
-    assert(R_vec != NULL && M != NULL);
     for (int iz = 1; iz < Nz; iz += 2)
     {
         int M_iz = iz / 2;
@@ -213,30 +207,12 @@ void gen_R_P_diag_RAP(
             {
                 int M_ix  = ix / 2;
                 int M_idx = M_ix + M_iy * M_Nx + M_iz * M_Nx * M_Ny;
-                int *R_col_ixyz = R_col + R_nnz;
-                double *R_val_ixyz = R_val + R_nnz;
                 int nnz_ixyz = gen_R_row_nnz(
                     ix, iy, iz, Nx, Ny, Nz, BCx, BCy, BCz,
-                    R_col_ixyz, R_val_ixyz
+                    R_col + R_nnz, R_val + R_nnz
                 );
                 R_row_ptr[M_idx] = R_nnz;
                 R_nnz += nnz_ixyz;
-                
-                memset(R_vec, 0, sizeof(double) * Nd);
-                for (int k = 0; k < nnz_ixyz; k++)
-                    R_vec[R_col_ixyz[k]] = R_val_ixyz[k];
-                
-                double M_val = 0.0;
-                for (int k = 0; k < nnz_ixyz; k++)
-                {
-                    int row = R_col_ixyz[k];
-                    double res = 0.0;
-                    #pragma omp simd
-                    for (int j = A_row_ptr[row]; j < A_row_ptr[row + 1]; j++)
-                        res += A_val[j] * R_vec[A_col[j]];
-                    M_val += res * R_val_ixyz[k];
-                }
-                M[M_idx] = 0.75 / (8.0 * M_val);  // 8.0 * M_val is the diagonal
             }  // End of ix loop
         }  // End of iy loop
     }  // End of iz loop
@@ -251,7 +227,5 @@ void gen_R_P_diag_RAP(
     
     *R_ = R;
     *P_ = P;
-    *M_ = M;
-    free(R_vec);
 }
 

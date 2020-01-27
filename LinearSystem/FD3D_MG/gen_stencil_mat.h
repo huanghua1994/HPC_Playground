@@ -22,20 +22,17 @@ void gen_fd_Lap_orth(
     const int FDn, CSR_mat_t *A_
 );
 
-// Generate the restriction matrix R, tri-linear prolongation matrix P, and
-// smoother diagonal matrix M for a level using a FD Laplacian matrix
+// Generate the restriction matrix R and tri-linear prolongation matrix P
 // Input parameters:
 //   Nx, Ny, Nz    : Number of FD grid points on x, y, z directions
 //   BCx, BCy, BCz : Boundary condition on x, y, z directions, 0 : periodic, 1 : Dirichlet
-//   A             : The FD Laplacian matrix
 // Output parameters:
-//   *R_ : Restriction matrix, R = 0.125 * P^T
-//   *P_ : Tri-linear prolongation matrix
-//   *M_ : Smoother diagonal matrix, M = 0.75 ./ diag(R * A * P)
-void gen_R_P_diag_RAP(
+//   *R_ : Tri-linear restriction matrix
+//   *P_ : Tri-linear prolongation matrix, P = 8 * R^T
+void gen_trilin_R_P(
     const int Nx,  const int Ny,  const int Nz, 
     const int BCx, const int BCy, const int BCz,
-    CSR_mat_t A,   CSR_mat_t *R_, CSR_mat_t *P_, double **M_
+    CSR_mat_t *R_, CSR_mat_t *P_
 );
 
 #ifdef __cplusplus

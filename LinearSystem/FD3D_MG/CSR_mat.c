@@ -10,6 +10,7 @@
 void CSR_mat_init(const int nrow, const int ncol, const int max_nnz, CSR_mat_t *csr_mat_)
 {
     CSR_mat_t csr_mat = (CSR_mat_t) malloc(sizeof(struct CSR_mat_));
+    assert(csr_mat != NULL);
     csr_mat->nrow = nrow;
     csr_mat->ncol = ncol;
     csr_mat->nnz  = 0;

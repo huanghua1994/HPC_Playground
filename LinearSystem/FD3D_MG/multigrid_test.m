@@ -48,7 +48,7 @@ function mg = multigrid_setup(cell_dims, grid_sizes, latVecs, BCs, FDn)
 
     mg.A{1} = gen_fd_lap_orth(cell_dims, [Nx Ny Nz], BCs, FDn);
     mg.M{1} = ones(size(mg.A{1}, 1), 1) .* (0.75 / mg.A{1}(1, 1));
-    mg.vec_len(1) = Nx * Ny * Nz;
+    mg.vlen(1) = Nx * Ny * Nz;
 
     level = 1;
     while (Nx > 7 && Ny > 7 && Nz > 7)
@@ -61,17 +61,17 @@ function mg = multigrid_setup(cell_dims, grid_sizes, latVecs, BCs, FDn)
         Ny = floor(Ny / 2);
         Nz = floor(Nz / 2);
         level = level + 1;
-        mg.vec_len(level) = Nx * Ny * Nz;  
+        mg.vlen(level) = Nx * Ny * Nz;  
     end
     mg.nlevel = level;
     
     for level = 1 : mg.nlevel
-        mg.e{level} = zeros(mg.vec_len(level), 1);
-        mg.r{level} = zeros(mg.vec_len(level), 1);
+        mg.e{level} = zeros(mg.vlen(level), 1);
+        mg.r{level} = zeros(mg.vlen(level), 1);
     end
     
     if (norm(BCs) == 0)
-        mg.lastA_pinv = pinv(mg.A{mg.nlevel});
+        mg.lastA_pinv = pinv(full(mg.A{mg.nlevel}));
         mg.use_pinv = 1;
     else
         [mg.lastA_L, mg.lastA_U] = lu(mg.A{mg.nlevel});

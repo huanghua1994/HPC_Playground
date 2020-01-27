@@ -6,6 +6,7 @@
 #include <omp.h>
 
 #include <mkl.h>
+#include <mkl_spblas.h>
 
 #include "Poisson_multigrid.h"
 #include "gen_stencil_mat.h"
@@ -19,11 +20,11 @@ void MG_destroy(mg_data_t mg_data)
         free(mg_data->rv[lvl]);
         free(mg_data->tv[lvl]);
         free(mg_data->M[lvl]);
-        if (lvl > 0) CSR_mat_destroy(mg_data->A[lvl]);
+        CSR_mat_destroy(mg_data->A[lvl]);
         CSR_mat_destroy(mg_data->P[lvl]);
         CSR_mat_destroy(mg_data->R[lvl]);
     }
-    free(mg_data->vec_len);
+    free(mg_data->vlen);
     free(mg_data->ev);
     free(mg_data->rv);
     free(mg_data->tv);
@@ -53,7 +54,7 @@ void MG_init(
     int    BCz = BCs[2];
 
     // 1. Calculate the number of levels we need
-    int nlevel = 0;
+    int nlevel = 0, Nd;
     while ((Nx > 7) && (Ny > 7) && (Nz > 7))
     {
         Nx /= 2;  Ny /= 2;  Nz /= 2;
@@ -61,107 +62,138 @@ void MG_init(
     }
     mg_data->nlevel = nlevel;
     int nlevel1 = nlevel + 1;
-    mg_data->vec_len = (int*)       malloc(sizeof(int)       * nlevel1);
-    mg_data->ev      = (double**)   malloc(sizeof(double*)   * nlevel1);
-    mg_data->rv      = (double**)   malloc(sizeof(double*)   * nlevel1);
-    mg_data->tv      = (double**)   malloc(sizeof(double*)   * nlevel1);
-    mg_data->M       = (double**)   malloc(sizeof(double*)   * nlevel1);
-    mg_data->A       = (CSR_mat_t*) malloc(sizeof(CSR_mat_t) * nlevel1);
-    mg_data->R       = (CSR_mat_t*) malloc(sizeof(CSR_mat_t) * nlevel1);
-    mg_data->P       = (CSR_mat_t*) malloc(sizeof(CSR_mat_t) * nlevel1);
+    mg_data->vlen = (int*)       malloc(sizeof(int)       * nlevel1);
+    mg_data->ev   = (double**)   malloc(sizeof(double*)   * nlevel1);
+    mg_data->rv   = (double**)   malloc(sizeof(double*)   * nlevel1);
+    mg_data->tv   = (double**)   malloc(sizeof(double*)   * nlevel1);
+    mg_data->M    = (double**)   malloc(sizeof(double*)   * nlevel1);
+    mg_data->A    = (CSR_mat_t*) malloc(sizeof(CSR_mat_t) * nlevel1);
+    mg_data->R    = (CSR_mat_t*) malloc(sizeof(CSR_mat_t) * nlevel1);
+    mg_data->P    = (CSR_mat_t*) malloc(sizeof(CSR_mat_t) * nlevel1);
 
-    // 2. Construct the R, A, P matrices level by level
+    // 2. Construct the finest grid 
     Nx = grid_sizes[0];
     Ny = grid_sizes[1];
     Nz = grid_sizes[2];
-    int Nd = Nx * Ny * Nz;
+    Nd = Nx * Ny * Nz;
+    mg_data->vlen[0] = Nd;
+    // mg.A{1} = gen_fd_lap_orth(cell_dims, [Nx Ny Nz], BCs, FDn);
+    gen_fd_Lap_orth(Lx, Nx, BCx, Ly, Ny, BCy, Lz, Nz, BCz, FDn, &mg_data->A[0]);
+    CSR_mat_t A0 = mg_data->A[0];
+    // mg.M{1} = ones(size(mg.A{1}, 1), 1) .* (0.75 / mg.A{1}(1, 1));
+    double *M0 = (double*) malloc(sizeof(double) * Nd);
+    assert(M0 != NULL);
+    double scaled_diag = 0.75 / (A0->val[0]);
+    for (int i = 0; i < Nd; i++) M0[i] = scaled_diag;
+    mg_data->M[0] = M0;
+    
+    sparse_matrix_t mkl_sp_R, mkl_sp_A, mkl_sp_P;
+    sparse_matrix_t mkl_sp_AP, mkl_sp_RAP;
+    sparse_status_t ret;
+    sparse_index_base_t indexing;
+    int nrow, ncol, nnz, *rs, *re, *col;
+    double *val;
+
+    // 3. Construct the R, A, P matrices level by level
     int level = 0;
-    mg_data->vec_len[level] = Nd;
     while ((Nx > 7) && (Ny > 7) && (Nz > 7))
     {
-        level++;
-        
-        // [mg.A{nlevel}, A_rowptr, A_colidx, A_val]  = 
-        // gen_fd_lap_orth(cell_dims, [Nx Ny Nz], BCs, FDn);  
-        gen_fd_Lap_orth(Lx, Nx, BCx, Ly, Ny, BCy, Lz, Nz, BCz, FDn, &mg_data->A[level]);
-        
-        // [mg.R{nlevel}, mg.P{nlevel}, mg.M{nlevel}] = 
-        // gen_R_P_diag_RAP([Nx Ny Nz], BCs, A_rowptr, A_colidx, A_val);
-        gen_R_P_diag_RAP(
-            Nx, Ny, Nz, BCx, BCy, BCz, mg_data->A[level], 
-            &mg_data->R[level], &mg_data->P[level], &mg_data->M[level]
+        // mg.R{level} = gen_trilin_R([Nx Ny Nz], BCs);
+        // mg.P{level} = 8 * mg.R{level}';
+        gen_trilin_R_P(
+            Nx, Ny, Nz, BCx, BCy, BCz,
+            &mg_data->R[level], &mg_data->P[level]
         );
+        
+        // mg.M{level} = 0.75 ./ full(diag(mg.A{level}));
+        double *M_lvl = (double*) malloc(sizeof(double) * mg_data->vlen[level]);
+        assert(M_lvl != NULL);
+        CSR_mat_t A_lvl = mg_data->A[level];
+        for (int irow = 0; irow < mg_data->vlen[level]; irow++)
+        {
+            for (int j = A_lvl->row_ptr[irow]; j < A_lvl->row_ptr[irow + 1]; j++)
+            {
+                if (A_lvl->col[j] == irow)
+                {
+                    M_lvl[irow] = 0.75 / A_lvl->val[j];
+                    break;
+                }
+            }
+        }
+        mg_data->M[level] = M_lvl;
+        
+        // mg.A{level+1} = mg.R{level} * mg.A{level} * mg.P{level};
+        CSR_mat_t R_lvl  = mg_data->R[level];
+        CSR_mat_t P_lvl  = mg_data->P[level];
+        mkl_sparse_d_create_csr(
+            &mkl_sp_R, SPARSE_INDEX_BASE_ZERO, R_lvl->nrow, R_lvl->ncol,
+            R_lvl->row_ptr, R_lvl->row_ptr + 1, R_lvl->col, R_lvl->val
+        );
+        mkl_sparse_d_create_csr(
+            &mkl_sp_A, SPARSE_INDEX_BASE_ZERO, A_lvl->nrow, A_lvl->ncol,
+            A_lvl->row_ptr, A_lvl->row_ptr + 1, A_lvl->col, A_lvl->val
+        );
+        mkl_sparse_d_create_csr(
+            &mkl_sp_P, SPARSE_INDEX_BASE_ZERO, P_lvl->nrow, P_lvl->ncol,
+            P_lvl->row_ptr, P_lvl->row_ptr + 1, P_lvl->col, P_lvl->val
+        );
+        mkl_sparse_optimize(mkl_sp_R);
+        mkl_sparse_optimize(mkl_sp_A);
+        mkl_sparse_optimize(mkl_sp_P);
+        mkl_sparse_spmm(SPARSE_OPERATION_NON_TRANSPOSE, mkl_sp_A, mkl_sp_P,  &mkl_sp_AP);
+        mkl_sparse_spmm(SPARSE_OPERATION_NON_TRANSPOSE, mkl_sp_R, mkl_sp_AP, &mkl_sp_RAP);
+        mkl_sparse_d_export_csr(mkl_sp_RAP, &indexing, &nrow, &ncol, &rs, &re, &col, &val);
+        nnz = re[nrow - 1];
+        CSR_mat_t A_lvl1;
+        CSR_mat_init(nrow, ncol, nnz, &A_lvl1);
+        memcpy(A_lvl1->row_ptr, rs,  sizeof(int)    * nrow);
+        memcpy(A_lvl1->col,     col, sizeof(int)    * nnz);
+        memcpy(A_lvl1->val,     val, sizeof(double) * nnz);
+        A_lvl1->nnz = nnz;
+        A_lvl1->row_ptr[nrow] = nnz;
+        mg_data->A[level + 1] = A_lvl1;
+        mkl_sparse_destroy(mkl_sp_R);
+        mkl_sparse_destroy(mkl_sp_A);
+        mkl_sparse_destroy(mkl_sp_P);
+        mkl_sparse_destroy(mkl_sp_AP);
+        mkl_sparse_destroy(mkl_sp_RAP);
         
         Nx /= 2;  Ny /= 2;  Nz /= 2; 
         Nd = Nx * Ny * Nz;
-        mg_data->vec_len[level] = Nd;
-    }
+        level++;
+        mg_data->vlen[level] = Nd;
+    }  // End of "while ((Nx > 7) && (Ny > 7) && (Nz > 7))"
+    mg_data->R[mg_data->nlevel] = NULL;
+    mg_data->P[mg_data->nlevel] = NULL;
+    mg_data->M[mg_data->nlevel] = NULL;
     
-    // 3. Allocate error, residual, and tmp vectors for each level
+    // 4. Allocate error, residual, and tmp vectors for each level
     for (int level = 0; level <= nlevel; level++)
     {
-        size_t lvl_vec_len = sizeof(double) * mg_data->vec_len[level];
-        mg_data->ev[level] = (double*) malloc(lvl_vec_len);
-        mg_data->rv[level] = (double*) malloc(lvl_vec_len);
-        mg_data->tv[level] = (double*) malloc(lvl_vec_len * 2);
+        size_t lvl_vlen = sizeof(double) * mg_data->vlen[level];
+        mg_data->ev[level] = (double*) malloc(lvl_vlen);
+        mg_data->rv[level] = (double*) malloc(lvl_vlen);
+        mg_data->tv[level] = (double*) malloc(lvl_vlen * 2);
         assert(mg_data->ev[level] != NULL);
         assert(mg_data->rv[level] != NULL);
         assert(mg_data->tv[level] != NULL);
     }
     
-    // 4. Calculate the scaled diagonal of the finest grid matrix
-    // mg.A{1} = mg.A{2};
-    mg_data->A[0] = mg_data->A[1];
-    // mg.M{1} = ones(size(mg.A{1}, 1), 1) .* (0.75 / mg.A{1}(1, 1));
-    Nd = mg_data->vec_len[0];
-    mg_data->M[0] = (double*) malloc(sizeof(double) * Nd);
-    double *M0  = mg_data->M[0];
-    double diag = mg_data->A[0]->val[0];  // A[0] has same diagonal elements
-    diag = 0.75 / diag;
-    for (int i = 0; i < Nd; i++) M0[i] = diag;
-
-    // 5. Construct the coarsest grid matrix R * A * P
-    int last_Nd  = mg_data->vec_len[level];
-    int last1_Nd = mg_data->vec_len[level - 1];
-    double *last_R, *last_A, *last_P;
-    CSR_mat_to_dense_mat(mg_data->R[level], &last_R);
-    CSR_mat_to_dense_mat(mg_data->A[level], &last_A);
-    CSR_mat_to_dense_mat(mg_data->P[level], &last_P);
-    double *lastA_inv = (double*) malloc(sizeof(double) * last_Nd * last_Nd);
-    double *tmp_mat   = (double*) malloc(sizeof(double) * last_Nd * last1_Nd);
-    assert(lastA_inv != NULL);
-    assert(tmp_mat   != NULL);
-    // A * P
-    cblas_dgemm(
-        CblasRowMajor, CblasNoTrans, CblasNoTrans, 
-        last1_Nd, last_Nd, last1_Nd,
-        1.0, last_A, last1_Nd, last_P, last_Nd,
-        0.0, tmp_mat, last_Nd
-    );
-    // R * (A * P)
-    cblas_dgemm(
-        CblasRowMajor, CblasNoTrans, CblasNoTrans, 
-        last_Nd, last_Nd, last1_Nd,
-        1.0, last_R, last1_Nd, tmp_mat, last_Nd,
-        0.0, lastA_inv, last_Nd
-    );
-    free(last_R);
-    free(last_A);
-    free(last_P);
-    free(tmp_mat);
-    
-    // 6. Calculate the LU decomposition or pseudo-inverse for the 
+    // 5. Calculate the LU decomposition or pseudo-inverse for the 
     //    coarsest grid matrix R * A * P
+    int last_Nd = mg_data->vlen[nlevel];
+    double *lastA_inv;
+    CSR_mat_to_dense_mat(mg_data->A[nlevel], &lastA_inv);
     if (BCx + BCy + BCz == 0)
     {
         // Pure periodic BC, rank deficient, use pseudo inverse
         int m = last_Nd, n = last_Nd;
         int min_mn = (m > n) ? n : m;
-        double *U  = (double *) malloc(sizeof(double) * m * m);
-        double *S  = (double *) malloc(sizeof(double) * min_mn);
-        double *T  = (double *) malloc(sizeof(double) * m * n);
-        double *VT = (double *) malloc(sizeof(double) * n * n);
-        double *sb = (double *) malloc(sizeof(double) * min_mn);
+        double *U  = (double*) malloc(sizeof(double) * m * m);
+        double *S  = (double*) malloc(sizeof(double) * min_mn);
+        double *T  = (double*) malloc(sizeof(double) * m * n);
+        double *VT = (double*) malloc(sizeof(double) * n * n);
+        double *sb = (double*) malloc(sizeof(double) * min_mn);
         assert(U != NULL && VT != NULL && T != NULL && S != NULL && sb != NULL);
         
         int dgesvd_info = LAPACKE_dgesvd(
@@ -209,14 +241,14 @@ void MG_init(
         mg_data->use_pinv   = 0;
         mg_data->lastA_inv  = lastA_inv;
         mg_data->lastA_ipiv = lastA_ipiv;
-    }
+    }  // End of "if (BCx + BCy + BCz == 0)"
 
     *mg_data_ = mg_data;
 }
 
 void MG_solve(mg_data_t mg_data, const double *b, double *x, const double reltol)
 {
-    int n_0 = mg_data->vec_len[0];
+    int n_0 = mg_data->vlen[0];
     int max_vcycle = 100;
     
     double b_l2_norm = 0.0;
@@ -241,7 +273,7 @@ void MG_solve(mg_data_t mg_data, const double *b, double *x, const double reltol
         // 1. Downward pass
         for (int lvl = 0; lvl < nlevel; lvl++)
         {
-            int    n_lvl   = mg_data->vec_len[lvl];
+            int    n_lvl   = mg_data->vlen[lvl];
             double *ev_lvl = mg_data->ev[lvl];
             double *rv_lvl = mg_data->rv[lvl];
             double *tv_lvl = mg_data->tv[lvl];
@@ -252,33 +284,22 @@ void MG_solve(mg_data_t mg_data, const double *b, double *x, const double reltol
             #pragma omp parallel for simd
             for (int i = 0; i < n_lvl; i++)
                 ev_lvl[i] = M_lvl[i] * rv_lvl[i];
-            
             // Restrict the residual
-            if (lvl == 0)
-            {
-                // t = mg.A{level} * e{level}
-                CSR_SpMV(mg_data->A[lvl], ev_lvl, tv_lvl);
-            } else {
-                // t = mg.R{level} * mg.A{level} * mg.P{level} * e{level}
-                double *tv0_lvl = mg_data->tv[lvl - 1];
-                double *tv1_lvl = tv0_lvl + mg_data->vec_len[lvl - 1];
-                CSR_SpMV(mg_data->P[lvl],  ev_lvl, tv0_lvl);
-                CSR_SpMV(mg_data->A[lvl], tv0_lvl, tv1_lvl);
-                CSR_SpMV(mg_data->R[lvl], tv1_lvl, tv_lvl);
-            }
+            // t = mg.A{level} * e{level}
+            CSR_SpMV(mg_data->A[lvl], ev_lvl, tv_lvl);
             // t = r{level} - t
             #pragma omp parallel for simd
             for (int i = 0; i < n_lvl; i++)
                 tv_lvl[i] = rv_lvl[i] - tv_lvl[i];
             // r{level+1} = mg.R{level+1} * t
-            CSR_SpMV(mg_data->R[lvl + 1], tv_lvl, mg_data->rv[lvl + 1]);
+            CSR_SpMV(mg_data->R[lvl], tv_lvl, mg_data->rv[lvl + 1]);
         }  // End of lvl loop
         
         // 2. Solve on the coarsest level
-        int last_Nd = mg_data->vec_len[nlevel];
+        int last_Nd = mg_data->vlen[nlevel];
         if (mg_data->use_pinv == 0)
         {
-            // e{mg.numlevels} = mg.lastA_U \ (mg.lastA_L \ r{mg.numlevels});
+            // mg.e{level+1} = mg.lastA_U \ (mg.lastA_L \ mg.r{mg.nlevel});
             LAPACKE_dgetrs(
                 LAPACK_ROW_MAJOR, 'N', last_Nd, 1, 
                 mg_data->lastA_inv, last_Nd, mg_data->lastA_ipiv, 
@@ -296,7 +317,7 @@ void MG_solve(mg_data_t mg_data, const double *b, double *x, const double reltol
         // 3. Upward pass
         for (int lvl = nlevel - 1; lvl >= 0; lvl--)
         {
-            int    n_lvl   = mg_data->vec_len[lvl];
+            int    n_lvl   = mg_data->vlen[lvl];
             double *ev_lvl = mg_data->ev[lvl];
             double *rv_lvl = mg_data->rv[lvl];
             double *tv_lvl = mg_data->tv[lvl];
@@ -304,24 +325,14 @@ void MG_solve(mg_data_t mg_data, const double *b, double *x, const double reltol
             
             // Prolong the correction
             // e{level} = e{level} + mg.P{level+1} * e{level+1}; 
-            CSR_SpMV(mg_data->P[lvl + 1], mg_data->ev[lvl + 1], tv_lvl);
+            CSR_SpMV(mg_data->P[lvl], mg_data->ev[lvl + 1], tv_lvl);
             #pragma omp parallel for simd
             for (int i = 0; i < n_lvl; i++)
                 ev_lvl[i] += tv_lvl[i];
             
             // Post-smoothing
-            if (lvl == 0)
-            {
-                // t = mg.A{level} * e{level}
-                CSR_SpMV(mg_data->A[lvl], ev_lvl, tv_lvl);
-            } else {
-                // t = mg.R{level} * mg.A{level} * mg.P{level} * e{level}
-                double *tv0_lvl = mg_data->tv[lvl - 1];
-                double *tv1_lvl = tv0_lvl + mg_data->vec_len[lvl - 1];
-                CSR_SpMV(mg_data->P[lvl],  ev_lvl, tv0_lvl);
-                CSR_SpMV(mg_data->A[lvl], tv0_lvl, tv1_lvl);
-                CSR_SpMV(mg_data->R[lvl], tv1_lvl, tv_lvl);
-            }
+            // t = mg.A{level} * e{level}
+            CSR_SpMV(mg_data->A[lvl], ev_lvl, tv_lvl);
             // e{level} = e{level} + mg.M{level} .* (r{level} - t)
             #pragma omp parallel for simd
             for (int i = 0; i < n_lvl; i++)
