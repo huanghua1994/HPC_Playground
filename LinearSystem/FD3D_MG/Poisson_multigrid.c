@@ -27,7 +27,7 @@ void MG_destroy(mg_data_t mg_data)
     free(mg_data->ev);
     free(mg_data->rv);
     free(mg_data->tv);
-    free(mg_data->lastA_LU);
+    free(mg_data->lastA_inv);
     free(mg_data->lastA_ipiv);
     free(mg_data->M);
     free(mg_data->A);
@@ -120,22 +120,17 @@ void MG_init(
     diag = 0.75 / diag;
     for (int i = 0; i < Nd; i++) M0[i] = diag;
 
-    // 5. Do LU decomposition for the coarsest grid matrix R * A * P
-    // [mg.lastA_L, mg.lastA_U] = lu(full(mg.R{level} * mg.A{level} * mg.P{level}));
+    // 5. Construct the coarsest grid matrix R * A * P
     int last_Nd  = mg_data->vec_len[level];
     int last1_Nd = mg_data->vec_len[level - 1];
     double *last_R, *last_A, *last_P;
     CSR_mat_to_dense_mat(mg_data->R[level], &last_R);
     CSR_mat_to_dense_mat(mg_data->A[level], &last_A);
     CSR_mat_to_dense_mat(mg_data->P[level], &last_P);
-    int    *lastA_ipiv = (int*)    malloc(sizeof(int)    * last_Nd);
-    double *lastA_LU   = (double*) malloc(sizeof(double) * last_Nd * last_Nd);
-    double *tmp_mat    = (double*) malloc(sizeof(double) * last_Nd * last1_Nd);
-    assert(lastA_ipiv != NULL);
-    assert(lastA_LU   != NULL);
-    assert(tmp_mat    != NULL);
-    mg_data->lastA_LU   = lastA_LU;
-    mg_data->lastA_ipiv = lastA_ipiv;
+    double *lastA_inv = (double*) malloc(sizeof(double) * last_Nd * last_Nd);
+    double *tmp_mat   = (double*) malloc(sizeof(double) * last_Nd * last1_Nd);
+    assert(lastA_inv != NULL);
+    assert(tmp_mat   != NULL);
     // A * P
     cblas_dgemm(
         CblasRowMajor, CblasNoTrans, CblasNoTrans, 
@@ -148,15 +143,73 @@ void MG_init(
         CblasRowMajor, CblasNoTrans, CblasNoTrans, 
         last_Nd, last_Nd, last1_Nd,
         1.0, last_R, last1_Nd, tmp_mat, last_Nd,
-        0.0, lastA_LU, last_Nd
+        0.0, lastA_inv, last_Nd
     );
-    // LU decomposition, the data in lastA_LU and lastA_ipiv can be 
-    // directly used in LAPACKE_dgetrs later
-    LAPACKE_dgetrf(LAPACK_ROW_MAJOR, last_Nd, last_Nd, lastA_LU, last_Nd, lastA_ipiv);
     free(last_R);
     free(last_A);
     free(last_P);
     free(tmp_mat);
+    
+    // 6. Calculate the LU decomposition or pseudo-inverse for the 
+    //    coarsest grid matrix R * A * P
+    if (BCx + BCy + BCz == 0)
+    {
+        // Pure periodic BC, rank deficient, use pseudo inverse
+        int m = last_Nd, n = last_Nd;
+        int min_mn = (m > n) ? n : m;
+        double *U  = (double *) malloc(sizeof(double) * m * m);
+        double *S  = (double *) malloc(sizeof(double) * min_mn);
+        double *T  = (double *) malloc(sizeof(double) * m * n);
+        double *VT = (double *) malloc(sizeof(double) * n * n);
+        double *sb = (double *) malloc(sizeof(double) * min_mn);
+        assert(U != NULL && VT != NULL && T != NULL && S != NULL && sb != NULL);
+        
+        int dgesvd_info = LAPACKE_dgesvd(
+            LAPACK_ROW_MAJOR, 'A', 'A', m, n, 
+            lastA_inv, n, S, U, m, VT, n, sb
+        );
+        assert(dgesvd_info == 0);
+        // Inverse the diagonal of S
+        for (int i = 0; i < min_mn; i++) 
+        {
+            if (fabs(S[i]) > 1e-15) S[i] = 1.0 / S[i];
+            else S[i] = 0.0;
+        }
+        // invS^T * U^T, == (U * invS)^T
+        #pragma omp parallel for
+        for (int i = 0; i < m; i++)
+        {
+            double *U_i = U + i * m;
+            double *T_i = T + i * n;
+            for (int j = 0; j < min_mn; j++)
+                T_i[j] = U_i[j] * S[j];
+            for (int j = min_mn; j < n; j++) T_i[j] = 0.0;
+        }
+        // pinv = V * (invS^T * U^T) == VT^T * (U * invS)^T
+        cblas_dgemm(
+            CblasRowMajor, CblasTrans, CblasTrans, m, m, n,
+            1.0, VT, n, T, n, 0.0, lastA_inv, last_Nd
+        );
+        
+        free(U);
+        free(S);
+        free(T);
+        free(VT);
+        free(sb);
+        mg_data->use_pinv   = 1;
+        mg_data->lastA_inv  = lastA_inv;
+        mg_data->lastA_ipiv = NULL;
+    } else {
+        // Not pure periodic BC, full rank, use LU decomposition. The data in lastA_inv 
+        // and lastA_ipiv can be directly used in LAPACKE_dgetrs later
+        int *lastA_ipiv = (int*) malloc(sizeof(int) * last_Nd);
+        assert(lastA_ipiv != NULL);
+        int dgetrf_info = LAPACKE_dgetrf(LAPACK_ROW_MAJOR, last_Nd, last_Nd, lastA_inv, last_Nd, lastA_ipiv);
+        assert(dgetrf_info == 0);
+        mg_data->use_pinv   = 0;
+        mg_data->lastA_inv  = lastA_inv;
+        mg_data->lastA_ipiv = lastA_ipiv;
+    }
 
     *mg_data_ = mg_data;
 }
@@ -222,14 +275,23 @@ void MG_solve(mg_data_t mg_data, const double *b, double *x, const double reltol
         }  // End of lvl loop
         
         // 2. Solve on the coarsest level
-        // e{mg.numlevels} = mg.lastA_U \ (mg.lastA_L \ r{mg.numlevels});
         int last_Nd = mg_data->vec_len[nlevel];
-        LAPACKE_dgetrs(
-            LAPACK_ROW_MAJOR, 'N', last_Nd, 1, 
-            mg_data->lastA_LU, last_Nd, mg_data->lastA_ipiv, 
-            mg_data->rv[nlevel], 1
-        );
-        memcpy(mg_data->ev[nlevel], mg_data->rv[nlevel], sizeof(double) * last_Nd);
+        if (mg_data->use_pinv == 0)
+        {
+            // e{mg.numlevels} = mg.lastA_U \ (mg.lastA_L \ r{mg.numlevels});
+            LAPACKE_dgetrs(
+                LAPACK_ROW_MAJOR, 'N', last_Nd, 1, 
+                mg_data->lastA_inv, last_Nd, mg_data->lastA_ipiv, 
+                mg_data->rv[nlevel], 1
+            );
+            memcpy(mg_data->ev[nlevel], mg_data->rv[nlevel], sizeof(double) * last_Nd);
+        } else {
+            // mg.e{level+1} = mg.lastA_pinv * mg.r{mg.nlevel};
+            cblas_dgemv(
+                CblasRowMajor, CblasNoTrans, last_Nd, last_Nd, 1.0, mg_data->lastA_inv, 
+                last_Nd, mg_data->rv[nlevel], 1, 0.0, mg_data->ev[nlevel], 1
+            );
+        }
         
         // 3. Upward pass
         for (int lvl = nlevel - 1; lvl >= 0; lvl--)

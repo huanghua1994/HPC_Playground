@@ -6,9 +6,10 @@
 struct mg_data_
 {
     int    nlevel;
+    int    use_pinv;
     int    *vec_len;
     int    *lastA_ipiv;
-    double *lastA_LU;
+    double *lastA_inv;
     double **ev;
     double **rv;
     double **tv;
