@@ -171,13 +171,14 @@ void read_mtx_file_to_COO_mat(
     *val_  = val;
 }
 
-void test_CSRPlus_SpMV(CSRPlusMatrix_t csrp, const int ntest, const double *x, double *y)
+void test_CSRPlus_SpMV(CSRP_mat_t csrp, const int ntest, const double *x, double *y)
 {
     double st, et, ut;
     double GFlops = 2e-9 * (double) csrp->nnz;
     
     st = get_wtime_sec();
-    CSRP_partition(omp_get_max_threads(), csrp);
+    int nthread = omp_get_max_threads();
+    CSRP_partition_multithread(csrp, nthread, nthread);
     CSRP_optimize_NUMA(csrp);
     et = get_wtime_sec();
     ut = et - st;
@@ -194,7 +195,7 @@ void test_CSRPlus_SpMV(CSRPlusMatrix_t csrp, const int ntest, const double *x, d
     printf("CSRPlus SpMV done, used time = %.3lf (ms), %lf GFlops\n\n", ut * 1000.0, GFlops / ut);
 }
 
-void test_MKL_IE_SpMV(CSRPlusMatrix_t csrp, const int ntest, const double *x, double *y)
+void test_MKL_IE_SpMV(CSRP_mat_t csrp, const int ntest, const double *x, double *y)
 {
     double st, et, ut;
     double GFlops = 2e-9 * (double) csrp->nnz;
@@ -259,8 +260,8 @@ int main(int argc, char **argv)
     srand48(19241112);
     for (int i = 0; i < ncol; i++) x[i] = drand48() - 0.5;
     
-    CSRPlusMatrix_t csrp;
-    CSRP_init_with_COO_matrix(nrow, ncol, nnz, row, col, val, &csrp);
+    CSRP_mat_t csrp;
+    CSRP_init_with_COO_mat(nrow, ncol, nnz, row, col, val, &csrp);
 
     // Get CSRPlus result
     test_CSRPlus_SpMV(csrp, ntest, x, y1);
