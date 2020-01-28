@@ -270,7 +270,7 @@ int main(int argc, char **argv)
     test_MKL_IE_SpMV(csrp, ntest, x, y0);
 
     double y0_2norm, err_2norm;
-    calc_err_2norm(ncol, y0, y1, &y0_2norm, &err_2norm);
+    calc_err_2norm(nrow, y0, y1, &y0_2norm, &err_2norm);
     printf("Result relative error = %e\n", err_2norm / y0_2norm);
     
     free(row);
