@@ -28,6 +28,7 @@ struct CSRP_mat
     int    *lr_intact;  // If the last  row of a block is intact
     double *fr_res;     // Partial result of the first row 
     double *lr_res;     // Partial result of the last  row
+    double *thread_buf; // Thread-local buffer
 };
 
 typedef struct CSRP_mat  CSRP_mat_s;

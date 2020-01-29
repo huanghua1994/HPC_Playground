@@ -12,7 +12,17 @@
 #include <assert.h>
 #include <omp.h>
 
+// For _mm_malloc and _mm_free
+#if defined(__INTEL_COMPILER)
+#include <malloc.h>
+#endif
+#if defined(__GNUC__) || (__clang__)
+#include <mm_malloc.h>
+#endif
+
 #include "CSRPlus.h"
+
+#define THREAD_BUF_SIZE 1024
 
 static void qsort_int_dbl_pair(int *key, double *val, int l, int r)
 {
@@ -52,14 +62,15 @@ void CSRP_init_with_COO_mat(
     assert(csrp_mat->col     != NULL);
     assert(csrp_mat->val     != NULL);
     
-    csrp_mat->nnz_spos  = NULL;
-    csrp_mat->nnz_epos  = NULL;
-    csrp_mat->first_row = NULL;
-    csrp_mat->last_row  = NULL;
-    csrp_mat->fr_intact = NULL;
-    csrp_mat->lr_intact = NULL;
-    csrp_mat->fr_res    = NULL;
-    csrp_mat->lr_res    = NULL;
+    csrp_mat->nnz_spos   = NULL;
+    csrp_mat->nnz_epos   = NULL;
+    csrp_mat->first_row  = NULL;
+    csrp_mat->last_row   = NULL;
+    csrp_mat->fr_intact  = NULL;
+    csrp_mat->lr_intact  = NULL;
+    csrp_mat->fr_res     = NULL;
+    csrp_mat->lr_res     = NULL;
+    csrp_mat->thread_buf = NULL;
     
     int    *row_ptr = csrp_mat->row_ptr;
     int    *col_    = csrp_mat->col;
@@ -105,6 +116,7 @@ void CSRP_free(CSRP_mat_t csrp_mat)
     free(csrp_mat->lr_intact);
     free(csrp_mat->fr_res);
     free(csrp_mat->lr_res);
+    _mm_free(csrp_mat->thread_buf);
 }
 
 static void partition_block_equal(const int len, const int nblk, int *displs)
@@ -119,7 +131,8 @@ static void partition_block_equal(const int len, const int nblk, int *displs)
         displs[i + 1] = displs[i] + bs0;
 }
 
-static int calc_lower_bound(const int *a, int n, int x) 
+// Return the index of the first element in a which >= x
+static int calc_lower_bound(const int *a, const int n, const int x) 
 {
     int l = 0, h = n;
     while (l < h) 
@@ -135,32 +148,44 @@ static int calc_lower_bound(const int *a, int n, int x)
 // for multiple threads execution of SpMV
 void CSRP_partition_multithread(CSRP_mat_t csrp_mat, const int nblk, const int nthread)
 {
-    csrp_mat->nblk      = nblk;
-    csrp_mat->nthread   = nthread;
-    csrp_mat->nnz_spos  = (int*)    malloc(sizeof(int)    * nblk);
-    csrp_mat->nnz_epos  = (int*)    malloc(sizeof(int)    * nblk);
-    csrp_mat->first_row = (int*)    malloc(sizeof(int)    * nblk);
-    csrp_mat->last_row  = (int*)    malloc(sizeof(int)    * nblk);
-    csrp_mat->fr_intact = (int*)    malloc(sizeof(int)    * nblk);
-    csrp_mat->lr_intact = (int*)    malloc(sizeof(int)    * nblk);
-    csrp_mat->fr_res    = (double*) malloc(sizeof(double) * nblk);
-    csrp_mat->lr_res    = (double*) malloc(sizeof(double) * nblk);
-    assert(csrp_mat->nnz_spos  != NULL);
-    assert(csrp_mat->nnz_epos  != NULL);
-    assert(csrp_mat->first_row != NULL);
-    assert(csrp_mat->last_row  != NULL);
-    assert(csrp_mat->fr_intact != NULL);
-    assert(csrp_mat->lr_intact != NULL);
-    assert(csrp_mat->fr_res    != NULL);
-    assert(csrp_mat->lr_res    != NULL);
+    // Free the allocated arrays (if we have) to avoid memory leak
+    free(csrp_mat->nnz_spos);
+    free(csrp_mat->nnz_epos);
+    free(csrp_mat->first_row);
+    free(csrp_mat->last_row);
+    free(csrp_mat->fr_intact);
+    free(csrp_mat->lr_intact);
+    free(csrp_mat->fr_res);
+    free(csrp_mat->lr_res);
+    _mm_free(csrp_mat->thread_buf);
+    // Allocate new arrays
+    csrp_mat->nblk       = nblk;
+    csrp_mat->nthread    = nthread;
+    csrp_mat->nnz_spos   = (int*)    malloc(sizeof(int)    * nblk);
+    csrp_mat->nnz_epos   = (int*)    malloc(sizeof(int)    * nblk);
+    csrp_mat->first_row  = (int*)    malloc(sizeof(int)    * nblk);
+    csrp_mat->last_row   = (int*)    malloc(sizeof(int)    * nblk);
+    csrp_mat->fr_intact  = (int*)    malloc(sizeof(int)    * nblk);
+    csrp_mat->lr_intact  = (int*)    malloc(sizeof(int)    * nblk);
+    csrp_mat->fr_res     = (double*) malloc(sizeof(double) * nblk);
+    csrp_mat->lr_res     = (double*) malloc(sizeof(double) * nblk);
+    csrp_mat->thread_buf = (double*) _mm_malloc(sizeof(double) * nthread * THREAD_BUF_SIZE, 64);
+    assert(csrp_mat->nnz_spos   != NULL);
+    assert(csrp_mat->nnz_epos   != NULL);
+    assert(csrp_mat->first_row  != NULL);
+    assert(csrp_mat->last_row   != NULL);
+    assert(csrp_mat->fr_intact  != NULL);
+    assert(csrp_mat->lr_intact  != NULL);
+    assert(csrp_mat->fr_res     != NULL);
+    assert(csrp_mat->lr_res     != NULL);
+    assert(csrp_mat->thread_buf != NULL);
     
-    int nnz  = csrp_mat->nnz;
-    int nrow = csrp_mat->nrow;
-    int *row_ptr = csrp_mat->row_ptr;
-    
-    int *nnz_displs = (int *) malloc((nblk + 1) * sizeof(int));
+    // Partition non-zeros into nblk equal size blocks
+    int nnz         = csrp_mat->nnz;
+    int nrow        = csrp_mat->nrow;
+    int *row_ptr    = csrp_mat->row_ptr;
+    int *nnz_displs = (int*) malloc(sizeof(int) * (nblk + 1));
     partition_block_equal(nnz, nblk, nnz_displs);
-    
     for (int iblk = 0; iblk < nblk; iblk++)
     {
         int iblk_nnz_spos = nnz_displs[iblk];
@@ -192,9 +217,18 @@ void CSRP_partition_multithread(CSRP_mat_t csrp_mat, const int nblk, const int n
             csrp_mat->lr_intact[iblk] = -1;
         }
     }
-    
     csrp_mat->last_row[nblk - 1] = nrow - 1;
     csrp_mat->nnz_epos[nblk - 1] = row_ptr[nrow] - 1;
+    
+    // Use first-touch policy to pin the thread-local buffer
+    #pragma omp parallel num_threads(nthread)
+    {
+        int tid  = omp_get_thread_num();
+        int spos = THREAD_BUF_SIZE * tid;
+        int epos = THREAD_BUF_SIZE * (tid + 1);
+        for (int i = spos; i < epos; i++) 
+            csrp_mat->thread_buf[i] = 0.0;
+    }
     
     free(nnz_displs);
 }
@@ -247,7 +281,7 @@ static double CSR_SpMV_row_seg(
     const double *__restrict val, const double *__restrict x
 )
 {
-    register double res = 0.0;
+    double res = 0.0;
     #pragma omp simd
     for (int idx = 0; idx < seg_len; idx++)
         res += val[idx] * x[col[idx]];
@@ -257,20 +291,59 @@ static double CSR_SpMV_row_seg(
 static void CSR_SpMV_row_block(
     const int srow, const int erow,
     const int *row_ptr, const int *col, const double *val, 
-    const double *__restrict x, double *__restrict y
+    const double *__restrict x, double *__restrict y, double *__restrict buff
 )
 {
+    /*
     for (int irow = srow; irow < erow; irow++)
     {
-        register double res = 0.0;
+        double res = 0.0;
         #pragma omp simd
         for (int idx = row_ptr[irow]; idx < row_ptr[irow + 1]; idx++)
             res += val[idx] * x[col[idx]];
         y[irow] = res;
     }
+    */
+    int irow = srow;
+    int nnz_cnt = 0;
+    while (irow < erow)
+    {
+        int blk_erow;
+        for (blk_erow = irow; blk_erow < erow; blk_erow++)
+        {
+            int row_nnz = row_ptr[blk_erow + 1] - row_ptr[blk_erow];
+            if (nnz_cnt + row_nnz > THREAD_BUF_SIZE) break;
+            nnz_cnt += row_nnz;
+        }
+        if (blk_erow == irow)
+        {
+            double res = 0.0;
+            #pragma omp simd
+            for (int idx = row_ptr[irow]; idx < row_ptr[irow + 1]; idx++)
+                res += val[idx] * x[col[idx]];
+            y[irow] = res;
+            irow++;
+        } else {
+            int blk_offset = row_ptr[irow];
+            const int *col_blk = col + blk_offset;
+            const double *val_blk = val + blk_offset;
+            #pragma omp simd
+            for (int idx = 0; idx < nnz_cnt; idx++) 
+                buff[idx] = val_blk[idx] * x[col_blk[idx]];
+            for (; irow < blk_erow; irow++)
+            {
+                double res = 0.0;
+                #pragma omp simd
+                for (int idx = row_ptr[irow]; idx < row_ptr[irow + 1]; idx++)
+                    res += buff[idx - blk_offset];
+                y[irow] = res;
+            }
+            nnz_cnt = 0;
+        }
+    }
 }
 
-static void CSRP_SpMV_block(CSRP_mat_t csrp_mat, const int iblk, const double *x, double *y)
+static void CSRP_SpMV_block(CSRP_mat_t csrp_mat, const int iblk, const int tid, const double *x, double *y)
 {
     int    *row_ptr   = csrp_mat->row_ptr;
     int    *col       = csrp_mat->col;
@@ -283,6 +356,7 @@ static void CSRP_SpMV_block(CSRP_mat_t csrp_mat, const int iblk, const double *x
     double *val       = csrp_mat->val;
     double *fr_res    = csrp_mat->fr_res;
     double *lr_res    = csrp_mat->lr_res;
+    double *buff      = csrp_mat->thread_buf + tid * THREAD_BUF_SIZE;
     
     if (first_row[iblk] == last_row[iblk])
     {
@@ -325,7 +399,7 @@ static void CSRP_SpMV_block(CSRP_mat_t csrp_mat, const int iblk, const double *x
         
         CSR_SpMV_row_block(
             first_intact_row, last_intact_row + 1,
-            row_ptr, col, val, x, y
+            row_ptr, col, val, x, y, buff
         );
     }
 }
@@ -336,9 +410,13 @@ void CSRP_SpMV(CSRP_mat_t csrp_mat, const double *x, double *y)
     int nblk    = csrp_mat->nblk;
     int nthread = csrp_mat->nthread;
     
-    #pragma omp parallel for schedule(static) num_threads(nthread)
-    for (int iblk = 0; iblk < nblk; iblk++)
-        CSRP_SpMV_block(csrp_mat, iblk, x, y);
+    #pragma omp parallel num_threads(nthread)
+    {
+        int tid = omp_get_thread_num();
+        #pragma omp for schedule(static)
+        for (int iblk = 0; iblk < nblk; iblk++)
+            CSRP_SpMV_block(csrp_mat, iblk, tid, x, y);
+    }
     
     for (int iblk = 0; iblk < nblk; iblk++)
     {
