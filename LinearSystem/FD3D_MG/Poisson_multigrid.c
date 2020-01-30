@@ -23,6 +23,9 @@ void MG_destroy(mg_data_t mg_data)
         CSR_mat_destroy(mg_data->A[lvl]);
         CSR_mat_destroy(mg_data->P[lvl]);
         CSR_mat_destroy(mg_data->R[lvl]);
+        mkl_sparse_destroy(mg_data->mkl_sp_A[lvl]);
+        mkl_sparse_destroy(mg_data->mkl_sp_P[lvl]);
+        mkl_sparse_destroy(mg_data->mkl_sp_R[lvl]);
     }
     free(mg_data->vlen);
     free(mg_data->ev);
@@ -70,6 +73,10 @@ void MG_init(
     mg_data->A    = (CSR_mat_t*) malloc(sizeof(CSR_mat_t) * nlevel1);
     mg_data->R    = (CSR_mat_t*) malloc(sizeof(CSR_mat_t) * nlevel1);
     mg_data->P    = (CSR_mat_t*) malloc(sizeof(CSR_mat_t) * nlevel1);
+    
+    mg_data->mkl_sp_A = (sparse_matrix_t*) malloc(sizeof(sparse_matrix_t) * nlevel1);
+    mg_data->mkl_sp_R = (sparse_matrix_t*) malloc(sizeof(sparse_matrix_t) * nlevel1);
+    mg_data->mkl_sp_P = (sparse_matrix_t*) malloc(sizeof(sparse_matrix_t) * nlevel1);
 
     // 2. Construct the finest grid 
     Nx = grid_sizes[0];
@@ -93,6 +100,15 @@ void MG_init(
     sparse_index_base_t indexing;
     int nrow, ncol, nnz, *rs, *re, *col;
     double *val;
+    
+    struct matrix_descr mkl_sp_descr;
+    mkl_sp_descr.type = SPARSE_MATRIX_TYPE_GENERAL;
+    mkl_sp_descr.diag = SPARSE_DIAG_NON_UNIT;
+    mkl_sparse_d_create_csr(
+        &mg_data->mkl_sp_A[0], SPARSE_INDEX_BASE_ZERO, A0->nrow, A0->ncol,
+        A0->row_ptr, A0->row_ptr + 1, A0->col, A0->val
+    );
+    mkl_sparse_optimize(mg_data->mkl_sp_A[0]);
 
     // 3. Construct the R, A, P matrices level by level
     int level = 0;
@@ -152,6 +168,12 @@ void MG_init(
         A_lvl1->nnz = nnz;
         A_lvl1->row_ptr[nrow] = nnz;
         mg_data->A[level + 1] = A_lvl1;
+        mkl_sparse_copy(mkl_sp_R,   mkl_sp_descr, &mg_data->mkl_sp_R[level]);
+        mkl_sparse_copy(mkl_sp_P,   mkl_sp_descr, &mg_data->mkl_sp_P[level]);
+        mkl_sparse_copy(mkl_sp_RAP, mkl_sp_descr, &mg_data->mkl_sp_A[level + 1]);
+        mkl_sparse_optimize(mg_data->mkl_sp_R[level]);
+        mkl_sparse_optimize(mg_data->mkl_sp_P[level]);
+        mkl_sparse_optimize(mg_data->mkl_sp_A[level + 1]);
         mkl_sparse_destroy(mkl_sp_R);
         mkl_sparse_destroy(mkl_sp_A);
         mkl_sparse_destroy(mkl_sp_P);
@@ -166,6 +188,8 @@ void MG_init(
     mg_data->R[mg_data->nlevel] = NULL;
     mg_data->P[mg_data->nlevel] = NULL;
     mg_data->M[mg_data->nlevel] = NULL;
+    mg_data->mkl_sp_R[mg_data->nlevel] = NULL;
+    mg_data->mkl_sp_P[mg_data->nlevel] = NULL;
     
     // 4. Allocate error, residual, and tmp vectors for each level
     for (int level = 0; level <= nlevel; level++)
@@ -212,13 +236,21 @@ void MG_solve(mg_data_t mg_data, const double *b, double *x, const double reltol
     vecop_t += et - st;
     b_l2_norm = sqrt(b_l2_norm);
     
+    struct matrix_descr mkl_sp_descr;
+    mkl_sp_descr.type = SPARSE_MATRIX_TYPE_GENERAL;
+    mkl_sp_descr.diag = SPARSE_DIAG_NON_UNIT;
+    
     // x0 = zeros(size(mg.A{1}, 1), 1);
     // r{1} = b - mg.A{1} * x;
     memset(x, 0, sizeof(double) * n_0);
     double *rv_0 = mg_data->rv[0];
     double *ev_0 = mg_data->ev[0];
     st = omp_get_wtime();
-    CSR_SpMV(mg_data->A[0], x, rv_0);
+    //CSR_SpMV(mg_data->A[0], x, rv_0);
+    mkl_sparse_d_mv(
+        SPARSE_OPERATION_NON_TRANSPOSE, 1.0, mg_data->mkl_sp_A[0], 
+        mkl_sp_descr, x, 0.0, rv_0
+    );
     et = omp_get_wtime();
     spmv_t += et - st;
     st = omp_get_wtime();
@@ -251,7 +283,11 @@ void MG_solve(mg_data_t mg_data, const double *b, double *x, const double reltol
             // Restrict the residual
             // t = mg.A{level} * e{level}
             st = omp_get_wtime();
-            CSR_SpMV(mg_data->A[lvl], ev_lvl, tv_lvl);
+            //CSR_SpMV(mg_data->A[lvl], ev_lvl, tv_lvl);
+            mkl_sparse_d_mv(
+                SPARSE_OPERATION_NON_TRANSPOSE, 1.0, mg_data->mkl_sp_A[lvl], 
+                mkl_sp_descr, ev_lvl, 0.0, tv_lvl
+            );
             et = omp_get_wtime();
             spmv_t += et - st;
             // t = r{level} - t
@@ -263,7 +299,11 @@ void MG_solve(mg_data_t mg_data, const double *b, double *x, const double reltol
             vecop_t += et - st;
             // r{level+1} = mg.R{level+1} * t
             st = omp_get_wtime();
-            CSR_SpMV(mg_data->R[lvl], tv_lvl, mg_data->rv[lvl + 1]);
+            //CSR_SpMV(mg_data->R[lvl], tv_lvl, mg_data->rv[lvl + 1]);
+            mkl_sparse_d_mv(
+                SPARSE_OPERATION_NON_TRANSPOSE, 1.0, mg_data->mkl_sp_R[lvl], 
+                mkl_sp_descr, tv_lvl, 0.0, mg_data->rv[lvl + 1]
+            );
             et = omp_get_wtime();
             spmv_t += et - st;
         }  // End of lvl loop
@@ -293,7 +333,11 @@ void MG_solve(mg_data_t mg_data, const double *b, double *x, const double reltol
             // Prolong the correction
             // e{level} = e{level} + mg.P{level+1} * e{level+1}; 
             st = omp_get_wtime();
-            CSR_SpMV(mg_data->P[lvl], mg_data->ev[lvl + 1], tv_lvl);
+            //CSR_SpMV(mg_data->P[lvl], mg_data->ev[lvl + 1], tv_lvl);
+            mkl_sparse_d_mv(
+                SPARSE_OPERATION_NON_TRANSPOSE, 1.0, mg_data->mkl_sp_P[lvl], 
+                mkl_sp_descr, mg_data->ev[lvl + 1], 0.0, tv_lvl
+            );
             et = omp_get_wtime();
             spmv_t += et - st;
             st = omp_get_wtime();
@@ -306,7 +350,11 @@ void MG_solve(mg_data_t mg_data, const double *b, double *x, const double reltol
             // Post-smoothing
             // t = mg.A{level} * e{level}
             st = omp_get_wtime();
-            CSR_SpMV(mg_data->A[lvl], ev_lvl, tv_lvl);
+            //CSR_SpMV(mg_data->A[lvl], ev_lvl, tv_lvl);
+            mkl_sparse_d_mv(
+                SPARSE_OPERATION_NON_TRANSPOSE, 1.0, mg_data->mkl_sp_A[lvl], 
+                mkl_sp_descr, ev_lvl, 0.0, tv_lvl
+            );
             et = omp_get_wtime();
             spmv_t += et - st;
             // e{level} = e{level} + mg.M{level} .* (r{level} - t)
@@ -328,7 +376,11 @@ void MG_solve(mg_data_t mg_data, const double *b, double *x, const double reltol
         et = omp_get_wtime();
         vecop_t += et - st;
         st = omp_get_wtime();
-        CSR_SpMV(mg_data->A[0], x, rv_0);
+        //CSR_SpMV(mg_data->A[0], x, rv_0);
+        mkl_sparse_d_mv(
+            SPARSE_OPERATION_NON_TRANSPOSE, 1.0, mg_data->mkl_sp_A[0], 
+            mkl_sp_descr, x, 0.0, rv_0
+        );
         et = omp_get_wtime();
         spmv_t += et - st;
         st = omp_get_wtime();

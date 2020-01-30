@@ -3,6 +3,9 @@
 
 #include "CSR_mat.h"
 
+#include <mkl.h>
+#include <mkl_spblas.h>
+
 struct mg_data_
 {
     int    nlevel;      // Finest grid is level 0, coarsest grid is level nlevel
@@ -20,6 +23,10 @@ struct mg_data_
     CSR_mat_t *A;       // Size nlevel+1, finite difference Laplacian matrix at each level, A[0] = A[1]
     CSR_mat_t *R;       // Size nlevel+1, restriction matrix at each level, R[i] = 0.125 * P[i]^T
     CSR_mat_t *P;       // Size nlevel+1, tri-linear prolongation matrix at each level
+    
+    sparse_matrix_t *mkl_sp_A;
+    sparse_matrix_t *mkl_sp_R;
+    sparse_matrix_t *mkl_sp_P;
 };
 
 typedef struct mg_data_* mg_data_t;
