@@ -179,69 +179,19 @@ void MG_init(
         assert(mg_data->tv[level] != NULL);
     }
     
-    // 5. Calculate the LU decomposition or pseudo-inverse for the 
-    //    coarsest grid matrix R * A * P
+    // 5. Calculate the LU factorization for the coarsest grid matrix R * A * P
     int last_Nd = mg_data->vlen[nlevel];
     double *lastA_inv;
     CSR_mat_to_dense_mat(mg_data->A[nlevel], &lastA_inv);
-    if (BCx + BCy + BCz == 0)
-    {
-        // Pure periodic BC, rank deficient, use pseudo inverse
-        int m = last_Nd, n = last_Nd;
-        int min_mn = (m > n) ? n : m;
-        double *U  = (double*) malloc(sizeof(double) * m * m);
-        double *S  = (double*) malloc(sizeof(double) * min_mn);
-        double *T  = (double*) malloc(sizeof(double) * m * n);
-        double *VT = (double*) malloc(sizeof(double) * n * n);
-        double *sb = (double*) malloc(sizeof(double) * min_mn);
-        assert(U != NULL && VT != NULL && T != NULL && S != NULL && sb != NULL);
-        
-        int dgesvd_info = LAPACKE_dgesvd(
-            LAPACK_ROW_MAJOR, 'A', 'A', m, n, 
-            lastA_inv, n, S, U, m, VT, n, sb
-        );
-        assert(dgesvd_info == 0);
-        // Inverse the diagonal of S
-        for (int i = 0; i < min_mn; i++) 
-        {
-            if (fabs(S[i]) > 1e-15) S[i] = 1.0 / S[i];
-            else S[i] = 0.0;
-        }
-        // invS^T * U^T, == (U * invS)^T
-        #pragma omp parallel for
-        for (int i = 0; i < m; i++)
-        {
-            double *U_i = U + i * m;
-            double *T_i = T + i * n;
-            for (int j = 0; j < min_mn; j++)
-                T_i[j] = U_i[j] * S[j];
-            for (int j = min_mn; j < n; j++) T_i[j] = 0.0;
-        }
-        // pinv = V * (invS^T * U^T) == VT^T * (U * invS)^T
-        cblas_dgemm(
-            CblasRowMajor, CblasTrans, CblasTrans, m, m, n,
-            1.0, VT, n, T, n, 0.0, lastA_inv, last_Nd
-        );
-        
-        free(U);
-        free(S);
-        free(T);
-        free(VT);
-        free(sb);
-        mg_data->use_pinv   = 1;
-        mg_data->lastA_inv  = lastA_inv;
-        mg_data->lastA_ipiv = NULL;
-    } else {
-        // Not pure periodic BC, full rank, use LU decomposition. The data in lastA_inv 
-        // and lastA_ipiv can be directly used in LAPACKE_dgetrs later
-        int *lastA_ipiv = (int*) malloc(sizeof(int) * last_Nd);
-        assert(lastA_ipiv != NULL);
-        int dgetrf_info = LAPACKE_dgetrf(LAPACK_ROW_MAJOR, last_Nd, last_Nd, lastA_inv, last_Nd, lastA_ipiv);
-        assert(dgetrf_info == 0);
-        mg_data->use_pinv   = 0;
-        mg_data->lastA_inv  = lastA_inv;
-        mg_data->lastA_ipiv = lastA_ipiv;
-    }  // End of "if (BCx + BCy + BCz == 0)"
+    // Not pure periodic BC, full rank, use LU factorization. Pure periodic BC,
+    // rank deficient by 1, LU factorization can still work. The data in lastA_inv 
+    // and lastA_ipiv can be directly used in LAPACKE_dgetrs later
+    int *lastA_ipiv = (int*) malloc(sizeof(int) * last_Nd);
+    assert(lastA_ipiv != NULL);
+    int dgetrf_info = LAPACKE_dgetrf(LAPACK_ROW_MAJOR, last_Nd, last_Nd, lastA_inv, last_Nd, lastA_ipiv);
+    assert(dgetrf_info == 0);
+    mg_data->lastA_inv  = lastA_inv;
+    mg_data->lastA_ipiv = lastA_ipiv;
 
     *mg_data_ = mg_data;
 }
@@ -251,10 +201,15 @@ void MG_solve(mg_data_t mg_data, const double *b, double *x, const double reltol
     int n_0 = mg_data->vlen[0];
     int max_vcycle = 100;
     
+    double st, et, spmv_t = 0.0, solve_t = 0.0, vecop_t = 0.0;
+    
     double b_l2_norm = 0.0;
+    st = omp_get_wtime();
     #pragma omp parallel for simd reduction(+:b_l2_norm)
     for (int i = 0; i < n_0; i++)
         b_l2_norm += b[i] * b[i];
+    et = omp_get_wtime();
+    vecop_t += et - st;
     b_l2_norm = sqrt(b_l2_norm);
     
     // x0 = zeros(size(mg.A{1}, 1), 1);
@@ -262,10 +217,16 @@ void MG_solve(mg_data_t mg_data, const double *b, double *x, const double reltol
     memset(x, 0, sizeof(double) * n_0);
     double *rv_0 = mg_data->rv[0];
     double *ev_0 = mg_data->ev[0];
+    st = omp_get_wtime();
     CSR_SpMV(mg_data->A[0], x, rv_0);
+    et = omp_get_wtime();
+    spmv_t += et - st;
+    st = omp_get_wtime();
     #pragma omp parallel for simd
     for (int i = 0; i < n_0; i++)
         rv_0[i] = b[i] - rv_0[i];
+    et = omp_get_wtime();
+    vecop_t += et - st;
     
     int nlevel = mg_data->nlevel;
     for (int k = 0; k < max_vcycle; k++)
@@ -281,38 +242,44 @@ void MG_solve(mg_data_t mg_data, const double *b, double *x, const double reltol
             
             // Pre-smoothing
             // e{level} = mg.M{level} .* r{level};
+            st = omp_get_wtime();
             #pragma omp parallel for simd
             for (int i = 0; i < n_lvl; i++)
                 ev_lvl[i] = M_lvl[i] * rv_lvl[i];
+            et = omp_get_wtime();
+            vecop_t += et - st;
             // Restrict the residual
             // t = mg.A{level} * e{level}
+            st = omp_get_wtime();
             CSR_SpMV(mg_data->A[lvl], ev_lvl, tv_lvl);
+            et = omp_get_wtime();
+            spmv_t += et - st;
             // t = r{level} - t
+            st = omp_get_wtime();
             #pragma omp parallel for simd
             for (int i = 0; i < n_lvl; i++)
                 tv_lvl[i] = rv_lvl[i] - tv_lvl[i];
+            et = omp_get_wtime();
+            vecop_t += et - st;
             // r{level+1} = mg.R{level+1} * t
+            st = omp_get_wtime();
             CSR_SpMV(mg_data->R[lvl], tv_lvl, mg_data->rv[lvl + 1]);
+            et = omp_get_wtime();
+            spmv_t += et - st;
         }  // End of lvl loop
         
         // 2. Solve on the coarsest level
+        st = omp_get_wtime();
         int last_Nd = mg_data->vlen[nlevel];
-        if (mg_data->use_pinv == 0)
-        {
-            // mg.e{level+1} = mg.lastA_U \ (mg.lastA_L \ mg.r{mg.nlevel});
-            LAPACKE_dgetrs(
-                LAPACK_ROW_MAJOR, 'N', last_Nd, 1, 
-                mg_data->lastA_inv, last_Nd, mg_data->lastA_ipiv, 
-                mg_data->rv[nlevel], 1
-            );
-            memcpy(mg_data->ev[nlevel], mg_data->rv[nlevel], sizeof(double) * last_Nd);
-        } else {
-            // mg.e{level+1} = mg.lastA_pinv * mg.r{mg.nlevel};
-            cblas_dgemv(
-                CblasRowMajor, CblasNoTrans, last_Nd, last_Nd, 1.0, mg_data->lastA_inv, 
-                last_Nd, mg_data->rv[nlevel], 1, 0.0, mg_data->ev[nlevel], 1
-            );
-        }
+        // mg.e{level+1} = mg.lastA_U \ (mg.lastA_L \ mg.r{mg.nlevel});
+        LAPACKE_dgetrs(
+            LAPACK_ROW_MAJOR, 'N', last_Nd, 1, 
+            mg_data->lastA_inv, last_Nd, mg_data->lastA_ipiv, 
+            mg_data->rv[nlevel], 1
+        );
+        memcpy(mg_data->ev[nlevel], mg_data->rv[nlevel], sizeof(double) * last_Nd);
+        et = omp_get_wtime();
+        solve_t += et - st;
         
         // 3. Upward pass
         for (int lvl = nlevel - 1; lvl >= 0; lvl--)
@@ -325,27 +292,46 @@ void MG_solve(mg_data_t mg_data, const double *b, double *x, const double reltol
             
             // Prolong the correction
             // e{level} = e{level} + mg.P{level+1} * e{level+1}; 
+            st = omp_get_wtime();
             CSR_SpMV(mg_data->P[lvl], mg_data->ev[lvl + 1], tv_lvl);
+            et = omp_get_wtime();
+            spmv_t += et - st;
+            st = omp_get_wtime();
             #pragma omp parallel for simd
             for (int i = 0; i < n_lvl; i++)
                 ev_lvl[i] += tv_lvl[i];
+            et = omp_get_wtime();
+            vecop_t += et - st;
             
             // Post-smoothing
             // t = mg.A{level} * e{level}
+            st = omp_get_wtime();
             CSR_SpMV(mg_data->A[lvl], ev_lvl, tv_lvl);
+            et = omp_get_wtime();
+            spmv_t += et - st;
             // e{level} = e{level} + mg.M{level} .* (r{level} - t)
+            st = omp_get_wtime();
             #pragma omp parallel for simd
             for (int i = 0; i < n_lvl; i++)
                 ev_lvl[i] += M_lvl[i] * (rv_lvl[i] - tv_lvl[i]);
+            et = omp_get_wtime();
+            vecop_t += et - st;
         }  // End of lvl loop
         
         // 4. Correct the finest grid solution, calculate the new residual,
         //    and check the relative error
         // x = x + e{1};
         // r{1} = b - mg.A{1} * x;
+        st = omp_get_wtime();
         #pragma omp parallel for simd
         for (int i = 0; i < n_0; i++) x[i] += ev_0[i];
+        et = omp_get_wtime();
+        vecop_t += et - st;
+        st = omp_get_wtime();
         CSR_SpMV(mg_data->A[0], x, rv_0);
+        et = omp_get_wtime();
+        spmv_t += et - st;
+        st = omp_get_wtime();
         double res_l2_norm = 0.0, res_relerr;
         #pragma omp parallel for simd reduction(+:res_l2_norm)
         for (int i = 0; i < n_0; i++)
@@ -353,10 +339,16 @@ void MG_solve(mg_data_t mg_data, const double *b, double *x, const double reltol
             rv_0[i] = b[i] - rv_0[i];
             res_l2_norm += rv_0[i] * rv_0[i];
         }
+        et = omp_get_wtime();
+        vecop_t += et - st;
         res_l2_norm = sqrt(res_l2_norm);
         res_relerr  = res_l2_norm / b_l2_norm;
         printf("%2d    %e\n", k, res_relerr);
         if (res_relerr <= reltol) break;
     }  // End of k loop
+    printf(
+        "SpMV, coarse grid solve, vector operation used %3.3lf, %3.3lf, %3.3lf ms\n",
+        spmv_t * 1000.0, solve_t * 1000.0, vecop_t * 1000.0
+    );
 }
 

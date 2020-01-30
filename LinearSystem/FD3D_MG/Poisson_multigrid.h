@@ -6,7 +6,6 @@
 struct mg_data_
 {
     int    nlevel;      // Finest grid is level 0, coarsest grid is level nlevel
-    int    use_pinv;    // Coarsest grid matrix solver: 0 -> LU factorization, 1 -> pseudo-inverse
     int    *vlen;       // Size nlevel+1, lengths of vectors on each level
     int    *lastA_ipiv; // Size vec_len[level], ipiv array from LAPACKE_dgetrf
     double *lastA_inv;  // Size vec_len[level]*vec_len[level], LU factorization from 
