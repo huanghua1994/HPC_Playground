@@ -223,7 +223,7 @@ void MG_init(
 void MG_solve(mg_data_t mg_data, const double *b, double *x, const double reltol)
 {
     int n_0 = mg_data->vlen[0];
-    int max_vcycle = 100;
+    int max_vcycle = 300;
     
     double st, et, spmv_t = 0.0, solve_t = 0.0, vecop_t = 0.0;
     

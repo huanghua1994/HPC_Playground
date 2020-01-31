@@ -14,16 +14,18 @@ const static double stencil_coefs[7] = {
 
 // Set parameters for Laplacian operator
 // Input parameters:
-//    nx, ny, nz : Sizes of x, y, z direction
-//    radius     : Radius of the stencil
-//    x_in       : Input vector
-void FD3D_Laplacian_set_param(const int nx_, const int ny_, const int nz_, const int radius_);
+//   cell_dims  : Size 3, length of the FD domain on x, y, z directions
+//   grid_sizes : Size 3, number of the finite difference grid points on x, y, z directions
+//   BCs        : Size 3, boundary condition on x, y, z directions, 0 : periodic, 1 : Dirichlet.
+//                For each direction, the mesh space == cell_dims(k) / (grid_sizes(k) - BCs(k)).
+//   FDn        : Finite difference radius
+void FD3D_Laplacian_set_param(const double *cell_dims, const int *grid_sizes, const int *BCs, const int FDn);
 
 // Laplacian operator
 // Input parameters:
-//    x_in  : Input vector
+//   x_in  : Input vector
 // Output parameters:
-//    x_out : Output vector, := Laplacian * x_in
+//   x_out : Output vector, := Laplacian * x_in
 void FD3D_Laplacian_MatVec(const double *x_in, double *x_out);
 
 #endif

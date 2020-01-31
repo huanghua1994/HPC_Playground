@@ -9,50 +9,65 @@
 #include "CG.h"
 #include "FD3D.h"
 
-const int    RADIUS   = 6;
-const int    max_iter = 500;
-const double res_tol  = 1e-6;
-
 int main(int argc, char **argv)
 {
-    int nx = 128, ny = 128, nz = 128;
-    if (argc >= 2) nx = atoi(argv[1]);
-    if (argc >= 3) nx = atoi(argv[2]);
-    if (argc >= 4) nx = atoi(argv[3]);
-    if (nx < 64 || nx > 1024) nx = 128;
-    if (ny < 64 || ny > 1024) ny = 128;
-    if (nz < 64 || nz > 1024) nz = 128;
-    printf("3D finite difference domain = %d * %d * %d, order-12 stencil\n", nx, ny, nz);
-    printf("Iterative solver max iteration = %d, residual tolerance = %e\n", max_iter, res_tol);
+    double cell_dims[3] = {19.2, 19.2, 19.6};
+    int grid_sizes[3] = {48, 48, 50};  // Nx, Ny, Nz
+    int BCs[3] = {0, 0, 1};
+    int FDn = 6;
+    int max_iter = 2000;
+    double res_tol = 1e-10;
     
-    int nxyz = nx * ny * nz;
-    size_t nxyz_msize = sizeof(double) * nxyz;
-    double *b = (double*) malloc(nxyz_msize);
-    double *x = (double*) malloc(nxyz_msize);
+    if (argc < 7)
+    {
+        printf("Nx, Ny, Nz: ");
+        scanf("%d%d%d", &grid_sizes[0], &grid_sizes[1], &grid_sizes[2]);
+        printf("BCx, BCy, BCz: ");
+        scanf("%d%d%d", &BCs[0], &BCs[1], &BCs[2]);
+    } else {
+        grid_sizes[0] = atoi(argv[1]);
+        grid_sizes[1] = atoi(argv[2]);
+        grid_sizes[2] = atoi(argv[3]);
+        BCs[0] = atoi(argv[4]);
+        BCs[1] = atoi(argv[5]);
+        BCs[2] = atoi(argv[6]);
+    }
+    cell_dims[0] = 0.4 * (double) (grid_sizes[0] - BCs[0]);
+    cell_dims[1] = 0.4 * (double) (grid_sizes[1] - BCs[1]);
+    cell_dims[2] = 0.4 * (double) (grid_sizes[2] - BCs[2]);
+    
+    printf("Problem setting: \n");
+    printf("    Nx, Ny, Nz: %d, %d, %d\n", grid_sizes[0], grid_sizes[1], grid_sizes[2]);
+    printf("    BCx, BCy, BCz: %d, %d, %d\n", BCs[0], BCs[1], BCs[2]);
+    
+    int Nd = grid_sizes[0] * grid_sizes[1] * grid_sizes[2];
+    double *b = (double *) malloc(sizeof(double) * Nd);
+    double *x = (double *) malloc(sizeof(double) * Nd);
     assert(b != NULL && x != NULL);
     
-    srand(time(NULL));
-    for (int i = 0; i < nxyz; i++)
-        b[i] = (double) rand() / (double) RAND_MAX;
+    srand48(19241112);
+    for (int i = 0; i < Nd; i++) b[i] = drand48() - 0.5;
     
-    FD3D_Laplacian_set_param(nx, ny, nz, RADIUS);
+    FD3D_Laplacian_set_param(cell_dims, grid_sizes, BCs, FDn);
     
     /*
     printf("Starting BiCGStab...\n");
     // Use x = 0 as initial guess
     memset(x, 0, nxyz_msize);
-    BiCGStab(nxyz, res_tol, max_iter, b, x);
+    BiCGStab(Nd, res_tol, max_iter, b, x);
     */
     
-    printf("Starting classic CG...\n");
+    printf("Starting CG...\n");
     // Use x = 0 as initial guess
-    memset(x, 0, nxyz_msize);
-    CG_classic(nxyz, res_tol, max_iter, b, x);
+    memset(x, 0, sizeof(double) * Nd);
+    CG_classic(Nd, res_tol, max_iter, b, x);
     
+    /*
     printf("Starting AAR...\n");
     // Use x = 0 as initial guess
-    memset(x, 0, nxyz_msize);
-    AAR(nxyz, res_tol, max_iter, b, x);
+    memset(x, 0, sizeof(double) * Nd);
+    AAR(Nd, res_tol, max_iter, b, x);
+    */
     
     free(b);
     free(x);

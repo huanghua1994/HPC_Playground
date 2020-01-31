@@ -171,17 +171,17 @@ void AAR(
     r_l2norm = L2Norm(N, r);
     stop_res = b_l2norm * res_tol;
     
-    int iter_cnt = 1;
-    printf("Iteration, Relative Residual\n");
-    for (; iter_cnt <= max_iter; iter_cnt++)
+    int iter = 1;
+    //printf("Iteration, Relative Residual\n");
+    for (; iter <= max_iter; iter++)
     {
         // (1) Compute preconditioned residual f
         calcPreconResVec(N, r, f);
         
         // (2) Store residual & iteration history
-        if (iter_cnt > 1)
+        if (iter > 1)
         {
-            int pos = (iter_cnt - 2) % m;
+            int pos = (iter - 2) % m;
             double *Xp = X + pos * N;
             double *Fp = F + pos * N;
             #pragma omp parallel for simd
@@ -199,7 +199,7 @@ void AAR(
         }
         
         // (3) Update vector
-        if ((iter_cnt % p == 0) && (iter_cnt > 1))
+        if ((iter % p == 0) && (iter > 1))
         {
             AndersonExtrapolation(N, m, x0, f, X, F, beta, x);
             calcResVec(N, x, b, r);
@@ -209,14 +209,20 @@ void AAR(
             calcResVec(N, x, b, r);
         }
         
-        printf("      %3d,         %e\n", iter_cnt, r_l2norm / b_l2norm);
+        //printf("      %3d,         %e\n", iter, r_l2norm / b_l2norm);
         if (r_l2norm < stop_res) 
         {
-            double et = omp_get_wtime();
-            printf("AAR converged, used time = %lf (s)\n", et - st);
+            //double et = omp_get_wtime();
+            //printf("AAR converged, used time = %lf (s)\n", et - st);
             break;
         }
     }
+    
+    double et = omp_get_wtime();
+    printf(
+        "AAR stopped after %d iterations, residual relerr = %e, used %.3lf seconds\n", 
+        iter, r_l2norm / b_l2norm, et - st
+    );
 }
 
 /*
