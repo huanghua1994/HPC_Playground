@@ -55,6 +55,8 @@ void MG_init(
     int    BCx = BCs[0];
     int    BCy = BCs[1];
     int    BCz = BCs[2];
+    
+    double st0 = omp_get_wtime();
 
     // 1. Calculate the number of levels we need
     int nlevel = 0, Nd;
@@ -217,6 +219,9 @@ void MG_init(
     mg_data->lastA_inv  = lastA_inv;
     mg_data->lastA_ipiv = lastA_ipiv;
 
+    double et0 = omp_get_wtime();
+    printf("Multigrid construction finished, used %.3lf seconds\n", et0 - st0);
+
     *mg_data_ = mg_data;
 }
 
@@ -225,10 +230,11 @@ void MG_solve(mg_data_t mg_data, const double *b, double *x, const double reltol
     int n_0 = mg_data->vlen[0];
     int max_vcycle = 300;
     
-    double st, et, spmv_t = 0.0, solve_t = 0.0, vecop_t = 0.0;
+    double st, et, st0, et0;
+    double spmv_t = 0.0, solve_t = 0.0, vecop_t = 0.0;
     
     double b_l2_norm = 0.0;
-    st = omp_get_wtime();
+    st0 = st = omp_get_wtime();
     #pragma omp parallel for simd reduction(+:b_l2_norm)
     for (int i = 0; i < n_0; i++)
         b_l2_norm += b[i] * b[i];
@@ -398,9 +404,11 @@ void MG_solve(mg_data_t mg_data, const double *b, double *x, const double reltol
         printf("%2d    %e\n", k, res_relerr);
         if (res_relerr <= reltol) break;
     }  // End of k loop
+    et0 = omp_get_wtime();
+    printf("Multigrid solve finished, used %.3lf seconds\n", et0 - st0);
     printf(
-        "SpMV, coarse grid solve, vector operation used %3.3lf, %3.3lf, %3.3lf ms\n",
-        spmv_t * 1000.0, solve_t * 1000.0, vecop_t * 1000.0
+        "SpMV, coarse grid solve, vector operation used %.3lf, %.3lf, %.3lf seconds\n",
+        spmv_t, solve_t, vecop_t
     );
 }
 

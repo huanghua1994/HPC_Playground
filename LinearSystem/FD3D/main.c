@@ -48,6 +48,16 @@ int main(int argc, char **argv)
     srand48(19241112);
     for (int i = 0; i < Nd; i++) b[i] = drand48() - 0.5;
     
+    // If all periodic boundaries, then project b such that the 
+    // system is consistent
+    if (BCs[0] == 0 && BCs[1] == 0 && BCs[2] == 0)
+    {
+        double t = 0.0;
+        for (int i = 0; i < Nd; i++) t += b[i];
+        t /= (double)(Nd);
+        for (int i = 0; i < Nd; i++) b[i] -= t;
+    }
+    
     FD3D_Laplacian_set_param(cell_dims, grid_sizes, BCs, FDn);
     
     /*
@@ -61,6 +71,7 @@ int main(int argc, char **argv)
     // Use x = 0 as initial guess
     memset(x, 0, sizeof(double) * Nd);
     CG_classic(Nd, res_tol, max_iter, b, x);
+    printf("%lf  %lf  %lf  %lf\n", x[0], x[1], x[2], x[3]);
     
     /*
     printf("Starting AAR...\n");

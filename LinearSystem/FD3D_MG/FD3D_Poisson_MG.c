@@ -5,6 +5,7 @@
 #include <omp.h>
 
 #include "Poisson_multigrid.h"
+#include "CG.h"
 
 int main(int argc, char **argv)
 {
@@ -35,14 +36,6 @@ int main(int argc, char **argv)
     printf("    Nx, Ny, Nz: %d, %d, %d\n", grid_sizes[0], grid_sizes[1], grid_sizes[2]);
     printf("    BCx, BCy, BCz: %d, %d, %d\n", BCs[0], BCs[1], BCs[2]);
     
-    double st, et;
-    
-    mg_data_t mg_data;
-    st = omp_get_wtime();
-    MG_init(cell_dims, grid_sizes, BCs, FDn, &mg_data);
-    et = omp_get_wtime();
-    printf("MG_init() used %.3lf (s)\n", et - st);
-    
     int Nd = grid_sizes[0] * grid_sizes[1] * grid_sizes[2];
     double *b = (double *) malloc(sizeof(double) * Nd);
     double *x = (double *) malloc(sizeof(double) * Nd);
@@ -61,10 +54,14 @@ int main(int argc, char **argv)
         for (int i = 0; i < Nd; i++) b[i] -= t;
     }
     
-    st = omp_get_wtime();
+    mg_data_t mg_data;
+    MG_init(cell_dims, grid_sizes, BCs, FDn, &mg_data);
     MG_solve(mg_data, b, x, 1e-10);
-    et = omp_get_wtime();
-    printf("MG_solve() used %.3lf (s)\n", et - st);
+    printf("%lf  %lf  %lf  %lf\n", x[0], x[1], x[2], x[3]);
+    
+    memset(x, 0, sizeof(double) * Nd);
+    CG_classic(mg_data->mkl_sp_A[0], Nd, 1e-10, 2000, b, x);
+    printf("%lf  %lf  %lf  %lf\n", x[0], x[1], x[2], x[3]);
     
     MG_destroy(mg_data);
     free(b);
