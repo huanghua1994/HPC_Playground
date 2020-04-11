@@ -1,4 +1,4 @@
-// Compile: gcc -std=gnu99 -march=corei7-avx -fopenmp marco_template.c -o marco_template.exe
+// Compile: gcc -O3 -std=gnu99 -march=core-avx2 -fopenmp -Wall marco_template.c -o marco_template.exe
 // Reference: 1. https://gcc.gnu.org/onlinedocs/cpp/Macros.html
 //            2. https://stackoverflow.com/questions/1253934/c-pre-processor-defining-for-generated-function-names
 
@@ -11,10 +11,8 @@ void vec_func_##STR(                    \
     double *__restrict__ z              \
 )
 
-#define VEC_FUN_NAME_WITH_PARAM(PARAM)  MAKE_VEC_FUN_NAME(PARAM)
-
 #define VEC_FUN_TEMPLATE(PARAM1, PARAM2)        \
-VEC_FUN_NAME_WITH_PARAM(PARAM1 ## _ ## PARAM2)  \
+MAKE_VEC_FUN_NAME(PARAM1 ## _ ## PARAM2)        \
 {                                               \
     for (int i = 0; i < PARAM1; i++)            \
     {                                           \
