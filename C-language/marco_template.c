@@ -5,21 +5,18 @@
 #include <stdio.h>
 #include <string.h>
 
-#define MAKE_VEC_FUN_NAME(STR)          \
-void vec_func_##STR(                    \
-    const double *x, const double *y,   \
-    double *__restrict__ z              \
-)
-
-#define VEC_FUN_TEMPLATE(PARAM1, PARAM2)        \
-MAKE_VEC_FUN_NAME(PARAM1 ## _ ## PARAM2)        \
-{                                               \
-    for (int i = 0; i < PARAM1; i++)            \
-    {                                           \
-        _Pragma("omp simd")                     \
-        for (int j = 0; j < PARAM2; j++)        \
-            z[j] += x[i] * y[j];                \
-    }                                           \
+#define VEC_FUN_TEMPLATE(PARAM1, PARAM2)    \
+void vec_func_ ## PARAM1 ## _ ## PARAM2 (   \
+    const double *x, const double *y,       \
+    double *__restrict__ z                  \
+)                                           \
+{                                           \
+    for (int i = 0; i < PARAM1; i++)        \
+    {                                       \
+        _Pragma("omp simd")                 \
+        for (int j = 0; j < PARAM2; j++)    \
+            z[j] += x[i] * y[j];            \
+    }                                       \
 }
 
 VEC_FUN_TEMPLATE(2, 4)  // This gives you vec_func_2_4(x, y, z)
