@@ -374,15 +374,6 @@ void calc_block_spos_len(
     }
 }
 
-double get_wtime_sec()
-{
-    double sec;
-    struct timeval tv;
-    gettimeofday(&tv, NULL);
-    sec = tv.tv_sec + (double) tv.tv_usec / 1000000.0;
-    return sec;
-}
-
 int main(int argc, char **argv)
 {
     MPI_Init(&argc, &argv);
@@ -455,9 +446,9 @@ int main(int argc, char **argv)
     int ntest = 10;
     for (int i = 0; i < ntest; i++)
     {
-        st = get_wtime_sec();
+        st = MPI_Wtime();
         mat_redist_exec(redist_info, src_blk, src_ncol, dst_blk, req_ncol);
-        et = get_wtime_sec();
+        et = MPI_Wtime();
         ut += et - st;
     }
     if (rank == 0) printf("%d tests mat_redist_exec used %.3lf sec\n", ntest, ut);
