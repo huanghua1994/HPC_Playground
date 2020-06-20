@@ -212,11 +212,11 @@ void mat_redist_info_build(
             recv_cnt += recv_info0_i[2] * recv_info0_i[3];
         }
     }  // End of iproc loop
-    int    *recv_ranks  = (int*)    malloc(sizeof(int) * n_proc_recv);
-    int    *recv_sizes  = (int*)    malloc(sizeof(int) * n_proc_recv);
-    int    *recv_displs = (int*)    malloc(sizeof(int) * (n_proc_recv + 1));
-    int    *rblk_sizes  = (int*)    malloc(sizeof(int) * n_proc_recv * 4);
-    double *recv_buf = (double*) malloc(sizeof(double) * recv_cnt);
+    int    *recv_ranks  = (int*)    malloc(sizeof(int)    * n_proc_recv);
+    int    *recv_sizes  = (int*)    malloc(sizeof(int)    * n_proc_recv);
+    int    *recv_displs = (int*)    malloc(sizeof(int)    * (n_proc_recv + 1));
+    int    *rblk_sizes  = (int*)    malloc(sizeof(int)    * n_proc_recv * 4);
+    double *recv_buf    = (double*) malloc(sizeof(double) * recv_cnt);
     if (recv_ranks == NULL || recv_sizes == NULL || recv_displs == NULL || rblk_sizes == NULL || recv_buf == NULL)
     {
         fprintf(stderr, "[ERROR] Failed to allocate recv_info (size %d) or recv_buf (size %d)\n", 7 * n_proc_recv, recv_cnt);
@@ -453,12 +453,15 @@ int main(int argc, char **argv)
     double st, et, ut = 0.0;
     // Warm up
     mat_redist_exec(redist_info, src_blk, src_ncol, dst_blk, req_ncol);
+    MPI_Barrier(MPI_COMM_WORLD);
     // Time it
     int ntest = 10;
     for (int i = 0; i < ntest; i++)
     {
+        MPI_Barrier(MPI_COMM_WORLD);
         st = MPI_Wtime();
         mat_redist_exec(redist_info, src_blk, src_ncol, dst_blk, req_ncol);
+        MPI_Barrier(MPI_COMM_WORLD);
         et = MPI_Wtime();
         ut += et - st;
     }

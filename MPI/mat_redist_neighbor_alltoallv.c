@@ -442,12 +442,15 @@ int main(int argc, char **argv)
     double st, et, ut = 0.0;
     // Warm up
     mat_redist_exec(redist_info, src_blk, src_ncol, dst_blk, req_ncol);
+    MPI_Barrier(MPI_COMM_WORLD);
     // Time it
     int ntest = 10;
     for (int i = 0; i < ntest; i++)
     {
+        MPI_Barrier(MPI_COMM_WORLD);
         st = MPI_Wtime();
         mat_redist_exec(redist_info, src_blk, src_ncol, dst_blk, req_ncol);
+        MPI_Barrier(MPI_COMM_WORLD);
         et = MPI_Wtime();
         ut += et - st;
     }
