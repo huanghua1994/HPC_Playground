@@ -5,29 +5,31 @@
 
 struct mat_redist_info
 {
-    MPI_Comm comm;          // MPI communicator
-    int      nproc;         // Number of MPI processes in comm
-    int      rank;          // Rank of this MPI process in comm
-    int      src_srow;      // The starting row of this process's source matrix block
-    int      src_scol;      // Number of rows of this process's source matrix block
-    int      src_nrow;      // The starting columns of this process's source matrix block
-    int      src_ncol;      // Number of columns of this process's source matrix block
-    int      req_srow;      // The starting row this process requires
-    int      req_scol;      // Number of rows this process requires
-    int      req_nrow;      // The starting columns this process requires
-    int      req_ncol;      // Number of columns this process requires
-    int      n_proc_send;   // Number of processes this process needs to send its original block to
-    int      n_proc_recv;   // Number of processes this process needs to receive its required block from
-    int      *send_ranks;   // Size n_proc_send, MPI ranks this process need to send a block to 
-    int      *send_sizes;   // Size n_proc_send, sizes of blocks this process need to send
-    int      *send_displs;  // Size n_proc_send+1, send block displacements in send_buf
-    int      *sblk_sizes;   // Size n_proc_send*4, each row describes a send block's srow, scol, nrow, ncol
-    int      *recv_ranks;   // Size n_proc_recv, MPI ranks this process need to receive a block from
-    int      *recv_sizes;   // Size n_proc_recv, sizes of blocks this process need to receive
-    int      *recv_displs;  // Size n_proc_recv+1, receive block displacements in recv_buf
-    int      *rblk_sizes;   // Size n_proc_recv*4, each row describes a receive block's srow, scol, nrow, ncol
-    double   *send_buf;     // Send buffer
-    double   *recv_buf;     // Receive buffer
+    MPI_Comm     comm;      // MPI communicator
+    MPI_Datatype dtype;     // Matrix element MPI data type 
+    size_t  dt_size;        // Matrix element MPI data type size in bytes
+    int     nproc;          // Number of MPI processes in comm
+    int     rank;           // Rank of this MPI process in comm
+    int     src_srow;       // The starting row of this process's source matrix block
+    int     src_scol;       // Number of rows of this process's source matrix block
+    int     src_nrow;       // The starting columns of this process's source matrix block
+    int     src_ncol;       // Number of columns of this process's source matrix block
+    int     req_srow;       // The starting row this process requires
+    int     req_scol;       // Number of rows this process requires
+    int     req_nrow;       // The starting columns this process requires
+    int     req_ncol;       // Number of columns this process requires
+    int     n_proc_send;    // Number of processes this process needs to send its original block to
+    int     n_proc_recv;    // Number of processes this process needs to receive its required block from
+    int     *send_ranks;    // Size n_proc_send, MPI ranks this process need to send a block to 
+    int     *send_sizes;    // Size n_proc_send, sizes of blocks this process need to send
+    int     *send_displs;   // Size n_proc_send+1, send block displacements in send_buf
+    int     *sblk_sizes;    // Size n_proc_send*4, each row describes a send block's srow, scol, nrow, ncol
+    int     *recv_ranks;    // Size n_proc_recv, MPI ranks this process need to receive a block from
+    int     *recv_sizes;    // Size n_proc_recv, sizes of blocks this process need to receive
+    int     *recv_displs;   // Size n_proc_recv+1, receive block displacements in recv_buf
+    int     *rblk_sizes;    // Size n_proc_recv*4, each row describes a receive block's srow, scol, nrow, ncol
+    void    *send_buf;      // Send buffer
+    void    *recv_buf;      // Receive buffer
 };
 typedef struct mat_redist_info  mat_redist_info_s;
 typedef struct mat_redist_info* mat_redist_info_t;
@@ -66,14 +68,23 @@ static void calc_rect_intersection(
     calc_seg_intersection(ys0, ye0, ys1, ye1, is_intersect, iys, iye);
 }
 
-static void copy_dbl_mat_blk(
-    double *dst, const int ldd, const double *src, const int lds, 
-    const int nrow, const int ncol
+static void copy_matrix_block(
+    const size_t dt_size, const int nrow, const int ncol, 
+    const void *src, const int lds, void *dst, const int ldd
 )
 {
+    const char *src_ = (char*) src;
+    char *dst_ = (char*) dst;
+    const size_t lds_ = dt_size * (size_t) lds;
+    const size_t ldd_ = dt_size * (size_t) ldd;
+    const size_t row_msize = dt_size * (size_t) ncol;
     for (int irow = 0; irow < nrow; irow++)
-        memcpy(dst + irow * ldd, src + irow * lds, sizeof(double) * ncol);
-} 
+    {
+        size_t src_offset = (size_t) irow * lds_;
+        size_t dst_offset = (size_t) irow * ldd_;
+        memcpy(dst_ + dst_offset, src_ + src_offset, row_msize);
+    }
+}
 
 // Set up a mat_redist_info_s for redistributing a 2D partitioned matrix
 // Note: the source blocks of any two processes should not overlap with each other
@@ -83,12 +94,14 @@ static void copy_dbl_mat_blk(
 //   req_s{row, col} : The starting row / column this process requires
 //   req_n{row, col} : Number of rows / columns this process requires
 //   comm            : MPI communicator
+//   dtype           : Matrix element MPI data type
+//   dt_size         : Matrix element MPI data type size in bytes
 // Output parameter:
 //   *info_ : Initialized mat_redist_info_t
 void mat_redist_info_build(
     const int src_srow, const int src_scol, const int src_nrow, const int src_ncol, 
     const int req_srow, const int req_scol, const int req_nrow, const int req_ncol,
-    MPI_Comm comm, mat_redist_info_t *info_
+    MPI_Comm comm, MPI_Datatype dtype, const size_t dt_size, mat_redist_info_t *info_
 )
 {
     mat_redist_info_t info = (mat_redist_info_t) malloc(sizeof(mat_redist_info_s));
@@ -97,10 +110,11 @@ void mat_redist_info_build(
     int nproc, rank;
     MPI_Comm_size(comm, &nproc);
     MPI_Comm_rank(comm, &rank);
-    info->comm  = comm;
-    info->rank  = rank;
-    info->nproc = nproc;
-    
+    info->comm     = comm;
+    info->rank     = rank;
+    info->nproc    = nproc;
+    info->dtype    = dtype;
+    info->dt_size  = dt_size;
     info->src_srow = src_srow;
     info->src_nrow = src_nrow;
     info->src_scol = src_scol;
@@ -151,11 +165,11 @@ void mat_redist_info_build(
             send_cnt += send_info0_i[2] * send_info0_i[3];
         }
     }  // End of iproc loop
-    int    *send_ranks  = (int*)    malloc(sizeof(int) * n_proc_send);
-    int    *send_sizes  = (int*)    malloc(sizeof(int) * n_proc_send);
-    int    *send_displs = (int*)    malloc(sizeof(int) * (n_proc_send + 1));
-    int    *sblk_sizes  = (int*)    malloc(sizeof(int) * n_proc_send * 4);
-    double *send_buf    = (double*) malloc(sizeof(double) * send_cnt);
+    int  *send_ranks  = (int*)  malloc(sizeof(int) * n_proc_send);
+    int  *send_sizes  = (int*)  malloc(sizeof(int) * n_proc_send);
+    int  *send_displs = (int*)  malloc(sizeof(int) * (n_proc_send + 1));
+    int  *sblk_sizes  = (int*)  malloc(sizeof(int) * n_proc_send * 4);
+    void *send_buf    = (void*) malloc(dt_size     * send_cnt);
     if (send_ranks == NULL || send_sizes == NULL || send_displs == NULL || sblk_sizes == NULL || send_buf == NULL)
     {
         fprintf(stderr, "[ERROR] Failed to allocate send_info (size %d) or send_buf (size %d)\n", 7 * n_proc_send, send_cnt);
@@ -212,11 +226,11 @@ void mat_redist_info_build(
             recv_cnt += recv_info0_i[2] * recv_info0_i[3];
         }
     }  // End of iproc loop
-    int    *recv_ranks  = (int*)    malloc(sizeof(int)    * n_proc_recv);
-    int    *recv_sizes  = (int*)    malloc(sizeof(int)    * n_proc_recv);
-    int    *recv_displs = (int*)    malloc(sizeof(int)    * (n_proc_recv + 1));
-    int    *rblk_sizes  = (int*)    malloc(sizeof(int)    * n_proc_recv * 4);
-    double *recv_buf    = (double*) malloc(sizeof(double) * recv_cnt);
+    int  *recv_ranks  = (int*)  malloc(sizeof(int) * n_proc_recv);
+    int  *recv_sizes  = (int*)  malloc(sizeof(int) * n_proc_recv);
+    int  *recv_displs = (int*)  malloc(sizeof(int) * (n_proc_recv + 1));
+    int  *rblk_sizes  = (int*)  malloc(sizeof(int) * n_proc_recv * 4);
+    void *recv_buf    = (void*) malloc(dt_size     * recv_cnt);
     if (recv_ranks == NULL || recv_sizes == NULL || recv_displs == NULL || rblk_sizes == NULL || recv_buf == NULL)
     {
         fprintf(stderr, "[ERROR] Failed to allocate recv_info (size %d) or recv_buf (size %d)\n", 7 * n_proc_recv, recv_cnt);
@@ -247,6 +261,8 @@ void mat_redist_info_build(
 
     free(all_src_req_info);
     *info_ = info;
+
+    MPI_Barrier(info->comm);
 }
 
 // Destroy a mat_redist_info_s
@@ -275,8 +291,8 @@ void mat_redist_info_destroy(mat_redist_info_t info)
 // Output parameter:
 //   dst_blk : Destination (required) matrix block of this process
 void mat_redist_exec(
-    mat_redist_info_t info, const double *src_blk, const int src_ld, 
-    double *dst_blk, const int dst_ld
+    mat_redist_info_t info, const void *src_blk, const int src_ld, 
+    void *dst_blk, const int dst_ld
 )
 {
     if (info == NULL)
@@ -285,42 +301,45 @@ void mat_redist_exec(
         return;
     }
 
-    int rank = info->rank;
+    int rank    = info->rank;
+    int dt_size = info->dt_size;
 
     // Pack the send_buf and call MPI_Isend
-    int    src_srow     = info->src_srow;
-    int    src_scol     = info->src_scol;
-    int    n_proc_send  = info->n_proc_send;
-    int    *send_ranks  = info->send_ranks;
-    int    *send_sizes  = info->send_sizes;
-    int    *send_displs = info->send_displs;
-    int    *sblk_sizes  = info->sblk_sizes;
-    double *send_buf    = info->send_buf;
+    int  src_srow     = info->src_srow;
+    int  src_scol     = info->src_scol;
+    int  n_proc_send  = info->n_proc_send;
+    int  *send_ranks  = info->send_ranks;
+    int  *send_sizes  = info->send_sizes;
+    int  *send_displs = info->send_displs;
+    int  *sblk_sizes  = info->sblk_sizes;
+    char *send_buf    = (char*) info->send_buf;
+    char *src_blk_    = (char*) src_blk;
     MPI_Request send_req;
     for (int isend = 0; isend < n_proc_send; isend++)
     {
-        int *i_sblk_size = sblk_sizes + isend * 4;
-        int i_send_srow = i_sblk_size[0];
-        int i_send_scol = i_sblk_size[1];
-        int i_send_nrow = i_sblk_size[2];
-        int i_send_ncol = i_sblk_size[3];
-        int local_srow  = i_send_srow - src_srow;
-        int local_scol  = i_send_scol - src_scol;
-        double *i_send_buf = send_buf + send_displs[isend];
-        const double *i_send_src = src_blk + local_srow * src_ld + local_scol;
-        copy_dbl_mat_blk(i_send_buf, i_send_ncol, i_send_src, src_ld, i_send_nrow, i_send_ncol);
-        MPI_Isend(i_send_buf, send_sizes[isend], MPI_DOUBLE, send_ranks[isend], rank, info->comm, &send_req);
+        int  *i_sblk_size = sblk_sizes + isend * 4;
+        int  i_send_srow  = i_sblk_size[0];
+        int  i_send_scol  = i_sblk_size[1];
+        int  i_send_nrow  = i_sblk_size[2];
+        int  i_send_ncol  = i_sblk_size[3];
+        int  local_srow   = i_send_srow - src_srow;
+        int  local_scol   = i_send_scol - src_scol;
+        char *i_send_buf  = send_buf + dt_size * send_displs[isend];
+        const char *i_send_src = src_blk_ + dt_size * (local_srow * src_ld + local_scol);
+        copy_matrix_block(dt_size, i_send_nrow, i_send_ncol, i_send_src, src_ld, i_send_buf, i_send_ncol);
+        MPI_Isend(i_send_buf, send_sizes[isend], info->dtype, send_ranks[isend], rank, info->comm, &send_req);
     }  // End of isend loop
 
     // Receive blocks from other processes and repack blocks
-    int    req_srow     = info->req_srow;
-    int    req_scol     = info->req_scol;
-    int    n_proc_recv  = info->n_proc_recv;
-    int    *recv_ranks  = info->recv_ranks;
-    int    *recv_sizes  = info->recv_sizes;
-    int    *recv_displs = info->recv_displs;
-    int    *rblk_sizes  = info->rblk_sizes;
-    double *recv_buf    = info->recv_buf;
+    int  req_srow     = info->req_srow;
+    int  req_scol     = info->req_scol;
+    int  n_proc_recv  = info->n_proc_recv;
+    int  *recv_ranks  = info->recv_ranks;
+    int  *recv_sizes  = info->recv_sizes;
+    int  *recv_displs = info->recv_displs;
+    int  *rblk_sizes  = info->rblk_sizes;
+    char *recv_buf    = (char*) info->recv_buf;
+    char *dst_blk_    = (char*) dst_blk;
     MPI_Status recv_status;
     for (int recv_cnt = 0; recv_cnt < n_proc_recv; recv_cnt++)
     {
@@ -341,17 +360,19 @@ void mat_redist_exec(
             fprintf(stderr, "[ERROR] Rank %d received unexpected message from rank %d\n", rank, i_recv_rank);
             continue;
         }
-        int i_recv_srow = i_rblk_size[0];
-        int i_recv_scol = i_rblk_size[1];
-        int i_recv_nrow = i_rblk_size[2];
-        int i_recv_ncol = i_rblk_size[3];
-        int local_srow  = i_recv_srow - req_srow;
-        int local_scol  = i_recv_scol - req_scol;
-        double *i_recv_buf = recv_buf + recv_displs[irecv];
-        double *i_recv_dst = dst_blk + local_srow * dst_ld + local_scol;
-        MPI_Recv(i_recv_buf, recv_sizes[irecv], MPI_DOUBLE, i_recv_rank, recv_status.MPI_TAG, info->comm, &recv_status);
-        copy_dbl_mat_blk(i_recv_dst, dst_ld, i_recv_buf, i_recv_ncol, i_recv_nrow, i_recv_ncol);
+        int  i_recv_srow = i_rblk_size[0];
+        int  i_recv_scol = i_rblk_size[1];
+        int  i_recv_nrow = i_rblk_size[2];
+        int  i_recv_ncol = i_rblk_size[3];
+        int  local_srow  = i_recv_srow - req_srow;
+        int  local_scol  = i_recv_scol - req_scol;
+        char *i_recv_buf = recv_buf + dt_size * recv_displs[irecv];
+        char *i_recv_dst = dst_blk_ + dt_size * (local_srow * dst_ld + local_scol);
+        MPI_Recv(i_recv_buf, recv_sizes[irecv], info->dtype, i_recv_rank, recv_status.MPI_TAG, info->comm, &recv_status);
+        copy_matrix_block(dt_size, i_recv_nrow, i_recv_ncol, i_recv_buf, i_recv_ncol, i_recv_dst, dst_ld);
     }  // End of recv_cnt loop
+
+    MPI_Barrier(info->comm);
 }
 
 // ====================== Below are test driver ======================
@@ -360,6 +381,19 @@ void mat_redist_exec(
 #include <sys/time.h>
 #include <time.h>
 #include <math.h>
+#include <complex.h>
+
+#if 1
+#define DTYPE      double
+#define MPI_DTYPE  MPI_DOUBLE
+#define DABS       fabs
+#endif
+
+#if 0
+#define DTYPE      double _Complex
+#define MPI_DTYPE  MPI_C_DOUBLE_COMPLEX
+#define DABS       cabs
+#endif
 
 void calc_block_spos_len(
     const int len, const int nblk, const int iblk,
@@ -410,11 +444,11 @@ int main(int argc, char **argv)
     int src_srow, src_scol, src_nrow, src_ncol;
     calc_block_spos_len(glb_nrow, nproc_row, rank_row, &src_srow, &src_nrow);
     calc_block_spos_len(glb_ncol, nproc_col, rank_col, &src_scol, &src_ncol);
-    double *src_blk = (double*) malloc(sizeof(double) * src_nrow * src_ncol);
+    DTYPE *src_blk = (DTYPE*) malloc(sizeof(DTYPE) * src_nrow * src_ncol);
     for (int irow = 0; irow < src_nrow; irow++)
     {
         for (int icol = 0; icol < src_ncol; icol++)
-            src_blk[irow * src_ncol + icol] = (double) ((src_srow + irow) * glb_ncol + (src_scol + icol));
+            src_blk[irow * src_ncol + icol] = (DTYPE) ((src_srow + irow) * glb_ncol + (src_scol + icol));
     }
     MPI_Barrier(MPI_COMM_WORLD);
 
@@ -444,16 +478,14 @@ int main(int argc, char **argv)
     mat_redist_info_build(
         src_srow, src_scol, src_nrow, src_ncol,
         req_srow, req_scol, req_nrow, req_ncol,
-        MPI_COMM_WORLD, &redist_info
+        MPI_COMM_WORLD, MPI_DTYPE, sizeof(DTYPE), &redist_info
     );
-    MPI_Barrier(MPI_COMM_WORLD);
 
     // Get required block and compare the results
-    double *dst_blk = (double*) malloc(sizeof(double) * req_nrow * req_ncol);
+    DTYPE *dst_blk = (DTYPE*) malloc(sizeof(DTYPE) * req_nrow * req_ncol);
     double st, et, ut = 0.0;
     // Warm up
     mat_redist_exec(redist_info, src_blk, src_ncol, dst_blk, req_ncol);
-    MPI_Barrier(MPI_COMM_WORLD);
     // Time it
     int ntest = 10;
     for (int i = 0; i < ntest; i++)
@@ -461,7 +493,6 @@ int main(int argc, char **argv)
         MPI_Barrier(MPI_COMM_WORLD);
         st = MPI_Wtime();
         mat_redist_exec(redist_info, src_blk, src_ncol, dst_blk, req_ncol);
-        MPI_Barrier(MPI_COMM_WORLD);
         et = MPI_Wtime();
         ut += et - st;
     }
@@ -471,9 +502,9 @@ int main(int argc, char **argv)
     {
         for (int icol = 0; icol < req_ncol; icol++)
         {
-            double expected_val = (double) ((req_srow + irow) * glb_ncol + (req_scol + icol));
-            double received_val = dst_blk[irow * req_ncol + icol];
-            if (fabs(received_val - expected_val) > 1e-10)
+            DTYPE expected_val = (DTYPE) ((req_srow + irow) * glb_ncol + (req_scol + icol));
+            DTYPE received_val = dst_blk[irow * req_ncol + icol];
+            if (DABS(received_val - expected_val) > 1e-10)
             {
                 err_cnt++;
                 if (err_cnt <= 3)

@@ -5,12 +5,14 @@
 
 struct mat_redist_info
 {
-    int          unit_size;         // Size (bytes) of matrix element data type
+    MPI_Comm     comm;              // MPI communicator
+    MPI_Win      win;               // MPI window
+    MPI_Datatype dtype;             // Matrix element MPI data type
+    size_t       dt_size;           // Matrix element MPI data type size in bytes
     int          n_proc_get;        // Number of processes this process needs to get its required block from
     int          *get_ranks;        // Size n_proc_get, MPI ranks this process need to get a block from
     size_t       *dst_blk_displs;   // Size n_proc_get, displacements of src_blk_types[i] on its src_blk
     MPI_Aint     *src_blk_displs;   // Size n_proc_get, displacements of dst_blk_types[i] on its dst_blk
-    MPI_Win      win;               // MPI window
     MPI_Datatype *src_blk_types;    // Size n_proc_get, MPI DDT for source blocks on remote processes
     MPI_Datatype *dst_blk_types;    // Size n_proc_get, MPI DDT for destination blocks on this process
 };
@@ -59,17 +61,18 @@ static void calc_rect_intersection(
 //   src_n{row, col} : Number of rows / columns of this process's source matrix block
 //   req_s{row, col} : The starting row / column this process requires
 //   req_n{row, col} : Number of rows / columns this process requires
-//   unit_size       : Size (bytes) of matrix element data type
 //   src_{blk, ld}   : Source matrix block of this process and its leading dimension
 //   dst_ld          : Leading dimension of the buffer for storing the required matrix block
 //   comm            : MPI communicator
+//   dtype           : Matrix element MPI data type
+//   dt_size         : Matrix element MPI data type size in bytes
 // Output parameter:
 //   *info_ : Initialized mat_redist_info_t
 void mat_redist_info_build(
     const int src_srow, const int src_scol, const int src_nrow, const int src_ncol, 
     const int req_srow, const int req_scol, const int req_nrow, const int req_ncol,
-    const int unit_size, void *src_blk, const int src_ld, const int dst_ld, 
-    MPI_Comm comm, mat_redist_info_t *info_
+    void *src_blk, const int src_ld, const int dst_ld, 
+    MPI_Comm comm, MPI_Datatype dtype, const size_t dt_size, mat_redist_info_t *info_
 )
 {
     mat_redist_info_t info = (mat_redist_info_t) malloc(sizeof(mat_redist_info_s));
@@ -144,12 +147,14 @@ void mat_redist_info_build(
         int i_dst_rel_scol = int_scol - req_scol;
         src_blk_displs[iproc] = (MPI_Aint) i_src_rel_srow * (MPI_Aint) i_src_ld + (MPI_Aint) i_src_rel_scol;
         dst_blk_displs[iproc] = (size_t)   i_dst_rel_srow * (size_t)     dst_ld + (size_t)   i_dst_rel_scol;
-        MPI_Type_vector(int_nrow, int_ncol, i_src_ld, MPI_DOUBLE, src_blk_types + iproc);
-        MPI_Type_vector(int_nrow, int_ncol,   dst_ld, MPI_DOUBLE, dst_blk_types + iproc);
+        MPI_Type_vector(int_nrow, int_ncol, i_src_ld, dtype, src_blk_types + iproc);
+        MPI_Type_vector(int_nrow, int_ncol,   dst_ld, dtype, dst_blk_types + iproc);
         MPI_Type_commit(src_blk_types + iproc);
         MPI_Type_commit(dst_blk_types + iproc);
     }  // End of iproc loop
-    info->unit_size      = unit_size;
+    info->dt_size        = dt_size;
+    info->comm           = comm;
+    info->dtype          = dtype;
     info->n_proc_get     = n_proc_get;
     info->get_ranks      = get_ranks;
     info->src_blk_displs = src_blk_displs;
@@ -159,12 +164,14 @@ void mat_redist_info_build(
     MPI_Info mpi_info;
     MPI_Aint my_blk_size = (MPI_Aint) src_nrow * (MPI_Aint) src_ld;
     MPI_Info_create(&mpi_info);
-    MPI_Win_create(src_blk, my_blk_size, unit_size, mpi_info, comm, &info->win);
+    MPI_Win_create(src_blk, my_blk_size, dt_size, mpi_info, comm, &info->win);
     MPI_Info_free(&mpi_info);
 
     free(recv_info);
     free(all_src_info);
     *info_ = info;
+
+    MPI_Barrier(info->comm);
 }
 
 // Destroy a mat_redist_info_s
@@ -196,23 +203,25 @@ void mat_redist_exec(mat_redist_info_t info, void *dst_blk)
         return;
     }
 
-    int unit_size  = info->unit_size;
-    int n_proc_get = info->n_proc_get;
-    int *get_ranks = info->get_ranks;
-    size_t   *dst_blk_displs = info->dst_blk_displs;
-    MPI_Aint *src_blk_displs = info->src_blk_displs;
-    MPI_Datatype *src_blk_types = info->src_blk_types;
-    MPI_Datatype *dst_blk_types = info->dst_blk_types;
+    int          n_proc_get      = info->n_proc_get;
+    int          *get_ranks      = info->get_ranks;
+    size_t       dt_size         = info->dt_size;
+    size_t       *dst_blk_displs = info->dst_blk_displs;
+    MPI_Aint     *src_blk_displs = info->src_blk_displs;
+    MPI_Datatype *src_blk_types  = info->src_blk_types;
+    MPI_Datatype *dst_blk_types  = info->dst_blk_types;
+
     MPI_Win_fence(0, info->win);
     for (int iget = 0; iget < n_proc_get; iget++)
     {
-        char *dst_ptr = (char*) dst_blk + unit_size * dst_blk_displs[iget];
+        char *dst_ptr = (char*) dst_blk + dt_size * dst_blk_displs[iget];
         MPI_Get(
             (void*) dst_ptr,      1, dst_blk_types[iget], get_ranks[iget], 
             src_blk_displs[iget], 1, src_blk_types[iget], info->win
         );
     }
     MPI_Win_fence(0, info->win);
+    MPI_Barrier(info->comm);
 }
 
 // ====================== Below are test driver ======================
@@ -221,6 +230,19 @@ void mat_redist_exec(mat_redist_info_t info, void *dst_blk)
 #include <sys/time.h>
 #include <time.h>
 #include <math.h>
+#include <complex.h>
+
+#if 1
+#define DTYPE      double
+#define MPI_DTYPE  MPI_DOUBLE
+#define DABS       fabs
+#endif
+
+#if 0
+#define DTYPE      double _Complex
+#define MPI_DTYPE  MPI_C_DOUBLE_COMPLEX
+#define DABS       cabs
+#endif
 
 void calc_block_spos_len(
     const int len, const int nblk, const int iblk,
@@ -271,12 +293,12 @@ int main(int argc, char **argv)
     int src_srow, src_scol, src_nrow, src_ncol;
     calc_block_spos_len(glb_nrow, nproc_row, rank_row, &src_srow, &src_nrow);
     calc_block_spos_len(glb_ncol, nproc_col, rank_col, &src_scol, &src_ncol);
-    double *src_blk = (double*) malloc(sizeof(double) * src_nrow * src_ncol);
+    DTYPE *src_blk = (DTYPE*) malloc(sizeof(DTYPE) * src_nrow * src_ncol);
     int src_ld = src_ncol;
     for (int irow = 0; irow < src_nrow; irow++)
     {
         for (int icol = 0; icol < src_ncol; icol++)
-            src_blk[irow * src_ld + icol] = (double) ((src_srow + irow) * glb_ncol + (src_scol + icol));
+            src_blk[irow * src_ld + icol] = (DTYPE) ((src_srow + irow) * glb_ncol + (src_scol + icol));
     }
     MPI_Barrier(MPI_COMM_WORLD);
 
@@ -308,17 +330,15 @@ int main(int argc, char **argv)
     mat_redist_info_build(
         src_srow, src_scol, src_nrow, src_ncol,
         req_srow, req_scol, req_nrow, req_ncol,
-        sizeof(double), src_blk, src_ld, dst_ld, 
-        MPI_COMM_WORLD, &redist_info
+        src_blk, src_ld, dst_ld, 
+        MPI_COMM_WORLD, MPI_DTYPE, sizeof(DTYPE), &redist_info
     );
-    MPI_Barrier(MPI_COMM_WORLD);
 
     // Get required block and compare the results
-    double *dst_blk = (double*) malloc(sizeof(double) * req_nrow * req_ncol);
+    DTYPE *dst_blk = (DTYPE*) malloc(sizeof(DTYPE) * req_nrow * req_ncol);
     double st, et, ut = 0.0;
     // Warm up
     mat_redist_exec(redist_info, dst_blk);
-    MPI_Barrier(MPI_COMM_WORLD);
     // Time it
     int ntest = 10;
     for (int i = 0; i < ntest; i++)
@@ -326,7 +346,6 @@ int main(int argc, char **argv)
         MPI_Barrier(MPI_COMM_WORLD);
         st = MPI_Wtime();
         mat_redist_exec(redist_info, dst_blk);
-        MPI_Barrier(MPI_COMM_WORLD);
         et = MPI_Wtime();
         ut += et - st;
     }
@@ -336,9 +355,9 @@ int main(int argc, char **argv)
     {
         for (int icol = 0; icol < req_ncol; icol++)
         {
-            double expected_val = (double) ((req_srow + irow) * glb_ncol + (req_scol + icol));
-            double received_val = dst_blk[irow * dst_ld + icol];
-            if (fabs(received_val - expected_val) > 1e-10)
+            DTYPE expected_val = (DTYPE) ((req_srow + irow) * glb_ncol + (req_scol + icol));
+            DTYPE received_val = dst_blk[irow * dst_ld + icol];
+            if (DABS(received_val - expected_val) > 1e-10)
             {
                 err_cnt++;
                 if (err_cnt <= 3)
