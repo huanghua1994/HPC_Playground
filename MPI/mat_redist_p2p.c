@@ -284,7 +284,7 @@ void mat_redist_info_destroy(mat_redist_info_t info)
 
 // Perform matrix data redistribution
 // Input parameters:
-//   info : Initialized mat_redist_info_t
+//   info    : Initialized mat_redist_info_t
 //   src_blk : Source matrix block of this process
 //   src_ld  : Leading dimension of src_blk
 //   dst_ld  : Leading dimension of dst_blk
