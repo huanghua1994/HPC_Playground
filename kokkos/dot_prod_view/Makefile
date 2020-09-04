@@ -16,6 +16,7 @@ LDFLAGS =
 EXE = $(EXE_BASE_NAME).cuda
 KOKKOS_DEVICES = "Cuda,OpenMP"
 KOKKOS_ARCH = "SNB,Pascal61"
+KOKKOS_CUDA_OPTIONS += "enable_lambda"
 else
 CXX = g++
 CXXFLAGS = -O3

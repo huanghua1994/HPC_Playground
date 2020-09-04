@@ -5,7 +5,7 @@
 
 #include <omp.h>
 
-typedef double DTYPE;
+typedef float DTYPE;
 
 using ivec_view      = Kokkos::View<int*>;
 using dvec_view      = Kokkos::View<DTYPE*>;
@@ -29,7 +29,7 @@ void Kokkos_GEMV(dmat_view A, dvec_view x, dvec_view y)
             DTYPE row_dot_sum = 0.0;
             Kokkos::parallel_reduce(
                 Kokkos::TeamThreadRange(team_member, n),
-                KOKKOS_LAMBDA(const int col, double &lsum) 
+                [=] (const int col, DTYPE &lsum) 
                 {
                     lsum += A(row, col) * x(col); 
                 },
@@ -46,7 +46,7 @@ DTYPE Kokkos_dot(dvec_view x, dvec_view y)
     DTYPE res = 0.0;
     Kokkos::parallel_reduce(
         "DOT", x.extent(0), 
-        KOKKOS_LAMBDA(const int i, double& lsum) { lsum += x(i) * y(i); }, res
+        KOKKOS_LAMBDA(const int i, DTYPE& lsum) { lsum += x(i) * y(i); }, res
     );
     return res;
 }
@@ -109,9 +109,6 @@ int main(int argc, char **argv)
     //printf("Relative error tolerance = ");
     //scanf("%lf", &reltol);
 
-    const int FD_order = 3;
-    DTYPE fd_stencil[4] = {10.0, -2.0, -1.0, -0.5};
-
     DTYPE *host_A, *host_x, *host_y;
     host_A = (DTYPE*) malloc(sizeof(DTYPE) * n * n);
     host_x = (DTYPE*) malloc(sizeof(DTYPE) * n);
@@ -126,29 +123,35 @@ int main(int argc, char **argv)
         host_dmat_view h_A = Kokkos::create_mirror_view(A);
         host_dvec_view h_x = Kokkos::create_mirror_view(x);
 
+        const int stencil_order = 3;
+        dvec_view stencils("stencils", stencil_order + 1);
+        host_dvec_view h_stencils = Kokkos::create_mirror_view(stencils);
+        h_stencils(0) = 10.0;
+        h_stencils(1) = -2.0;
+        h_stencils(2) = -1.0;
+        h_stencils(3) = -0.5;
+        Kokkos::deep_copy(stencils, h_stencils);
+
         // Populate dense stencil matrix, also for host
         Kokkos::parallel_for(
             "populate_dense_stencil_matrix",
-            Kokkos::MDRangePolicy<Kokkos::Rank<2>>({0, 0}, {nx, ny}),
+            Kokkos::MDRangePolicy<Kokkos::OpenMP, Kokkos::Rank<2>>({0, 0}, {nx, ny}),
             KOKKOS_LAMBDA(const int ix, const int iy)
             {
                 int row = ix * ny + iy;
                 for (int col = 0; col < n; col++) 
                 {
                     h_A(row, col) = 0.0;
-                    host_A[row * n + col] = 0.0;
                 }
-                h_A(row, row) = 2.0 * fd_stencil[0];
-                host_A[row * n + row] = 2.0 * fd_stencil[0];
-                for (int r = 1; r <= FD_order; r++)
+                h_A(row, row) = 2.0 * h_stencils(0);
+                for (int r = 1; r <= stencil_order; r++)
                 {
                     #define ADD_FD_POINT_TO_MAT(ix1, iy1)   \
                     if (ix1 >= 0 && ix1 < nx &&             \
                         iy1 >= 0 && iy1 < ny)               \
                     {                                       \
                         int col = ix1 * ny + iy1;           \
-                        h_A(row, col) = fd_stencil[r];      \
-                        host_A[row * n + col] = fd_stencil[r]; \
+                        h_A(row, col) = h_stencils(r);      \
                     }
 
                     int ixpr = ix + r;
@@ -165,6 +168,8 @@ int main(int argc, char **argv)
             }  // End of KOKKOS_LAMBDA
         );  // End of Kokkos::parallel_for
         Kokkos::deep_copy(A, h_A);
+
+        memcpy(host_A, h_A.data(), sizeof(DTYPE) * n * n);
 
         // Initialize initial vector whose 2-norm == 1
         DTYPE inv_sqrt_n = 1.0 / sqrt(n);

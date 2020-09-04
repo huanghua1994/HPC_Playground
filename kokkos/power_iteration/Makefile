@@ -3,7 +3,7 @@ KOKKOS_SRC_PATH = ${KOKKOS_PATH}
 SRC = $(wildcard ./*.cpp)
 vpath %.cpp $(sort $(dir $(SRC)))
 
-EXE_BASE_NAME = dot_prod_view
+EXE_BASE_NAME = power_iteration
 
 default: build
 	echo "Start Build"
@@ -16,6 +16,7 @@ LDFLAGS =
 EXE = $(EXE_BASE_NAME).cuda
 KOKKOS_DEVICES = "Cuda,OpenMP"
 KOKKOS_ARCH = "SNB,Pascal61"
+KOKKOS_CUDA_OPTIONS += "enable_lambda"
 else
 CXX = g++
 CXXFLAGS = -O3
