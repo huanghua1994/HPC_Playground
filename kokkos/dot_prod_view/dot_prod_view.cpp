@@ -35,6 +35,22 @@ struct dot_prod_functor
     }
 };
 
+// The following functor only works on host
+struct dot_prod_functor_host
+{
+    double *a, *b;
+
+    dot_prod_functor_host(double *a_, double *b_) : a(a_), b(b_) {}
+
+    using value_type = double;
+
+    KOKKOS_INLINE_FUNCTION
+    void operator()(const int i, double& lsum) const
+    {
+        lsum += a[i] * b[i];
+    }
+};
+
 int main(int argc, char* argv[]) 
 {
     Kokkos::initialize(argc, argv);
@@ -90,6 +106,19 @@ int main(int argc, char* argv[])
         );
     }  // Use this scope to ensure the lifetime of vec_a and vec_b end before finalize
     
+    // The following code only works on host
+    #if 0
+    // Kokkos::parallel_reduce(n, dot_prod_functor_host(host_a, host_b), kk_dot_res);
+    Kokkos::parallel_reduce(
+        n, 
+        KOKKOS_LAMBDA(const int i, double& lsum)
+        {
+            lsum += host_a[i] * host_b[i];
+        }, 
+        kk_dot_res
+    );
+    #endif
+
     printf("Host dot result = %lf, Kokkos dot result = %lf\n", host_dot_res, kk_dot_res);
 
     free(host_a);
