@@ -184,18 +184,16 @@ int main(int argc, char **argv)
             // Calculate y = A * x
             Kokkos_GEMV(A, x, y);
 
-            // Normalize y
+            // Normalize y and calculate relative error
             y_2norm = sqrt(Kokkos_dot(y, y));
             inv_y_2norm = 1.0 / y_2norm;
             Kokkos::parallel_for(
                 "VSCALE", y.extent(0), 
-                KOKKOS_LAMBDA(const int i) { y(i) *= inv_y_2norm; }
-            );
-
-            // Calculate relative error
-            Kokkos::parallel_for(
-                "AXPBY", x.extent(0), 
-                KOKKOS_LAMBDA(const int i) { z(i) = x(i) - y(i); }
+                KOKKOS_LAMBDA(const int i) 
+                { 
+                    y(i) *= inv_y_2norm;
+                    z(i) = x(i) - y(i); 
+                }
             );
             relerr = sqrt(Kokkos_dot(z, z));
 
