@@ -1,10 +1,10 @@
 EXE = host_daemon.x
 
-#CC     = gcc
-#CFLAGS = -O3 -Wall -fopenmp -g -std=gnu99 -march=native
+CC     = gcc
+CFLAGS = -O3 -Wall -fopenmp -g -std=gnu99 -march=native
 
-CC     = icc
-CFLAGS = -O3 -Wall -qopenmp -g -std=gnu99 -xHost
+#CC     = icc
+#CFLAGS = -O3 -Wall -fopenmp -g -std=gnu99 -xHost
 
 CUDA_PATH ?= /usr/local/cuda-10.0
 NVCC       = nvcc
