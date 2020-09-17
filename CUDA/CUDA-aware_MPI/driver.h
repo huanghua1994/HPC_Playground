@@ -25,7 +25,7 @@ void set_cuda_dev_id(cuda_dev_state_p state, const int dev_id);
 
 void free_cuda_dev_state(cuda_dev_state_p *state_);
 
-void check_cuda_dev_p2p(const int self_dev_id, const int peer_dev_id, int *can_p2p);
+void check_cuda_dev_p2p(cuda_dev_state_p self, cuda_dev_state_p peer, int *can_p2p);
 
 void get_cuda_ipc_mem_handle(void *dptr, int *handle_bytes, void **handle_);
 

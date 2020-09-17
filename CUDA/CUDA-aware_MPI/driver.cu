@@ -64,10 +64,16 @@ void free_cuda_dev_state(cuda_dev_state_p *state_)
     *state_ = NULL;
 }
 
-void check_cuda_dev_p2p(const int self_dev_id, const int peer_dev_id, int *can_p2p)
+void check_cuda_dev_p2p(cuda_dev_state_p self, cuda_dev_state_p peer, int *can_p2p)
 {
-    CUDA_RUNTIME_CHECK( cudaDeviceCanAccessPeer(can_p2p, self_dev_id, peer_dev_id) );
-    if (*can_p2p) CUDA_RUNTIME_CHECK( cudaDeviceEnablePeerAccess(peer_dev_id, 0) );
+    if (self->host_hash != peer->host_hash)
+    {
+        *can_p2p = 0;
+        return;
+    }
+    CUDA_RUNTIME_CHECK( cudaDeviceCanAccessPeer(can_p2p, self->dev_id, peer->dev_id) );
+    // cudaDeviceEnablePeerAccess() is for single process multiple devices
+    //if (*can_p2p) CUDA_RUNTIME_CHECK( cudaDeviceEnablePeerAccess(peer_dev_id, 0) );
 }
 
 void get_cuda_ipc_mem_handle(void *dptr, int *handle_bytes, void **handle_)
@@ -80,9 +86,7 @@ void get_cuda_ipc_mem_handle(void *dptr, int *handle_bytes, void **handle_)
 
 void open_cuda_ipc_mem_handle(void **dptr, void *handle)
 {
-    cudaIpcMemHandle_t handle1;
-    memcpy(&handle1, handle, sizeof(cudaIpcMemHandle_t));
-    CUDA_RUNTIME_CHECK( cudaIpcOpenMemHandle(dptr, handle1, cudaIpcMemLazyEnablePeerAccess) );
+    CUDA_RUNTIME_CHECK( cudaIpcOpenMemHandle(dptr, *((cudaIpcMemHandle_t *) handle), cudaIpcMemLazyEnablePeerAccess) );
 }
 
 void close_cuda_ipc_mem_handle(void *dptr)

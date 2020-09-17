@@ -15,6 +15,9 @@ int main(int argc, char **argv)
     int send_rank = 1, recv_rank = 0;
     int tag = 1924, use_p2p = 0, use_rma = 1;
 
+    if (argc >= 2) send_rank = atoi(argv[1]);
+    if (argc >= 3) recv_rank = atoi(argv[2]);
+
     // Set up MPI shared memory communicator to get shared memory rank
     int my_rank, n_proc;
     int shm_my_rank, shm_n_proc;
@@ -25,10 +28,16 @@ int main(int argc, char **argv)
     MPI_Comm_size(shm_comm, &shm_n_proc);
     MPI_Comm_rank(shm_comm, &shm_my_rank);
 
+    if (send_rank < 0 || send_rank >= n_proc || recv_rank < 0 || recv_rank >= n_proc)
+    {
+        send_rank = 1;
+        recv_rank = 0;
+    }
+
     // Get CUDA device status and set target CUDA device
-    cuda_dev_state_p dev_state;
-    init_cuda_dev_state(&dev_state);
-    set_cuda_dev_id(dev_state, shm_my_rank % dev_state->n_dev);
+    cuda_dev_state_p self_dev_state;
+    init_cuda_dev_state(&self_dev_state);
+    set_cuda_dev_id(self_dev_state, shm_my_rank % self_dev_state->n_dev);
 
     // Gather all ranks' CUDA device status to build the topology map
     // using host_hash, pcie_dev_id, pcie_bus_id, and pcie_domain_id. 
@@ -40,17 +49,19 @@ int main(int argc, char **argv)
         int peer_rank = (my_rank == send_rank) ? recv_rank : send_rank;
         cuda_dev_state_p peer_dev_state = (cuda_dev_state_p) malloc(sizeof(cuda_dev_state_t));
         MPI_Sendrecv(
-            dev_state,      ds_msize, MPI_CHAR, peer_rank, tag,
+            self_dev_state, ds_msize, MPI_CHAR, peer_rank, tag,
             peer_dev_state, ds_msize, MPI_CHAR, peer_rank, tag, 
             MPI_COMM_WORLD, MPI_STATUS_IGNORE
         );
-        check_cuda_dev_p2p(dev_state->dev_id, peer_dev_state->dev_id, &use_p2p);
+        check_cuda_dev_p2p(self_dev_state, peer_dev_state, &use_p2p);
         if (use_p2p == 1) use_rma = 0;
     }
     printf(
-        "Rank %d / %d, shm rank %d / %d, bind to GPU %d / %d\n",
-        my_rank, n_proc, shm_my_rank, shm_n_proc, dev_state->dev_id, dev_state->n_dev
+        "MPI rank %2d: host hash = %10u, shm_rank = %2d, bind to GPU %2d\n",
+        my_rank, self_dev_state->host_hash, shm_my_rank, self_dev_state->dev_id
     );
+    fflush(stdout);
+    MPI_Barrier(MPI_COMM_WORLD);
 
     // Set up the matrix
     int nrow = 16, ncol = 16;
@@ -68,10 +79,12 @@ int main(int argc, char **argv)
     cuda_memcpy_h2d(host_mat, dev_mat, mat_bytes);
     sync_cuda_device();
     MPI_Barrier(MPI_COMM_WORLD);
-    if (my_rank == send_rank) 
+    if (my_rank == recv_rank) 
     {
-        printf("Ready to sendrecv\n");
-        if (use_p2p) printf("Use P2P GPU access for rank %d <--> %d\n", send_rank, recv_rank);
+        if (use_p2p) printf("Use P2P IPC access"); 
+        if (use_rma) printf("Use MPI RMA access"); 
+        if (use_rma == 0 && use_p2p == 0) printf("Use MPI send/recv");
+        printf(" for rank %d --> %d\n", send_rank, recv_rank);
         fflush(stdout);
     }
 
@@ -128,12 +141,14 @@ int main(int argc, char **argv)
             }
             MPI_Win_unlock(recv_rank, mpi_win);
         }
-    } else {
+    }
+    if (use_p2p == 0 && use_rma == 0) 
+    {
         if (my_rank == send_rank) MPI_Send(dev_mat, 1, ddt_int_block, recv_rank, tag, MPI_COMM_WORLD);
         if (my_rank == recv_rank) MPI_Recv(dev_mat, 1, ddt_int_block, send_rank, tag, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
     }
     MPI_Barrier(MPI_COMM_WORLD);
-    if (my_rank == send_rank) printf("Sendrecv done\n");
+    if (my_rank == recv_rank) printf("Communication done\n");
 
     // Print the received matrix to check the correctness
     if (my_rank == recv_rank)
@@ -152,7 +167,7 @@ int main(int argc, char **argv)
     // Clean up and exit
     free_cuda_mem(dev_mat);
     free(host_mat);
-    free_cuda_dev_state(&dev_state);
+    free_cuda_dev_state(&self_dev_state);
     MPI_Type_free(&ddt_int_block);
     MPI_Win_free(&mpi_win);
     MPI_Comm_free(&shm_comm);
