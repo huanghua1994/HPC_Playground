@@ -1,6 +1,8 @@
 #ifndef __DRIVER_H__
 #define __DRIVER_H__
 
+#include <stdint.h>  // for uint32_t
+
 typedef struct cuda_dev_state
 {
     int      n_dev;

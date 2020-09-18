@@ -12,8 +12,15 @@ int main(int argc, char **argv)
 {
     MPI_Init(&argc, &argv);
 
-    int send_rank = 1, recv_rank = 0;
-    int tag = 1924, use_p2p = 0, use_rma = 1;
+    int send_rank = 1, recv_rank = 0, tag = 1924;
+    int use_cuda_p2p = 0, use_mpi_rma = 1, use_mpi_p2p = 0, use_mpi_ddt = 1;
+
+    // When using Mellanox IB: 
+    // 1. OpenMPI 4.0.5      : MPI send/recv & MPI DDT not working, error comes from UCX
+    // 2. OpenMPI 3.1.6      : MPI send/recv & MPI DDT working
+    // 3. MVAPICH2 2.3.{2,4} : MPI send/recv working, MPI DDT not working
+    char *mv_use_cuda_p = getenv("MV2_USE_CUDA");
+    if (mv_use_cuda_p != NULL) use_mpi_ddt = 0;
 
     if (argc >= 2) send_rank = atoi(argv[1]);
     if (argc >= 3) recv_rank = atoi(argv[2]);
@@ -53,8 +60,8 @@ int main(int argc, char **argv)
             peer_dev_state, ds_msize, MPI_CHAR, peer_rank, tag, 
             MPI_COMM_WORLD, MPI_STATUS_IGNORE
         );
-        check_cuda_dev_p2p(self_dev_state, peer_dev_state, &use_p2p);
-        if (use_p2p == 1) use_rma = 0;
+        check_cuda_dev_p2p(self_dev_state, peer_dev_state, &use_cuda_p2p);
+        if (use_cuda_p2p == 1) use_mpi_rma = 0;
     }
     printf(
         "MPI rank %2d: host hash = %10u, shm_rank = %2d, bind to GPU %2d\n",
@@ -81,9 +88,14 @@ int main(int argc, char **argv)
     MPI_Barrier(MPI_COMM_WORLD);
     if (my_rank == recv_rank) 
     {
-        if (use_p2p) printf("Use P2P IPC access"); 
-        if (use_rma) printf("Use MPI RMA access"); 
-        if (use_rma == 0 && use_p2p == 0) printf("Use MPI send/recv");
+        if (use_cuda_p2p) printf("Use CUDA P2P access"); 
+        if (use_mpi_rma)  printf("Use MPI RMA access"); 
+        if (use_mpi_p2p)  printf("Use MPI P2P access with MPI DDT"); 
+        if (use_mpi_rma) 
+        {
+            if (use_mpi_ddt == 1) printf(" with MPI DDT");
+            else printf(" with MPI original data type");
+        }
         printf(" for rank %d --> %d\n", send_rank, recv_rank);
         fflush(stdout);
     }
@@ -103,7 +115,7 @@ int main(int argc, char **argv)
     MPI_Type_commit(&ddt_int_block);
 
     // Time to communicate!
-    if (use_p2p == 1)
+    if (use_cuda_p2p)
     {
         int handle_bytes;
         void *mem_handle;  // Allocated by get_cuda_ipc_mem_handle()
@@ -124,25 +136,26 @@ int main(int argc, char **argv)
             close_cuda_ipc_mem_handle((void *) peer_dptr);
         }
     } 
-    if (use_rma == 1)
+    if (use_mpi_rma)
     {
-        // MPI_Put with MPI DDT doesn't work with following configurations:
-        // (1) GCC 8.3 + UCX 1.8.1 + OpenMPI 4.0.3 (UCX does not support MPI_Put on CUDA)
-        // (2) GCC 8.3 + MVAPICH2 2.3.2 (segmentation fault)
-        // Luckily, when using MVAPICH2 2.3.2+, MPI_Put can use original MPI data types 
         if (my_rank == send_rank)
         {
             MPI_Win_lock(MPI_LOCK_SHARED, recv_rank, 0, mpi_win);
-            for (int i = 0; i < nrow_send; i++)
+            if (use_mpi_ddt == 1)
             {
-                int *send_ptr = dev_mat + i * ncol;
-                MPI_Aint target_disp = i * ncol;
-                MPI_Put(send_ptr, ncol_send, MPI_INT, recv_rank, target_disp, ncol_send, MPI_INT, mpi_win);
+                MPI_Put(dev_mat, 1, ddt_int_block, recv_rank, 0, 1, ddt_int_block, mpi_win);
+            } else {
+                for (int i = 0; i < nrow_send; i++)
+                {
+                    int *send_ptr = dev_mat + i * ncol;
+                    MPI_Aint target_disp = i * ncol;
+                    MPI_Put(send_ptr, ncol_send, MPI_INT, recv_rank, target_disp, ncol_send, MPI_INT, mpi_win);
+                }
             }
             MPI_Win_unlock(recv_rank, mpi_win);
         }
     }
-    if (use_p2p == 0 && use_rma == 0) 
+    if (use_mpi_p2p) 
     {
         if (my_rank == send_rank) MPI_Send(dev_mat, 1, ddt_int_block, recv_rank, tag, MPI_COMM_WORLD);
         if (my_rank == recv_rank) MPI_Recv(dev_mat, 1, ddt_int_block, send_rank, tag, MPI_COMM_WORLD, MPI_STATUS_IGNORE);

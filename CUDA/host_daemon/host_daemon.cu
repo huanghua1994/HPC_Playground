@@ -3,6 +3,7 @@
 #include <string.h>
 #include <assert.h>
 #include <math.h>
+#include <stdint.h>  // For uint*_t
 
 #include "pthread.h"
 
