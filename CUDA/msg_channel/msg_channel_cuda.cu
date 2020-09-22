@@ -87,7 +87,7 @@ void msg_channel_cuda_setup(const uint64_t ch_msg_buf_size)
     // Initialize CUDA device and context
     CUDA_CHECK( cuInit(0) );
     CUDA_CHECK( cuDeviceGet(&dev0, 0) );
-    CUDA_CHECK( cuCtxCreate(&ctx0, dev0, 0) );
+    CUDA_CHECK( cuCtxCreate(&ctx0, 0, dev0) );
 
     // Allocate page-locked host memory for channel messages
     size_t ch_msg_buf_bytes = sizeof(msg_payload_t) * ch_msg_buf_size_h;
