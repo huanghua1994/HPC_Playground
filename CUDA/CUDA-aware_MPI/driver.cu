@@ -27,7 +27,7 @@ void init_cuda_dev_state(cuda_dev_state_p *state_)
     state->dev_id         = -1;
     state->cu_device      = -1;
     state->cu_context_p   = malloc(sizeof(CUcontext));
-    state->host_hash      = 0;
+    state->host_hash      = get_hostname_hash_sdbm();
     state->pcie_dev_id    = -1;
     state->pcie_bus_id    = -1;
     state->pcie_domain_id = -1;
@@ -45,11 +45,10 @@ void set_cuda_dev_id(cuda_dev_state_p state, const int dev_id)
     }
 
     state->dev_id = dev_id;
-    CUDA_RUNTIME_CHECK( cudaSetDevice(dev_id) );
-    CUDA_CHECK( cuCtxGetCurrent((CUcontext *) state->cu_context_p) );
-    CUDA_CHECK( cuCtxGetDevice(&state->cu_device) );
+    CUDA_CHECK( cuInit(0) );
+    CUDA_CHECK( cuDeviceGet(&state->cu_device, dev_id) );
+    CUDA_CHECK( cuCtxCreate((CUcontext *) state->cu_context_p, 0, state->cu_device) );
 
-    state->host_hash = get_hostname_hash_sdbm();
     CUDA_CHECK( cuDeviceGetAttribute(&state->pcie_dev_id,    CU_DEVICE_ATTRIBUTE_PCI_DEVICE_ID, state->cu_device) );
     CUDA_CHECK( cuDeviceGetAttribute(&state->pcie_bus_id,    CU_DEVICE_ATTRIBUTE_PCI_BUS_ID,    state->cu_device) );
     CUDA_CHECK( cuDeviceGetAttribute(&state->pcie_domain_id, CU_DEVICE_ATTRIBUTE_PCI_DOMAIN_ID, state->cu_device) );

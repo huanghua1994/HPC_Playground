@@ -6,7 +6,7 @@
 typedef struct cuda_dev_state
 {
     int      n_dev;
-    int      dev_id;        // This is runtime (not driver) device id
+    int      dev_id;        // This is driver (not runtime) device id
     int      cu_device;     // CUdevice is defined as int
     void     *cu_context_p; // Pointer to a CUcontext type
 
