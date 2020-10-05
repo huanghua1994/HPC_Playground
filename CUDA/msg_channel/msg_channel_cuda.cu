@@ -28,10 +28,10 @@ uint64_t ch_process_idx_local_h;
 uint64_t ch_msg_buf_size_h;
 uint64_t ch_msg_buf_size_log2_h;
 
-__device__ inline void wait_until_added_ge_val(volatile uint64_t *addr, const uint64_t addend, const uint64_t val)
+__device__ inline void wait_until_ge_val(volatile uint64_t *addr, const uint64_t val)
 {
     uint64_t val_at_addr = *addr;
-    while (val_at_addr + addend < val) val_at_addr = *addr;
+    while (val_at_addr < val) val_at_addr = *addr;
 }
 
 __device__ inline void ch_msg_wait_buf_available(const uint64_t issue_idx)
@@ -39,7 +39,8 @@ __device__ inline void ch_msg_wait_buf_available(const uint64_t issue_idx)
     uint64_t process_idx = *((volatile uint64_t *) &ch_process_idx_local_d);
     if (process_idx + ch_msg_buf_size_d - 1 < issue_idx)
     {
-        wait_until_added_ge_val(ch_process_idx_d, ch_msg_buf_size_d - 1, issue_idx);
+        uint64_t wait_val = issue_idx - (ch_msg_buf_size_d - 1);   // This value always >= 0, no worry
+        wait_until_ge_val(ch_process_idx_d, wait_val);
         process_idx = *((volatile uint64_t *) ch_process_idx_d);
         atomicMax((unsigned long long int *) &ch_process_idx_local_d, process_idx);
         __threadfence_system();
