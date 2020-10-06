@@ -30,7 +30,7 @@ void launch_test_kernel(const int n_msg, int *msg)
     cudaStream_t stream;
     CUDA_RUNTIME_CHECK( cudaStreamCreateWithFlags(&stream, cudaStreamNonBlocking) );
 
-    for (int i = 0; i < 3; i++)
+    for (int i = 0; i < 5; i++)
     {
         test_kernel<<<1, 1, 0, stream>>>(n_msg, msg);
         usleep(50000);

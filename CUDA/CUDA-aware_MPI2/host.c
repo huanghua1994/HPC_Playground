@@ -82,6 +82,8 @@ int main(int argc, char **argv)
         launch_test_kernel(n_msg, dev_arr);
         printf("Rank %d launch_test_kernel returned\n", my_rank); fflush(stdout);
 
+        MPI_Win_flush(my_rank, mpi_win);
+
         launch_test_kernel(n_msg, dev_arr);
         printf("Rank %d launch_test_kernel returned\n", my_rank); fflush(stdout);
     }
