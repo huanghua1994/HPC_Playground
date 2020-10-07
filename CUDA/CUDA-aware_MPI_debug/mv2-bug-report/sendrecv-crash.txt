@@ -1,0 +1,53 @@
+$ mpirun -np 8 --hostfile host.txt ./sendrecv.exe 4324
+arr_size = 4324
+Rank 7 finished 1D halo exchange
+Rank 0 finished 1D halo exchange
+Rank 3 finished 1D halo exchange
+Rank 1 finished 1D halo exchange
+Rank 2 finished 1D halo exchange
+Rank 6 finished 1D halo exchange
+Rank 4 finished 1D halo exchange
+Rank 5 finished 1D halo exchange
+
+$ mpirun -np 8 --hostfile host.txt ./sendrecv.exe 4325
+arr_size = 4325
+[atl1-1-01-018-33.pace.gatech.edu:mpi_rank_7][error_sighandler] Caught error: Segmentation fault (signal 11)
+[atl1-1-01-018-33.pace.gatech.edu:mpi_rank_7][print_backtrace]   0: /storage/home/hhive1/hhuang368/scratch/mvapich2/2.3.4-debug/intel/19.0.5/cuda/10.1/lib/libmpi.so.12(print_backtrace+0x25) [0x2aaaabb3e63d]
+[atl1-1-01-018-33.pace.gatech.edu:mpi_rank_7][print_backtrace]   1: /storage/home/hhive1/hhuang368/scratch/mvapich2/2.3.4-debug/intel/19.0.5/cuda/10.1/lib/libmpi.so.12(error_sighandler+0xb5) [0x2aaaabb3e868]
+[atl1-1-01-018-33.pace.gatech.edu:mpi_rank_7][print_backtrace]   2: /lib64/libpthread.so.0(+0xf5d0) [0x2aaaadbf55d0]
+[atl1-1-01-018-33.pace.gatech.edu:mpi_rank_7][print_backtrace]   3: /storage/home/hhive1/hhuang368/scratch/mvapich2/2.3.4-debug/intel/19.0.5/cuda/10.1/lib/libmpi.so.12(MPIDI_CH3I_MRAILI_Rendezvous_rget_push+0x9f6) [0x2aaaabaf7804]
+[atl1-1-01-018-33.pace.gatech.edu:mpi_rank_7][print_backtrace]   4: /storage/home/hhive1/hhuang368/scratch/mvapich2/2.3.4-debug/intel/19.0.5/cuda/10.1/lib/libmpi.so.12(MPIDI_CH3_Rendezvous_push+0x13a) [0x2aaaaba48d4c]
+[atl1-1-01-018-33.pace.gatech.edu:mpi_rank_7][print_backtrace]   5: /storage/home/hhive1/hhuang368/scratch/mvapich2/2.3.4-debug/intel/19.0.5/cuda/10.1/lib/libmpi.so.12(MPIDI_CH3I_MRAILI_Process_rndv+0x219) [0x2aaaaba4b63d]
+[atl1-1-01-018-33.pace.gatech.edu:mpi_rank_7][print_backtrace]   6: /storage/home/hhive1/hhuang368/scratch/mvapich2/2.3.4-debug/intel/19.0.5/cuda/10.1/lib/libmpi.so.12(MPIDI_CH3I_Progress_test+0x6f1) [0x2aaaaba3c360]
+[atl1-1-01-018-33.pace.gatech.edu:mpi_rank_7][print_backtrace]   7: /storage/home/hhive1/hhuang368/scratch/mvapich2/2.3.4-debug/intel/19.0.5/cuda/10.1/lib/libmpi.so.12(MPID_Isend+0x1943) [0x2aaaaba0f954]
+[atl1-1-01-018-33.pace.gatech.edu:mpi_rank_7][print_backtrace]   8: /storage/home/hhive1/hhuang368/scratch/mvapich2/2.3.4-debug/intel/19.0.5/cuda/10.1/lib/libmpi.so.12(MPI_Sendrecv+0x181d) [0x2aaaab8700aa]
+[atl1-1-01-018-33.pace.gatech.edu:mpi_rank_7][print_backtrace]   9: ./sendrecv.exe() [0x40359f]
+[atl1-1-01-018-33.pace.gatech.edu:mpi_rank_7][print_backtrace]  10: /lib64/libc.so.6(__libc_start_main+0xf5) [0x2aaaaecbb3d5]
+[atl1-1-01-018-33.pace.gatech.edu:mpi_rank_7][print_backtrace]  11: ./sendrecv.exe() [0x4031a9]
+[atl1-1-01-018-31.pace.gatech.edu:mpi_rank_3][error_sighandler] Caught error: Segmentation fault (signal 11)
+[atl1-1-01-018-31.pace.gatech.edu:mpi_rank_3][print_backtrace]   0: /storage/home/hhive1/hhuang368/scratch/mvapich2/2.3.4-debug/intel/19.0.5/cuda/10.1/lib/libmpi.so.12(print_backtrace+0x25) [0x2aaaabb3e63d]
+[atl1-1-01-018-31.pace.gatech.edu:mpi_rank_3][print_backtrace]   1: /storage/home/hhive1/hhuang368/scratch/mvapich2/2.3.4-debug/intel/19.0.5/cuda/10.1/lib/libmpi.so.12(error_sighandler+0xb5) [0x2aaaabb3e868]
+[atl1-1-01-018-31.pace.gatech.edu:mpi_rank_3][print_backtrace]   2: /lib64/libpthread.so.0(+0xf5d0) [0x2aaaadbf55d0]
+[atl1-1-01-018-31.pace.gatech.edu:mpi_rank_3][print_backtrace]   3: /storage/home/hhive1/hhuang368/scratch/mvapich2/2.3.4-debug/intel/19.0.5/cuda/10.1/lib/libmpi.so.12(MPIDI_CH3I_MRAILI_Rendezvous_rget_push+0x9f6) [0x2aaaabaf7804]
+[atl1-1-01-018-31.pace.gatech.edu:mpi_rank_3][print_backtrace]   4: /storage/home/hhive1/hhuang368/scratch/mvapich2/2.3.4-debug/intel/19.0.5/cuda/10.1/lib/libmpi.so.12(MPIDI_CH3_Rendezvous_push+0x13a) [0x2aaaaba48d4c]
+[atl1-1-01-018-31.pace.gatech.edu:mpi_rank_3][print_backtrace]   5: /storage/home/hhive1/hhuang368/scratch/mvapich2/2.3.4-debug/intel/19.0.5/cuda/10.1/lib/libmpi.so.12(MPIDI_CH3I_MRAILI_Process_rndv+0x219) [0x2aaaaba4b63d]
+[atl1-1-01-018-31.pace.gatech.edu:mpi_rank_3][print_backtrace]   6: /storage/home/hhive1/hhuang368/scratch/mvapich2/2.3.4-debug/intel/19.0.5/cuda/10.1/lib/libmpi.so.12(MPIDI_CH3I_Progress_test+0x6f1) [0x2aaaaba3c360]
+[atl1-1-01-018-31.pace.gatech.edu:mpi_rank_3][print_backtrace]   7: /storage/home/hhive1/hhuang368/scratch/mvapich2/2.3.4-debug/intel/19.0.5/cuda/10.1/lib/libmpi.so.12(MPID_Isend+0x1943) [0x2aaaaba0f954]
+[atl1-1-01-018-31.pace.gatech.edu:mpi_rank_3][print_backtrace]   8: /storage/home/hhive1/hhuang368/scratch/mvapich2/2.3.4-debug/intel/19.0.5/cuda/10.1/lib/libmpi.so.12(MPI_Sendrecv+0x181d) [0x2aaaab8700aa]
+[atl1-1-01-018-31.pace.gatech.edu:mpi_rank_3][print_backtrace]   9: ./sendrecv.exe() [0x40359f]
+[atl1-1-01-018-31.pace.gatech.edu:mpi_rank_3][print_backtrace]  10: /lib64/libc.so.6(__libc_start_main+0xf5) [0x2aaaaecbb3d5]
+[atl1-1-01-018-31.pace.gatech.edu:mpi_rank_3][print_backtrace]  11: ./sendrecv.exe() [0x4031a9]
+
+===================================================================================
+=   BAD TERMINATION OF ONE OF YOUR APPLICATION PROCESSES
+=   PID 471598 RUNNING AT atl1-1-01-018-33.pace.gatech.edu
+=   EXIT CODE: 139
+=   CLEANING UP REMAINING PROCESSES
+=   YOU CAN IGNORE THE BELOW CLEANUP MESSAGES
+===================================================================================
+[proxy:0:0@atl1-1-01-018-31.pace.gatech.edu] HYDU_sock_write (utils/sock/sock.c:294): write error (Broken pipe)
+[proxy:0:0@atl1-1-01-018-31.pace.gatech.edu] main (pm/pmiserv/pmip.c:268): unable to return exit status upstream
+YOUR APPLICATION TERMINATED WITH THE EXIT STRING: Segmentation fault (signal 11)
+This typically refers to a problem with your application.
+Please see the FAQ page for debugging suggestions
+

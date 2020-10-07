@@ -1,0 +1,21 @@
+$ mpiname -a
+MVAPICH2 2.3.4 Mon June 1 22:00:00 EST 2020 ch3:mrail
+
+Compilation
+CC: icc -fPIC -I/usr/local/pace-apps/manual/packages/cuda/10.1/include   -g -O0
+CXX: icpc   -g -O0
+F77: ifort   -g -O0
+FC: ifort   -g -O0
+
+Configuration
+--prefix=/storage/home/hhive1/hhuang368/scratch/mvapich2/2.3.4-debug/intel/19.0.5/cuda/10.1 
+--enable-g=dbg,mem,log --enable-fast=none --enable-cxx --enable-fortran=all --enable-shared 
+--enable-threads=multiple --with-core-direct --without-hydra-ckpointlib 
+--with-device=ch3:mrail --with-rdma=gen2 --disable-rdma-cm --disable-mcast 
+--with-pbs=/opt/torque/current --with-file-system=nfs+ufs --enable-cuda 
+--with-cuda-include=/usr/local/pace-apps/manual/packages/cuda/10.1/include 
+--with-cuda-libpath=/usr/local/pace-apps/manual/packages/cuda/10.1/lib64 
+--with-libcudart=/usr/local/pace-apps/manual/packages/cuda/10.1/lib64 
+CPPFLAGS=-I/usr/local/pace-apps/manual/packages/cuda/10.1/include 
+CFLAGS=-fPIC -I/usr/local/pace-apps/manual/packages/cuda/10.1/include 
+CC=icc CXX=icpc FC=ifort

@@ -1,0 +1,120 @@
+$ gdb attach 222292
+GNU gdb (GDB) Red Hat Enterprise Linux 7.6.1-114.el7
+Copyright (C) 2013 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.  Type "show copying"
+and "show warranty" for details.
+This GDB was configured as "x86_64-redhat-linux-gnu".
+For bug reporting instructions, please see:
+<http://www.gnu.org/software/gdb/bugs/>...
+attach: No such file or directory.
+Attaching to process 222292
+Reading symbols from /storage/hive/scratch/8/hhuang368/HPC_Playground/CUDA/CUDA-aware_MPI_debug/put_and_acc.exe...done.
+Reading symbols from /usr/local/pace-apps/manual/packages/xalt/2.8.4/lib64/libxalt_init.so...done.
+Loaded symbols for /usr/local/pace-apps/manual/packages/xalt/2.8.4/lib64/libxalt_init.so
+Reading symbols from /storage/home/hhive1/hhuang368/scratch/mvapich2/2.3.4-debug/intel/19.0.5/cuda/10.1/lib/libmpicxx.so.12...done.
+Loaded symbols for /storage/home/hhive1/hhuang368/scratch/mvapich2/2.3.4-debug/intel/19.0.5/cuda/10.1/lib/libmpicxx.so.12
+Reading symbols from /storage/home/hhive1/hhuang368/scratch/mvapich2/2.3.4-debug/intel/19.0.5/cuda/10.1/lib/libmpi.so.12...done.
+Loaded symbols for /storage/home/hhive1/hhuang368/scratch/mvapich2/2.3.4-debug/intel/19.0.5/cuda/10.1/lib/libmpi.so.12
+Reading symbols from /lib64/libcuda.so.1...(no debugging symbols found)...done.
+Loaded symbols for /lib64/libcuda.so.1
+Reading symbols from /usr/local/pace-apps/manual/packages/cuda/10.1/lib64/libcudart.so.10.1...(no debugging symbols found)...done.
+Loaded symbols for /usr/local/pace-apps/manual/packages/cuda/10.1/lib64/libcudart.so.10.1
+Reading symbols from /lib64/librt.so.1...(no debugging symbols found)...done.
+Loaded symbols for /lib64/librt.so.1
+Reading symbols from /lib64/libpthread.so.0...(no debugging symbols found)...done.
+[New LWP 222311]
+[New LWP 222310]
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/lib64/libthread_db.so.1".
+Loaded symbols for /lib64/libpthread.so.0
+Reading symbols from /lib64/libdl.so.2...(no debugging symbols found)...done.
+Loaded symbols for /lib64/libdl.so.2
+Reading symbols from /usr/local/pace-apps/spack/packages/0.12/linux-rhel7-x86_64/gcc-4.8.5/gcc-8.3.0-opnwtdjumg2hxo4ljvnx77ugb6afmvj3/lib64/libstdc++.so.6...done.
+Loaded symbols for /usr/local/pace-apps/spack/packages/0.12/linux-rhel7-x86_64/gcc-4.8.5/gcc-8.3.0-opnwtdjumg2hxo4ljvnx77ugb6afmvj3/lib64/libstdc++.so.6
+Reading symbols from /lib64/libm.so.6...(no debugging symbols found)...done.
+Loaded symbols for /lib64/libm.so.6
+Reading symbols from /usr/local/pace-apps/spack/packages/0.13/linux-rhel7-x86_64/gcc-4.8.5/intel-parallel-studio-cluster.2019.5-rde2uvgb2mq2x6obqaklxppmycfngjgm/compilers_and_libraries_2019.5.281/linux/compiler/lib/intel64_lin/libiomp5.so...Reading symbols from /storage/pace-apps/spack/packages/0.13/linux-rhel7-x86_64/gcc-4.8.5/intel-parallel-studio-cluster.2019.5-rde2uvgb2mq2x6obqaklxppmycfngjgm/compilers_and_libraries_2019.5.281/linux/compiler/lib/intel64_lin/libiomp5.dbg...done.
+done.
+Loaded symbols for /usr/local/pace-apps/spack/packages/0.13/linux-rhel7-x86_64/gcc-4.8.5/intel-parallel-studio-cluster.2019.5-rde2uvgb2mq2x6obqaklxppmycfngjgm/compilers_and_libraries_2019.5.281/linux/compiler/lib/intel64_lin/libiomp5.so
+Reading symbols from /usr/local/pace-apps/spack/packages/0.12/linux-rhel7-x86_64/gcc-4.8.5/gcc-8.3.0-opnwtdjumg2hxo4ljvnx77ugb6afmvj3/lib64/libgcc_s.so.1...done.
+Loaded symbols for /usr/local/pace-apps/spack/packages/0.12/linux-rhel7-x86_64/gcc-4.8.5/gcc-8.3.0-opnwtdjumg2hxo4ljvnx77ugb6afmvj3/lib64/libgcc_s.so.1
+Reading symbols from /lib64/libc.so.6...(no debugging symbols found)...done.
+Loaded symbols for /lib64/libc.so.6
+Reading symbols from /usr/local/pace-apps/manual/packages/cuda/10.1/lib64/libOpenCL.so.1...(no debugging symbols found)...done.
+Loaded symbols for /usr/local/pace-apps/manual/packages/cuda/10.1/lib64/libOpenCL.so.1
+Reading symbols from /lib64/libnvidia-ml.so.1...(no debugging symbols found)...done.
+Loaded symbols for /lib64/libnvidia-ml.so.1
+Reading symbols from /lib64/libxml2.so.2...Reading symbols from /lib64/libxml2.so.2...(no debugging symbols found)...done.
+(no debugging symbols found)...done.
+Loaded symbols for /lib64/libxml2.so.2
+Reading symbols from /lib64/libibumad.so.3...Reading symbols from /lib64/libibumad.so.3...(no debugging symbols found)...done.
+(no debugging symbols found)...done.
+Loaded symbols for /lib64/libibumad.so.3
+Reading symbols from /lib64/libibverbs.so.1...Reading symbols from /lib64/libibverbs.so.1...(no debugging symbols found)...done.
+(no debugging symbols found)...done.
+Loaded symbols for /lib64/libibverbs.so.1
+Reading symbols from /usr/local/pace-apps/spack/packages/0.13/linux-rhel7-x86_64/gcc-4.8.5/intel-parallel-studio-cluster.2019.5-rde2uvgb2mq2x6obqaklxppmycfngjgm/compilers_and_libraries_2019.5.281/linux/compiler/lib/intel64/libimf.so...(no debugging symbols found)...done.
+Loaded symbols for /usr/local/pace-apps/spack/packages/0.13/linux-rhel7-x86_64/gcc-4.8.5/intel-parallel-studio-cluster.2019.5-rde2uvgb2mq2x6obqaklxppmycfngjgm/compilers_and_libraries_2019.5.281/linux/compiler/lib/intel64/libimf.so
+Reading symbols from /usr/local/pace-apps/spack/packages/0.13/linux-rhel7-x86_64/gcc-4.8.5/intel-parallel-studio-cluster.2019.5-rde2uvgb2mq2x6obqaklxppmycfngjgm/compilers_and_libraries_2019.5.281/linux/compiler/lib/intel64/libirng.so...(no debugging symbols found)...done.
+Loaded symbols for /usr/local/pace-apps/spack/packages/0.13/linux-rhel7-x86_64/gcc-4.8.5/intel-parallel-studio-cluster.2019.5-rde2uvgb2mq2x6obqaklxppmycfngjgm/compilers_and_libraries_2019.5.281/linux/compiler/lib/intel64/libirng.so
+Reading symbols from /usr/local/pace-apps/spack/packages/0.13/linux-rhel7-x86_64/gcc-4.8.5/intel-parallel-studio-cluster.2019.5-rde2uvgb2mq2x6obqaklxppmycfngjgm/compilers_and_libraries_2019.5.281/linux/compiler/lib/intel64/libcilkrts.so.5...(no debugging symbols found)...done.
+Loaded symbols for /usr/local/pace-apps/spack/packages/0.13/linux-rhel7-x86_64/gcc-4.8.5/intel-parallel-studio-cluster.2019.5-rde2uvgb2mq2x6obqaklxppmycfngjgm/compilers_and_libraries_2019.5.281/linux/compiler/lib/intel64/libcilkrts.so.5
+Reading symbols from /usr/local/pace-apps/spack/packages/0.13/linux-rhel7-x86_64/gcc-4.8.5/intel-parallel-studio-cluster.2019.5-rde2uvgb2mq2x6obqaklxppmycfngjgm/compilers_and_libraries_2019.5.281/linux/compiler/lib/intel64/libintlc.so.5...(no debugging symbols found)...done.
+Loaded symbols for /usr/local/pace-apps/spack/packages/0.13/linux-rhel7-x86_64/gcc-4.8.5/intel-parallel-studio-cluster.2019.5-rde2uvgb2mq2x6obqaklxppmycfngjgm/compilers_and_libraries_2019.5.281/linux/compiler/lib/intel64/libintlc.so.5
+Reading symbols from /usr/local/pace-apps/spack/packages/0.13/linux-rhel7-x86_64/gcc-4.8.5/intel-parallel-studio-cluster.2019.5-rde2uvgb2mq2x6obqaklxppmycfngjgm/compilers_and_libraries_2019.5.281/linux/compiler/lib/intel64/libsvml.so...(no debugging symbols found)...done.
+Loaded symbols for /usr/local/pace-apps/spack/packages/0.13/linux-rhel7-x86_64/gcc-4.8.5/intel-parallel-studio-cluster.2019.5-rde2uvgb2mq2x6obqaklxppmycfngjgm/compilers_and_libraries_2019.5.281/linux/compiler/lib/intel64/libsvml.so
+Reading symbols from /usr/local/pace-apps/spack/packages/0.13/linux-rhel7-x86_64/gcc-4.8.5/intel-parallel-studio-cluster.2019.5-rde2uvgb2mq2x6obqaklxppmycfngjgm/compilers_and_libraries_2019.5.281/linux/compiler/lib/intel64/libifport.so.5...(no debugging symbols found)...done.
+Loaded symbols for /usr/local/pace-apps/spack/packages/0.13/linux-rhel7-x86_64/gcc-4.8.5/intel-parallel-studio-cluster.2019.5-rde2uvgb2mq2x6obqaklxppmycfngjgm/compilers_and_libraries_2019.5.281/linux/compiler/lib/intel64/libifport.so.5
+Reading symbols from /usr/local/pace-apps/spack/packages/0.13/linux-rhel7-x86_64/gcc-4.8.5/intel-parallel-studio-cluster.2019.5-rde2uvgb2mq2x6obqaklxppmycfngjgm/compilers_and_libraries_2019.5.281/linux/compiler/lib/intel64/libifcoremt.so.5...(no debugging symbols found)...done.
+Loaded symbols for /usr/local/pace-apps/spack/packages/0.13/linux-rhel7-x86_64/gcc-4.8.5/intel-parallel-studio-cluster.2019.5-rde2uvgb2mq2x6obqaklxppmycfngjgm/compilers_and_libraries_2019.5.281/linux/compiler/lib/intel64/libifcoremt.so.5
+Reading symbols from /lib64/ld-linux-x86-64.so.2...(no debugging symbols found)...done.
+Loaded symbols for /lib64/ld-linux-x86-64.so.2
+Reading symbols from /lib64/libnvidia-fatbinaryloader.so.418.40.04...(no debugging symbols found)...done.
+Loaded symbols for /lib64/libnvidia-fatbinaryloader.so.418.40.04
+Reading symbols from /lib64/libz.so.1...Reading symbols from /lib64/libz.so.1...(no debugging symbols found)...done.
+(no debugging symbols found)...done.
+Loaded symbols for /lib64/libz.so.1
+Reading symbols from /lib64/liblzma.so.5...Reading symbols from /lib64/liblzma.so.5...(no debugging symbols found)...done.
+(no debugging symbols found)...done.
+Loaded symbols for /lib64/liblzma.so.5
+Reading symbols from /lib64/libnl-route-3.so.200...Reading symbols from /lib64/libnl-route-3.so.200...(no debugging symbols found)...done.
+(no debugging symbols found)...done.
+Loaded symbols for /lib64/libnl-route-3.so.200
+Reading symbols from /lib64/libnl-3.so.200...Reading symbols from /lib64/libnl-3.so.200...(no debugging symbols found)...done.
+(no debugging symbols found)...done.
+Loaded symbols for /lib64/libnl-3.so.200
+0x00002aaaaba51ff3 in MPIDI_CH3I_SMP_write_progress (pg=0x65f9e0)
+    at src/mpid/ch3/channels/mrail/src/rdma/ch3_smp_progress.c:763
+763             MPIDI_PG_Get_vc(pg, g_smpi.l2g_rank[i], &vc);
+warning: File "/storage/pace-apps/spack/packages/0.12/linux-rhel7-x86_64/gcc-4.8.5/gcc-8.3.0-opnwtdjumg2hxo4ljvnx77ugb6afmvj3/lib64/libstdc++.so.6.0.25-gdb.py" auto-loading has been declined by your `auto-load safe-path' set to "$debugdir:$datadir/auto-load:/usr/bin/mono-gdb.py".
+To enable execution of this file add
+        add-auto-load-safe-path /storage/pace-apps/spack/packages/0.12/linux-rhel7-x86_64/gcc-4.8.5/gcc-8.3.0-opnwtdjumg2hxo4ljvnx77ugb6afmvj3/lib64/libstdc++.so.6.0.25-gdb.py
+line to your configuration file "/storage/home/hhive1/hhuang368/.gdbinit".
+To completely disable this security protection add
+        set auto-load safe-path /
+line to your configuration file "/storage/home/hhive1/hhuang368/.gdbinit".
+For more information about this security protection see the
+"Auto-loading safe path" section in the GDB manual.  E.g., run from the shell:
+        info "(gdb)Auto-loading safe path"
+Missing separate debuginfos, use: debuginfo-install glibc-2.17-260.el7_6.4.x86_64 libibumad-43.1.1.MLNX20180612.87b4d9b-0.1.45101.x86_64 libibverbs-41mlnx1-OFED.4.5.0.1.0.45101.x86_64 libnl3-3.2.28-4.el7.x86_64 libxml2-2.9.1-6.el7_2.3.x86_64 xz-libs-5.2.2-1.el7.x86_64 zlib-1.2.7-18.el7.x86_64
+(gdb)
+(gdb)
+(gdb) bt
+#0  0x00002aaaaba51ff3 in MPIDI_CH3I_SMP_write_progress (pg=0x65f9e0)
+    at src/mpid/ch3/channels/mrail/src/rdma/ch3_smp_progress.c:763
+#1  0x00002aaaaba3a402 in MPIDI_CH3I_Progress (is_blocking=1, state=0x7fffffff2a98)
+    at src/mpid/ch3/channels/mrail/src/rdma/ch3_progress.c:231
+#2  0x00002aaaab9cfc9b in wait_progress_engine () at ./src/mpid/ch3/include/mpidrma.h:1342
+#3  0x00002aaaab9d6dfa in MPID_Win_flush (dest=0, win_ptr=0x2aaaac5dc920 <MPID_Win_direct>)
+    at src/mpid/ch3/src/ch3u_rma_sync.c:1772
+#4  0x00002aaaab89c924 in PMPI_Win_flush (rank=0, win=-1610612736) at src/mpi/rma/win_flush.c:106
+#5  0x00000000004037cf in main (argc=2, argv=0x7fffffff2ea8) at put_and_acc.cu:58
+(gdb) quit
+A debugging session is active.
+
+        Inferior 1 [process 222292] will be detached.
+
+Quit anyway? (y or n) y
+Detaching from program: /storage/hive/scratch/8/hhuang368/HPC_Playground/CUDA/CUDA-aware_MPI_debug/put_and_acc.exe, process 222292

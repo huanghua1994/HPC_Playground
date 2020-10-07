@@ -1,0 +1,263 @@
+$ cat /etc/redhat-release
+Red Hat Enterprise Linux Server release 7.6 (Maipo)
+
+$ uname -a
+Linux atl1-1-01-018-31.pace.gatech.edu 3.10.0-957.12.1.el7.x86_64 #1 SMP Wed Mar 20 11:34:37 UTC 2019 x86_64 x86_64 x86_64 GNU/Linux
+
+$ ofed_info
+MLNX_OFED_LINUX-4.5-1.0.1.0 (OFED-4.5-1.0.1):
+
+
+ar_mgr:
+osm_plugins/ar_mgr/ar_mgr-1.0-0.40.g32c9c85.tar.gz
+
+cc_mgr:
+osm_plugins/cc_mgr/cc_mgr-1.0-0.39.g32c9c85.tar.gz
+
+dapl:
+dapl.git mlnx_ofed_4_0
+commit bdb055900059d1b8d5ee8cdfb457ca653eb9dd2d
+dump_pr:
+osm_plugins/dump_pr//dump_pr-1.0-0.35.g32c9c85.tar.gz
+
+fabric-collector:
+fabric_collector//fabric-collector-1.1.0.MLNX20170103.89bb2aa.tar.gz
+
+hcoll:
+mlnx_ofed_hcol/hcoll-4.2.2543-1.src.rpm
+
+ibacm:
+mlnx_ofed/ibacm.git mlnx_ofed_4_1
+commit 4ae5d193f628c71bac481218bc88d0f77f7eff9a
+ibacm_ssa:
+mlnx_ofed_ssa/acm/ibacm_ssa-0.0.9.3.MLNX20151203.50eb579.tar.gz
+
+ibdump:
+sniffer/sniffer-5.0.0-1/ibdump/linux/ibdump-5.0.0-1.tgz
+
+ibsim:
+mlnx_ofed_ibsim/ibsim-0.7mlnx1-0.11.g85c342b.tar.gz
+
+ibssa:
+mlnx_ofed_ssa/distrib/ibssa-0.0.9.3.MLNX20151203.50eb579.tar.gz
+
+ibutils:
+ofed-1.5.3-rpms/ibutils/ibutils-1.5.7.1-0.12.gdcaeae2.tar.gz
+
+ibutils2:
+ibutils2/ibutils2-2.1.1-0.100.MLNX20181114.g83af0c3.tar.gz
+
+infiniband-diags:
+mlnx_ofed_infiniband_diags/infiniband-diags-5.0.0.MLNX20181101.2a96f26.tar.gz
+
+iser:
+mlnx_ofed/mlnx-ofa_kernel-4.0.git mlnx_ofed_4_5
+commit b4fdfaca46720ce2f890ed9ceba135d32e13cf14
+
+isert:
+mlnx_ofed/mlnx-ofa_kernel-4.0.git mlnx_ofed_4_5
+commit b4fdfaca46720ce2f890ed9ceba135d32e13cf14
+
+kernel-mft:
+mlnx_ofed_mft/kernel-mft-4.11.0-103.src.rpm
+
+knem:
+knem.git mellanox-master
+commit 993678c3a79ab40ccf0cf88493200ce1fc58d566
+libdisni:
+upstream/disni.git master
+commit b50eee08b66b14b02594ee485cdc7dfd9820bbae
+libibcm:
+mlnx_ofed/libibcm.git mlnx_ofed_4_1
+commit e3e9fffe4d2d2f730110a7bdeb7da7b8ea97e51e
+libibmad:
+mlnx_ofed_libibmad/libibmad-5.0.0.MLNX20181022.0361c15.tar.gz
+
+libibumad:
+mlnx_ofed_libibumad/libibumad-43.1.1.MLNX20180612.87b4d9b.tar.gz
+
+libibverbs:
+mlnx_ofed/libibverbs.git mlnx_ofed_4_5
+commit 50f1ae4db8f4e93f007b93c7ba671528db6bae5b
+libmlx4:
+mlnx_ofed/libmlx4.git mlnx_ofed_4_5
+commit 819cf8a7fc4ec35065659b97035159bb11128bb4
+libmlx5:
+mlnx_ofed/libmlx5.git mlnx_ofed_4_5
+commit 6411e8564bb6f653e5173a4295bc1b8672fc5aa6
+libopensmssa:
+mlnx_ofed_ssa/plugin/libopensmssa-0.0.9.3.MLNX20151203.50eb579.tar.gz
+
+librdmacm:
+mlnx_ofed/librdmacm.git mlnx_ofed_4_5
+commit 6b3a118ecbfb4731d51fb3ca37e2642ec86612e8
+librxe:
+mlnx_ofed/librxe.git master
+commit afd75c6164324ac68a3e39f3c988ce85978669d4
+libvma:
+vma/source_rpms//libvma-8.7.5-0.src.rpm
+
+mlnx-en:
+mlnx_ofed/mlnx-ofa_kernel-4.0.git mlnx_ofed_4_5
+commit b4fdfaca46720ce2f890ed9ceba135d32e13cf14
+
+mlnx-ethtool:
+upstream/ethtool.git for-upstream
+commit ac0cf295abe0c0832f0711fed66ab9601c8b2513
+mlnx-iproute2:
+mlnx_ofed/iproute2.git mlnx_ofed_4_5
+commit cd3ef5b3877e73c52cca5e62d9172845bccd53bb
+mlnx-nfsrdma:
+mlnx_ofed/mlnx-ofa_kernel-4.0.git mlnx_ofed_4_5
+commit b4fdfaca46720ce2f890ed9ceba135d32e13cf14
+
+mlnx-nvme:
+mlnx_ofed/mlnx-ofa_kernel-4.0.git mlnx_ofed_4_5
+commit b4fdfaca46720ce2f890ed9ceba135d32e13cf14
+
+mlnx-ofa_kernel:
+mlnx_ofed/mlnx-ofa_kernel-4.0.git mlnx_ofed_4_5
+commit b4fdfaca46720ce2f890ed9ceba135d32e13cf14
+
+mlnx-rdma-rxe:
+mlnx_ofed/mlnx-ofa_kernel-4.0.git mlnx_ofed_4_5
+commit b4fdfaca46720ce2f890ed9ceba135d32e13cf14
+
+mpi-selector:
+ofed-1.5.3-rpms/mpi-selector/mpi-selector-1.0.3-1.src.rpm
+
+mpitests:
+mlnx_ofed_mpitest/mpitests-3.2.20-e1a0676.src.rpm
+
+mstflint:
+mlnx_ofed_mstflint/mstflint-4.11.0-1.5.g264ffeb.tar.gz
+
+multiperf:
+mlnx_ofed_multiperf/multiperf-3.0-0.12.gbb02555.tar.gz
+
+mxm:
+mlnx_ofed_mxm/mxm-3.7.3111-1.src.rpm
+
+ofed-docs:
+docs.git mlnx_ofed-4.0
+commit 3d1b0afb7bc190ae5f362223043f76b2b45971cc
+
+openmpi:
+mlnx_ofed_ompi_1.8/openmpi-4.0.0rc5-1.src.rpm
+
+opensm:
+mlnx_ofed_opensm/opensm-5.3.0.MLNX20181108.33944a2.tar.gz
+
+perftest:
+mlnx_ofed_perftest/perftest-4.4-0.5.g1ceab48.tar.gz
+
+qperf:
+mlnx_ofed_qperf/qperf-0.4.9.tar.gz
+
+rdma-core:
+mlnx_ofed/rdma-core.git mlnx_ofed_4_5
+commit 75e5c02c005251ee33ef3a57de455bb26fa92e82
+sharp:
+mlnx_ofed_sharp/sharp-1.7.2.MLNX20181122.e5da787.tar.gz
+
+sockperf:
+sockperf/sockperf-3.6-0.git737d1e3e5576.src.rpm
+
+srp:
+mlnx_ofed/mlnx-ofa_kernel-4.0.git mlnx_ofed_4_5
+commit b4fdfaca46720ce2f890ed9ceba135d32e13cf14
+
+srptools:
+srptools/srptools-41mlnx1-5.src.rpm
+
+ucx:
+mlnx_ofed_ucx/ucx-1.5.0-1.src.rpm
+
+
+Installed Packages:
+-------------------
+
+librdmacm-utils
+mstflint
+libibverbs
+sharp
+libmlx5-devel
+ibacm
+dapl-devel-static
+infiniband-diags
+ucx-static
+opensm-devel
+openmpi
+mlnx-ofa_kernel
+libibumad-devel
+opensm
+kmod-srp
+librdmacm
+dapl-devel
+libibmad-devel
+srptools
+mlnx-ethtool
+kmod-iser
+kmod-kernel-mft-mlnx
+opensm-libs
+ucx-devel
+infiniband-diags-compat
+dapl-utils
+perftest
+ibdump
+kmod-knem
+ibutils
+mlnx-ofa_kernel-devel
+libibumad
+libmlx5
+libmlx4
+ar_mgr
+qperf
+libibverbs-utils
+knem
+kmod-isert
+libibmad
+ucx
+librxe
+librxe-devel-static
+cc_mgr
+ibsim
+mpi-selector
+libibverbs-devel-static
+dapl
+hcoll
+librdmacm-devel
+ibutils2
+opensm-static
+mpitests_openmpi
+kmod-mlnx-ofa_kernel
+libibcm
+libibmad-static
+dump_pr
+mxm
+libibcm-devel
+libibumad-static
+mlnx-iproute2
+libibverbs-devel
+libmlx4-devel
+
+$ ibv_devinfo
+hca_id: mlx5_0
+        transport:                      InfiniBand (0)
+        fw_ver:                         16.25.1020
+        node_guid:                      9803:9b03:00a0:7886
+        sys_image_guid:                 9803:9b03:00a0:7886
+        vendor_id:                      0x02c9
+        vendor_part_id:                 4119
+        hw_ver:                         0x0
+        board_id:                       MT_0000000010
+        phys_port_cnt:                  1
+        Device ports:
+                port:   1
+                        state:                  PORT_ACTIVE (4)
+                        max_mtu:                4096 (5)
+                        active_mtu:             4096 (5)
+                        sm_lid:                 1
+                        port_lid:               61
+                        port_lmc:               0x00
+                        link_layer:             InfiniBand

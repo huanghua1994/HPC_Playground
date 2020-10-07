@@ -1,0 +1,15 @@
+$ mpirun -np 4 ./put_and_acc.exe 1592
+arr_size = 1592
+send_rank, recv_rank = 3, 0
+Rank 3 calls MPI_Put done
+
+===================================================================================
+=   BAD TERMINATION OF ONE OF YOUR APPLICATION PROCESSES
+=   PID 201352 RUNNING AT atl1-1-01-018-31.pace.gatech.edu
+=   EXIT CODE: 139
+=   CLEANING UP REMAINING PROCESSES
+=   YOU CAN IGNORE THE BELOW CLEANUP MESSAGES
+===================================================================================
+YOUR APPLICATION TERMINATED WITH THE EXIT STRING: Segmentation fault (signal 11)
+This typically refers to a problem with your application.
+Please see the FAQ page for debugging suggestions

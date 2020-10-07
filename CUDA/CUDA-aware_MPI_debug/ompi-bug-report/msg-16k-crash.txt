@@ -1,0 +1,203 @@
+$ mpirun --mca mpi_common_cuda_verbose 100 -np 4 ./sendrecv.exe 16384
+[atl1-1-01-018-31.pace.gatech.edu:363622] CUDA: stage_one_init_ref_count is now 1, initializing
+[atl1-1-01-018-31.pace.gatech.edu:363621] CUDA: stage_one_init_ref_count is now 1, initializing
+[atl1-1-01-018-31.pace.gatech.edu:363622] CUDA: Library successfully opened libcuda.so.1
+[atl1-1-01-018-31.pace.gatech.edu:363622] CUDA: successful dlsym of cuStreamCreate
+[atl1-1-01-018-31.pace.gatech.edu:363622] CUDA: successful dlsym of cuCtxGetCurrent
+[atl1-1-01-018-31.pace.gatech.edu:363622] CUDA: successful dlsym of cuEventCreate
+[atl1-1-01-018-31.pace.gatech.edu:363622] CUDA: successful dlsym of cuEventRecord
+[atl1-1-01-018-31.pace.gatech.edu:363622] CUDA: successful dlsym of cuMemHostRegister_v2
+[atl1-1-01-018-31.pace.gatech.edu:363622] CUDA: successful dlsym of cuMemHostUnregister
+[atl1-1-01-018-31.pace.gatech.edu:363622] CUDA: successful dlsym of cuPointerGetAttribute
+[atl1-1-01-018-31.pace.gatech.edu:363622] CUDA: successful dlsym of cuEventQuery
+[atl1-1-01-018-31.pace.gatech.edu:363622] CUDA: successful dlsym of cuEventDestroy_v2
+[atl1-1-01-018-31.pace.gatech.edu:363622] CUDA: successful dlsym of cuStreamWaitEvent
+[atl1-1-01-018-31.pace.gatech.edu:363622] CUDA: successful dlsym of cuMemcpyAsync
+[atl1-1-01-018-31.pace.gatech.edu:363622] CUDA: successful dlsym of cuMemcpy
+[atl1-1-01-018-31.pace.gatech.edu:363622] CUDA: successful dlsym of cuMemFree_v2
+[atl1-1-01-018-31.pace.gatech.edu:363622] CUDA: successful dlsym of cuMemAlloc_v2
+[atl1-1-01-018-31.pace.gatech.edu:363622] CUDA: successful dlsym of cuMemGetAddressRange_v2
+[atl1-1-01-018-31.pace.gatech.edu:363622] CUDA: successful dlsym of cuIpcGetEventHandle
+[atl1-1-01-018-31.pace.gatech.edu:363622] CUDA: successful dlsym of cuIpcOpenEventHandle
+[atl1-1-01-018-31.pace.gatech.edu:363622] CUDA: successful dlsym of cuIpcOpenMemHandle
+[atl1-1-01-018-31.pace.gatech.edu:363622] CUDA: successful dlsym of cuIpcCloseMemHandle
+[atl1-1-01-018-31.pace.gatech.edu:363622] CUDA: successful dlsym of cuIpcGetMemHandle
+[atl1-1-01-018-31.pace.gatech.edu:363622] CUDA: successful dlsym of cuCtxGetDevice
+[atl1-1-01-018-31.pace.gatech.edu:363622] CUDA: successful dlsym of cuDeviceCanAccessPeer
+[atl1-1-01-018-31.pace.gatech.edu:363622] CUDA: successful dlsym of cuDeviceGet
+[atl1-1-01-018-31.pace.gatech.edu:363622] CUDA: successful dlsym of cuPointerSetAttribute
+[atl1-1-01-018-31.pace.gatech.edu:363622] CUDA: successful dlsym of cuCtxSetCurrent
+[atl1-1-01-018-31.pace.gatech.edu:363622] CUDA: successful dlsym of cuEventSynchronize
+[atl1-1-01-018-31.pace.gatech.edu:363622] CUDA: successful dlsym of cuStreamSynchronize
+[atl1-1-01-018-31.pace.gatech.edu:363622] CUDA: successful dlsym of cuStreamDestroy_v2
+[atl1-1-01-018-31.pace.gatech.edu:363622] CUDA: successful dlsym of cuPointerGetAttributes
+[atl1-1-01-018-31.pace.gatech.edu:363621] CUDA: Library successfully opened libcuda.so.1
+[atl1-1-01-018-31.pace.gatech.edu:363621] CUDA: successful dlsym of cuStreamCreate
+[atl1-1-01-018-31.pace.gatech.edu:363621] CUDA: successful dlsym of cuCtxGetCurrent
+[atl1-1-01-018-31.pace.gatech.edu:363621] CUDA: successful dlsym of cuEventCreate
+[atl1-1-01-018-31.pace.gatech.edu:363621] CUDA: successful dlsym of cuEventRecord
+[atl1-1-01-018-31.pace.gatech.edu:363621] CUDA: successful dlsym of cuMemHostRegister_v2
+[atl1-1-01-018-31.pace.gatech.edu:363621] CUDA: successful dlsym of cuMemHostUnregister
+[atl1-1-01-018-31.pace.gatech.edu:363621] CUDA: successful dlsym of cuPointerGetAttribute
+[atl1-1-01-018-31.pace.gatech.edu:363621] CUDA: successful dlsym of cuEventQuery
+[atl1-1-01-018-31.pace.gatech.edu:363621] CUDA: successful dlsym of cuEventDestroy_v2
+[atl1-1-01-018-31.pace.gatech.edu:363621] CUDA: successful dlsym of cuStreamWaitEvent
+[atl1-1-01-018-31.pace.gatech.edu:363621] CUDA: successful dlsym of cuMemcpyAsync
+[atl1-1-01-018-31.pace.gatech.edu:363621] CUDA: successful dlsym of cuMemcpy
+[atl1-1-01-018-31.pace.gatech.edu:363621] CUDA: successful dlsym of cuMemFree_v2
+[atl1-1-01-018-31.pace.gatech.edu:363621] CUDA: successful dlsym of cuMemAlloc_v2
+[atl1-1-01-018-31.pace.gatech.edu:363621] CUDA: successful dlsym of cuMemGetAddressRange_v2
+[atl1-1-01-018-31.pace.gatech.edu:363621] CUDA: successful dlsym of cuIpcGetEventHandle
+[atl1-1-01-018-31.pace.gatech.edu:363621] CUDA: successful dlsym of cuIpcOpenEventHandle
+[atl1-1-01-018-31.pace.gatech.edu:363621] CUDA: successful dlsym of cuIpcOpenMemHandle
+[atl1-1-01-018-31.pace.gatech.edu:363621] CUDA: successful dlsym of cuIpcCloseMemHandle
+[atl1-1-01-018-31.pace.gatech.edu:363621] CUDA: successful dlsym of cuIpcGetMemHandle
+[atl1-1-01-018-31.pace.gatech.edu:363621] CUDA: successful dlsym of cuCtxGetDevice
+[atl1-1-01-018-31.pace.gatech.edu:363621] CUDA: successful dlsym of cuDeviceCanAccessPeer
+[atl1-1-01-018-31.pace.gatech.edu:363621] CUDA: successful dlsym of cuDeviceGet
+[atl1-1-01-018-31.pace.gatech.edu:363621] CUDA: successful dlsym of cuPointerSetAttribute
+[atl1-1-01-018-31.pace.gatech.edu:363621] CUDA: successful dlsym of cuCtxSetCurrent
+[atl1-1-01-018-31.pace.gatech.edu:363621] CUDA: successful dlsym of cuEventSynchronize
+[atl1-1-01-018-31.pace.gatech.edu:363621] CUDA: successful dlsym of cuStreamSynchronize
+[atl1-1-01-018-31.pace.gatech.edu:363621] CUDA: successful dlsym of cuStreamDestroy_v2
+[atl1-1-01-018-31.pace.gatech.edu:363621] CUDA: successful dlsym of cuPointerGetAttributes
+[atl1-1-01-018-31.pace.gatech.edu:363623] CUDA: stage_one_init_ref_count is now 1, initializing
+[atl1-1-01-018-31.pace.gatech.edu:363623] CUDA: Library successfully opened libcuda.so.1
+[atl1-1-01-018-31.pace.gatech.edu:363623] CUDA: successful dlsym of cuStreamCreate
+[atl1-1-01-018-31.pace.gatech.edu:363623] CUDA: successful dlsym of cuCtxGetCurrent
+[atl1-1-01-018-31.pace.gatech.edu:363623] CUDA: successful dlsym of cuEventCreate
+[atl1-1-01-018-31.pace.gatech.edu:363623] CUDA: successful dlsym of cuEventRecord
+[atl1-1-01-018-31.pace.gatech.edu:363623] CUDA: successful dlsym of cuMemHostRegister_v2
+[atl1-1-01-018-31.pace.gatech.edu:363623] CUDA: successful dlsym of cuMemHostUnregister
+[atl1-1-01-018-31.pace.gatech.edu:363623] CUDA: successful dlsym of cuPointerGetAttribute
+[atl1-1-01-018-31.pace.gatech.edu:363623] CUDA: successful dlsym of cuEventQuery
+[atl1-1-01-018-31.pace.gatech.edu:363623] CUDA: successful dlsym of cuEventDestroy_v2
+[atl1-1-01-018-31.pace.gatech.edu:363623] CUDA: successful dlsym of cuStreamWaitEvent
+[atl1-1-01-018-31.pace.gatech.edu:363623] CUDA: successful dlsym of cuMemcpyAsync
+[atl1-1-01-018-31.pace.gatech.edu:363623] CUDA: successful dlsym of cuMemcpy
+[atl1-1-01-018-31.pace.gatech.edu:363623] CUDA: successful dlsym of cuMemFree_v2
+[atl1-1-01-018-31.pace.gatech.edu:363623] CUDA: successful dlsym of cuMemAlloc_v2
+[atl1-1-01-018-31.pace.gatech.edu:363623] CUDA: successful dlsym of cuMemGetAddressRange_v2
+[atl1-1-01-018-31.pace.gatech.edu:363623] CUDA: successful dlsym of cuIpcGetEventHandle
+[atl1-1-01-018-31.pace.gatech.edu:363623] CUDA: successful dlsym of cuIpcOpenEventHandle
+[atl1-1-01-018-31.pace.gatech.edu:363623] CUDA: successful dlsym of cuIpcOpenMemHandle
+[atl1-1-01-018-31.pace.gatech.edu:363623] CUDA: successful dlsym of cuIpcCloseMemHandle
+[atl1-1-01-018-31.pace.gatech.edu:363623] CUDA: successful dlsym of cuIpcGetMemHandle
+[atl1-1-01-018-31.pace.gatech.edu:363623] CUDA: successful dlsym of cuCtxGetDevice
+[atl1-1-01-018-31.pace.gatech.edu:363623] CUDA: successful dlsym of cuDeviceCanAccessPeer
+[atl1-1-01-018-31.pace.gatech.edu:363623] CUDA: successful dlsym of cuDeviceGet
+[atl1-1-01-018-31.pace.gatech.edu:363623] CUDA: successful dlsym of cuPointerSetAttribute
+[atl1-1-01-018-31.pace.gatech.edu:363623] CUDA: successful dlsym of cuCtxSetCurrent
+[atl1-1-01-018-31.pace.gatech.edu:363623] CUDA: successful dlsym of cuEventSynchronize
+[atl1-1-01-018-31.pace.gatech.edu:363623] CUDA: successful dlsym of cuStreamSynchronize
+[atl1-1-01-018-31.pace.gatech.edu:363623] CUDA: successful dlsym of cuStreamDestroy_v2
+[atl1-1-01-018-31.pace.gatech.edu:363623] CUDA: successful dlsym of cuPointerGetAttributes
+[atl1-1-01-018-31.pace.gatech.edu:363622] CUDA: stage_one_init_ref_count is now 2, no need to init
+[atl1-1-01-018-31.pace.gatech.edu:363621] CUDA: stage_one_init_ref_count is now 2, no need to init
+[atl1-1-01-018-31.pace.gatech.edu:363623] CUDA: stage_one_init_ref_count is now 2, no need to init
+[atl1-1-01-018-31.pace.gatech.edu:363621] CUDA: stage_one_init_ref_count is now 3, no need to init
+[atl1-1-01-018-31.pace.gatech.edu:363622] CUDA: stage_one_init_ref_count is now 3, no need to init
+[atl1-1-01-018-31.pace.gatech.edu:363623] CUDA: stage_one_init_ref_count is now 3, no need to init
+[atl1-1-01-018-31.pace.gatech.edu:363620] CUDA: stage_one_init_ref_count is now 1, initializing
+[atl1-1-01-018-31.pace.gatech.edu:363620] CUDA: Library successfully opened libcuda.so.1
+[atl1-1-01-018-31.pace.gatech.edu:363620] CUDA: successful dlsym of cuStreamCreate
+[atl1-1-01-018-31.pace.gatech.edu:363620] CUDA: successful dlsym of cuCtxGetCurrent
+[atl1-1-01-018-31.pace.gatech.edu:363620] CUDA: successful dlsym of cuEventCreate
+[atl1-1-01-018-31.pace.gatech.edu:363620] CUDA: successful dlsym of cuEventRecord
+[atl1-1-01-018-31.pace.gatech.edu:363620] CUDA: successful dlsym of cuMemHostRegister_v2
+[atl1-1-01-018-31.pace.gatech.edu:363620] CUDA: successful dlsym of cuMemHostUnregister
+[atl1-1-01-018-31.pace.gatech.edu:363620] CUDA: successful dlsym of cuPointerGetAttribute
+[atl1-1-01-018-31.pace.gatech.edu:363620] CUDA: successful dlsym of cuEventQuery
+[atl1-1-01-018-31.pace.gatech.edu:363620] CUDA: successful dlsym of cuEventDestroy_v2
+[atl1-1-01-018-31.pace.gatech.edu:363620] CUDA: successful dlsym of cuStreamWaitEvent
+[atl1-1-01-018-31.pace.gatech.edu:363620] CUDA: successful dlsym of cuMemcpyAsync
+[atl1-1-01-018-31.pace.gatech.edu:363620] CUDA: successful dlsym of cuMemcpy
+[atl1-1-01-018-31.pace.gatech.edu:363620] CUDA: successful dlsym of cuMemFree_v2
+[atl1-1-01-018-31.pace.gatech.edu:363620] CUDA: successful dlsym of cuMemAlloc_v2
+[atl1-1-01-018-31.pace.gatech.edu:363620] CUDA: successful dlsym of cuMemGetAddressRange_v2
+[atl1-1-01-018-31.pace.gatech.edu:363620] CUDA: successful dlsym of cuIpcGetEventHandle
+[atl1-1-01-018-31.pace.gatech.edu:363620] CUDA: successful dlsym of cuIpcOpenEventHandle
+[atl1-1-01-018-31.pace.gatech.edu:363620] CUDA: successful dlsym of cuIpcOpenMemHandle
+[atl1-1-01-018-31.pace.gatech.edu:363620] CUDA: successful dlsym of cuIpcCloseMemHandle
+[atl1-1-01-018-31.pace.gatech.edu:363620] CUDA: successful dlsym of cuIpcGetMemHandle
+[atl1-1-01-018-31.pace.gatech.edu:363620] CUDA: successful dlsym of cuCtxGetDevice
+[atl1-1-01-018-31.pace.gatech.edu:363620] CUDA: successful dlsym of cuDeviceCanAccessPeer
+[atl1-1-01-018-31.pace.gatech.edu:363620] CUDA: successful dlsym of cuDeviceGet
+[atl1-1-01-018-31.pace.gatech.edu:363620] CUDA: successful dlsym of cuPointerSetAttribute
+[atl1-1-01-018-31.pace.gatech.edu:363620] CUDA: successful dlsym of cuCtxSetCurrent
+[atl1-1-01-018-31.pace.gatech.edu:363620] CUDA: successful dlsym of cuEventSynchronize
+[atl1-1-01-018-31.pace.gatech.edu:363620] CUDA: successful dlsym of cuStreamSynchronize
+[atl1-1-01-018-31.pace.gatech.edu:363620] CUDA: successful dlsym of cuStreamDestroy_v2
+[atl1-1-01-018-31.pace.gatech.edu:363620] CUDA: successful dlsym of cuPointerGetAttributes
+[atl1-1-01-018-31.pace.gatech.edu:363620] CUDA: stage_one_init_ref_count is now 2, no need to init
+[atl1-1-01-018-31.pace.gatech.edu:363620] CUDA: stage_one_init_ref_count is now 3, no need to init
+[atl1-1-01-018-31.pace.gatech.edu:363621] CUDA: support functions initialized
+[atl1-1-01-018-31.pace.gatech.edu:363622] CUDA: support functions initialized
+arr_size = 16384
+[atl1-1-01-018-31.pace.gatech.edu:363623] CUDA: support functions initialized
+[atl1-1-01-018-31.pace.gatech.edu:363620] CUDA: support functions initialized
+[atl1-1-01-018-31:363621:0:363621] Caught signal 11 (Segmentation fault: invalid permissions for mapped object at address 0x7fffbda10000)
+[atl1-1-01-018-31:363623:0:363623] Caught signal 11 (Segmentation fault: invalid permissions for mapped object at address 0x7fffbda10000)
+[atl1-1-01-018-31:363620:0:363620] Caught signal 11 (Segmentation fault: invalid permissions for mapped object at address 0x7fffb7a11fd8)
+[atl1-1-01-018-31:363622:0:363622] Caught signal 11 (Segmentation fault: invalid permissions for mapped object at address 0x7fffbda11fd8)
+==== backtrace ====
+ 0 0x0000000000153cf5 __memcpy_ssse3_back()  :0
+ 1 0x0000000000018fab ucp_dt_pack()  ???:0
+ 2 0x00000000000209a2 ucp_tag_offload_unexp_eager()  ???:0
+ 3 0x000000000005fdb0 uct_mm_ep_am_bcopy()  ???:0
+ 4 0x00000000000219af ucp_tag_offload_unexp_eager()  ???:0
+ 5 0x000000000002a3dc ucp_tag_send_nbr()  ???:0
+ 6 0x00000000002428cb mca_pml_ucx_send()  ???:0
+ 7 0x00000000000cfb2d PMPI_Sendrecv()  ???:0
+ 8 0x00000000004033b8 main()  /storage/home/hhive1/hhuang368/scratch/HPC_Playground/CUDA/CUDA-aware_MPI_debug/sendrecv.cu:51
+ 9 0x00000000000223d5 __libc_start_main()  ???:0
+10 0x0000000000402fa9 _start()  ???:0
+===================
+==== backtrace ====
+ 0 0x0000000000153cf5 __memcpy_ssse3_back()  :0
+ 1 0x0000000000018fab ucp_dt_pack()  ???:0
+ 2 0x00000000000209a2 ucp_tag_offload_unexp_eager()  ???:0
+ 3 0x000000000005fdb0 uct_mm_ep_am_bcopy()  ???:0
+ 4 0x00000000000219af ucp_tag_offload_unexp_eager()  ???:0
+ 5 0x000000000002a3dc ucp_tag_send_nbr()  ???:0
+ 6 0x00000000002428cb mca_pml_ucx_send()  ???:0
+ 7 0x00000000000cfb2d PMPI_Sendrecv()  ???:0
+ 8 0x00000000004033b8 main()  /storage/home/hhive1/hhuang368/scratch/HPC_Playground/CUDA/CUDA-aware_MPI_debug/sendrecv.cu:51
+ 9 0x00000000000223d5 __libc_start_main()  ???:0
+10 0x0000000000402fa9 _start()  ???:0
+===================
+==== backtrace ====
+ 0 0x0000000000153d69 __memcpy_ssse3_back()  :0
+ 1 0x0000000000018fab ucp_dt_pack()  ???:0
+ 2 0x00000000000209a2 ucp_tag_offload_unexp_eager()  ???:0
+==== backtrace ====
+ 0 0x0000000000153d69 __memcpy_ssse3_back()  :0
+ 1 0x0000000000018fab ucp_dt_pack()  ???:0
+ 3 0x000000000005fdb0 uct_mm_ep_am_bcopy()  ???:0
+ 4 0x000000000003254e ucp_wireup_select_sockaddr_transport()  ???:0
+ 5 0x00000000000219af ucp_tag_offload_unexp_eager()  ???:0
+ 6 0x000000000002a3dc ucp_tag_send_nbr()  ???:0
+ 7 0x00000000002428cb mca_pml_ucx_send()  ???:0
+ 8 0x00000000000cfb2d PMPI_Sendrecv()  ???:0
+ 9 0x00000000004033b8 main()  /storage/home/hhive1/hhuang368/scratch/HPC_Playground/CUDA/CUDA-aware_MPI_debug/sendrecv.cu:51
+10 0x00000000000223d5 __libc_start_main()  ???:0
+11 0x0000000000402fa9 _start()  ???:0
+===================
+ 2 0x00000000000209a2 ucp_tag_offload_unexp_eager()  ???:0
+ 3 0x000000000005fdb0 uct_mm_ep_am_bcopy()  ???:0
+ 4 0x000000000003254e ucp_wireup_select_sockaddr_transport()  ???:0
+ 5 0x00000000000219af ucp_tag_offload_unexp_eager()  ???:0
+ 6 0x000000000002a3dc ucp_tag_send_nbr()  ???:0
+ 7 0x00000000002428cb mca_pml_ucx_send()  ???:0
+ 8 0x00000000000cfb2d PMPI_Sendrecv()  ???:0
+ 9 0x00000000004033b8 main()  /storage/home/hhive1/hhuang368/scratch/HPC_Playground/CUDA/CUDA-aware_MPI_debug/sendrecv.cu:51
+10 0x00000000000223d5 __libc_start_main()  ???:0
+11 0x0000000000402fa9 _start()  ???:0
+===================
+--------------------------------------------------------------------------
+Primary job  terminated normally, but 1 process returned
+a non-zero exit code. Per user-direction, the job has been aborted.
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+mpirun noticed that process rank 2 with PID 0 on node atl1-1-01-018-31 exited on signal 11 (Segmentation fault).
+--------------------------------------------------------------------------
