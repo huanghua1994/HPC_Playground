@@ -22,7 +22,7 @@ __global__ void test_kernel(const int n_msg, int *msg)
         }
         if ( *((volatile int *) &msg[i]) == 1) flag++;
     }
-    printf("test_kernel returned, flag = %d\n", flag);
+    printf("test_kernel returned, received messages = %d (expected %d)\n", flag, n_msg);
 }
 
 void launch_test_kernel(const int n_msg, int *msg)
