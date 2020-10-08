@@ -20,3 +20,10 @@ Note: self-compiled, not GDR version
 
 `sendrecv` and `send_recv` : single node, program crashes. This problem does not exist in OpenMPI 3.0.6.
 
+## MPICH 3.4b1
+
+ch3: single node, `sendrecv` and `send_recv` program crashes
+
+ch4+ucx: single node, `sendrecv` and `send_recv` program crashes
+
+ch4+ofi: even the mpi_helloworld crashes

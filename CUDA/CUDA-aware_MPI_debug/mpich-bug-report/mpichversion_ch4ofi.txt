@@ -1,0 +1,10 @@
+$ mpichversion
+MPICH Version:          3.4b1
+MPICH Release date:     Mon Oct  5 21:47:25 CDT 2020
+MPICH Device:           ch4:ofi
+MPICH configure:        --prefix=/storage/home/hhive1/hhuang368/scratch/mpich/3.4b1/intel/19.0.5/cuda/10.1 --enable-g=all --enable-fast=none --enable-fortran=all --enable-cxx --enable-threads=multiple --enable-shared --enable-static --with-device=ch4:ofi
+MPICH CC:       icc -I/usr/local/pace-apps/manual/packages/cuda/10.1/include   -g -O0
+MPICH CXX:      icpc   -g -O0
+MPICH F77:      ifort   -g -O0
+MPICH FC:       ifort   -g -O0
+MPICH Custom Information:
