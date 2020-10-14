@@ -34,4 +34,4 @@ latency.exe: $(CU_OBJS) latency.o
 	$(NVCC) $(NVFLAGS) -o $@ -c $^ 
 
 clean:
-	rm $(OBJS) $(EXES)
+	rm $(C_OBJS) $(CU_OBJS) $(EXES)

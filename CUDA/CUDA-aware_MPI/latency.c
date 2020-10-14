@@ -56,7 +56,7 @@ int main(int argc, char **argv)
 
     // Test CPU send-receive latency
     double cpu_sr_t = 0.0;
-    for (int i = 0; i < n_test; i++)
+    for (int i = 0; i <= n_test; i++)
     {
         MPI_Barrier(MPI_COMM_WORLD);
         st = MPI_Wtime();
@@ -66,12 +66,12 @@ int main(int argc, char **argv)
             MPI_COMM_WORLD, MPI_STATUS_IGNORE
         );
         et = MPI_Wtime();
-        cpu_sr_t += et - st;
+        if (i > 0) cpu_sr_t += et - st;
     }
     cpu_sr_t /= (double) n_test;
     printf(
         "Rank %2d: MPI_Sendrecv to/from (%2d, %2d) on host avg time = %.3lf ms\n", 
-        my_rank, prev_rank, next_rank, cpu_sr_t * 1000.0
+        my_rank, next_rank, prev_rank, cpu_sr_t * 1000.0
     );
     fflush(stdout);
     MPI_Barrier(MPI_COMM_WORLD);
@@ -80,7 +80,7 @@ int main(int argc, char **argv)
     MPI_Win host_win;
     MPI_Win_create(host_arr, arr_bytes, sizeof(int), MPI_INFO_NULL, MPI_COMM_WORLD, &host_win);
     double cpu_put_t = 0.0;
-    for (int i = 0; i < n_test; i++)
+    for (int i = 0; i <= n_test; i++)
     {
         MPI_Barrier(MPI_COMM_WORLD);
         st = MPI_Wtime();
@@ -90,7 +90,7 @@ int main(int argc, char **argv)
         MPI_Win_complete(host_win);
         MPI_Win_wait(host_win);
         et = MPI_Wtime();
-        cpu_put_t += et - st;
+        if (i > 0) cpu_put_t += et - st;
     }
     MPI_Win_free(&host_win);
     cpu_put_t /= (double) n_test;
@@ -103,7 +103,7 @@ int main(int argc, char **argv)
 
     // Test GPU send-receive latency
     double gpu_sr_t = 0.0;
-    for (int i = 0; i < n_test; i++)
+    for (int i = 0; i <= n_test; i++)
     {
         MPI_Barrier(MPI_COMM_WORLD);
         st = MPI_Wtime();
@@ -113,12 +113,12 @@ int main(int argc, char **argv)
             MPI_COMM_WORLD, MPI_STATUS_IGNORE
         );
         et = MPI_Wtime();
-        gpu_sr_t += et - st;
+        if (i > 0) gpu_sr_t += et - st;
     }
     gpu_sr_t /= (double) n_test;
     printf(
         "Rank %2d: MPI_Sendrecv to/from (%2d, %2d) on CUDA avg time = %.3lf ms\n", 
-        my_rank, prev_rank, next_rank, gpu_sr_t * 1000.0
+        my_rank, next_rank, prev_rank, gpu_sr_t * 1000.0
     );
     fflush(stdout);
     MPI_Barrier(MPI_COMM_WORLD);
@@ -127,7 +127,7 @@ int main(int argc, char **argv)
     MPI_Win cuda_win;
     MPI_Win_create(dev_arr, arr_bytes, sizeof(int), MPI_INFO_NULL, MPI_COMM_WORLD, &cuda_win);
     double gpu_put_t = 0.0;
-    for (int i = 0; i < n_test; i++)
+    for (int i = 0; i <= n_test; i++)
     {
         MPI_Barrier(MPI_COMM_WORLD);
         st = MPI_Wtime();
@@ -137,7 +137,7 @@ int main(int argc, char **argv)
         MPI_Win_complete(cuda_win);
         MPI_Win_wait(cuda_win);
         et = MPI_Wtime();
-        gpu_put_t += et - st;
+        if (i > 0) gpu_put_t += et - st;
     }
     MPI_Win_free(&cuda_win);
     gpu_put_t /= (double) n_test;
