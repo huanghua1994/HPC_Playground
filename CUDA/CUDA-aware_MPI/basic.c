@@ -6,7 +6,7 @@
 
 #include <mpi.h>
 
-#include "driver.h"
+#include "cuda_proxy.h"
 
 int main(int argc, char **argv)
 {
@@ -43,8 +43,8 @@ int main(int argc, char **argv)
 
     // Get CUDA device status and set target CUDA device
     cuda_dev_state_p self_dev_state;
-    init_cuda_dev_state(&self_dev_state);
-    set_cuda_dev_id(self_dev_state, shm_my_rank % self_dev_state->n_dev);
+    cuda_init_dev_state(&self_dev_state);
+    cuda_set_dev_id(self_dev_state, shm_my_rank % self_dev_state->n_dev);
 
     // Gather all ranks' CUDA device status to build the topology map
     // using host_hash, pcie_dev_id, pcie_bus_id, and pcie_domain_id. 
@@ -60,7 +60,10 @@ int main(int argc, char **argv)
             peer_dev_state, ds_msize, MPI_CHAR, peer_rank, tag, 
             MPI_COMM_WORLD, MPI_STATUS_IGNORE
         );
-        check_cuda_dev_p2p(self_dev_state, peer_dev_state, &use_cuda_p2p);
+        use_cuda_p2p = cuda_check_dev_p2p(
+            self_dev_state->host_hash, self_dev_state->dev_id,
+            peer_dev_state->host_hash, peer_dev_state->dev_id
+        );
         if (use_cuda_p2p == 1) use_mpi_rma = 0;
     }
     printf(
@@ -75,7 +78,7 @@ int main(int argc, char **argv)
     size_t mat_bytes = sizeof(int) * nrow * ncol;
     int *host_mat, *dev_mat;
     host_mat = (int *) malloc(mat_bytes);
-    alloc_cuda_mem((void **) &dev_mat, mat_bytes);
+    cuda_malloc_dev((void **) &dev_mat, mat_bytes);
     memset(host_mat, 0, mat_bytes);
     if (my_rank == send_rank)
     {
@@ -84,7 +87,7 @@ int main(int argc, char **argv)
                 host_mat[i * ncol + j] = my_rank * 100 + i * ncol + j;
     }
     cuda_memcpy_h2d(host_mat, dev_mat, mat_bytes);
-    sync_cuda_device();
+    cuda_device_sync();
     MPI_Barrier(MPI_COMM_WORLD);
     if (my_rank == recv_rank) 
     {
@@ -119,21 +122,21 @@ int main(int argc, char **argv)
     {
         int handle_bytes;
         void *mem_handle;  // Allocated by get_cuda_ipc_mem_handle()
-        get_cuda_ipc_mem_handle(dev_mat, &handle_bytes, &mem_handle);
+        cuda_get_ipc_mem_handle(dev_mat, &handle_bytes, &mem_handle);
         if (my_rank == send_rank) MPI_Send(mem_handle, handle_bytes, MPI_CHAR, recv_rank, tag, MPI_COMM_WORLD);
         if (my_rank == recv_rank) 
         {
             int *peer_dptr;
             MPI_Recv(mem_handle, handle_bytes, MPI_CHAR, send_rank, tag, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-            open_cuda_ipc_mem_handle((void **) &peer_dptr, mem_handle);
+            cuda_open_ipc_mem_handle((void **) &peer_dptr, mem_handle);
             for (int i = 0; i < nrow_send; i++)
             {
                 int *src_ptr = peer_dptr + i * ncol;
                 int *dst_ptr = dev_mat   + i * ncol;
                 cuda_memcpy_auto(src_ptr, dst_ptr, sizeof(int) * ncol_send);
             }
-            sync_cuda_device();
-            close_cuda_ipc_mem_handle((void *) peer_dptr);
+            cuda_device_sync();
+            cuda_close_ipc_mem_handle((void *) peer_dptr);
         }
     } 
     if (use_mpi_rma)
@@ -167,7 +170,7 @@ int main(int argc, char **argv)
     if (my_rank == recv_rank)
     {
         cuda_memcpy_d2h(dev_mat, host_mat, mat_bytes);
-        sync_cuda_device();
+        cuda_device_sync();
         printf("Rank %d, received matrix:\n", my_rank);
         for (int i = 0; i < nrow; i++)
         {
@@ -178,9 +181,9 @@ int main(int argc, char **argv)
     }
 
     // Clean up and exit
-    free_cuda_mem(dev_mat);
+    cuda_free_dev(dev_mat);
     free(host_mat);
-    free_cuda_dev_state(&self_dev_state);
+    cuda_free_dev_state(&self_dev_state);
     MPI_Type_free(&ddt_int_block);
     MPI_Win_free(&mpi_win);
     MPI_Comm_free(&shm_comm);

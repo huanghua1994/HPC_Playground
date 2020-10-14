@@ -31,7 +31,7 @@ int main(int argc, char **argv)
 
     int forced_update_method = 1;
     if (argc >= 2) forced_update_method = atoi(argv[1]);
-    printf("forced_update_method = %d\n", forced_update_method);
+    if (my_rank == 0) printf("forced_update_method = %d\n", forced_update_method);
 
     if (send_rank < 0 || send_rank >= n_proc || recv_rank < 0 || recv_rank >= n_proc)
     {
