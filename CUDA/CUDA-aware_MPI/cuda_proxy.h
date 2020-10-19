@@ -17,9 +17,17 @@ typedef struct cuda_dev_state
 extern "C" {
 #endif
 
+// Get current process MPI intra-node rank from environment variables
+int  get_mpi_local_rank_env();  
+
+// Get number of intra-node ranks from environment variables
+int  get_mpi_local_size_env();
+
 void cuda_init_dev_state(cuda_dev_state_p *state_);
 
 void cuda_set_dev_id(cuda_dev_state_p state, const int dev_id);
+
+void cuda_set_rt_dev_id(const int dev_id);
 
 void cuda_free_dev_state(cuda_dev_state_p *state_);
 

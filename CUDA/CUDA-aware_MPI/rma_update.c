@@ -12,22 +12,31 @@
 
 int main(int argc, char **argv)
 {
+    // Get CUDA device status and set target CUDA device
+    int my_local_rank = get_mpi_local_rank_env();
+    cuda_dev_state_p self_dev_state;
+    cuda_init_dev_state(&self_dev_state);
+    cuda_set_dev_id(self_dev_state, my_local_rank % self_dev_state->n_dev);
+
+    // If we are using MPICH + YAKSA, tell YAKSA to do lazy initialization
+    setenv("YAKSA_LAZY_INIT_DEVICE", "1", 1);
+
     MPI_Init(&argc, &argv);
 
     int send_rank = 1, recv_rank = 0;
-
     if (argc >= 2) send_rank = atoi(argv[1]);
     if (argc >= 3) recv_rank = atoi(argv[2]);
 
     // Set up MPI shared memory communicator to get shared memory rank
     int my_rank, n_proc;
-    int shm_my_rank, shm_n_proc;
-    MPI_Comm shm_comm;
     MPI_Comm_size(MPI_COMM_WORLD, &n_proc);
     MPI_Comm_rank(MPI_COMM_WORLD, &my_rank);
-    MPI_Comm_split_type(MPI_COMM_WORLD, MPI_COMM_TYPE_SHARED, my_rank, MPI_INFO_NULL, &shm_comm);
-    MPI_Comm_size(shm_comm, &shm_n_proc);
-    MPI_Comm_rank(shm_comm, &shm_my_rank);
+    printf(
+        "MPI rank %2d: host hash = %10u, shm_rank = %2d, bind to GPU %2d\n",
+        my_rank, self_dev_state->host_hash, my_local_rank, self_dev_state->dev_id
+    );
+    fflush(stdout);
+    MPI_Barrier(MPI_COMM_WORLD);
 
     int forced_update_method = 1;
     if (argc >= 2) forced_update_method = atoi(argv[1]);
@@ -38,17 +47,6 @@ int main(int argc, char **argv)
         send_rank = 1;
         recv_rank = 0;
     }
-
-    // Get CUDA device status and set target CUDA device
-    cuda_dev_state_p self_dev_state;
-    cuda_init_dev_state(&self_dev_state);
-    cuda_set_dev_id(self_dev_state, shm_my_rank % self_dev_state->n_dev);
-    printf(
-        "MPI rank %2d: host hash = %10u, shm_rank = %2d, bind to GPU %2d\n",
-        my_rank, self_dev_state->host_hash, shm_my_rank, self_dev_state->dev_id
-    );
-    fflush(stdout);
-    MPI_Barrier(MPI_COMM_WORLD);
 
     // Set up signal array
     int n_msg = 16;
@@ -115,7 +113,6 @@ int main(int argc, char **argv)
     free(host_arr);
     cuda_free_dev_state(&self_dev_state);
     MPI_Win_free(&mpi_win);
-    MPI_Comm_free(&shm_comm);
     MPI_Finalize();
     return 0;
 }

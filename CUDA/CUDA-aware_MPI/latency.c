@@ -11,25 +11,23 @@
 
 int main(int argc, char **argv)
 {
-    MPI_Init(&argc, &argv);
-
-    // Set up MPI shared memory communicator to get shared memory rank
-    int my_rank, n_proc;
-    int shm_my_rank, shm_n_proc;
-    MPI_Comm shm_comm;
-    MPI_Comm_size(MPI_COMM_WORLD, &n_proc);
-    MPI_Comm_rank(MPI_COMM_WORLD, &my_rank);
-    MPI_Comm_split_type(MPI_COMM_WORLD, MPI_COMM_TYPE_SHARED, my_rank, MPI_INFO_NULL, &shm_comm);
-    MPI_Comm_size(shm_comm, &shm_n_proc);
-    MPI_Comm_rank(shm_comm, &shm_my_rank);
-
     // Get CUDA device status and set target CUDA device
+    int my_local_rank = get_mpi_local_rank_env();
     cuda_dev_state_p self_dev_state;
     cuda_init_dev_state(&self_dev_state);
-    cuda_set_dev_id(self_dev_state, shm_my_rank % self_dev_state->n_dev);
+    cuda_set_dev_id(self_dev_state, my_local_rank % self_dev_state->n_dev);
+
+    // If we are using MPICH + YAKSA, tell YAKSA to do lazy initialization
+    setenv("YAKSA_LAZY_INIT_DEVICE", "1", 1);
+
+    MPI_Init(&argc, &argv);
+
+    int my_rank, n_proc;
+    MPI_Comm_size(MPI_COMM_WORLD, &n_proc);
+    MPI_Comm_rank(MPI_COMM_WORLD, &my_rank);
     printf(
-        "MPI rank %2d: host hash = %10u, shm_rank = %2d, bind to GPU %2d\n",
-        my_rank, self_dev_state->host_hash, shm_my_rank, self_dev_state->dev_id
+        "MPI rank %2d: host hash = %10u, local_rank = %2d, bind to GPU %2d\n",
+        my_rank, self_dev_state->host_hash, my_local_rank, self_dev_state->dev_id
     );
     fflush(stdout);
     MPI_Barrier(MPI_COMM_WORLD);

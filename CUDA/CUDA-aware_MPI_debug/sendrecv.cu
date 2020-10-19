@@ -18,6 +18,9 @@
 
 int main(int argc, char **argv)
 {
+    int local_rank = atoi(getenv("MPI_LOCALRANKID"));
+    CUDA_RT_CALL( cudaSetDevice(local_rank) );
+
     MPI_Init(&argc, &argv);
 
     int my_rank, n_proc, prev_rank, next_rank;
@@ -31,16 +34,8 @@ int main(int argc, char **argv)
     if (arr_size < 0) arr_size = 1024;
     if (my_rank == 0) printf("arr_size = %d\n", arr_size);
 
-    int shm_my_rank, shm_n_proc;
-    MPI_Comm shm_comm;
-    MPI_Comm_split_type(MPI_COMM_WORLD, MPI_COMM_TYPE_SHARED, my_rank, MPI_INFO_NULL, &shm_comm);
-    MPI_Comm_size(shm_comm, &shm_n_proc);
-    MPI_Comm_rank(shm_comm, &shm_my_rank);
-    MPI_Comm_free(&shm_comm);
-
     int *dev_arr;
     size_t arr_bytes = sizeof(int) * arr_size;
-    CUDA_RT_CALL( cudaSetDevice(shm_my_rank) );
     CUDA_RT_CALL( cudaMalloc(&dev_arr, 4 * arr_bytes) );
     MPI_Barrier(MPI_COMM_WORLD);
 

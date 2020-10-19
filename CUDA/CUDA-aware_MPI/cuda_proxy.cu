@@ -18,6 +18,46 @@ int get_hostname_hash_sdbm()
     return result;
 }
 
+int  get_mpi_local_rank_env()
+{
+    int local_rank = -1;
+    char *env_p;
+
+    // MPICH
+    env_p = getenv("MPI_LOCALRANKID");
+    if (env_p != NULL) return atoi(env_p);
+
+    // MVAPICH2
+    env_p = getenv("MV2_COMM_WORLD_LOCAL_RANK");
+    if (env_p != NULL) return atoi(env_p);
+
+    // OpenMPI
+    env_p = getenv("OMPI_COMM_WORLD_NODE_RANK");
+    if (env_p != NULL) return atoi(env_p);
+
+    return local_rank;
+}
+
+int  get_mpi_local_size_env()
+{
+    int local_size = -1;
+    char *env_p;
+
+    // MPICH
+    env_p = getenv("MPI_LOCALNRANKS");
+    if (env_p != NULL) return atoi(env_p);
+
+    // MVAPICH2
+    env_p = getenv("MV2_COMM_WORLD_LOCAL_SIZE");
+    if (env_p != NULL) return atoi(env_p);
+
+    // OpenMPI
+    env_p = getenv("OMPI_COMM_WORLD_LOCAL_SIZE");
+    if (env_p != NULL) return atoi(env_p);
+
+    return local_size;
+}
+
 void cuda_init_dev_state(cuda_dev_state_p *state_)
 {
     cuda_dev_state_p state = (cuda_dev_state_p) malloc(sizeof(cuda_dev_state_t));
@@ -37,7 +77,7 @@ void cuda_set_dev_id(cuda_dev_state_p state, const int dev_id)
     assert(state != NULL);
     if (dev_id >= state->n_dev || dev_id < 0)
     {
-        fprintf(stderr, "Cannot set target device to %d: valid range [0, %d]\n", dev_id, state->n_dev);
+        fprintf(stderr, "Cannot set target device to %d: valid range [0, %d]\n", dev_id, state->n_dev-1);
         return;
     }
 
@@ -45,6 +85,11 @@ void cuda_set_dev_id(cuda_dev_state_p state, const int dev_id)
     CUDA_CHECK( cuInit(0) );
     CUDA_CHECK( cuDeviceGet(&state->cu_dev, dev_id) );
     CUDA_CHECK( cuCtxCreate((CUcontext *) state->cu_ctx_p, 0, state->cu_dev) );
+}
+
+void cuda_set_rt_dev_id(const int dev_id)
+{
+    CUDA_RUNTIME_CHECK( cudaSetDevice(dev_id) );
 }
 
 void cuda_free_dev_state(cuda_dev_state_p *state_)
