@@ -48,7 +48,6 @@ int main(int argc, char **argv)
     // using host_hash, pcie_dev_id, pcie_bus_id, and pcie_domain_id. 
     // We don't need a full topology map here, just need to check if 
     // the send / recv rank can do GPUDirect P2P access.
-    int ds_msize = sizeof(cuda_dev_state_t);
     if (my_rank == recv_rank || my_rank == send_rank)
     {
         int peer_rank = (my_rank == send_rank) ? recv_rank : send_rank;

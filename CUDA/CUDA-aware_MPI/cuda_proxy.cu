@@ -35,6 +35,13 @@ int  get_mpi_local_rank_env()
     env_p = getenv("OMPI_COMM_WORLD_NODE_RANK");
     if (env_p != NULL) return atoi(env_p);
 
+    // SLURM or PBS/Torque
+    env_p = getenv("SLURM_LOCALID");
+    if (env_p != NULL) return atoi(env_p);
+
+    env_p = getenv("PBS_O_VNODENUM");
+    if (env_p != NULL) return atoi(env_p);
+
     return local_rank;
 }
 
@@ -53,6 +60,58 @@ int  get_mpi_local_size_env()
 
     // OpenMPI
     env_p = getenv("OMPI_COMM_WORLD_LOCAL_SIZE");
+    if (env_p != NULL) return atoi(env_p);
+
+    return local_size;
+}
+
+int  get_mpi_global_rank_env()
+{
+    int local_rank = -1;
+    char *env_p;
+
+    // MPICH
+    // ???
+
+    // MVAPICH2
+    env_p = getenv("MV2_COMM_WORLD_RANK");
+    if (env_p != NULL) return atoi(env_p);
+
+    // OpenMPI
+    env_p = getenv("OMPI_COMM_WORLD_RANK");
+    if (env_p != NULL) return atoi(env_p);
+
+    // SLURM or PBS/Torque
+    env_p = getenv("SLURM_PROCID");
+    if (env_p != NULL) return atoi(env_p);
+
+    env_p = getenv("PBS_O_TASKNUM");
+    if (env_p != NULL) return (atoi(env_p) - 1);
+
+    return local_rank;
+}
+
+int  get_mpi_global_size_env()
+{
+    int local_size = -1;
+    char *env_p;
+
+    // MPICH
+    // ???
+
+    // MVAPICH2
+    env_p = getenv("MV2_COMM_WORLD_SIZE");
+    if (env_p != NULL) return atoi(env_p);
+
+    // OpenMPI
+    env_p = getenv("OMPI_COMM_WORLD_SIZE");
+    if (env_p != NULL) return atoi(env_p);
+
+    // SLURM or PBS/Torque
+    env_p = getenv("SLURM_NTASKS");
+    if (env_p != NULL) return atoi(env_p);
+
+    env_p = getenv("PBS_NP");
     if (env_p != NULL) return atoi(env_p);
 
     return local_size;
@@ -189,3 +248,9 @@ void cuda_stream_sync(void *stream_p)
     CUDA_RUNTIME_CHECK( cudaStreamSynchronize(*((cudaStream_t *) stream_p)) );
 }
 
+void cuda_print_last_error(const char *file, const int line)
+{
+    cudaError_t result = cudaGetLastError();
+    if (result != cudaSuccess)
+        fprintf(stderr, "Call from file %s, line %d: CUDA last error: %s\n", file, line, cudaGetErrorString(result));
+}

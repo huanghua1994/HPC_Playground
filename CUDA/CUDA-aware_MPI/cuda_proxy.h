@@ -17,11 +17,12 @@ typedef struct cuda_dev_state
 extern "C" {
 #endif
 
-// Get current process MPI intra-node rank from environment variables
-int  get_mpi_local_rank_env();  
-
-// Get number of intra-node ranks from environment variables
+// Get current process MPI intra-node / global rank, number of intra-node / global 
+// processes from environment variables (before initializing MPI)
+int  get_mpi_local_rank_env();
 int  get_mpi_local_size_env();
+int  get_mpi_global_rank_env();
+int  get_mpi_global_size_env();
 
 void cuda_init_dev_state(cuda_dev_state_p *state_);
 
@@ -65,6 +66,8 @@ void cuda_free_host(void *hptr);
 void cuda_device_sync();
 
 void cuda_stream_sync(void *stream_p);
+
+void cuda_print_last_error(const char *file, const int line);
 
 #ifdef __cplusplus
 }
