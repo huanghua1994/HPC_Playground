@@ -16,28 +16,22 @@ int main(int argc, char **argv)
         printf("========== OpenCL platform %u ==========\n", i);
         cl_print_platform_info(platform_ids[i]);
 
+        printf("---------- CPU devices ----------\n");
         status = cl_get_device_ids(platform_ids[i], CL_DEVICE_TYPE_CPU, &n_device, &device_ids);
         for (cl_uint j = 0; j < n_device; j++)
-        {
-            printf("---------- CPU device %u----------\n", j);
             cl_print_device_info(device_ids[j]);
-        }
         if (n_device > 0) free(device_ids);
 
+        printf("---------- GPU devices ----------\n");
         status = cl_get_device_ids(platform_ids[i], CL_DEVICE_TYPE_GPU, &n_device, &device_ids);
         for (cl_uint j = 0; j < n_device; j++)
-        {
-            printf("---------- GPU device %u----------\n", j);
             cl_print_device_info(device_ids[j]);
-        }
         if (n_device > 0) free(device_ids);
 
+        printf("---------- Accelerator devices ----------\n");
         status = cl_get_device_ids(platform_ids[i], CL_DEVICE_TYPE_ACCELERATOR, &n_device, &device_ids);
         for (cl_uint j = 0; j < n_device; j++)
-        {
-            printf("---------- Accelerator device %u----------\n", j);
             cl_print_device_info(device_ids[j]);
-        }
         if (n_device > 0) free(device_ids);
     }
     if (n_platform > 0) free(platform_ids);
