@@ -1,8 +1,6 @@
-EXE       = ocl_saxpy
-NVCC      = nvcc
-NVCCFLAGS = -O3 -g -Wno-deprecated-gpu-targets
-LDFLAGS   = -O3 -lOpenCL 
+include ../common/nvcc.defs.make
 
+EXE     = ocl_daxpy
 CPPSRCS = $(wildcard *.cpp)
 OBJS    = $(CPPSRCS:.cpp=.cpp.o) ../common/ocl_utils.o
 

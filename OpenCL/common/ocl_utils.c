@@ -1,7 +1,10 @@
 #include "ocl_utils.h"
 
+// Ref: https://streamhpc.com/blog/2013-04-28/opencl-error-codes/
 const char *cl_get_error_str(cl_int status)
 {
+    static char unknown_code[64];
+    sprintf(unknown_code, "UNKNOWN_RETURN_CODE (%d)", status);
     const char *err_str;
     switch (status)
     {
@@ -66,16 +69,23 @@ const char *cl_get_error_str(cl_int status)
         case -68: err_str = "CL_INVALID_DEVICE_PARTITION_COUNT";            break;
         case -69: err_str = "CL_INVALID_PIPE_SIZE";                         break;
         case -70: err_str = "CL_INVALID_DEVICE_QUEUE";                      break;
-        default:  err_str = "UNKNOWN_RETURN_CODE";                          break;
+        default:  err_str = unknown_code;                                   break;
     }
     return err_str;
 }
 
 // Get all OpenCL platform IDs
-cl_int cl_get_platform_ids(int *n_platform, cl_platform_id **platform_ids)
+cl_int cl_get_platform_ids(cl_uint *n_platform, cl_platform_id **platform_ids)
 {
     cl_int status;
-    CL_CHECK_CALL( status = clGetPlatformIDs(0, NULL, n_platform) );
+    status = clGetPlatformIDs(0, NULL, n_platform);
+    if (status != CL_SUCCESS)
+    {
+        CL_CHECK_RET(clGetPlatformIDs, status);
+        *n_platform = 0;
+        *platform_ids = NULL;
+        return 255;
+    }
     if ((*n_platform) == 0)
     {
         fprintf(stderr, "%s, %d: No available OpenCL platform\n", __FILE__, __LINE__);
@@ -91,14 +101,21 @@ cl_int cl_get_platform_ids(int *n_platform, cl_platform_id **platform_ids)
 // Choose all specified device ids on the given platform
 cl_int cl_get_device_ids(
     cl_platform_id platform_id, cl_device_type device_type, 
-    int *n_device, cl_device_id **device_ids
+    cl_uint *n_device, cl_device_id **device_ids
 )
 {
     cl_int status;
-    CL_CHECK_CALL( status = clGetDeviceIDs(platform_id, device_type, 0, NULL, n_device) );
+    status = clGetDeviceIDs(platform_id, device_type, 0, NULL, n_device);
+    if (status != CL_SUCCESS)
+    {
+        CL_CHECK_RET(clGetDeviceIDs, status);
+        *n_device = 0;
+        *device_ids = NULL;
+        return 255;
+    }
     if ((*n_device) == 0)
     {
-        fprintf(stderr, "%s, %d: No available GPU device on the given OpenCL platform\n", __FILE__, __LINE__);
+        fprintf(stderr, "%s, %d: No specified device on specified OpenCL platform\n", __FILE__, __LINE__);
         *n_device = 0;
         *device_ids = NULL;
         return 255;
@@ -127,7 +144,7 @@ void cl_print_platform_info(cl_platform_id platform_id)
         clGetPlatformInfo(platform_id, attr_types[i], 0, NULL, &info_size);
         char *info_str = (char *) malloc(info_size);
         clGetPlatformInfo(platform_id, attr_types[i], info_size, info_str, NULL);
-        printf("    %-11s: %s\n", attr_names[i], info_str);
+        printf("    %-12s: %s\n", attr_names[i], info_str);
         free(info_str);
     }
 }
@@ -135,16 +152,14 @@ void cl_print_platform_info(cl_platform_id platform_id)
 // Print the information of an OpenCL device
 void cl_print_device_info(const cl_device_id device_id)
 {
-    const int  n_attr = 6;
-    const char *attr_names[6] = {
+    const int  n_attr = 4;
+    const char *attr_names[4] = {
         "Name", "Device version", 
-        "Driver version", "OpenCL C version", 
-        "Memory size", "Computing units"
+        "Driver version", "OpenCL C version"
     };
     const cl_device_info attr_types[6] = {
         CL_DEVICE_NAME, CL_DEVICE_VERSION, 
-        CL_DRIVER_VERSION, CL_DEVICE_OPENCL_C_VERSION, 
-        CL_DEVICE_GLOBAL_MEM_SIZE, CL_DEVICE_MAX_COMPUTE_UNITS
+        CL_DRIVER_VERSION, CL_DEVICE_OPENCL_C_VERSION
     };
     printf("Device information: \n");
     for (int i = 0; i < n_attr; i++)
@@ -153,9 +168,15 @@ void cl_print_device_info(const cl_device_id device_id)
         clGetDeviceInfo(device_id, attr_types[i], 0, NULL, &info_size);
         char *info_str = (char *) malloc(info_size);
         clGetDeviceInfo(device_id, attr_types[i], info_size, info_str, NULL);
-        printf("    %-17s: %s\n", attr_names[i], info_str);
+        printf("    %-20s: %s\n", attr_names[i], info_str);
         free(info_str);
     }
+    cl_ulong max_compute_unit;
+    clGetDeviceInfo(device_id, CL_DEVICE_MAX_COMPUTE_UNITS, sizeof(max_compute_unit), &max_compute_unit, NULL);
+    printf("    %-20s: %u\n", "Max computing units", (unsigned int) max_compute_unit);
+    cl_ulong mem_size;
+    clGetDeviceInfo(device_id, CL_DEVICE_GLOBAL_MEM_SIZE, sizeof(mem_size), &mem_size, NULL);
+    printf("    %-20s: %u MBytes\n", "Global memory size", (unsigned int)(mem_size / (1024 * 1024)));
 }
 
 // Read kernel file and create a program with the given cl_context and cl_device_id
@@ -193,4 +214,14 @@ cl_int cl_build_program_from_file(
     CL_CHECK_CALL( status = clBuildProgram(*program, 1, &device_id, options, NULL, user_data) );
     free(file_content);
     return status;
+}
+
+// Get wall-clock time in seconds
+double get_wtime_sec()
+{
+    double sec;
+    struct timeval tv;
+    gettimeofday(&tv, NULL);
+    sec = tv.tv_sec + (double) tv.tv_usec / 1000000.0;
+    return sec;
 }

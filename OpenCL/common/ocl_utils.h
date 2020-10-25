@@ -5,6 +5,10 @@
 #include <string.h>
 #include <stdlib.h>
 #include <assert.h>
+#include <time.h>
+#include <sys/time.h>
+#include <math.h>
+
 #include <CL/cl.h>
 
 #ifdef __cplusplus
@@ -20,7 +24,6 @@ const char *cl_get_error_str(cl_int status);
         if (err == CL_SUCCESS) break;                                   \
         fprintf(stderr, "[%s:%d] OpenCL error: '%s' returned %s!\n",    \
                 __FILE__, __LINE__, #statement, cl_get_error_str(err)); \
-        exit(-1);                                                       \
     } while (0) 
 
 #define CL_CHECK_RET(statement, err)                                    \
@@ -28,16 +31,15 @@ const char *cl_get_error_str(cl_int status);
         if (err == CL_SUCCESS) break;                                   \
         fprintf(stderr, "[%s:%d] OpenCL error: '%s' returned %s!\n",    \
                 __FILE__, __LINE__, #statement, cl_get_error_str(err)); \
-        exit(-1);                                                       \
     } while (0) 
 
 // Get all OpenCL platform IDs
-cl_int cl_get_platform_ids(int *n_platform, cl_platform_id **platform_ids);
+cl_int cl_get_platform_ids(cl_uint *n_platform, cl_platform_id **platform_ids);
 
 // Choose all specified device ids on the given platform
 cl_int cl_get_device_ids(
     cl_platform_id platform_id, cl_device_type device_type, 
-    int *n_device, cl_device_id **device_ids
+    cl_uint *n_device, cl_device_id **device_ids
 );
 
 // Print the information of an OpenCL platform
@@ -51,6 +53,9 @@ cl_int cl_build_program_from_file(
     const char *file_name, cl_context context, 
     cl_device_id device_id, cl_program *program
 );
+
+// Get wall-clock time in seconds
+double get_wtime_sec();
 
 #ifdef __cplusplus
 }
