@@ -17,7 +17,7 @@ void stream_triad_usm_kernel(
         {
             //const size_t i = it[0];
             const size_t i = it.get_global_id(0);
-            z[i] = alpha * x[i] + y[i];
+            z[i] += alpha * x[i] + y[i];
         });
     });
 }
@@ -39,7 +39,9 @@ int main(int argc, char **argv)
     {
         h_x[i] = drand48();
         h_y[i] = drand48();
-        h_z[i] = alpha * h_x[i] + h_y[i];
+        h_z[i] = drand48();
+        d_z[i] = h_z[i];
+        h_z[i] += alpha * h_x[i] + h_y[i];
     }
     printf("Generating random vectors done\n");
 
@@ -89,7 +91,7 @@ int main(int argc, char **argv)
     std::cout << "There were " << n_error << " error(s)" << std::endl;
 
     // Compute the bandwidth
-    double giga_bytes = 3.0 * static_cast<double>(vec_len * sizeof(double)) / 1024.0 / 1024.0 / 1024.0;
+    double giga_bytes = 4.0 * static_cast<double>(vec_len * sizeof(double)) / 1024.0 / 1024.0 / 1024.0;
     double GBs = giga_bytes / runtime; 
     std::cout << "STREAM TRIAD used " << runtime << " sec, ";
     std::cout << "memory footprint = " << giga_bytes << " GBytes, ";
