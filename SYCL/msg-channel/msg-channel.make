@@ -10,7 +10,7 @@ msg-channel.exe: $(OBJS)
 	$(CXX) $(LDFLAGS) $^ -o $@ $(LIBS)
 
 %.cpp.o: %.cpp
-	$(CXX) $(CFLAGS) -c $^ -o $@
+	$(CXX) $(CXXFLAGS) -c $^ -o $@
 
 clean:
 	rm $(OBJS) $(EXES)

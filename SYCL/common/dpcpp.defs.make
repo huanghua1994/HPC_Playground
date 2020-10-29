@@ -1,3 +1,3 @@
 CXX         = dpcpp
-CFLAGS      = -O3 -g -fsycl -fsycl-unnamed-lambda
-CXXFLAGS    = $(CFLAGS) -std=c++17
+CFLAGS      = -O3 -g -fPIC
+CXXFLAGS    = $(CFLAGS) -fsycl -fsycl-unnamed-lambda -std=c++17

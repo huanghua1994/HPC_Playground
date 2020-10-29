@@ -77,6 +77,9 @@ int main(int argc, char **argv)
         // Explicitly transfer data back from device to host
         q.memcpy(d_z.data(), z, vec_bytes);
         q.wait();
+        sycl::free(x, q);
+        sycl::free(y, q);
+        sycl::free(z, q);
     }
     catch (sycl::exception &e)
     {
