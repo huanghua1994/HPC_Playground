@@ -1,20 +1,23 @@
 EXES    = mpi_dev_mem.exe
 MPICC   = mpicc
-MPICXX  = mpicxx
 CSRCS   = $(wildcard *.c)
 COBJS   = $(CSRCS:.c=.c.o)
 CPPSRCS = $(wildcard *.cpp)
 CPPOBJS = $(CPPSRCS:.cpp=.cpp.o)
 OBJS    = $(COBJS) $(CPPOBJS)
 
-LIBS += -lsycl
+MPI_LIB_DIR  = /opt/intel/compilers_and_libraries_2020.1.217/linux/mpi/intel64/lib/release
+MPI_LIB_DIR += /opt/intel/compilers_and_libraries_2020.1.217/linux/mpi/intel64/lib
+MPI_LIB      = -lmpi
+
+LIBS += -lsycl -L$(MPI_LIB_DIR) $(MPI_LIB)
 
 .SECONDARY: $(OBJS)
 
 all: $(EXES)
 
 %.exe: $(OBJS)
-	$(MPICXX) $(LDFLAGS) $^ -o $@ $(LIBS)
+	$(CXX) $(LDFLAGS) $^ -o $@ $(LIBS)
 
 %.c.o: %.c
 	$(MPICC) $(CFLAGS) -c $^ -o $@

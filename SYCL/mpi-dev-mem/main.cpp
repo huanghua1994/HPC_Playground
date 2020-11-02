@@ -1,6 +1,23 @@
 #include "../common/sycl_utils.hpp"
 #include "mpi_dev_mem.h"
 
+void fill_int_array_kernel(sycl::queue &q, const int vec_len, const int my_rank, int *d_vec)
+{
+    size_t global_size = static_cast<size_t>(vec_len);
+    size_t local_size  = 256;
+    sycl::range global_range {global_size};
+    sycl::range local_range  {local_size};
+
+    q.submit( [&](sycl::handler &h) {
+        h.parallel_for<class fill_int_array> (
+        sycl::nd_range{global_range, local_range}, [=](sycl::nd_item<1> item)
+        {
+            int i = item.get_global_id(0);
+            d_vec[i] = my_rank;
+        });
+    });
+}
+
 int main(int argc, char **argv)
 {
     int n_proc, my_rank;
@@ -48,7 +65,8 @@ int main(int argc, char **argv)
     for (int i = 0; i < vec_len; i++) h_vec[i] = my_rank;
     try 
     {
-        q.memcpy(d_vec0, h_vec, vec_bytes);
+        //q.memcpy(d_vec0, h_vec, vec_bytes);
+        fill_int_array_kernel(q, vec_len, my_rank, d_vec0);
         q.wait();
     }
     catch (sycl::exception &e)
