@@ -1,8 +1,7 @@
 #include "../common/sycl_utils.hpp"
 
 void stream_triad_accessor_kernel(
-    std::vector<double> &h_x, std::vector<double> &h_y, std::vector<double> &d_z,
-    sycl::buffer<double, 1> &d_x, sycl::buffer<double, 1> &d_y, sycl::buffer<double, 1> &d_z_, 
+    sycl::buffer<double, 1> &d_x, sycl::buffer<double, 1> &d_y, sycl::buffer<double, 1> &d_z, 
     const double alpha, const int vec_len, sycl::queue &q
 )
 {
@@ -12,9 +11,9 @@ void stream_triad_accessor_kernel(
     sycl::range local_range  {local_size};
 
     q.submit( [&](sycl::handler &h) {
-        sycl::accessor x(d_x,  h, sycl::read_only);
-        sycl::accessor y(d_y,  h, sycl::read_only);
-        sycl::accessor z(d_z_, h, sycl::read_write);
+        sycl::accessor x(d_x, h, sycl::read_only);
+        sycl::accessor y(d_y, h, sycl::read_only);
+        sycl::accessor z(d_z, h, sycl::read_write);
 
         h.parallel_for<class stream_triad> (
         //sycl::range<1>{static_cast<size_t>(vec_len)}, [=](sycl::id<1> it)
@@ -46,7 +45,6 @@ int main(int argc, char **argv)
         h_y[i] = drand48();
         h_z[i] = drand48();
         d_z[i] = h_z[i];
-        h_z[i] += alpha * h_x[i] + h_y[i];
     }
     printf("Generating random vectors done\n");
 
@@ -56,19 +54,21 @@ int main(int argc, char **argv)
     {
         // Create a queue on the default SYCL device and run test
         sycl::queue q(sycl::default_selector{});
+        std::cout << "Selected device: " << q.get_device().get_info<sycl::info::device::name>() << "\n";
 
         // Allocate SYCL 1D buffer
         sycl::buffer<double, 1> d_x { h_x.data(), sycl::range<1>(h_x.size()) };
         sycl::buffer<double, 1> d_y { h_y.data(), sycl::range<1>(h_y.size()) };
-        sycl::buffer<double, 1> d_z_{ d_z.data(), sycl::range<1>(d_z.size()) };
 
         // Run the kernel, automatically transfer data to device and back from device
         for (int k = 0; k <= n_test; k++)
         {
+            memcpy(d_z.data(), h_z.data(), sizeof(double) * h_z.size());
+            sycl::buffer<double, 1> d_z1{ d_z.data(), sycl::range<1>(d_z.size()) };
+
             double st = get_wtime_sec();
             stream_triad_accessor_kernel(
-                h_x, h_y, d_z, 
-                d_x, d_y, d_z_, 
+                d_x, d_y, d_z1, 
                 alpha, vec_len, q
             );
             q.wait();
@@ -86,7 +86,10 @@ int main(int argc, char **argv)
     // Check the result
     int n_error = 0;
     for (int i = 0; i < vec_len; i++)
+    {
+        h_z[i] += alpha * h_x[i] + h_y[i];
         if (h_z[i] != d_z[i]) n_error++;
+    }
     std::cout << "There were " << n_error << " error(s)" << std::endl;
 
     // Compute the bandwidth

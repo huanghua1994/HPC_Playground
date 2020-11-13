@@ -41,7 +41,6 @@ int main(int argc, char **argv)
         h_y[i] = drand48();
         h_z[i] = drand48();
         d_z[i] = h_z[i];
-        h_z[i] += alpha * h_x[i] + h_y[i];
     }
     printf("Generating random vectors done\n");
 
@@ -51,6 +50,7 @@ int main(int argc, char **argv)
     {
         // Create a queue on the default SYCL device and run test
         sycl::queue q(sycl::default_selector{});
+        std::cout << "Selected device: " << q.get_device().get_info<sycl::info::device::name>() << "\n";
 
         // Allocate SYCL 1D buffer
         double *x = static_cast<double *>( sycl::malloc_device<double>(static_cast<size_t>(vec_len), q) );
@@ -66,6 +66,9 @@ int main(int argc, char **argv)
         // Run the kernel
         for (int k = 0; k <= n_test; k++)
         {
+            q.memcpy(z, h_z.data(), vec_bytes);
+            q.wait();
+
             double st = get_wtime_sec();
             stream_triad_usm_kernel(x, y, z, alpha, vec_len, q);
             q.wait();
@@ -90,8 +93,10 @@ int main(int argc, char **argv)
     // Check the result
     int n_error = 0;
     for (int i = 0; i < vec_len; i++)
+    {
+        h_z[i] += alpha * h_x[i] + h_y[i];
         if (h_z[i] != d_z[i]) n_error++;
-    std::cout << "There were " << n_error << " error(s)" << std::endl;
+    }
 
     // Compute the bandwidth
     double giga_bytes = 4.0 * static_cast<double>(vec_len * sizeof(double)) / 1024.0 / 1024.0 / 1024.0;

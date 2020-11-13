@@ -4,6 +4,8 @@ OBJS    = $(CPPSRCS:.cpp=.cpp.o)
 
 all: $(EXES)
 
+.SECONDARY: $(OBJS)
+
 %.exe: %.cpp.o
 	$(CXX) $(LDFLAGS) $^ -o $@ $(LIBS)
 
