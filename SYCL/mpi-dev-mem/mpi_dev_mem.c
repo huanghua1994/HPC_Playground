@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <unistd.h>
 
 #include <mpi.h>
 
@@ -27,6 +28,8 @@ void MPI_test_dev_mem_recv(const int n_proc, const int my_rank, const int vec_le
     MPI_Request req;
     MPI_Isend(d_vec0, vec_len, MPI_INT, next_rank, 42, MPI_COMM_WORLD, &req);
     MPI_Recv(d_vec1, vec_len, MPI_INT, prev_rank, 42, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+    MPI_Wait(&req, MPI_STATUS_IGNORE);
+    MPI_Barrier(MPI_COMM_WORLD);
 }
 
 void MPI_test_dev_mem_put(const int n_proc, const int my_rank, const int vec_len, int *d_vec0, int *d_vec2)
@@ -43,4 +46,5 @@ void MPI_test_dev_mem_put(const int n_proc, const int my_rank, const int vec_len
     MPI_Win_unlock(prev_rank, mpi_win);
     MPI_Barrier(MPI_COMM_WORLD);
     MPI_Win_free(&mpi_win);
+    usleep(1 * 1000);
 }

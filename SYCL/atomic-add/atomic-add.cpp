@@ -52,6 +52,7 @@ int main(int argc, char **argv)
 
 
     sycl::queue q(sycl::default_selector{});
+    std::cout << "Selected device: " << q.get_device().get_info<sycl::info::device::name>() << "\n";
     double *vec_d = static_cast<double *>(sycl::malloc_device(vec_bytes, q));
     double *sum_d = static_cast<double *>(sycl::malloc_device(sizeof(double), q));
     q.memcpy(vec_d, vec_h, vec_bytes);

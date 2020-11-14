@@ -4,7 +4,7 @@
 void fill_int_array_kernel(sycl::queue &q, const int vec_len, const int my_rank, int *d_vec)
 {
     size_t global_size = static_cast<size_t>(vec_len);
-    size_t local_size  = 256;
+    size_t local_size  = 64;
     sycl::range global_range {global_size};
     sycl::range local_range  {local_size};
 
@@ -33,6 +33,7 @@ int main(int argc, char **argv)
     if (my_rank == 0) printf("SYCL + MPI test, vector length = %d\n", vec_len);
 
     sycl::queue q(sycl::default_selector{});
+    if (my_rank == 0) std::cout << "Selected device: " << q.get_device().get_info<sycl::info::device::name>() << "\n";
     try
     {
         char dev_name[128];
@@ -51,9 +52,12 @@ int main(int argc, char **argv)
     int *d_vec0, *d_vec1, *d_vec2;
     try 
     {
-        d_vec0 = static_cast<int *>(sycl::malloc_device<int>(static_cast<size_t>(vec_len), q));
-        d_vec1 = static_cast<int *>(sycl::malloc_device<int>(static_cast<size_t>(vec_len), q));
-        d_vec2 = static_cast<int *>(sycl::malloc_device<int>(static_cast<size_t>(vec_len), q));
+        // Weird: if we use malloc_device here, MPI_test_dev_mem_put() will need to 
+        // sleep 1 ms or longer to make it correct. Or, we can use malloc_shared 
+        // here, but who will manage the data movement, SYCL runtime or MPI??
+        d_vec0 = static_cast<int *>(sycl::malloc_device(vec_bytes, q));
+        d_vec1 = static_cast<int *>(sycl::malloc_device(vec_bytes, q));
+        d_vec2 = static_cast<int *>(sycl::malloc_device(vec_bytes, q));
     }
     catch (sycl::exception &e)
     {

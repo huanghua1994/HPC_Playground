@@ -10,6 +10,7 @@ int main(int argc, char **argv)
     try
     {
         sycl::queue q(sycl::default_selector{});
+        std::cout << "Selected device: " << q.get_device().get_info<sycl::info::device::name>() << "\n";
 
         uint64_t *msgchl_workbuf;
         msgchl_setup(q, msgchl_buffer_size, &msgchl_workbuf);
