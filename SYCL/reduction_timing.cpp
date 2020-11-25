@@ -9,10 +9,18 @@ using namespace sycl::ONEAPI;
 
 using T = float;
 
-int main() {
+int main(int argc, char **argv)
+{
+  int n = 10 * 1024 * 1024, b = 32;
+  if (argc >= 2) n = std::atoi(argv[1]);
+  if (argc >= 3) b = std::atoi(argv[2]);
+  if (n < 0) n = 10 * 1024 * 1024;
+  if (b < 0) b = 32;
+  n = (n / b) * b;
+  std::cout << "n = " << n << ", b = " << b << std::endl;
 
-  constexpr size_t N = 10 * 1024 * 1024;
-  constexpr size_t B = 16;
+  size_t N = static_cast<size_t>(n);
+  size_t B = static_cast<size_t>(b);
 
   queue Q{sycl::property::queue::enable_profiling{}};
   int* data = malloc_shared<int>(N, Q);
@@ -20,7 +28,7 @@ int main() {
   std::iota(data, data + N, 1);
   *sum = 0;
 
-  sycl::event ev = Q.submit([&](handler& h) {
+  sycl::event ev1 = Q.submit([&](handler& h) {
 // BEGIN CODE SNIP
      h.parallel_for(
          nd_range<1>{N, B},
@@ -31,7 +39,7 @@ int main() {
          });
 // END CODE SNIP
    });
-  ev.wait();
+  ev1.wait();
 
   // Repeat similar kernel without reduction as a sanity check of timing
   sycl::event ev2 = Q.submit([&](handler& h) {
@@ -44,11 +52,12 @@ int main() {
   });
   ev2.wait();
 
-  std::cout << "reduction = " << ev.get_profiling_info<info::event_profiling::command_end>() -
-      ev.get_profiling_info<info::event_profiling::command_start>() << std::endl;
-
-  std::cout << "no reduction = " << ev2.get_profiling_info<info::event_profiling::command_end>() -
-      ev2.get_profiling_info<info::event_profiling::command_start>() << std::endl;
+  auto rt1 = ev1.get_profiling_info<info::event_profiling::command_end>();
+  auto rt2 = ev2.get_profiling_info<info::event_profiling::command_end>();
+  rt1 -= ev1.get_profiling_info<info::event_profiling::command_start>();
+  rt2 -= ev2.get_profiling_info<info::event_profiling::command_start>();
+  std::cout << "Runtime with    reduction = " << rt1 << " ns" << std::endl;
+  std::cout << "Runtime without reduction = " << rt2 << " ns" << std::endl;
 
   free(sum, Q);
   free(data, Q);
