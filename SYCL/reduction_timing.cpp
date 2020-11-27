@@ -16,8 +16,9 @@ int main(int argc, char **argv)
   if (argc >= 3) b = std::atoi(argv[2]);
   if (n < 0) n = 10 * 1024 * 1024;
   if (b < 0) b = 32;
-  n = (n / b) * b;
-  std::cout << "n = " << n << ", b = " << b << std::endl;
+  n = (n + b - 1) / b * b;
+  
+  std::cout << "n = " << n << ", b = " << b << ", n_blk = " << n_blk << std::endl;
 
   size_t N = static_cast<size_t>(n);
   size_t B = static_cast<size_t>(b);
@@ -27,6 +28,8 @@ int main(int argc, char **argv)
   T* sum = malloc_shared<T>(1, Q);
   std::iota(data, data + N, 1);
   *sum = 0;
+
+  std::cout << "Selected device: " << Q.get_device().get_info<sycl::info::device::name>() << "\n";
 
   sycl::event ev1 = Q.submit([&](handler& h) {
 // BEGIN CODE SNIP

@@ -5,20 +5,65 @@
 
 #include <mpi.h>
 
-void MPI_Init_wrapper(int *argc, char ***argv)
+void MPI_proxy_init(int *argc, char ***argv)
 {
     MPI_Init(argc, argv);
 }
 
-void MPI_Comm_world_size_rank(int *n_proc, int *my_rank)
+void MPI_proxy_comm_size(void *mpi_comm, int *size)
 {
-    MPI_Comm_size(MPI_COMM_WORLD, n_proc);
-    MPI_Comm_rank(MPI_COMM_WORLD, my_rank);
+    MPI_Comm comm = (mpi_comm == NULL) ? MPI_COMM_WORLD : *((MPI_Comm *) mpi_comm);
+    MPI_Comm_size(comm, size);
 }
 
-void MPI_Finalize_wrapper()
+void MPI_proxy_comm_rank(void *mpi_comm, int *rank)
 {
-    MPI_Finalize();
+    MPI_Comm comm = (mpi_comm == NULL) ? MPI_COMM_WORLD : *((MPI_Comm *) mpi_comm);
+    MPI_Comm_rank(comm, rank);
+}
+
+
+void MPI_proxy_get_processor_name(char *name, int *res_len)
+{
+    MPI_Get_processor_name(name, res_len);
+}
+
+void MPI_proxy_barrier(void *mpi_comm)
+{
+    MPI_Comm comm = (mpi_comm == NULL) ? MPI_COMM_WORLD : *((MPI_Comm *) mpi_comm);
+    MPI_Barrier(comm);
+}
+
+void MPI_proxy_finalize() 
+{ 
+    MPI_Finalize(); 
+}
+
+int  MPI_proxy_get_local_rank_env()
+{
+    int local_rank = -1;
+    char *env_p;
+
+    // MPICH
+    env_p = getenv("MPI_LOCALRANKID");
+    if (env_p != NULL) return atoi(env_p);
+
+    // MVAPICH2
+    env_p = getenv("MV2_COMM_WORLD_LOCAL_RANK");
+    if (env_p != NULL) return atoi(env_p);
+
+    // OpenMPI
+    env_p = getenv("OMPI_COMM_WORLD_NODE_RANK");
+    if (env_p != NULL) return atoi(env_p);
+
+    // SLURM or PBS/Torque
+    env_p = getenv("SLURM_LOCALID");
+    if (env_p != NULL) return atoi(env_p);
+
+    env_p = getenv("PBS_O_VNODENUM");
+    if (env_p != NULL) return atoi(env_p);
+
+    return local_rank;
 }
 
 void MPI_test_dev_mem_recv(const int n_proc, const int my_rank, const int vec_len, int *d_vec0, int *d_vec1)
