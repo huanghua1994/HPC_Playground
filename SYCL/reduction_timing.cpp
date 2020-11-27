@@ -16,7 +16,8 @@ int main(int argc, char **argv)
   if (argc >= 3) b = std::atoi(argv[2]);
   if (n < 0) n = 10 * 1024 * 1024;
   if (b < 0) b = 32;
-  n = (n + b - 1) / b * b;
+  int n_blk = (n + b - 1) / b;
+  n = n_blk * b;
   
   std::cout << "n = " << n << ", b = " << b << ", n_blk = " << n_blk << std::endl;
 
