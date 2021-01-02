@@ -31,7 +31,7 @@ double get_wtime_sec()
     return sec;
 }
 
-#define NFUNCTION 7
+#define NFUNCTION 8
 
 static STREAM_TYPE a[STREAM_ARRAY_SIZE];
 static STREAM_TYPE b[STREAM_ARRAY_SIZE];
@@ -41,14 +41,15 @@ static char *label[NFUNCTION] = {
     "STREAM SCALE  b[i] = s * c[i]        ", 
     "STREAM ADD    c[i] = a[i] + b[i]     ", 
     "STREAM TRIAD  a[i] = b[i] + s * c[i] ", 
+    "BLAS-1 DSCALE b[i] = s * b[i]        ", 
     "BLAS-1 DAXPY  a[i] = a[i] + s * b[i] ", 
     "BLAS-1 DDOT   sum(a[i] * b[i])       ",
-    "BLAS-1 DNRM2  || a[:] ||_2           "
+    "BLAS-1 DNRM2  || c[:] ||_2           "
 };
 static double max_time[NFUNCTION], min_time[NFUNCTION], avg_time[NFUNCTION];
 static STREAM_TYPE dot_sum;
 static STREAM_TYPE nrm2_sum;
-static STREAM_TYPE scalar = 3;
+static STREAM_TYPE scalar = 2;
 size_t *thread_displs;
 
 void stream_copy()
@@ -150,6 +151,32 @@ void stream_triad()
         } while (svptest_any(svptrue_b64(), pg));
         #else
         for (size_t i = start_idx; i < end_idx; i++) a[i] = b[i] + scalar * c[i];
+        #endif
+    }
+}
+
+void blas1_dscale()
+{
+    #pragma omp parallel
+    {
+        const int tid = omp_get_thread_num();
+        const size_t start_idx = thread_displs[tid];
+        const size_t end_idx   = thread_displs[tid + 1];
+        #ifdef USE_AARCH64_SVE
+        size_t idx = start_idx;
+        svbool_t pg = svwhilelt_b64(idx, end_idx);
+        svfloat64_t vec_scalar = svdup_f64_z(pg, scalar);
+        svfloat64_t vec_b;
+        do
+        {
+            vec_b = svld1(pg, b + idx);
+            vec_b = svmul_f64_z(pg, vec_b, vec_scalar);
+            svstnt1(pg, b + idx, vec_b);
+            idx += svcntd();
+            pg = svwhilelt_b64(idx, end_idx);
+        } while (svptest_any(svptrue_b64(), pg));
+        #else
+        for (size_t i = start_idx; i < end_idx; i++) b[i] *= scalar;
         #endif
     }
 }
@@ -336,7 +363,7 @@ int main(int argc, char **argv)
         }
 
         start_t  = get_wtime_sec();
-        blas1_daxpy();
+        blas1_dscale();
         stop_t   = get_wtime_sec();
         used_sec = stop_t - start_t;
         if (k > 0)
@@ -346,9 +373,8 @@ int main(int argc, char **argv)
             avg_time[4] += used_sec;
         }
 
-        dot_sum = 0;
         start_t  = get_wtime_sec();
-        blas1_ddot();
+        blas1_daxpy();
         stop_t   = get_wtime_sec();
         used_sec = stop_t - start_t;
         if (k > 0)
@@ -358,9 +384,9 @@ int main(int argc, char **argv)
             avg_time[5] += used_sec;
         }
 
-        nrm2_sum = 0.0;
+        dot_sum = 0;
         start_t  = get_wtime_sec();
-        blas1_dnrm2();
+        blas1_ddot();
         stop_t   = get_wtime_sec();
         used_sec = stop_t - start_t;
         if (k > 0)
@@ -368,6 +394,18 @@ int main(int argc, char **argv)
             max_time[6] = MAX(max_time[6], used_sec);
             min_time[6] = MIN(min_time[6], used_sec);
             avg_time[6] += used_sec;
+        }
+
+        nrm2_sum = 0.0;
+        start_t  = get_wtime_sec();
+        blas1_dnrm2();
+        stop_t   = get_wtime_sec();
+        used_sec = stop_t - start_t;
+        if (k > 0)
+        {
+            max_time[7] = MAX(max_time[7], used_sec);
+            min_time[7] = MIN(min_time[7], used_sec);
+            avg_time[7] += used_sec;
         }
     }
 
@@ -377,9 +415,10 @@ int main(int argc, char **argv)
     bytes[1] = 2.0 * (double) sizeof(STREAM_TYPE) * (double) STREAM_ARRAY_SIZE;
     bytes[2] = 3.0 * (double) sizeof(STREAM_TYPE) * (double) STREAM_ARRAY_SIZE;
     bytes[3] = 3.0 * (double) sizeof(STREAM_TYPE) * (double) STREAM_ARRAY_SIZE;
-    bytes[4] = 3.0 * (double) sizeof(STREAM_TYPE) * (double) STREAM_ARRAY_SIZE;
-    bytes[5] = 2.0 * (double) sizeof(STREAM_TYPE) * (double) STREAM_ARRAY_SIZE;
-    bytes[6] = 1.0 * (double) sizeof(STREAM_TYPE) * (double) STREAM_ARRAY_SIZE;
+    bytes[4] = 2.0 * (double) sizeof(STREAM_TYPE) * (double) STREAM_ARRAY_SIZE;
+    bytes[5] = 3.0 * (double) sizeof(STREAM_TYPE) * (double) STREAM_ARRAY_SIZE;
+    bytes[6] = 2.0 * (double) sizeof(STREAM_TYPE) * (double) STREAM_ARRAY_SIZE;
+    bytes[7] = 1.0 * (double) sizeof(STREAM_TYPE) * (double) STREAM_ARRAY_SIZE;
     printf("\nFunction                              Best Rate MB/s  Avg time     Min time     Max time\n");
     for (int j = 0; j < NFUNCTION; j++) 
     {
@@ -400,6 +439,7 @@ int main(int argc, char **argv)
         bi   = scalar * ci;
         ci   = ai + bi;
         ai   = bi + scalar * ci;
+        bi   = bi * scalar;
         ai   = ai + scalar * bi;
         dot  = ai * bi * STREAM_ARRAY_SIZE;
         nrm2 = ci * ci * STREAM_ARRAY_SIZE;
@@ -442,7 +482,7 @@ int main(int argc, char **argv)
     }
     if (fabs(err_n / nrm2) > epsilon)
     {
-        printf("Failed validation on dot result, Expected Value: %e, AvgAbsErr: %e, AvgRelAbsErr: %e\n", nrm2, err_n, fabs(err_n / nrm2));
+        printf("Failed validation on nrm2 result, Expected Value: %e, AvgAbsErr: %e, AvgRelAbsErr: %e\n", nrm2, err_n, fabs(err_n / nrm2));
         nerr++;
     }
     if (nerr == 0) printf("Solution Validates: avg error less than %e on all three arrays\n", epsilon);
