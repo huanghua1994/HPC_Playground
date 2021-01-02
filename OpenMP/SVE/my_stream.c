@@ -64,8 +64,8 @@ void stream_copy()
         svfloat64_t vec_a;
         do
         {
-            vec_a = svld1(pg, a + idx);
-            svst1(pg, c + idx, vec_a);
+            vec_a = svldnt1(pg, a + idx);
+            svstnt1(pg, c + idx, vec_a);
             idx += svcntd();
             pg = svwhilelt_b64(idx, end_idx);
         } while (svptest_any(svptrue_b64(), pg));
@@ -89,9 +89,9 @@ void stream_scale()
         svfloat64_t vec_c;
         do
         {
-            vec_c = svld1(pg, c + idx);
+            vec_c = svldnt1(pg, c + idx);
             vec_c = svmul_f64_z(pg, vec_c, vec_scalar);
-            svst1(pg, b + idx, vec_c);
+            svstnt1(pg, b + idx, vec_c);
             idx += svcntd();
             pg = svwhilelt_b64(idx, end_idx);
         } while (svptest_any(svptrue_b64(), pg));
@@ -114,10 +114,10 @@ void stream_add()
         svfloat64_t vec_a, vec_b, vec_c;
         do
         {
-            vec_a = svld1(pg, a + idx);
-            vec_b = svld1(pg, b + idx);
+            vec_a = svldnt1(pg, a + idx);
+            vec_b = svldnt1(pg, b + idx);
             vec_c = svadd_f64_z(pg, vec_a, vec_b);
-            svst1(pg, c + idx, vec_c);
+            svstnt1(pg, c + idx, vec_c);
             idx += svcntd();
             pg = svwhilelt_b64(idx, end_idx);
         } while (svptest_any(svptrue_b64(), pg));
@@ -141,10 +141,10 @@ void stream_triad()
         svfloat64_t vec_a, vec_b, vec_c;
         do
         {
-            vec_b = svld1(pg, b + idx);
-            vec_c = svld1(pg, c + idx);
+            vec_b = svldnt1(pg, b + idx);
+            vec_c = svldnt1(pg, c + idx);
             vec_a = svmad_f64_z(pg, vec_c, vec_scalar, vec_b);
-            svst1(pg, a + idx, vec_a);
+            svstnt1(pg, a + idx, vec_a);
             idx += svcntd();
             pg = svwhilelt_b64(idx, end_idx);
         } while (svptest_any(svptrue_b64(), pg));
@@ -168,10 +168,10 @@ void blas1_daxpy()
         svfloat64_t vec_a, vec_b;
         do
         {
-            vec_a = svld1(pg, a + idx);
-            vec_b = svld1(pg, b + idx);
+            vec_a = svldnt1(pg, a + idx);
+            vec_b = svldnt1(pg, b + idx);
             vec_a = svmad_f64_z(pg, vec_b, vec_scalar, vec_a);
-            svst1(pg, a + idx, vec_a);
+            svstnt1(pg, a + idx, vec_a);
             idx += svcntd();
             pg = svwhilelt_b64(idx, end_idx);
         } while (svptest_any(svptrue_b64(), pg));
@@ -195,8 +195,8 @@ void blas1_ddot()
         vec_s = svdup_f64_z(pg, 0.0);
         do
         {
-            vec_a = svld1(pg, a + idx);
-            vec_b = svld1(pg, b + idx);
+            vec_a = svldnt1(pg, a + idx);
+            vec_b = svldnt1(pg, b + idx);
             vec_s = svmla_f64_m(pg, vec_s, vec_a, vec_b);
             idx += svcntd();
             pg = svwhilelt_b64(idx, end_idx);
@@ -219,19 +219,30 @@ void blas1_dnrm2()
         const size_t start_idx = thread_displs[tid];
         const size_t end_idx   = thread_displs[tid + 1];
         #ifdef USE_AARCH64_SVE
-        size_t idx = start_idx;
-        svbool_t pg = svwhilelt_b64(idx, end_idx);
-        svfloat64_t vec_c, vec_s;
-        vec_s = svdup_f64_z(pg, 0.0);
+        // Need a 2-way unroll to issue at least 2 load/store instructions 
+        // per iteration to fully utilize the memory bandwidth
+        size_t vec_len = svcntd();
+        size_t mid_idx = (start_idx + end_idx) / 2;
+        size_t idx0 = start_idx;
+        size_t idx1 = mid_idx;
+        svbool_t pg0 = svwhilelt_b64(idx0, mid_idx);
+        svbool_t pg1 = svwhilelt_b64(idx1, end_idx);
+        svfloat64_t vec_c0, vec_c1, vec_s0, vec_s1;
+        vec_s0 = svdup_f64_z(pg0, 0.0);
+        vec_s1 = svdup_f64_z(pg1, 0.0);
         do
         {
-            vec_c = svld1(pg, c + idx);
-            vec_s = svmla_f64_m(pg, vec_s, vec_c, vec_c);
-            idx += svcntd();
-            pg = svwhilelt_b64(idx, end_idx);
-        } while (svptest_any(svptrue_b64(), pg));
-        pg = svwhilelt_b64(start_idx, end_idx);
-        STREAM_TYPE local_nrm2_sum = svaddv_f64(svptrue_b64(), vec_s);
+            vec_c0 = svldnt1(pg0, c + idx0);
+            vec_c1 = svldnt1(pg1, c + idx1);
+            vec_s0 = svmla_f64_m(pg0, vec_s0, vec_c0, vec_c0);
+            vec_s1 = svmla_f64_m(pg1, vec_s1, vec_c1, vec_c1);
+            idx0 += vec_len;
+            idx1 += vec_len;
+            pg0 = svwhilelt_b64(idx0, mid_idx);
+            pg1 = svwhilelt_b64(idx1, end_idx);
+        } while (svptest_any(svptrue_b64(), svorr_z(svptrue_b64(), pg0, pg1)));
+        vec_s0 = svadd_f64_z(svptrue_b64(), vec_s0, vec_s1);
+        STREAM_TYPE local_nrm2_sum = svaddv_f64(svptrue_b64(), vec_s0);
         #else
         STREAM_TYPE local_nrm2_sum = 0;
         for (size_t i = start_idx; i < end_idx; i++) local_nrm2_sum += c[i] * c[i];
