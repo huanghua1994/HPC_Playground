@@ -128,6 +128,57 @@ void stream_add()
     }
 }
 
+void triad_sve512_zfill(const int n, const double scalar, double *a, const double *b, const double *c)
+{
+    // a[0 : n0-1] are in an incomplete cache line
+    size_t a_addr = (size_t) a;
+    size_t a_addr_cl = (a_addr + 256 - 1) / 256 * 256;
+    int n0 = (a_addr_cl - a_addr) / sizeof(double);
+
+    // a[n0 : n1-1] are in complete cache lines
+    int ncl = sizeof(double) * (n - n0) / 256;
+    int n1  = n0 + ncl * 256 / sizeof(double);
+
+    // Handle the first part and the last part
+    #pragma omp simd
+    for (int i = 0; i < n0; i++) a[i] = b[i] + scalar * c[i];
+    #pragma omp simd
+    for (int i = n1; i < n; i++) a[i] = b[i] + scalar * c[i];
+
+    // Handle complete cache lines 
+    a += n0;
+    b += n0;
+    c += n0;
+    svbool_t ptrue64b = svptrue_b64();
+    svfloat64_t vec_scalar = svdup_f64_z(ptrue64b, scalar);
+    for (int icl = 0; icl < ncl; icl++)
+    {
+        // "Eliminates extra memory read which is completely replaced in cache line"
+        // However, using the asm line makes triad much slower instead of faster, not sure
+        // is the correct way of using it, and Fujitsu only provides a purely assemble example
+        //asm("dc zva, %[a_ptr]\n" : : [a_ptr] "r" (a) : "memory");
+        svfloat64_t vec_b0 = svld1(ptrue64b, b + 8 * 0);
+        svfloat64_t vec_b1 = svld1(ptrue64b, b + 8 * 1);
+        svfloat64_t vec_b2 = svld1(ptrue64b, b + 8 * 2);
+        svfloat64_t vec_b3 = svld1(ptrue64b, b + 8 * 3);
+        svfloat64_t vec_c0 = svld1(ptrue64b, c + 8 * 0);
+        svfloat64_t vec_c1 = svld1(ptrue64b, c + 8 * 1);
+        svfloat64_t vec_c2 = svld1(ptrue64b, c + 8 * 2);
+        svfloat64_t vec_c3 = svld1(ptrue64b, c + 8 * 3);
+        svfloat64_t vec_a0 = svmad_f64_z(ptrue64b, vec_scalar, vec_c0, vec_b0);
+        svfloat64_t vec_a1 = svmad_f64_z(ptrue64b, vec_scalar, vec_c1, vec_b1);
+        svfloat64_t vec_a2 = svmad_f64_z(ptrue64b, vec_scalar, vec_c2, vec_b2);
+        svfloat64_t vec_a3 = svmad_f64_z(ptrue64b, vec_scalar, vec_c3, vec_b3);
+        svst1(ptrue64b, a + 8 * 0, vec_a0);
+        svst1(ptrue64b, a + 8 * 1, vec_a1);
+        svst1(ptrue64b, a + 8 * 2, vec_a2);
+        svst1(ptrue64b, a + 8 * 3, vec_a3);
+        a += 32;
+        b += 32;
+        c += 32;
+    }
+}
+
 void stream_triad()
 {
     #pragma omp parallel
@@ -136,6 +187,7 @@ void stream_triad()
         const size_t start_idx = thread_displs[tid];
         const size_t end_idx   = thread_displs[tid + 1];
         #ifdef USE_AARCH64_SVE
+        /*
         size_t idx = start_idx;
         svbool_t pg = svwhilelt_b64(idx, end_idx);
         svfloat64_t vec_scalar = svdup_f64_z(pg, scalar);
@@ -149,6 +201,8 @@ void stream_triad()
             idx += svcntd();
             pg = svwhilelt_b64(idx, end_idx);
         } while (svptest_any(svptrue_b64(), pg));
+        */
+        triad_sve512_zfill(end_idx - start_idx, scalar, a + start_idx, b + start_idx, c + start_idx);
         #else
         for (size_t i = start_idx; i < end_idx; i++) a[i] = b[i] + scalar * c[i];
         #endif
