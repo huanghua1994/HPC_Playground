@@ -4,7 +4,7 @@
 #include <time.h>
 #include <omp.h>
 
-#include "laplace_kernel.h"
+#include "reciprocal_kernels.h"
 
 void test_direct_nbody_symm(
     const int n_src, const double *src_coord, double *src_val0, double *src_val1, 
@@ -34,7 +34,7 @@ void test_direct_nbody_symm(
     }
 }
 
-static void laplace_3d_matvec_nt_t_std(
+static void reciprocal_3d_matvec_nt_t_std(
     const double *coord0, const int ld0, const int n0, 
     const double *coord1, const int ld1, const int n1, 
     const double *x_in_0, const double *x_in_1,         
@@ -76,7 +76,7 @@ static inline void print_m256d(__m256d x)
     printf("%e %e %e %e\n", p[0], p[1], p[2], p[3]);
 }
 
-static inline void laplace_symm_matvec_4x4d(
+static inline void reciprocal_symm_matvec_4x4d(
     __m256d tx, __m256d ty, __m256d tz, 
     __m256d sx, __m256d sy, __m256d sz, 
     __m256d sv0, __m256d sv1, __m256d *tv0, __m256d *tv1
@@ -157,7 +157,7 @@ static inline void laplace_symm_matvec_4x4d(
 }
 #endif  // End of #ifdef USE_AVX
 
-static void laplace_symm_matvec_avx_new(
+static void reciprocal_symm_matvec_avx_new(
     const double *coord0, const int ld0, const int n0,
     const double *coord1, const int ld1, const int n1,
     const double *x_in_0, const double *x_in_1,         
@@ -192,7 +192,7 @@ static void laplace_symm_matvec_avx_new(
                 vec_d sv0 = vec_loadu_d(x_in_0 + j);
                 
                 vec_d tmp0, tmp1;
-                laplace_symm_matvec_4x4d(tx, ty, tz, sx, sy, sz, sv0, sv1, &tmp0, &tmp1);
+                reciprocal_symm_matvec_4x4d(tx, ty, tz, sx, sy, sz, sv0, sv1, &tmp0, &tmp1);
                 
                 tv = vec_add_d(tmp0, tv);
                 tmp1 = vec_mul_d(tmp1, frsqrt_pf);
@@ -204,12 +204,12 @@ static void laplace_symm_matvec_avx_new(
             vec_storeu_d(x_out_0 + i, vec_add_d(ov0, tv));
         }
     }
-    laplace_3d_matvec_nt_t_std(
+    reciprocal_3d_matvec_nt_t_std(
         coord0, ld0, n0_SIMD,
         coord1 + n1_SIMD, ld1, n1 - n1_SIMD,
         x_in_0 + n1_SIMD, x_in_1, x_out_0, x_out_1 + n1_SIMD
     );
-    laplace_3d_matvec_nt_t_std(
+    reciprocal_3d_matvec_nt_t_std(
         coord0 + n0_SIMD, ld0, n0 - n0_SIMD,
         coord1, ld1, n1,
         x_in_0, x_in_1 + n0_SIMD, x_out_0 + n0_SIMD, x_out_1
@@ -269,18 +269,18 @@ int main(int argc, char **argv)
     }
     
     
-    printf("laplace_3d_matvec_nt_t_std: \n");
+    printf("reciprocal_3d_matvec_nt_t_std: \n");
     test_direct_nbody_symm(
         n_src, src_coord, src_val0, src_val1,
         n_trg, trg_coord, trg_val0, trg_val1,
-        laplace_3d_matvec_nt_t_std, 1, 14
+        reciprocal_3d_matvec_nt_t_std, 1, 14
     );
     
-    printf("laplace_symm_matvec_avx_new: \n");
+    printf("reciprocal_symm_matvec_avx_new: \n");
     test_direct_nbody_symm(
         n_src, src_coord, src_val0, src_val1,
         n_trg, trg_coord, trg_val2, trg_val3,
-        laplace_symm_matvec_avx_new, 1, 22
+        reciprocal_symm_matvec_avx_new, 1, 22
     );
     
     double ref_l2_0 = 0.0, err_l2_0 = 0.0;

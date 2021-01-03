@@ -1,11 +1,11 @@
-#ifndef __LAPLACE_KERNEL_H__
-#define __LAPLACE_KERNEL_H__
+#ifndef __RECIPROCAL_KERNELS_H__
+#define __RECIPROCAL_KERNELS_H__
 
 #include <math.h>
-#include "x86_intrin_wrapper.h"
+#include "avx_intrin_wrapper.h"
 #include "kernel_ptr.h"
 
-static void laplace_matvec_std(
+static void reciprocal_matvec_std(
     const double *coord0, const int ld0, const int n0,
     const double *coord1, const int ld1, const int n1,
     const double *x_in, double *x_out
@@ -37,7 +37,7 @@ static void laplace_matvec_std(
     }
 }
 
-static void laplace_matvec_avx(
+static void reciprocal_matvec_avx(
     const double *coord0, const int ld0, const int n0,
     const double *coord1, const int ld1, const int n1,
     const double *x_in, double *x_out
@@ -79,7 +79,7 @@ static void laplace_matvec_avx(
             vec_storeu_d(x_out + i, vec_add_d(outval, tv));
         }
     }
-    laplace_matvec_std(
+    reciprocal_matvec_std(
         coord0 + i, ld0, n0 - i,
         coord1, ld1, n1,
         x_in, x_out + i
@@ -87,7 +87,7 @@ static void laplace_matvec_avx(
 }
 
 #ifdef USE_AVX
-static inline __m256d laplace_matvec_4x4d(
+static inline __m256d reciprocal_matvec_4x4d(
     __m256d tx, __m256d ty, __m256d tz, 
     __m256d sx, __m256d sy, __m256d sz, __m256d sv
 )
@@ -152,7 +152,7 @@ static inline __m256d laplace_matvec_4x4d(
 #endif  // End of #ifdef USE_AVX
 
 #ifdef USE_AVX512
-static inline __m512d laplace_matvec_8x8d(
+static inline __m512d reciprocal_matvec_8x8d(
     __m512d tx, __m512d ty, __m512d tz, 
     __m512d sx, __m512d sy, __m512d sz, __m512d sv
 )
@@ -280,7 +280,7 @@ static inline __m512d laplace_matvec_8x8d(
 }
 #endif  // End of #ifdef USE_AVX512
 
-static void laplace_matvec_avx_new(
+static void reciprocal_matvec_avx_new(
     const double *coord0, const int ld0, const int n0,
     const double *coord1, const int ld1, const int n1,
     const double *x_in, double *x_out
@@ -313,10 +313,10 @@ static void laplace_matvec_avx_new(
                 vec_d sv = vec_loadu_d(x_in + j);
                 
                 #ifdef USE_AVX
-                vec_d tmp = laplace_matvec_4x4d(tx, ty, tz, sx, sy, sz, sv);
+                vec_d tmp = reciprocal_matvec_4x4d(tx, ty, tz, sx, sy, sz, sv);
                 #endif
                 #ifdef USE_AVX512
-                vec_d tmp = laplace_matvec_8x8d(tx, ty, tz, sx, sy, sz, sv);
+                vec_d tmp = reciprocal_matvec_8x8d(tx, ty, tz, sx, sy, sz, sv);
                 #endif
                 tv = vec_add_d(tmp, tv);
             }
@@ -325,12 +325,12 @@ static void laplace_matvec_avx_new(
             vec_storeu_d(x_out + i, vec_add_d(outval, tv));
         }
     }
-    laplace_matvec_std(
+    reciprocal_matvec_std(
         coord0, ld0, n0_SIMD,
         coord1 + n1_SIMD, ld1, n1 - n1_SIMD,
         x_in + n1_SIMD, x_out
     );
-    laplace_matvec_std(
+    reciprocal_matvec_std(
         coord0 + n0_SIMD, ld0, n0 - n0_SIMD,
         coord1, ld1, n1,
         x_in, x_out + n0_SIMD

@@ -4,7 +4,7 @@
 #include <time.h>
 #include <omp.h>
 
-#include "RPY_kernel.h"
+#include "Stokes_kernels.h"
 
 void test_direct_nbody(
     const int n_src, const double *src_coord, double *src_val, 
@@ -117,7 +117,7 @@ int main(int argc, char **argv)
         scanf("%d", &n_trg);
     }
     
-    int krnl_flops = 44;  
+    int krnl_flops = 31;  
     int krnl_dim = 3;
     
     double *src_coord = (double*) malloc(sizeof(double) * n_src * 3);
@@ -146,7 +146,7 @@ int main(int argc, char **argv)
     }
     
     printf("Standard kernel:\n");
-    kernel_matvec_fptr ref_matvec = RPY_matvec_nt_std;
+    kernel_matvec_fptr ref_matvec = Stokes_matvec_nt_std;
     test_direct_nbody(
         n_src, src_coord, src_val,
         n_trg, trg_coord, trg_val0, 
@@ -154,7 +154,7 @@ int main(int argc, char **argv)
     );
     
     printf("AVX intrinsic kernel:\n");
-    kernel_matvec_fptr avx_matvec = RPY_matvec_nt_intrin;
+    kernel_matvec_fptr avx_matvec = Stokes_matvec_nt_intrin;
     test_direct_nbody_trans(
         n_src, src_coord, src_val, src_val_t, 
         n_trg, trg_coord, trg_val1, trg_val_t, 
