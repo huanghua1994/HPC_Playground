@@ -12,6 +12,10 @@
 #define MIN(a, b) ((a) < (b) ? (a) :(b))
 #define MAX(a, b) ((a) > (b) ? (a) :(b))
 
+#ifdef USE_AARCH64_SVE
+#include <arm_sve.h>
+#endif
+
 static inline void swap_int(int *x, int *y, int len)
 {
     int tmp;
@@ -60,8 +64,33 @@ static DTYPE CBLAS_NRM2(const int n, const DTYPE *x, const int incx)
         #pragma omp simd
         for (int ix = 0; ix < n * incx; ix += incx) nrm2 += x[ix] * x[ix];    
     } else {
+        #ifdef USE_AARCH64_SVE
+        int vec_len = svcntd();
+        int mid_idx = n / 2;
+        int idx0 = 0;
+        int idx1 = mid_idx;
+        svbool_t pg0 = svwhilelt_b64(idx0, mid_idx);
+        svbool_t pg1 = svwhilelt_b64(idx1, n);
+        svfloat64_t vec_x0, vec_x1, vec_s0, vec_s1;
+        vec_s0 = svdup_f64_z(pg0, 0.0);
+        vec_s1 = svdup_f64_z(pg1, 0.0);
+        do
+        {
+            vec_x0 = svldnt1(pg0, x + idx0);
+            vec_x1 = svldnt1(pg1, x + idx1);
+            vec_s0 = svmla_f64_m(pg0, vec_s0, vec_x0, vec_x0);
+            vec_s1 = svmla_f64_m(pg1, vec_s1, vec_x1, vec_x1);
+            idx0 += vec_len;
+            idx1 += vec_len;
+            pg0 = svwhilelt_b64(idx0, mid_idx);
+            pg1 = svwhilelt_b64(idx1, n);
+        } while (svptest_any(svptrue_b64(), svorr_z(svptrue_b64(), pg0, pg1)));
+        vec_s0 = svadd_f64_z(svptrue_b64(), vec_s0, vec_s1);
+        nrm2 = svaddv_f64(svptrue_b64(), vec_s0);
+        #else
         #pragma omp simd
         for (int i = 0; i < n; i++) nrm2 += x[i] * x[i];    
+        #endif
     }
     nrm2 = DSQRT(nrm2);
     #endif
@@ -76,8 +105,25 @@ static DTYPE CBLAS_DOT(const int n, const DTYPE *x, const int incx, const DTYPE 
         #pragma omp simd
         for (int i = 0; i < n; i++) dot += x[i * incx] * y[i * incy];
     } else {
+        #ifdef USE_AARCH64_SVE
+        int vec_len = svcntd();
+        int idx = 0;
+        svbool_t pg = svwhilelt_b64(idx, n);
+        svfloat64_t vec_x, vec_y, vec_s;
+        vec_s = svdup_f64_z(pg, 0.0);
+        do
+        {
+            vec_x = svldnt1(pg, x + idx);
+            vec_y = svldnt1(pg, y + idx);
+            vec_s = svmla_f64_m(pg, vec_s, vec_x, vec_y);
+            idx += vec_len;
+            pg = svwhilelt_b64(idx, n);
+        } while (svptest_any(svptrue_b64(), pg));
+        dot = svaddv_f64(svptrue_b64(), vec_s);
+        #else
         #pragma omp simd
         for (int i = 0; i < n; i++) dot += x[i] * y[i];
+        #endif
     }
     return dot;
 }
