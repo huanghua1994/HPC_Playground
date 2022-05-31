@@ -208,8 +208,9 @@ void test_bgj(const int m, const int n_test)
     CUDA_RT_CHECK( cudaFree(B) );
     CUDA_RT_CHECK( cudaFree(ipiv) );
     CUDA_RT_CHECK( cudaFree(getrf_work) );
-    for (int i = 0; i < 5; i++)
-        CUDA_RT_CHECK( cudaEventDestroy(bgj_events[i]) );
+    for (int i = 0; i < 5; i++) CUDA_RT_CHECK( cudaEventDestroy(bgj_events[i]) );
+    free(bgj_events);
+    free(bgj_timers);
 }
 
 int main(int argc, char **argv)

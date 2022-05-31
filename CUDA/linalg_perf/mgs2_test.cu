@@ -214,8 +214,7 @@ void test_mgs2(const int m, const int n, const int n_test)
 
     // Test MGS2 with randomized XR as panel factorization
     cudaEvent_t *mgs_events = (cudaEvent_t *) malloc(sizeof(cudaEvent_t) * 4);
-    for (int i = 0; i < 4; i++)
-        CUDA_RT_CHECK( cudaEventCreate(&mgs_events[i]) );
+    for (int i = 0; i < 4; i++) CUDA_RT_CHECK( cudaEventCreate(&mgs_events[i]) );
     float *mgs_timers = (float *) malloc(sizeof(float) * 6);
     fprintf(stderr, "sample_row, panel_qr/chol, panel_trsm, panel_gemm, proj_gemm  | orth_ms, buildR_ms, orth_gflops, buildR_gflops\n");
     for (int i_test = 0; i_test < n_test; i_test++)
@@ -274,8 +273,9 @@ void test_mgs2(const int m, const int n, const int n_test)
     CUDA_RT_CHECK( cudaFree(R) );
     CUDA_RT_CHECK( cudaFree(P_rowidx_d) );
     CUDA_RT_CHECK( cudaFree(workbuf) );
-    for (int i = 0; i < 4; i++)
-        CUDA_RT_CHECK( cudaEventDestroy(mgs_events[i]) );
+    for (int i = 0; i < 4; i++) CUDA_RT_CHECK( cudaEventDestroy(mgs_events[i]) );
+    free(mgs_events);
+    free(mgs_timers);
     free(flag);
     free(P_rowidx_h);
 }
