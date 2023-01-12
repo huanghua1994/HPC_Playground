@@ -1,12 +1,17 @@
 function [v, b] = house_vec(x)
 % Householder Vector, Van Loan book 4th edition Algorithm 5.1.1
     m = length(x);
-    s = x(2 : m)' * x(2 : m);
-    v = [1; x(2 : m)];
+    if (m >= 2)
+        s = x(2 : m)' * x(2 : m);
+        v = [1; x(2 : m)];
+    else
+        s = 0;
+        v = 1;
+    end
     if ((s == 0) && (x(1) >= 0))
         b = 0;
     elseif ((s == 0) && (x(1) < 0))
-        b = -2;
+        b = 2;  % The book has a bug here
     else
         mu = sqrt(x(1) * x(1) + s);
         if (x(1) <= 0)

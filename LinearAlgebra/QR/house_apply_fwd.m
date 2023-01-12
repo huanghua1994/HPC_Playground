@@ -9,7 +9,6 @@ function Y = house_apply_fwd(V, X)
     [m, n] = size(V);
     Q = eye(m);
     for j = 1 : n
-        if (j == m), continue; end
         v = [1; V(j+1 : m, j)];
         b = 2 / (norm(v).^2);
         % Q = Q * Q_j = Q * (I - b * v * v')

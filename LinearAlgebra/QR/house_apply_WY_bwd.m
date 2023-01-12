@@ -16,10 +16,7 @@ function Z = house_apply_WY_bwd(V, X, bs)
         curr_bs = k - j + 1;
         % Build W and Y from V
         % We only store and use the (j : m)-th non-zeros rows in Y and W
-        Y = tril(V(j : m, j : k));
-        for jj = 1 : curr_bs
-            Y(jj, jj) = 1;
-        end
+        Y = tril(V(j : m, j : k), -1) + eye(m-j+1, curr_bs);
         W = gen_W_from_Y(Y);
         % Q_j * Q_{j+1} * ... * Q_k = eye(m) - W * Y'
         % Z = Q_j * Q_{j+1} * ... * Q_k * Z = (eye(m) - W * Y') * Z
