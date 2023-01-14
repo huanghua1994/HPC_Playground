@@ -25,27 +25,18 @@ function [Q, T] = house_sb2st(A, bs)
             r2 = min(r1 + bs - 1, n);
             [v, b] = house_vec(A(r1 : r2, j));
             % The full Householder vector is [zeros(r1-1, 1); v; zeros(n-r2, 1)];
-            % H' * A updates A(r1 : r2, j : r3), A * H' updates A(j : r3, r1 : r2)
-            if (j_idx == 1)
-                r3 = min(n, r1 + 2 * bs);
-            else
-                r3 = min(n, r1 + 3 * bs - 1);
-            end
-            t = v' * A(r1 : r2, j : r3);
-            A(r1 : r2, j : r3) = A(r1 : r2, j : r3) - (b .* v) * t;
-            t = A(j : r3, r1 : r2) * v;
-            A(j : r3, r1 : r2) = A(j : r3, r1 : r2) - (b .* t) * v';
+            % (H' * A) * H will first update A(r1 : r2, :), then update A(:, r1 : r2)
+            H = eye(r2-r1+1) - (b * v) * v';
+            A(r1 : r2, :) = H' * A(r1 : r2, :);
+            A(:, r1 : r2) = A(:, r1 : r2) * H;
+            % Not necessary, for debug and showing the change of A
+            A(r1+1 : n, j) = 0;
+            A(j, r1+1 : n) = 0;
             % Accumulate Q = Q * Q_k = Q - b * (Q * v) * v';
             % Each j reads and updates the same Q columns, and different j in
             % the same k reads and updates different Q columns (can be parallelized)
-            if (k == 1)
-                Q(r1 : r2, r1 : r2) = Q(r1 : r2, r1 : r2) - (b .* v) * v';
-            else
-                r4 = 2 + (j_idx-1) * bs;
-                r5 = min(n, r4 + k * bs);
-                t = Q(r4 : r5, r1 : r2) * v;
-                Q(r4 : r5, r1 : r2) = Q(r4 : r5, r1 : r2) - (b .* t) * v';
-            end
+            t = Q(:, r1 : r2) * v;
+            Q(:, r1 : r2) = Q(:, r1 : r2) - (b .* t) * v';
         end
     end
     T = A;
