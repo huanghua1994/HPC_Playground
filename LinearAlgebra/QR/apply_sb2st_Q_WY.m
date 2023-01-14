@@ -51,8 +51,8 @@ function Z = apply_sb2st_Q_WY(VT, bs, nv, C)
             % length(v) might be smaller than bs, truncate empty rows in Y
             Y = Y(1 : max_r2-min_r1+1, :);
             W = gen_W_from_Y(Y);
-            % Van Load 4th edition P239: when Q is applied to a matrix C, we compute 
-            % Q' * C = (I - YW') * C, C(min_r1 : max_r2, :) -= Y * W' * C(min_r1 : max_r2, :)
+            % Q' * C(min_r1 : max_r2, :) = (I - Y * W') * C(min_r1 : max_r2, :)
+            % Why we are using Q' * C instead of Q * C here, but Q * C in apply_sy2sb_Q_WY?
             WTC = W' * C(min_r1 : max_r2, :);
             C(min_r1 : max_r2, :) = C(min_r1 : max_r2, :) - Y * WTC;
         end

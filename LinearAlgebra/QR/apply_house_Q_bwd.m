@@ -1,4 +1,4 @@
-function Y = house_apply_bwd(V, X)
+function Y = apply_house_Q_bwd(V, X)
 % Backward accumulation of Householder matrices
 % Van Loan book 4th edition Section 5.1.6
 % Input parameters:
