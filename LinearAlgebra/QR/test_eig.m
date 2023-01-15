@@ -1,6 +1,9 @@
-n = 10;
-A = rand(n);
-A = A + A';
+rng(19241112);
+n = 100;
+V = rand(n);
+[V, ~] = qr(V);
+d = linspace(-1, 1, n);
+A = V * diag(d) * V';
 
 %%
 fprintf('1-stage approach\n');
@@ -16,7 +19,8 @@ fprintf('Eigensolve (V = Q * V1): ||V  * D * V^T  - A||_{fro} / ||A||_{fro} = %e
 
 %%
 fprintf('2-stage approach\n');
-bss = 2:4;
+bss = [2:8, 10:3:40];
+nv = 8;
 for bs = bss
     B_nnz_pattern = toeplitz([ones(1, 1+bs), zeros(1, n-bs-1)]);
     T_nnz_pattern = toeplitz([ones(1, 2), zeros(1, n-2)]);
@@ -28,8 +32,8 @@ for bs = bss
     T = VT .* T_nnz_pattern;
 
     [V1, D] = tridiag_eig_dc(T);
-    V2 = apply_sb2st_Q_WY(VT, bs, 4, V1);
+    V2 = apply_sb2st_Q_WY(VT, bs, nv, V1);
     V = apply_sy2sb_Q_WY(VB, bs, V2);
     e = norm(V * D * V' - A, 'fro') / norm(A, 'fro');
-    fprintf('bs = %d, ||V  * D * V^T  - A||_{fro} / ||A||_{fro} = %e\n', bs, e);
+    fprintf('bs = %d, ||V  * D * V^T - A||_{fro} / ||A||_{fro} = %e\n', bs, e);
 end
