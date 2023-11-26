@@ -106,7 +106,7 @@ int main(int argc, char *argv[])
     fflush(stdout);
 
     structured::StructuredOptions<double> options;
-    options.set_verbose(false);
+    //options.set_verbose(false);
 
     // Define the matrix through a routine to compute individual elements of the matrix
     auto MyGaussianKernel = [](const int i, const int j)
@@ -177,6 +177,7 @@ int main(int argc, char *argv[])
         options.set_rel_tol(tol);
         options.set_leaf_size(leaf_size);
         options.set_type(structured::Type::HSS);
+        options.set_max_rank(npt);
 
         st = omp_get_wtime();
         // construct_from_elements may need A LOT OF MEMORY 

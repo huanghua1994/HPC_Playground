@@ -8,7 +8,7 @@ class Kernel : public HODLR_Matrix
 {
 
 private:
-    Mat x;
+    Mat x, tx;
     int npt, dim;
     dtype _2l2, mu;
 
@@ -23,17 +23,23 @@ public:
         _2l2 = _l * _l * 2.0;
         mu   = _mu;
 
-        // Eigen uses col-major; store each point contiguously 
-        x = (Mat::Zero(dim, npt)).real();
-        for (int j = 0; j < npt; j++)
-            for (int i = 0; i < dim; i++)
-                x(i, j) = coord[j * dim + i];
+        // getKDTreeSorted requires the coordinate of each point to be stored in a row
+        x = (Mat::Zero(npt, dim)).real();
+        for (int i = 0; i < dim; i++)
+            for (int j = 0; j < npt; j++)
+                x(j, i) = coord[j * dim + i];
 
         double start = omp_get_wtime();
         getKDTreeSorted(x, 0);
         double end = omp_get_wtime();
         kd_time = end - start;
         printf("Build KDTree for %d * %d input points done, time = %.2f s\n", npt, dim, kd_time);
+
+        // Store a transposed x for faster getMatrixEntry
+        tx = (Mat::Zero(dim, npt)).real();
+        for (int i = 0; i < dim; i++)
+            for (int j = 0; j < npt; j++)
+                tx(i, j) = x(j, i);
     };
 
     dtype getMatrixEntry(int i, int j)
@@ -44,7 +50,7 @@ public:
             dtype R2 = 0;
             for (int k = 0; k < dim; k++)
             {
-                dtype diff = x(k, i) - x(k, j);
+                dtype diff = tx(k, i) - tx(k, j);
                 R2 += diff * diff;
             }
             return exp(-R2 / _2l2);
@@ -100,7 +106,7 @@ int main(int argc, char* argv[])
     std::cout << "Time for direct matrix generation  : " << exact_time << std::endl;
 
     bool is_sym = true;
-    bool is_pd  = true;
+    bool is_pd  = false;  // true?
     start = omp_get_wtime();
     HODLR *T = new HODLR(npt, leaf_size, tol);
     T->assemble(K, "rookPivoting", is_sym, is_pd);
@@ -118,7 +124,7 @@ int main(int argc, char* argv[])
     end   = omp_get_wtime();
     exact_time = (end - start);
     std::cout << "Time for direct MatVec             : " << exact_time << std::endl;
-    
+
     start  = omp_get_wtime();
     b_fast = T->matmatProduct(x);
     end    = omp_get_wtime();
