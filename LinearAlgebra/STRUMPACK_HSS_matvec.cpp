@@ -137,11 +137,21 @@ int main(int argc, char *argv[])
 
     // Generate a random input vector
     DenseMatrix<double> x(npt, 1), b_ref(npt, 1), b_hss(npt, 1);
+    DenseMatrix<double> b2(npt, 1), x2(npt, 1);
     double *x_data = x.data();
     double *b_ref_data = b_ref.data();
     double *b_hss_data = b_hss.data();
+    double *b2_data = b2.data();
+    double *x2_data = x2.data();
+    double b2_2norm = 0.0;
     for (int i = 0; i < npt; i++)
-        x_data[i] = 2.0 * ((double) rand() / (double) RAND_MAX) - 1.0;
+    {
+        x_data[i]  = 2.0 * ((double) rand() / (double) RAND_MAX) - 1.0;
+        b2_data[i] = 2.0 * ((double) rand() / (double) RAND_MAX) - 1.0;
+        x2_data[i] = b2_data[i];  // StructuredMatrix solve is done in-place
+        b2_2norm += b2_data[i] * b2_data[i];
+    }
+    b2_2norm = sqrt(b2_2norm);
     printf("Allocate vectors done\n");
     fflush(stdout);
 
@@ -172,7 +182,7 @@ int main(int argc, char *argv[])
         fflush(stdout);
     }
 
-    // Construct a HSS matrix H and compute b_hss := H * x
+    // Construct a HSS matrix H, compute b_hss := H * x, solve H * x2 = b2
     {
         options.set_rel_tol(tol);
         options.set_leaf_size(leaf_size);
@@ -184,30 +194,50 @@ int main(int argc, char *argv[])
         //auto H = structured::construct_from_elements<double>(npt, npt, GaussianBlock, options);
         auto H = structured::construct_partially_matrix_free<double>(npt, npt, Amult, GaussianBlock, options);
         et = omp_get_wtime();
-        printf("HSS matrix construction used %.3f s\n", et - st);
+        printf("Build StructuredMatrix used %.3f s\n", et - st);
         print_info(H.get(), options);
         fflush(stdout);
 
         // HSS matvec
-        const structured::StructuredMatrix<double>* H_ = H.get();
+        structured::StructuredMatrix<double>* H_ = H.get();
         st = omp_get_wtime();
         H_->mult(Trans::N, x, b_hss);
         et = omp_get_wtime();
-        printf("HSS matrix-vector multiplication used %.3f s\n", et - st);
+        printf("StructuredMatrix matvec time = %.3f s\n", et - st);
+        fflush(stdout);
+
+        // HSS solve
+        st = omp_get_wtime();
+        H_->factor();
+        H_->solve(x2);
+        et = omp_get_wtime();
+        printf("StructuredMatrix factor and solve time = %.3f s\n", et - st);
+        fflush(stdout);
+
+        // Compute solve residual, stored in b2
+        double alpha = 1.0, beta = -1.0;
+        int ione = 1;
+        st = omp_get_wtime();
+        dgemv_("N", &npt, &npt, &alpha, A.data(), &npt, x2_data, &ione, &beta, b2_data, &ione);
+        et = omp_get_wtime();
+        printf("StructuredMatrix compute solve residual time = %.3f s\n", et - st);
         fflush(stdout);
     }
 
-    // Compute relative error
-    double ref_2norm = 0, err_2norm = 0;
+    // Compute matvec and solve relative error
+    double bref_2norm = 0, mv_err_2norm = 0, solve_err_2norm = 0;
     for (int i = 0; i < npt; i++)
     {
         double err = b_ref_data[i] - b_hss_data[i];
-        ref_2norm += b_ref_data[i] * b_ref_data[i];
-        err_2norm += err * err;
+        bref_2norm += b_ref_data[i] * b_ref_data[i];
+        mv_err_2norm += err * err;
+        solve_err_2norm += b2_data[i] * b2_data[i];
     }
-    ref_2norm = sqrt(ref_2norm);
-    err_2norm = sqrt(err_2norm);
-    printf("||b_ref - b_hss||_2 / ||b_ref||_2 = %e\n", err_2norm / ref_2norm);
+    bref_2norm  = sqrt(bref_2norm);
+    mv_err_2norm = sqrt(mv_err_2norm);
+    solve_err_2norm = sqrt(solve_err_2norm);
+    printf("HSS matvec : ||b_ref - b_hss||_2 / ||b_ref||_2 = %e\n", mv_err_2norm / bref_2norm);
+    printf("HSS solve  : ||A_dense * x - b||_2 / ||b||_2 = %e\n", solve_err_2norm / b2_2norm);
 
     free(coord);
     return 0;

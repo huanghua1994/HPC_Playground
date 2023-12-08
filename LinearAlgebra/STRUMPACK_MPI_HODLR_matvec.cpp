@@ -141,6 +141,11 @@ int main(int argc, char *argv[])
         DistributedMatrix<double> b_ref(&grid, npt, 1);
         DistributedMatrix<double> b_str(&grid, npt, 1);
 
+        // Vectors for solve test
+        DistributedMatrix<double> x2(&grid, npt, 1, rand_matrix_elem);   // StructuredMatrix solve is done in-place
+        DistributedMatrix<double> r2(x2);
+        double b2_2norm = x2.normF();
+
         // Test dense matvec
         for (int i = 0; i <= 5; i++)
         {
@@ -202,21 +207,42 @@ int main(int argc, char *argv[])
                     fflush(stdout);
                 }
             }
+
+            st = MPI_Wtime();
+            H_->factor();
+            H_->solve(x2);
+            et = MPI_Wtime();
+            if (my_rank == 0) 
+            {
+                printf("StructuredMatrix factor and solve time = %.3f\n", et - st);
+                fflush(stdout);
+            }
+
+            st = MPI_Wtime();
+            gemv(Trans::N, double(1.0), A2d, x2, double(-1.0), r2);
+            et = MPI_Wtime();
+            if (my_rank == 0) 
+            {
+                printf("StructuredMatrix compute solve residual time = %.3f\n", et - st);
+                fflush(stdout);
+            }
         } catch (std::exception& e) {
             if (my_rank == 0)
             {
-                cout << "Build StructuredMatrix failed: " << e.what() << endl;
+                cout << "Failed: " << e.what() << endl;
                 fflush(stdout);
             }
         }
 
         // Compare matvec error
-        double ref_2norm = b_ref.normF();
-        DistributedMatrix<double> res = b_ref.scale_and_add(-1.0, b_str);
-        double err_2norm = res.normF();
+        double bref_2norm = b_ref.normF();
+        DistributedMatrix<double> mv_res = b_ref.scale_and_add(-1.0, b_str);
+        double mv_err_2norm = mv_res.normF();
+        double solve_err_2norm = r2.normF();
         if (my_rank == 0)
         {
-            printf("||b_ref - b_hss||_2 / ||b_ref||_2 = %e\n", err_2norm / ref_2norm);
+            printf("HOLDR matvec : ||b_ref - b_hss||_2 / ||b_ref||_2 = %e\n", mv_err_2norm / bref_2norm);
+            printf("HOLDR solve  : ||A_dense * x - b||_2 / ||b||_2 = %e\n", solve_err_2norm / b2_2norm);
             fflush(stdout);
         }
     }  
