@@ -131,7 +131,18 @@ int main(int argc, char* argv[])
     hodlr_time = (end - start);
     std::cout << "Time for MatVec in HODLR form      : " << hodlr_time << std::endl;
     std::cout << "Magnitude of Speed-Up              : " << (exact_time / hodlr_time) << std::endl;
-    std::cout << "Error in the solution is           : " << (b_fast-b_exact).norm() / (b_exact.norm()) << std::endl << std::endl;
+    std::cout << "MatVec relative error              : " << (b_fast-b_exact).norm() / (b_exact.norm()) << std::endl << std::endl;
+
+    std::cout << "========================= Solving =========================" << std::endl;
+    Mat x_fast;
+    start  = omp_get_wtime();
+    T->factorize();
+    x_fast = T->solve(b_exact);
+    end    = omp_get_wtime();
+    hodlr_time = (end - start);
+    std::cout << "Time to solve HODLR form           :" << hodlr_time << std::endl;
+    std::cout << "HODLR backward error               :" << (T->matmatProduct(x_fast) - b_exact).norm() / b_exact.norm() << std::endl;
+    std::cout << "Solve relative error               :" << (B * x_fast - b_exact).norm() / b_exact.norm() << std::endl;
 
     free(coord);
     delete T;
