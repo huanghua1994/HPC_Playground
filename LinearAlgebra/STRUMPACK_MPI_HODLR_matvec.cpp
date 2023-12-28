@@ -7,7 +7,7 @@ using namespace std;
 using namespace strumpack;
 
 int npt, dim;
-double l, mu, _2l2;
+double l, mu, _2l2, sqrt3_l;
 double *coord = NULL;
 
 template<typename scalar_t> void
@@ -28,7 +28,7 @@ print_info(const MPIComm& comm,
 int main(int argc, char *argv[]) 
 {
     int leaf_size = 200;
-    double tol = 1e-10;
+    double tol = 1e-6;
 
     // C++ wrapper around an MPI_Comm, defaults to MPI_COMM_WORLD
     MPIComm world;
@@ -40,32 +40,39 @@ int main(int argc, char *argv[])
     if (thread_level != MPI_THREAD_FUNNELED && my_rank == 0)
         printf("MPI implementation does not support MPI_THREAD_FUNNELED\n");
 
-    if (argc < 4)
+    if (argc < 5)
     {
         if (world.is_root())
         {
-            printf("Usage: %s coord_txt l mu tol leaf_size\n", argv[0]);
-            printf("Kernel: exp(-|x-y|^2 / (2 * l^2)), kernel matrix: K + mu * I\n");
-            printf("Optional: tol (default 1e-10), leaf_size (default 200)\n");
+            printf("Usage: %s kid coord_txt l mu tol leaf_size\n", argv[0]);
+            printf("kid: Kernel ID, 0 for Gaussian, 1 for Matern 3/2\n");
+            printf("l, mu: kernel parameter and diagonal shift\n");
+            printf("Optional: tol (default 1e-6), leaf_size (default 200)\n");
         }
         return 255;
     }
-
-    l  = atof(argv[2]);
-    mu = atof(argv[3]);
-    if (argc >= 5) tol = atof(argv[4]);
-    if (argc >= 6) leaf_size = atoi(argv[5]);
+    int kid = atoi(argv[1]);
+    l  = atof(argv[3]);
+    mu = atof(argv[4]);
+    if (argc >= 6) tol = atof(argv[5]);
+    if (argc >= 7) leaf_size = atoi(argv[6]);
     _2l2 = l * l * 2.0;
+    sqrt3_l = sqrt(3.0) / l;
+    if (world.is_root())
+    {
+        if (kid == 0) printf("Kernel: exp(-|x-y|^2 / (2 * l^2))\n");
+        else          printf("Kernel: (1 + k) * exp(-k), k = sqrt(3) / l * |x-y|\n");
+        printf("l, mu, tol = %.3f, %.3f, %e\n", l, mu, tol);
+        fflush(stdout);
+    }
 
     if (world.is_root())
     {
-        FILE *inf = fopen(argv[1], "r");
+        FILE *inf = fopen(argv[2], "r");
         fscanf(inf, "%d %d", &npt, &dim);
 
         printf("npt, dim   = %d, %d\n", npt, dim);
-        printf("l, mu, tol = %.3f, %.3f, %e\n", l, mu, tol);
         fflush(stdout);
-        
         coord = (double *) malloc(sizeof(double) * npt * dim);
         for (int i = 0; i < npt * dim; i++) fscanf(inf, "%lf", coord + i);
         fclose(inf);
@@ -107,15 +114,24 @@ int main(int argc, char *argv[])
                 return exp(-R2 / _2l2);
             }
         };
-        auto GaussianBlock =
-        [&MyGaussianKernel](const std::vector<std::size_t>& I,
-                            const std::vector<std::size_t>& J,
-                            DenseMatrix<double>& B)
+        auto MyMatern32Kernel = [](const int i, const int j)
         {
-            for (int j = 0; j < J.size(); j++)
-                for (int i = 0; i < I.size(); i++)
-                    B(i, j) = MyGaussianKernel(I[i], J[j]);
+            if (i == j) return (1 + mu);
+            else
+            {
+                double R2 = 0, R = 0;
+                double *x_i = coord + ((ptrdiff_t) i * (ptrdiff_t) dim);
+                double *x_j = coord + ((ptrdiff_t) j * (ptrdiff_t) dim);
+                for (int k = 0; k < dim; k++)
+                {
+                    double diff = x_i[k] - x_j[k];
+                    R2 += diff * diff;
+                }
+                R = sqrt(R2);
+                return (1 + sqrt3_l * R) * exp(-sqrt3_l * R);
+            }
         };
+        auto target_kernel = (kid == 0) ? MyGaussianKernel : MyMatern32Kernel;
 
         srand(my_rank);
         auto rand_matrix_elem = [](const int i, const int j)
@@ -125,16 +141,6 @@ int main(int argc, char *argv[])
         };
 
         double st, et;
-        // Create a 2DBC distributed matrix, and initialize it as a Gaussian matrix
-        st = MPI_Wtime();
-        DistributedMatrix<double> A2d(&grid, npt, npt, MyGaussianKernel);
-        et = MPI_Wtime();
-        if (my_rank == 0)
-        {
-            printf("Create dense kernel matrix used %.3f s\n", et - st);
-            printf("matrix memory on rank 0 = %.3f MB\n", A2d.memory() / 1048576.0);
-            fflush(stdout);
-        }
 
         // Create input vector, reference matvec output vector, and structured matrix output vector
         DistributedMatrix<double> x(&grid, npt, 1, rand_matrix_elem);
@@ -146,29 +152,6 @@ int main(int argc, char *argv[])
         DistributedMatrix<double> r2(x2);
         double b2_2norm = x2.normF();
 
-        // Test dense matvec
-        for (int i = 0; i <= 5; i++)
-        {
-            st = MPI_Wtime();
-            A2d.mult(Trans::N, x, b_ref);
-            et = MPI_Wtime();
-            if (i > 0 && my_rank == 0) 
-            {
-                printf("Dense matvec time = %.3f\n", et - st);
-                fflush(stdout);
-            }
-        }
-
-        // Define a matvec routine using the 2DBC distribution
-        auto Tmult2d =
-        [&A2d](Trans t,
-               const DistributedMatrix<double>& R,
-               DistributedMatrix<double>& S) 
-        {
-            // gemm(t, Trans::N, double(1.), A2d, R, double(0.), S);
-            A2d.mult(t, R, S); // same as gemm above
-        };
-
         // Set structured matrix options
         options.set_rel_tol(tol);
         options.set_leaf_size(leaf_size);
@@ -179,13 +162,7 @@ int main(int argc, char *argv[])
         try {
             st = MPI_Wtime();
             auto H = structured::construct_from_elements<double>
-                (world, &grid, npt, npt, MyGaussianKernel, options);
-            /*
-            auto H = structured::construct_from_elements<double>
-                (world, &grid, npt, npt, GaussianBlock, options);
-            auto H = structured::construct_matrix_free<double>
-                (world, &grid, npt, npt, Tmult2d, options);
-            */
+                (world, &grid, npt, npt, target_kernel, options);
             et = MPI_Wtime();
             if (my_rank == 0)
             {
@@ -217,15 +194,6 @@ int main(int argc, char *argv[])
                 printf("StructuredMatrix factor and solve time = %.3f\n", et - st);
                 fflush(stdout);
             }
-
-            st = MPI_Wtime();
-            gemv(Trans::N, double(1.0), A2d, x2, double(-1.0), r2);
-            et = MPI_Wtime();
-            if (my_rank == 0) 
-            {
-                printf("StructuredMatrix compute solve residual time = %.3f\n", et - st);
-                fflush(stdout);
-            }
         } catch (std::exception& e) {
             if (my_rank == 0)
             {
@@ -234,7 +202,50 @@ int main(int argc, char *argv[])
             }
         }
 
-        // Compare matvec error
+        // Create a 2DBC distributed matrix, and initialize it as a Gaussian matrix
+        st = MPI_Wtime();
+        DistributedMatrix<double> A2d(&grid, npt, npt, target_kernel);
+        et = MPI_Wtime();
+        if (my_rank == 0)
+        {
+            printf("Create dense kernel matrix used %.3f s\n", et - st);
+            printf("matrix memory on rank 0 = %.3f MB\n", A2d.memory() / 1048576.0);
+            fflush(stdout);
+        }
+
+        // Test dense matvec
+        for (int i = 0; i <= 5; i++)
+        {
+            st = MPI_Wtime();
+            A2d.mult(Trans::N, x, b_ref);
+            et = MPI_Wtime();
+            if (i > 0 && my_rank == 0) 
+            {
+                printf("Dense matvec time = %.3f\n", et - st);
+                fflush(stdout);
+            }
+        }
+
+        // Define a matvec routine using the 2DBC distribution
+        auto Tmult2d =
+        [&A2d](Trans t,
+               const DistributedMatrix<double>& R,
+               DistributedMatrix<double>& S) 
+        {
+            // gemm(t, Trans::N, double(1.), A2d, R, double(0.), S);
+            A2d.mult(t, R, S); // same as gemm above
+        };
+
+        st = MPI_Wtime();
+        gemv(Trans::N, double(1.0), A2d, x2, double(-1.0), r2);
+        et = MPI_Wtime();
+        if (my_rank == 0) 
+        {
+            printf("StructuredMatrix compute solve residual time = %.3f\n", et - st);
+            fflush(stdout);
+        }
+
+        // Compare matvec and solve error
         double bref_2norm = b_ref.normF();
         DistributedMatrix<double> mv_res = b_ref.scale_and_add(-1.0, b_str);
         double mv_err_2norm = mv_res.normF();
