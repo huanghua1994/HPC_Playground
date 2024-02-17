@@ -10,7 +10,7 @@ using namespace strumpack;
 
 double *coord = NULL;
 int npt, dim;
-double l, mu, _2l2;
+double l, mu, l2, _2l2;
 
 extern "C" int dgemm_(
     const char *transa, const char *transb, const int *m, const int *n, const int *k,
@@ -55,7 +55,7 @@ void build_denseK_Gaussian(double *denseK)
         for (int j = 0; j < npt; j++)
         {
             double r2 = x2[i] + x2[j] + denseK_i[j];
-            denseK_i[j] = exp(-r2 / _2l2);
+            denseK_i[j] = exp(-r2 / l2);
         }
         denseK_i[i] += mu;
     }
@@ -76,20 +76,22 @@ print_info(const structured::StructuredMatrix<scalar_t>* H,
 
 int main(int argc, char *argv[])
 {
+    // 200 is the default leaf size used by STRUMPACK
     int leaf_size = 200;
-    double tol = 1e-10;
+    double tol = 1e-6;
 
     if (argc < 4)
     {
-        printf("Usage: %s coord_txt l mu tol leaf_size\n", argv[0]);
-        printf("Kernel: exp(-|x-y|^2 / (2 * l^2)), kernel matrix: K + mu * I\n");
-        printf("Optional: tol (default 1e-10), leaf_size (default 200)\n");
+        printf("Usage: %s coord_txt l mu leaf_size tol\n", argv[0]);
+        printf("Kernel: exp(-|x-y|^2 / (l^2)), kernel matrix: K + mu * I\n");
+        printf("Optional: leaf_size (default %d), tol (default %e)\n", leaf_size, tol);
         return 255;
     }
     l  = atof(argv[2]);
     mu = atof(argv[3]);
-    if (argc >= 5) tol = atof(argv[4]);
-    if (argc >= 6) leaf_size = atoi(argv[5]);
+    if (argc >= 5) leaf_size = atoi(argv[4]);
+    if (argc >= 6) tol = atof(argv[5]);
+    l2 = l * l;
     _2l2 = l * l * 2.0;
 
     FILE *inf = fopen(argv[1], "r");
@@ -122,7 +124,7 @@ int main(int argc, char *argv[])
                 double diff = x_i[k] - x_j[k];
                 R2 += diff * diff;
             }
-            return exp(-R2 / _2l2);
+            return exp(-R2 / l2);
         }
     };
     auto GaussianBlock =

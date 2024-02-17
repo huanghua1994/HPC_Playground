@@ -7,7 +7,7 @@ using namespace std;
 using namespace strumpack;
 
 int npt, dim;
-double l, mu, _2l2, sqrt3_l;
+double l, mu, l2, _2l2, sqrt3_l;
 double *coord = NULL;
 
 template<typename scalar_t> void
@@ -27,6 +27,7 @@ print_info(const MPIComm& comm,
 
 int main(int argc, char *argv[]) 
 {
+    // 200 is the default leaf size used by STRUMPACK
     int leaf_size = 200;
     double tol = 1e-6;
 
@@ -47,20 +48,21 @@ int main(int argc, char *argv[])
             printf("Usage: %s kid coord_txt l mu tol leaf_size\n", argv[0]);
             printf("kid: Kernel ID, 0 for Gaussian, 1 for Matern 3/2\n");
             printf("l, mu: kernel parameter and diagonal shift\n");
-            printf("Optional: tol (default 1e-6), leaf_size (default 200)\n");
+            printf("Optional: leaf_size (default %d), tol (default %e)\n", leaf_size, tol);
         }
         return 255;
     }
     int kid = atoi(argv[1]);
     l  = atof(argv[3]);
     mu = atof(argv[4]);
-    if (argc >= 6) tol = atof(argv[5]);
-    if (argc >= 7) leaf_size = atoi(argv[6]);
+    if (argc >= 6) leaf_size = atoi(argv[5]);
+    if (argc >= 7) tol = atof(argv[6]);
+    l2 = l * l;
     _2l2 = l * l * 2.0;
     sqrt3_l = sqrt(3.0) / l;
     if (world.is_root())
     {
-        if (kid == 0) printf("Kernel: exp(-|x-y|^2 / (2 * l^2))\n");
+        if (kid == 0) printf("Kernel: exp(-|x-y|^2 / (l^2))\n");
         else          printf("Kernel: (1 + k) * exp(-k), k = sqrt(3) / l * |x-y|\n");
         printf("l, mu, tol = %.3f, %.3f, %e\n", l, mu, tol);
         fflush(stdout);
@@ -111,7 +113,7 @@ int main(int argc, char *argv[])
                     double diff = x_i[k] - x_j[k];
                     R2 += diff * diff;
                 }
-                return exp(-R2 / _2l2);
+                return exp(-R2 / l2);
             }
         };
         auto MyMatern32Kernel = [](const int i, const int j)
@@ -225,16 +227,6 @@ int main(int argc, char *argv[])
                 fflush(stdout);
             }
         }
-
-        // Define a matvec routine using the 2DBC distribution
-        auto Tmult2d =
-        [&A2d](Trans t,
-               const DistributedMatrix<double>& R,
-               DistributedMatrix<double>& S) 
-        {
-            // gemm(t, Trans::N, double(1.), A2d, R, double(0.), S);
-            A2d.mult(t, R, S); // same as gemm above
-        };
 
         st = MPI_Wtime();
         gemv(Trans::N, double(1.0), A2d, x2, double(-1.0), r2);

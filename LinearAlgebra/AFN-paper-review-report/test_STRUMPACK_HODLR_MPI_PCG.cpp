@@ -7,7 +7,7 @@ using namespace std;
 using namespace strumpack;
 
 int npt, dim;
-double l, mu, _2l2, sqrt3_l;
+double l, mu, _2l2, l2, sqrt3_l;
 double *coord = NULL;
 
 template<typename scalar_t> void
@@ -24,7 +24,6 @@ print_info(const MPIComm& comm,
     }
 }
 
-// HODLR does not guarantee SPD but the reviewer asked us to try PCG
 void PCG(
     const MPIComm &comm, const BLACSGrid &grid, 
     const structured::StructuredMatrix<double> *H,
@@ -129,15 +128,16 @@ void PCG(
     double et = MPI_Wtime();
     if (comm.is_root())
     {
-        printf("PCG performed %d iterations, time = %.2f s\n", iter, et - st);
+        printf("Performed %d PCG iterations, time = %.2f s\n", iter, et - st);
         fflush(stdout);
     }
 }
 
 int main(int argc, char *argv[]) 
 {
+    // 200 is the default leaf size used by STRUMPACK
     int leaf_size = 200, max_iter = 500;
-    double PCG_tol = 1e-4;
+    double HODLR_tol = 1e-4, PCG_tol = 1e-4;
 
     // C++ wrapper around an MPI_Comm, defaults to MPI_COMM_WORLD
     MPIComm world;
@@ -153,10 +153,10 @@ int main(int argc, char *argv[])
     {
         if (world.is_root())
         {
-            printf("Usage: %s kid coord_txt l mu leaf_size PCG_tol max_iter\n", argv[0]);
+            printf("Usage: %s kid coord_txt l mu leaf_size HODLR_tol PCG_tol max_iter\n", argv[0]);
             printf("kid: Kernel ID, 0 for Gaussian, 1 for Matern 3/2\n");
-            printf("l, mu: kernel parameter and diagonal shift\n");
-            printf("Optional: leaf_size (default 200), PCG_tol (default 1e-4), max_iter (default 500)\n");
+            printf("Optional: leaf_size (default %d), HODLR_tol (default %e)\n", leaf_size, HODLR_tol);
+            printf("          PCG_tol (default %e), max_iter (default %d)\n", PCG_tol, max_iter);
         }
         return 255;
     }
@@ -164,15 +164,17 @@ int main(int argc, char *argv[])
     l  = atof(argv[3]);
     mu = atof(argv[4]);
     if (argc >= 6) leaf_size = atoi(argv[5]);
-    if (argc >= 7) PCG_tol   = atof(argv[6]);
-    if (argc >= 8) max_iter  = atoi(argv[7]);
+    if (argc >= 7) HODLR_tol = atof(argv[6]);
+    if (argc >= 8) PCG_tol   = atoi(argv[7]);
+    if (argc >= 9) max_iter  = atoi(argv[8]);
+    l2 = l * l;
     _2l2 = l * l * 2.0;
     sqrt3_l = sqrt(3.0) / l;
     if (world.is_root())
     {
-        if (kid == 0) printf("Kernel: exp(-|x-y|^2 / (2 * l^2))\n");
+        if (kid == 0) printf("Kernel: exp(-|x-y|^2 / (l^2))\n");
         else          printf("Kernel: (1 + k) * exp(-k), k = sqrt(3) / l * |x-y|\n");
-        printf("l, mu, PCG_tol, max_iter = %.3f, %.3f, %e, %d\n", l, mu, PCG_tol, max_iter);
+        printf("l, mu, HODLR_tol, PCG_tol, max_iter = %.3f, %.3f, %e, %e, %d\n", l, mu, HODLR_tol, PCG_tol, max_iter);
         fflush(stdout);
     }
 
@@ -221,7 +223,7 @@ int main(int argc, char *argv[])
                     double diff = x_i[k] - x_j[k];
                     R2 += diff * diff;
                 }
-                return exp(-R2 / _2l2);
+                return exp(-R2 / l2);
             }
         };
         auto MyMatern32Kernel = [](const int i, const int j)
@@ -253,7 +255,7 @@ int main(int argc, char *argv[])
         double st, et;
 
         // Set structured matrix options
-        options.set_rel_tol(1e-2);  // The reviewer says 1e-2 is enough for preconditioner
+        options.set_rel_tol(HODLR_tol); 
         options.set_leaf_size(leaf_size);
         options.set_type(structured::Type::HODLR);
         options.set_max_rank(npt);
