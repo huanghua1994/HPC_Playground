@@ -60,102 +60,152 @@ public:
     ~Kernel() {};
 };
 
-void PCG(
-    const Mat &A, HODLR *M, const Mat &b,
-    const int n, const double PCG_tol, const int max_iter
+void GMRES(
+    const Mat &A, HODLR *M, const Mat &b, const int n, 
+    const double GMRES_tol, const int max_iter, const int m
 )
 {
+    Mat V = (Mat::Zero(n, m+1)).real();
+    Mat H = (Mat::Zero(m+1, m)).real();
+    Mat Z = (Mat::Zero(n, m+1)).real();
+    Mat v = (Mat::Zero(n, 1)).real();
     Mat x = (Mat::Zero(n, 1)).real();
-    Mat r = (Mat::Zero(n, 1)).real();
     Mat z = (Mat::Zero(n, 1)).real();
-    Mat p = (Mat::Zero(n, 1)).real();
-    Mat s = (Mat::Zero(n, 1)).real();
+    Mat c  = (Mat::Zero(m+1, 1)).real();
+    Mat s  = (Mat::Zero(m+1, 1)).real();
+    Mat rs = (Mat::Zero(m+1, 1)).real();
+
+    double st = omp_get_wtime();
+
+    double b_2norm = b.norm();
+    double stop_2norm = b_2norm * GMRES_tol;
+    printf("||b||_2 = %e\n", b_2norm);
+    printf("Stopping ||r||_2 = %e\n", stop_2norm);
+    printf("Iter    relres\n");
 
     char *noprec = getenv("NOPREC");
     int noprec_flag = (noprec != NULL) ? atoi(noprec) : 0;
     if (noprec_flag) printf("Will ignore preconditioner\n");
 
-    double st = omp_get_wtime();
-
-    r = b - A * x;
-    double r_2norm = r.norm();
-    double b_2norm = b.norm();
-    double stop_2norm = b_2norm * PCG_tol;
-    printf("||b||_2 = %e\n", b_2norm);
-    printf("Stopping ||r||_2 = %e\n", stop_2norm);
-    printf("Iter    relres\n");
-
     int iter = 0;
-    double alpha, beta, rho0, tmp, rho = 1.0;
-    while (iter < max_iter && r_2norm > stop_2norm)
+    while (iter < max_iter)
     {
-        // z = M \ r;
-        if (noprec_flag) z = r;
-        else z = M->solve(r);
+        v = b - A * x;
+        for (int l = 0; l < n; l++) V(l, 0) = v(l);
 
-        // rho0 = rho;
-        // rho  = r' * z;
-        // beta = rho / rho0;
-        rho0 = rho;
-        rho = 0;
-        for (int i = 0; i < n; i++) rho += r(i, 0) * z(i, 0);
-        beta = rho / rho0;
-
-        // p = z + beta * p; or p = z;
-        if (iter == 0)
+        double ro = v.norm();
+        if ((ro <= stop_2norm) || (iter >= max_iter))
         {
-            for (int i = 0; i < n; i++) p(i, 0) = z(i, 0);
-        } else {
-            for (int i = 0; i < n; i++) p(i, 0) = z(i, 0) + beta * p(i, 0);
+            printf("%4d    %e\n", iter, ro / b_2norm);
+            printf("GMRES converged\n");
+            fflush(stdout);
+            break;
         }
 
-        // s = A * p;
-        s = A * p;
-
-        // alpha = rho / (p' * s);
-        tmp = 0;
-        for (int i = 0; i < n; i++) tmp += p(i, 0) * s(i, 0);
-        alpha = rho / tmp;
-
-        // x = x + alpha * p;
-        // r = r - alpha * s;
-        for (int i = 0; i < n; i++)
-        {
-            x(i, 0) = x(i, 0) + alpha * p(i, 0);
-            r(i, 0) = r(i, 0) - alpha * s(i, 0);
-        }
-        r_2norm = r.norm();
-
-        iter++;
-        printf("%4d    %e\n", iter, r_2norm / b_2norm);
+        if (iter > 0) stop_2norm = GMRES_tol;  // w/o this line gmres was stopping too soon
+        double t = 1.0 / ro;
+        for (int l = 0; l < n; l++) V(l, 0) = V(l, 0) * t;
+        rs(0) = ro;
+        printf("%4d    %e\n", iter, ro / b_2norm);
         fflush(stdout);
-    }
+
+        int i = 0;
+        while ((i < m) && (ro > stop_2norm) && (iter < max_iter))
+        {
+            i++;
+            iter++;
+            int i1 = i + 1;
+
+            for (int l = 0; l < n; l++) v(l) = V(l, i-1);
+            if (noprec_flag) z = v;
+            else z = M->solve(v);
+            v = A * z;
+            for (int l = 0; l < n; l++)
+            {
+                Z(l, i-1) = z(l);
+                V(l, i1-1) = v(l);
+            }
+
+            for (int j = 1; j <= i; j++)
+            {
+                double t = 0;
+                for (int l = 0; l < n; l++) t = t + V(l, j-1) * V(l, i1-1);
+                H(j-1, i-1) = t;
+                for (int l = 0; l < n; l++) V(l, i1-1) = V(l, i1-1) - t * V(l, j-1);
+            }
+
+            for (int l = 0; l < n; l++) v(l) = V(l, i1-1);
+            double t = v.norm();
+            H(i1-1, i-1) = t;
+            if (t > 1e-15)
+            {
+                t = 1.0 / t;
+                for (int l = 0; l < n; l++) V(l, i1-1) *= t;
+            }
+
+            if (i > 1)
+            {
+                for (int k = 2; k <= i; k++)
+                {
+                    int k1 = k - 1;
+                    t = H(k1-1, i-1);
+                    H(k1-1, i-1) =  c(k1-1) * t + s(k1-1) * H(k-1, i-1);
+                    H(k-1,  i-1) = -s(k1-1) * t + c(k1-1) * H(k-1, i-1);
+                }
+            }
+
+            double gamma = H(i-1, i-1) * H(i-1, i-1) + H(i1-1, i-1) * H(i1-1, i-1);
+            gamma = sqrt(gamma);
+            if (gamma < 1e-15) gamma = 1e-15;
+            c(i-1) = H(i-1, i-1)  / gamma;
+            s(i-1) = H(i1-1, i-1) / gamma;
+            rs(i1-1) = -s(i-1) * rs(i-1);
+            rs(i-1)  =  c(i-1) * rs(i-1);
+
+            H(i-1, i-1) = c(i-1) * H(i-1, i-1) + s(i-1) * H(i1-1, i-1);
+            ro = abs(rs(i1-1));
+            printf("%4d    %e\n", iter, ro / b_2norm);
+            fflush(stdout);
+        }  // End of "while ((ii < m) && (ro > stop_2norm) && (iter < max_iter))"
+
+        rs(i-1) = rs(i-1) / H(i-1, i-1);
+        for (int k = i-1; k >= 1; k--)
+        {
+            double t = rs(k-1);
+            for (int j = k+1; j <= i; j++) t -= H(k-1, j-1) * rs(j-1);
+            rs(k-1) = t / H(k-1, k-1);
+        }
+
+        for (int j = 1; j <= i; j++)
+            for (int l = 0; l < n; l++) x(l, 0) += rs(j-1) * Z(l, j-1);
+    }  // End of "while (iter < max_iter)"
 
     double et = omp_get_wtime();
-    printf("PCG: performed %d iterations, time = %.2f s\n", iter, et - st);
-    r = b - A * x;
-    printf("Final relative residual = %e\n", r.norm() / b_2norm);
+    printf("GMRES: performed %d iterations, time = %.2f s\n", iter, et - st);
+    v = b - A * x;
+    printf("Final relative residual = %e\n", v.norm() / b_2norm);
 }
 
 int main(int argc, char* argv[])
 {
-    int npt, dim, leaf_size = 200, max_iter = 500;
-    double l, mu, HODLR_tol = 1e-4, PCG_tol = 1e-4;
+    int npt, dim, leaf_size = 200, max_iter = 500, restart = 25;
+    double l, mu, HODLR_tol = 1e-4, GMRES_tol = 1e-4;
 
     if (argc < 4)
     {
-        printf("Usage: %s coord_txt l mu leaf_size HODLR_tol PCG_tol max_iter\n", argv[0]);
+        printf("Usage: %s coord_txt l mu leaf_size HODLR_tol GMRES_tol max_iter restart\n", argv[0]);
         printf("Kernel: exp(-|x-y|^2 / (l^2)), kernel matrix: K + mu * I\n");
         printf("Optional: leaf_size (default %d), HODLR_tol (default %e)\n", leaf_size, HODLR_tol);
-        printf("          PCG_tol (default %e), max_iter (default %d)\n", PCG_tol, max_iter);
+        printf("          GMRES_tol (default %e), max_iter (default %d), restart (default %d)\n", GMRES_tol, max_iter, restart);
         return 255;
     }
     l  = atof(argv[2]);
     mu = atof(argv[3]);
     if (argc >= 5) leaf_size = atoi(argv[4]);
     if (argc >= 6) HODLR_tol = atof(argv[5]);
-    if (argc >= 7) PCG_tol   = atof(argv[6]);
+    if (argc >= 7) GMRES_tol = atof(argv[6]);
     if (argc >= 8) max_iter  = atoi(argv[7]);
+    if (argc >= 9) restart   = atoi(argv[8]);
 
     FILE *inf = fopen(argv[1], "r");
     fscanf(inf, "%d %d", &npt, &dim);
@@ -165,9 +215,10 @@ int main(int argc, char* argv[])
     std::cout << "Dimensionality                     : " << dim << std::endl;
     std::cout << "Kernel parameters l, mu            : " << l << ", " << mu << std::endl;
     std::cout << "Leaf Size                          : " << leaf_size << std::endl;
-    std::cout << "HODLR compression tolerance        : " << HODLR_tol << std::endl << std::endl;
-    std::cout << "PCG reltol                         : " << PCG_tol << std::endl;
-    std::cout << "PCG max iter                       : " << max_iter << std::endl << std::endl;
+    std::cout << "HODLR compression tolerance        : " << HODLR_tol << std::endl;
+    std::cout << "GMRES reltol                       : " << GMRES_tol << std::endl;
+    std::cout << "GMRES max iter                     : " << max_iter << std::endl;
+    std::cout << "GMRES restart iter                 : " << restart << std::endl << std::endl;
 
     // coord are in col-major, each column is a point coordinate
     double *coord = (double *) malloc(sizeof(double) * npt * dim);
@@ -227,9 +278,9 @@ int main(int argc, char* argv[])
     std::cout << "HODLR backward error               :" << (T->matmatProduct(x_fast) - b_exact).norm() / b_exact.norm() << std::endl;
     std::cout << "Solve relative error               :" << (B * x_fast - b_exact).norm() / b_exact.norm() << std::endl;
 
-    std::cout << "========================= Precond CG =========================" << std::endl;
+    std::cout << "========================= Precond GMRES =========================" << std::endl;
     Mat b = (Mat::Random(npt, 1)).real();
-    PCG(B, T, b, npt, PCG_tol, max_iter);
+    GMRES(B, T, b, npt, GMRES_tol, max_iter, restart);
 
     free(coord);
     delete T;
