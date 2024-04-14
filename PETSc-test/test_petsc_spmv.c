@@ -105,7 +105,7 @@ int main(int argc, char **argv)
         et = MPI_Wtime();
         if (my_rank == 0)
         {
-            printf("%.3f\n", et - st);
+            printf("%.6f\n", et - st);
             fflush(stdout);
         }
     }
