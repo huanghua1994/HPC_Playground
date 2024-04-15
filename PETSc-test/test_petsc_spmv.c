@@ -32,8 +32,9 @@ int main(int argc, char **argv)
     int nrow, ncol, nnz;
     int *row = NULL, *col = NULL;
     double *val = NULL, st, et;
-    Mat A;
+    Mat spA;
     Vec x, y;
+    PetscRandom rctx;
     if (my_rank == 0)
     {
         st = MPI_Wtime();
@@ -47,30 +48,29 @@ int main(int argc, char **argv)
     MPI_Bcast(&ncol, 1, MPI_INT, 0, MPI_COMM_WORLD);
     MPI_Bcast(&nnz,  1, MPI_INT, 0, MPI_COMM_WORLD);
     int bs = 1;  // "the blocksize (commonly 1)"
-    CHKERRQ(MatCreateFromOptions(PETSC_COMM_WORLD, NULL, bs, PETSC_DECIDE, PETSC_DECIDE, nrow, ncol, &A));
-    CHKERRQ(VecCreateMPI(PETSC_COMM_WORLD, PETSC_DECIDE, ncol, &x));
-    CHKERRQ(VecCreateMPI(PETSC_COMM_WORLD, PETSC_DECIDE, nrow, &y));
+    CHKERRQ(MatCreateFromOptions(PETSC_COMM_WORLD, NULL, bs, PETSC_DECIDE, PETSC_DECIDE, nrow, ncol, &spA));
     st = MPI_Wtime();
     if (my_rank == 0)
     {
         for (int i = 0; i < nnz; i++)
-            CHKERRQ(MatSetValues(A, 1, &row[i], 1, &col[i], &val[i], INSERT_VALUES));
+        {
+            if (row[i] < 0 || row[i] >= nrow) printf("%d-th nnz invalid row: %d\n", i, row[i]);
+            if (col[i] < 0 || col[i] >= ncol) printf("%d-th nnz invalid col: %d\n", i, col[i]);
+            CHKERRQ(MatSetValues(spA, 1, &row[i], 1, &col[i], &val[i], INSERT_VALUES));
+        }
         free(row);
         free(col);
         free(val);
-        int *ix = (int *) malloc(sizeof(int) * ncol);
-        double *xarr = (double *) malloc(sizeof(double) * ncol);
-        for (int i = 0; i < ncol; i++)
-        {
-            ix[i] = i;
-            xarr[i] = (rand() / (double) RAND_MAX) - 0.5;
-        }
-        CHKERRQ(VecSetValues(x, ncol, ix, xarr, INSERT_VALUES));
     }
-    CHKERRQ(MatAssemblyBegin(A, MAT_FINAL_ASSEMBLY));
-    CHKERRQ(MatAssemblyEnd(A, MAT_FINAL_ASSEMBLY));
-    CHKERRQ(VecAssemblyBegin(x));
-    CHKERRQ(VecAssemblyEnd(x));
+    CHKERRQ(MatAssemblyBegin(spA, MAT_FINAL_ASSEMBLY));
+    CHKERRQ(MatAssemblyEnd(spA, MAT_FINAL_ASSEMBLY));
+    CHKERRQ(PetscRandomCreate(PETSC_COMM_WORLD, &rctx));
+    CHKERRQ(PetscRandomSetType(rctx, PETSCRAND48));
+    CHKERRQ(VecCreateMPI(PETSC_COMM_WORLD, PETSC_DECIDE, ncol, &x));
+    CHKERRQ(VecCreateMPI(PETSC_COMM_WORLD, PETSC_DECIDE, nrow, &y));
+    CHKERRQ(VecSetRandom(x, rctx));
+    CHKERRQ(VecZeroEntries(y));
+    CHKERRQ(PetscRandomDestroy(&rctx));
     et = MPI_Wtime();
     if (my_rank == 0)
     {
@@ -78,15 +78,16 @@ int main(int argc, char **argv)
         fflush(stdout);
     }
 
-    // Print matrix and vector distributions
-    int A_srow, A_erow, x_srow, x_erow, y_srow, y_erow;
-    CHKERRQ(MatGetOwnershipRange(A, &A_srow, &A_erow));
-    CHKERRQ(VecGetOwnershipRange(x, &x_srow, &x_erow));
-    CHKERRQ(VecGetOwnershipRange(y, &y_srow, &y_erow));
+    // Print matrix and vector distributions -- is this correct?
+    /*
     for (int i = 0; i < comm_size; i++)
     {
         if (my_rank == i)
         {
+            int A_srow, A_erow, x_srow, x_erow, y_srow, y_erow;
+            CHKERRQ(MatGetOwnershipRange(spA, &A_srow, &A_erow));
+            CHKERRQ(VecGetOwnershipRange(x, &x_srow, &x_erow));
+            CHKERRQ(VecGetOwnershipRange(y, &y_srow, &y_erow));
             printf(
                 "Rank %3d owns A(%d : %d, :), x(%d : %d), y(%d : %d)\n",
                 my_rank, A_srow, A_erow - 1, x_srow, x_erow - 1, y_srow, y_erow - 1
@@ -95,13 +96,14 @@ int main(int argc, char **argv)
         }
         MPI_Barrier(MPI_COMM_WORLD);
     }
+    */
 
     // SpMV tests
     for (int i = 0; i <= ntest; i++)
     {
         MPI_Barrier(MPI_COMM_WORLD);
         st = MPI_Wtime();
-        CHKERRQ(MatMult(A, x, y));
+        CHKERRQ(MatMult(spA, x, y));
         et = MPI_Wtime();
         if (my_rank == 0)
         {
@@ -110,7 +112,7 @@ int main(int argc, char **argv)
         }
     }
 
-    CHKERRQ(MatDestroy(&A));
+    CHKERRQ(MatDestroy(&spA));
     CHKERRQ(VecDestroy(&x));
     CHKERRQ(VecDestroy(&y));
     CHKERRQ(PetscFinalize());

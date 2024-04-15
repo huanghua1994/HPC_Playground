@@ -54,7 +54,11 @@ int main(int argc, char **argv)
     if (my_rank == 0)
     {
         for (int i = 0; i < nnz; i++)
+        {
+            if (row[i] < 0 || row[i] >= nrow) printf("%d-th nnz invalid row: %d\n", i, row[i]);
+            if (col[i] < 0 || col[i] >= ncol) printf("%d-th nnz invalid col: %d\n", i, col[i]);
             CHKERRQ(MatSetValues(spA, 1, &row[i], 1, &col[i], &val[i], INSERT_VALUES));
+        }
         free(row);
         free(col);
         free(val);
@@ -75,7 +79,8 @@ int main(int argc, char **argv)
         fflush(stdout);
     }
 
-    // Print matrix distribution
+    // Print matrix distribution -- is this correct?
+    /*
     for (int i = 0; i < comm_size; i++)
     {
         if (my_rank == i)
@@ -84,7 +89,7 @@ int main(int argc, char **argv)
             printf("Rank %3d owns ", my_rank);
             CHKERRQ(MatGetOwnershipRange(spA, &srow, &erow));
             CHKERRQ(MatGetOwnershipRangeColumn(spA, &scol, &ecol));
-            printf("spA(%d : %d, %d : %d), ", srow, erow - 1, scol, ecol - 1);
+            printf("spA(%d : %d, :), ", srow, erow - 1);
             CHKERRQ(MatGetOwnershipRange(B, &srow, &erow));
             CHKERRQ(MatGetOwnershipRangeColumn(B, &scol, &ecol));
             printf("B(%d : %d, %d : %d), ", srow, erow - 1, scol, ecol - 1);
@@ -95,6 +100,7 @@ int main(int argc, char **argv)
         }
         MPI_Barrier(MPI_COMM_WORLD);
     }
+    */
 
     // SpMV tests
     for (int i = 0; i <= ntest; i++)
