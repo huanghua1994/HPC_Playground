@@ -16,7 +16,9 @@ LIBS    = -lcuda -lcudart -lcublas -lcusolver -lcurand -lm
 
 GENCODE_SM60  = -gencode arch=compute_60,code=sm_60
 GENCODE_SM70  = -gencode arch=compute_70,code=sm_70
-GENCODE_FLAGS = $(GENCODE_SM60) $(GENCODE_SM70)
+GENCODE_SM80  = -gencode arch=compute_80,code=sm_80
+GENCODE_SM90  = -gencode arch=compute_90,code=sm_90
+GENCODE_FLAGS = $(GENCODE_SM70) $(GENCODE_SM80) $(GENCODE_SM90)
 
 CUDA_PATH   ?= /usr/local/cuda-10.0
 NVCC        = nvcc
