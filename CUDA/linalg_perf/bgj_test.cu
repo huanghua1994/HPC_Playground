@@ -41,23 +41,23 @@ void bgj(
         // 1. Inverse current diagonal block
         // [L, U, P] = lu(A(k_idx, k_idx));
         // B(k_idx, k_idx) = inv(A(k_idx, k_idx));
-        CUDA_RT_CHECK( cudaEventRecord(bgj_events[0], cublas_stream) );
+        CUDA_CHECK( cudaEventRecord(bgj_events[0], cublas_stream) );
         CUSOLVER_CHECK( cusolverDnDgetrf(
             cusolver_dn_handle, curr_bs, curr_bs, 
             A_diag, ldA, getrf_work, ipiv, cusolver_retval
         ) );
-        CUDA_RT_CHECK( cudaMemset(diag_blk, 0, sizeof(double) * curr_bs * curr_bs) );
+        CUDA_CHECK( cudaMemset(diag_blk, 0, sizeof(double) * curr_bs * curr_bs) );
         set_diag_element_kernel<<<1, 512>>>(curr_bs, diag_blk, curr_bs, 1.0);
-        CUDA_RT_CHECK( cudaPeekAtLastError() );
+        CUDA_CHECK( cudaPeekAtLastError() );
         CUSOLVER_CHECK( cusolverDnDgetrs(
             cusolver_dn_handle, CUBLAS_OP_N, curr_bs, curr_bs, 
             A_diag, ldA, ipiv, diag_blk, curr_bs, cusolver_retval
         ) );
-        CUDA_RT_CHECK( cudaMemcpy2DAsync(
+        CUDA_CHECK( cudaMemcpy2DAsync(
             B_diag, sizeof(double) * ldB, diag_blk, sizeof(double) * curr_bs, 
             sizeof(double) * curr_bs, curr_bs, cudaMemcpyDeviceToDevice, cusolver_stream
         ) );
-        CUDA_RT_CHECK( cudaEventRecord(bgj_events[1], cublas_stream) );
+        CUDA_CHECK( cudaEventRecord(bgj_events[1], cublas_stream) );
 
         // 2. Update row panel
         // A(k_idx, idx2) = B(k_idx, k_idx) * A(k_idx, idx2);
@@ -70,11 +70,11 @@ void bgj(
             cusolver_dn_handle, CUBLAS_OP_N, curr_bs, ncol1, 
             A_diag, ldA, ipiv, B + s_row, ldB, cusolver_retval
         ) );
-        CUDA_RT_CHECK( cudaMemcpyAsync(
+        CUDA_CHECK( cudaMemcpyAsync(
             &retval, cusolver_retval, sizeof(int), 
             cudaMemcpyDeviceToHost, cublas_stream
         ) );
-        CUDA_RT_CHECK( cudaEventRecord(bgj_events[2], cublas_stream) );
+        CUDA_CHECK( cudaEventRecord(bgj_events[2], cublas_stream) );
 
         // 3. Update column panel
         // B(idx1, k_idx) = -A(idx1, k_idx) * B(k_idx, k_idx);
@@ -92,7 +92,7 @@ void bgj(
             &d_zero, B_diag + curr_bs, ldB
         ) );
         
-        CUDA_RT_CHECK( cudaEventRecord(bgj_events[3], cublas_stream) );
+        CUDA_CHECK( cudaEventRecord(bgj_events[3], cublas_stream) );
 
         // 4. Update rest blocks
         // A(idx1, idx2) = A(idx1, idx2) - A(idx1, k_idx) * A(k_idx, idx2);
@@ -123,20 +123,20 @@ void bgj(
             &d_neg_one, A_diag + curr_bs, ldA, B + s_row, ldB, 
             &d_one, B + e_row, ldB
         ) );
-        CUDA_RT_CHECK( cudaEventRecord(bgj_events[4], cublas_stream) );
+        CUDA_CHECK( cudaEventRecord(bgj_events[4], cublas_stream) );
 
         // 5. Update timers
         for (int i = 0; i < 5; i++) 
-            CUDA_RT_CHECK( cudaEventSynchronize(bgj_events[i]) );
+            CUDA_CHECK( cudaEventSynchronize(bgj_events[i]) );
         if (retval != 0)
             fprintf(stderr, "[ERROR] %s, %d: cusolverDnDgetrs returned %d\n", __FILE__, __LINE__, retval);
-        CUDA_RT_CHECK( cudaEventElapsedTime(&timer_tmp, bgj_events[0], bgj_events[1]) );
+        CUDA_CHECK( cudaEventElapsedTime(&timer_tmp, bgj_events[0], bgj_events[1]) );
         bgj_timers[0] += timer_tmp;
-        CUDA_RT_CHECK( cudaEventElapsedTime(&timer_tmp, bgj_events[1], bgj_events[2]) );
+        CUDA_CHECK( cudaEventElapsedTime(&timer_tmp, bgj_events[1], bgj_events[2]) );
         bgj_timers[1] += timer_tmp;
-        CUDA_RT_CHECK( cudaEventElapsedTime(&timer_tmp, bgj_events[2], bgj_events[3]) );
+        CUDA_CHECK( cudaEventElapsedTime(&timer_tmp, bgj_events[2], bgj_events[3]) );
         bgj_timers[2] += timer_tmp;
-        CUDA_RT_CHECK( cudaEventElapsedTime(&timer_tmp, bgj_events[3], bgj_events[4]) );
+        CUDA_CHECK( cudaEventElapsedTime(&timer_tmp, bgj_events[3], bgj_events[4]) );
         bgj_timers[3] += timer_tmp;
     }  // End of s_col loop
 }
@@ -155,12 +155,12 @@ void test_bgj(const int m, const int n_test)
     if ((blk_size < 32) || (blk_size > 2048)) blk_size = 512;
 
     // Allocate memory on device
-    CUDA_RT_CHECK( cudaMalloc((void **) &A,  sizeof(double) * m * m) );
-    CUDA_RT_CHECK( cudaMalloc((void **) &A0, sizeof(double) * m * m) );
-    CUDA_RT_CHECK( cudaMalloc((void **) &B,  sizeof(double) * m * m) );
-    CUDA_RT_CHECK( cudaMalloc((void **) &ipiv, sizeof(int) * blk_size) );
+    CUDA_CHECK( cudaMalloc((void **) &A,  sizeof(double) * m * m) );
+    CUDA_CHECK( cudaMalloc((void **) &A0, sizeof(double) * m * m) );
+    CUDA_CHECK( cudaMalloc((void **) &B,  sizeof(double) * m * m) );
+    CUDA_CHECK( cudaMalloc((void **) &ipiv, sizeof(int) * blk_size) );
     CUSOLVER_CHECK( cusolverDnDgetrf_bufferSize(cusolver_dn_handle, m, m, A, ldA, &lwork_getrf) );
-    CUDA_RT_CHECK( cudaMalloc((void **) &getrf_work, sizeof(double) * (lwork_getrf + blk_size * blk_size)) );
+    CUDA_CHECK( cudaMalloc((void **) &getrf_work, sizeof(double) * (lwork_getrf + blk_size * blk_size)) );
 
     // Initialize random SPD A
     curandGenerator_t gen;
@@ -172,12 +172,12 @@ void test_bgj(const int m, const int n_test)
     // Test dgeqrf and dorgqr
     cudaEvent_t *bgj_events = (cudaEvent_t *) malloc(sizeof(cudaEvent_t) * 5);
     for (int i = 0; i < 5; i++)
-        CUDA_RT_CHECK( cudaEventCreate(&bgj_events[i]) );
+        CUDA_CHECK( cudaEventCreate(&bgj_events[i]) );
     float *bgj_timers = (float *) malloc(sizeof(float) * 4);
     fprintf(stderr, "diag_inv_ms  row_panel_ms  col_panel_ms  gemm_ms  |  bgj_ms, bgj_gflops\n");
     for (int i_test = 0; i_test < n_test; i_test++)
     {
-        CUDA_RT_CHECK( cudaMemcpy(A, A0, sizeof(double) * m * m, cudaMemcpyDeviceToDevice) );
+        CUDA_CHECK( cudaMemcpy(A, A0, sizeof(double) * m * m, cudaMemcpyDeviceToDevice) );
         
         bgj(m, A, ldA, B, ldA, blk_size, getrf_work, lwork_getrf, ipiv, bgj_events, bgj_timers);
 
@@ -193,8 +193,8 @@ void test_bgj(const int m, const int n_test)
     
     // Accuracy check
     double diff_fnorm;
-    CUDA_RT_CHECK( cudaMemcpy(A, A0, sizeof(double) * m * m, cudaMemcpyDeviceToDevice) );
-    CUDA_RT_CHECK( cudaMemset(A0, 0, sizeof(double) * m * m) );
+    CUDA_CHECK( cudaMemcpy(A, A0, sizeof(double) * m * m, cudaMemcpyDeviceToDevice) );
+    CUDA_CHECK( cudaMemset(A0, 0, sizeof(double) * m * m) );
     set_diag_element_kernel<<<1, 1024>>>(m, A0, m, 1.0);
     CUBLAS_CHECK( cublasDgemm(
         cublas_handle, CUBLAS_OP_N, CUBLAS_OP_N, m, m, m, 
@@ -203,12 +203,12 @@ void test_bgj(const int m, const int n_test)
     CUBLAS_CHECK( cublasDnrm2(cublas_handle, m * m, A0, 1, &diff_fnorm) );
     fprintf(stderr, "BGJ: ||A * inv(A) - I||_{fro} / ||I||_{fro} = %.2e\n", diff_fnorm / sqrt(m));
 
-    CUDA_RT_CHECK( cudaFree(A) );
-    CUDA_RT_CHECK( cudaFree(A0) );
-    CUDA_RT_CHECK( cudaFree(B) );
-    CUDA_RT_CHECK( cudaFree(ipiv) );
-    CUDA_RT_CHECK( cudaFree(getrf_work) );
-    for (int i = 0; i < 5; i++) CUDA_RT_CHECK( cudaEventDestroy(bgj_events[i]) );
+    CUDA_CHECK( cudaFree(A) );
+    CUDA_CHECK( cudaFree(A0) );
+    CUDA_CHECK( cudaFree(B) );
+    CUDA_CHECK( cudaFree(ipiv) );
+    CUDA_CHECK( cudaFree(getrf_work) );
+    for (int i = 0; i < 5; i++) CUDA_CHECK( cudaEventDestroy(bgj_events[i]) );
     free(bgj_events);
     free(bgj_timers);
 }

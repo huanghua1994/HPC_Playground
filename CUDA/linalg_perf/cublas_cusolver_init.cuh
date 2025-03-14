@@ -24,7 +24,7 @@ static int init_cublas_cusolver()
     // Use the same stream in cuBLAS and cuSOLVER
     CUSOLVER_CHECK( cusolverDnSetStream(cusolver_dn_handle, cublas_stream) );
     CUSOLVER_CHECK( cusolverDnGetStream(cusolver_dn_handle, &cusolver_stream) );
-    CUDA_RT_CHECK( cudaMalloc((void **) &cusolver_retval, sizeof(int)) );
+    CUDA_CHECK( cudaMalloc((void **) &cusolver_retval, sizeof(int)) );
     cublas_cusolve_init = 1;
     return 1;
 }

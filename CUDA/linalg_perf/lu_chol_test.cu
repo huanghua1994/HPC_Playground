@@ -23,16 +23,16 @@ void test_cusolver_lu_chol(const int m, const int n_test)
     int *ipiv;
 
     // Allocate memory on device
-    CUDA_RT_CHECK( cudaMalloc((void **) &A,  sizeof(double) * m * m) );
-    CUDA_RT_CHECK( cudaMalloc((void **) &A0, sizeof(double) * m * m) );
-    CUDA_RT_CHECK( cudaMalloc((void **) &B,  sizeof(double) * m * m) );
-    CUDA_RT_CHECK( cudaMalloc((void **) &ipiv, sizeof(int) * m) );
+    CUDA_CHECK( cudaMalloc((void **) &A,  sizeof(double) * m * m) );
+    CUDA_CHECK( cudaMalloc((void **) &A0, sizeof(double) * m * m) );
+    CUDA_CHECK( cudaMalloc((void **) &B,  sizeof(double) * m * m) );
+    CUDA_CHECK( cudaMalloc((void **) &ipiv, sizeof(int) * m) );
     CUSOLVER_CHECK( cusolverDnDgetrf_bufferSize(cusolver_dn_handle, m, m, A, ldA, &lwork_getrf) );
     CUSOLVER_CHECK( cusolverDnDpotrf_bufferSize(cusolver_dn_handle, CUBLAS_FILL_MODE_UPPER, m, A, ldA, &lwork_potrf) );
     CUSOLVER_CHECK( cusolverDnDpotri_bufferSize(cusolver_dn_handle, CUBLAS_FILL_MODE_UPPER, m, A, ldA, &lwork_potri) );
-    CUDA_RT_CHECK( cudaMalloc((void **) &getrf_work, sizeof(double) * lwork_getrf) );
-    CUDA_RT_CHECK( cudaMalloc((void **) &potrf_work, sizeof(double) * lwork_potrf) );
-    CUDA_RT_CHECK( cudaMalloc((void **) &potri_work, sizeof(double) * lwork_potri) );
+    CUDA_CHECK( cudaMalloc((void **) &getrf_work, sizeof(double) * lwork_getrf) );
+    CUDA_CHECK( cudaMalloc((void **) &potrf_work, sizeof(double) * lwork_potrf) );
+    CUDA_CHECK( cudaMalloc((void **) &potri_work, sizeof(double) * lwork_potri) );
  
     // Initialize random SPD A
     curandGenerator_t gen;
@@ -47,62 +47,62 @@ void test_cusolver_lu_chol(const int m, const int n_test)
 
     // Test dgeqrf and dorgqr
     cudaEvent_t *events = (cudaEvent_t *) malloc(sizeof(cudaEvent_t) * 8);
-    for (int i = 0; i < 8; i++) CUDA_RT_CHECK( cudaEventCreate(&events[i]) );
+    for (int i = 0; i < 8; i++) CUDA_CHECK( cudaEventCreate(&events[i]) );
     fprintf(stderr, "getrf_ms, getrs_ms, potrf_ms, potri_ms | getrf_gflops, getrs_gflops, potrf_gflops, potri_gflops\n");
     for (int i_test = 0; i_test < n_test; i_test++)
     {
         // LU factorization
-        CUDA_RT_CHECK( cudaMemcpyAsync(A, A0, sizeof(double) * m * m, cudaMemcpyDeviceToDevice, cusolver_stream) );
-        CUDA_RT_CHECK( cudaEventRecord(events[0], cusolver_stream) );
+        CUDA_CHECK( cudaMemcpyAsync(A, A0, sizeof(double) * m * m, cudaMemcpyDeviceToDevice, cusolver_stream) );
+        CUDA_CHECK( cudaEventRecord(events[0], cusolver_stream) );
         CUSOLVER_CHECK( cusolverDnDgetrf(
             cusolver_dn_handle, m, m, A, ldA, 
             getrf_work, ipiv, cusolver_retval
         ) );
-        CUDA_RT_CHECK( cudaMemcpyAsync(&retval, cusolver_retval, sizeof(int), cudaMemcpyDeviceToHost, cusolver_stream) );
-        CUDA_RT_CHECK( cudaEventRecord(events[1], cusolver_stream) );
-        CUDA_RT_CHECK( cudaEventSynchronize(events[0]) );
-        CUDA_RT_CHECK( cudaEventSynchronize(events[1]) );
+        CUDA_CHECK( cudaMemcpyAsync(&retval, cusolver_retval, sizeof(int), cudaMemcpyDeviceToHost, cusolver_stream) );
+        CUDA_CHECK( cudaEventRecord(events[1], cusolver_stream) );
+        CUDA_CHECK( cudaEventSynchronize(events[0]) );
+        CUDA_CHECK( cudaEventSynchronize(events[1]) );
         if (retval != 0)
             fprintf(stderr, "[ERROR] %s, %d: cusolverDnDgetrf returned %d\n", __FILE__, __LINE__, retval);
 
         // Inverse matrix using LU factorization
-        CUDA_RT_CHECK( cudaEventRecord(events[2], cusolver_stream) );
-        CUDA_RT_CHECK( cudaMemset(B, 0, sizeof(double) * m * m) );
+        CUDA_CHECK( cudaEventRecord(events[2], cusolver_stream) );
+        CUDA_CHECK( cudaMemset(B, 0, sizeof(double) * m * m) );
         set_diag_element_kernel<<<1, 1024>>>(m, B, m, 1.0);
-        CUDA_RT_CHECK( cudaPeekAtLastError() );
+        CUDA_CHECK( cudaPeekAtLastError() );
         CUSOLVER_CHECK( cusolverDnDgetrs(
             cusolver_dn_handle, CUBLAS_OP_N, m, m, 
             A, ldA, ipiv, B, m, cusolver_retval
         ) );
-        CUDA_RT_CHECK( cudaMemcpyAsync(&retval, cusolver_retval, sizeof(int), cudaMemcpyDeviceToHost, cusolver_stream) );
-        CUDA_RT_CHECK( cudaEventRecord(events[3], cusolver_stream) );
+        CUDA_CHECK( cudaMemcpyAsync(&retval, cusolver_retval, sizeof(int), cudaMemcpyDeviceToHost, cusolver_stream) );
+        CUDA_CHECK( cudaEventRecord(events[3], cusolver_stream) );
         if (retval != 0)
             fprintf(stderr, "[ERROR] %s, %d: cusolverDnDgetrs returned %d\n", __FILE__, __LINE__, retval);
         
         // Cholesky factorization
-        CUDA_RT_CHECK( cudaMemcpyAsync(A, A0, sizeof(double) * m * m, cudaMemcpyDeviceToDevice, cusolver_stream) );
-        CUDA_RT_CHECK( cudaEventRecord(events[4], cusolver_stream) );
+        CUDA_CHECK( cudaMemcpyAsync(A, A0, sizeof(double) * m * m, cudaMemcpyDeviceToDevice, cusolver_stream) );
+        CUDA_CHECK( cudaEventRecord(events[4], cusolver_stream) );
         CUSOLVER_CHECK( cusolverDnDpotrf(
             cusolver_dn_handle, CUBLAS_FILL_MODE_UPPER, m, A, ldA, 
             potrf_work, lwork_potrf, cusolver_retval
         ) );
-        CUDA_RT_CHECK( cudaMemcpyAsync(&retval, cusolver_retval, sizeof(int), cudaMemcpyDeviceToHost, cusolver_stream) );
-        CUDA_RT_CHECK( cudaEventRecord(events[5], cusolver_stream) );
-        CUDA_RT_CHECK( cudaEventSynchronize(events[4]) );
-        CUDA_RT_CHECK( cudaEventSynchronize(events[5]) );
+        CUDA_CHECK( cudaMemcpyAsync(&retval, cusolver_retval, sizeof(int), cudaMemcpyDeviceToHost, cusolver_stream) );
+        CUDA_CHECK( cudaEventRecord(events[5], cusolver_stream) );
+        CUDA_CHECK( cudaEventSynchronize(events[4]) );
+        CUDA_CHECK( cudaEventSynchronize(events[5]) );
         if (retval != 0)
             fprintf(stderr, "[ERROR] %s, %d: cusolverDnDpotrf returned %d\n", __FILE__, __LINE__, retval);
 
         // Inverse matrix using Cholesky factorization
-        CUDA_RT_CHECK( cudaEventRecord(events[6], cusolver_stream) );
+        CUDA_CHECK( cudaEventRecord(events[6], cusolver_stream) );
         CUSOLVER_CHECK( cusolverDnDpotri(
             cusolver_dn_handle, CUBLAS_FILL_MODE_UPPER, m, A, ldA, 
             potri_work, lwork_potri, cusolver_retval
         ) );
-        CUDA_RT_CHECK( cudaMemcpyAsync(&retval, cusolver_retval, sizeof(int), cudaMemcpyDeviceToHost, cusolver_stream) );
-        CUDA_RT_CHECK( cudaEventRecord(events[7], cusolver_stream) );
-        CUDA_RT_CHECK( cudaEventSynchronize(events[6]) );
-        CUDA_RT_CHECK( cudaEventSynchronize(events[7]) );
+        CUDA_CHECK( cudaMemcpyAsync(&retval, cusolver_retval, sizeof(int), cudaMemcpyDeviceToHost, cusolver_stream) );
+        CUDA_CHECK( cudaEventRecord(events[7], cusolver_stream) );
+        CUDA_CHECK( cudaEventSynchronize(events[6]) );
+        CUDA_CHECK( cudaEventSynchronize(events[7]) );
         if (retval != 0)
             fprintf(stderr, "[ERROR] %s, %d: cusolverDnDpotri returned %d\n", __FILE__, __LINE__, retval);
 
@@ -111,10 +111,10 @@ void test_cusolver_lu_chol(const int m, const int n_test)
         float getrs_mflops = ((2.0f/1.0f) * (float) m * (float) m * (float) m) / 1000000.0f;
         float potrf_mflops = ((1.0f/3.0f) * (float) m * (float) m * (float) m) / 1000000.0f;
         float potri_mflops = ((2.0f/3.0f) * (float) m * (float) m * (float) m) / 1000000.0f;
-        CUDA_RT_CHECK( cudaEventElapsedTime(&getrf_ms, events[0], events[1]) );
-        CUDA_RT_CHECK( cudaEventElapsedTime(&getrs_ms, events[2], events[3]) );
-        CUDA_RT_CHECK( cudaEventElapsedTime(&potrf_ms, events[4], events[5]) );
-        CUDA_RT_CHECK( cudaEventElapsedTime(&potri_ms, events[6], events[7]) );
+        CUDA_CHECK( cudaEventElapsedTime(&getrf_ms, events[0], events[1]) );
+        CUDA_CHECK( cudaEventElapsedTime(&getrs_ms, events[2], events[3]) );
+        CUDA_CHECK( cudaEventElapsedTime(&potrf_ms, events[4], events[5]) );
+        CUDA_CHECK( cudaEventElapsedTime(&potri_ms, events[6], events[7]) );
         fprintf(
             stderr, "%.2f, %.2f, %.2f, %.2f | %.2f, %.2f, %.2f, %.2f\n", 
             getrf_ms, getrs_ms, potrf_ms, potri_ms,
@@ -123,14 +123,14 @@ void test_cusolver_lu_chol(const int m, const int n_test)
         );
     }
 
-    CUDA_RT_CHECK( cudaFree(A) );
-    CUDA_RT_CHECK( cudaFree(A0) );
-    CUDA_RT_CHECK( cudaFree(B) );
-    CUDA_RT_CHECK( cudaFree(ipiv) );
-    CUDA_RT_CHECK( cudaFree(getrf_work) );
-    CUDA_RT_CHECK( cudaFree(potrf_work) );
-    CUDA_RT_CHECK( cudaFree(potri_work) );
-    for (int i = 0; i < 8; i++) CUDA_RT_CHECK( cudaEventDestroy(events[i]) );
+    CUDA_CHECK( cudaFree(A) );
+    CUDA_CHECK( cudaFree(A0) );
+    CUDA_CHECK( cudaFree(B) );
+    CUDA_CHECK( cudaFree(ipiv) );
+    CUDA_CHECK( cudaFree(getrf_work) );
+    CUDA_CHECK( cudaFree(potrf_work) );
+    CUDA_CHECK( cudaFree(potri_work) );
+    for (int i = 0; i < 8; i++) CUDA_CHECK( cudaEventDestroy(events[i]) );
     free(events);
 }
 

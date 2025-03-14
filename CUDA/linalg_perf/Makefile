@@ -1,28 +1,25 @@
-EXES = gemm_test.exe lu_chol_test.exe qr_test.exe mgs2_test.exe \
-       syevd_test.exe bgj_test.exe
+EXES = bgj_test.exe lu_chol_test.exe syevd_test.exe \
+       gemm_test.exe cublaslt_gemm_test.exe mgs2_test.exe qr_test.exe
 
-C_SRCS  = $(wildcard *.c)
-C_OBJS  = $(C_SRCS:.c=.c.o)
 CU_SRCS = $(wildcard *.cu)
 CU_OBJS = $(CU_SRCS:.cu=.cu.o)
-OBJS    = $(C_OBJS) $(CU_OBJS)
+OBJS    = $(CU_OBJS)
+LIBS    = -lcuda -lcudart -lcublas -lcublasLt -lcusolver -lcurand -lm
 
-CC      = gcc
-DEFS    = 
-INCS    = 
-CFLAGS  = $(INCS) -Wall -g -std=gnu11 -O3 -fPIC $(DEFS)
-LDFLAGS = -L$(CUDA_PATH)/lib64
-LIBS    = -lcuda -lcudart -lcublas -lcusolver -lcurand -lm
-
-GENCODE_SM60  = -gencode arch=compute_60,code=sm_60
 GENCODE_SM70  = -gencode arch=compute_70,code=sm_70
+GENCODE_SM75  = -gencode arch=compute_75,code=sm_75
 GENCODE_SM80  = -gencode arch=compute_80,code=sm_80
+GENCODE_SM86  = -gencode arch=compute_86,code=sm_86
+GENCODE_SM89  = -gencode arch=compute_89,code=sm_89
 GENCODE_SM90  = -gencode arch=compute_90,code=sm_90
-GENCODE_FLAGS = $(GENCODE_SM70) $(GENCODE_SM80) $(GENCODE_SM90)
+GENCODE_SM90A = -gencode arch=compute_90a,code=sm_90a
+GENCODE_FLAGS  = $(GENCODE_SM70) $(GENCODE_SM75)
+GENCODE_FLAGS += $(GENCODE_SM80) $(GENCODE_SM86) $(GENCODE_SM89)
+GENCODE_FLAGS += $(GENCODE_SM90) $(GENCODE_SM90A)
 
-CUDA_PATH   ?= /usr/local/cuda-10.0
+CUDA_PATH   ?= /usr/local/cuda-12.0
 NVCC        = nvcc
-NVCCFLAGS   = -O3 -g --compiler-options -fPIC $(GENCODE_FLAGS)
+NVCCFLAGS   = -O3 -g -Xcompiler=-fopenmp $(GENCODE_FLAGS)
 
 # Delete the default old-fashion double-suffix rules
 .SUFFIXES:
@@ -32,13 +29,28 @@ NVCCFLAGS   = -O3 -g --compiler-options -fPIC $(GENCODE_FLAGS)
 all: $(EXES)
 
 %.exe: %.cu.o
-	$(CC) $(LDFLAGS) -o $@ $^ $(LIBS)
+	$(NVCC) $(NVCCFLAGS) -o $@ $^ $(LIBS)
 
-%.c.o: %.c
-	$(CC) $(CFLAGS) -c $^ -o $@
+bgj_test.cu.o: bgj_test.cu cuda_utils.cuh cublas_cusolver_init.cuh
+	$(NVCC) $(NVCCFLAGS) -o $@ -c bgj_test.cu
 
-%.cu.o: %.cu
-	$(NVCC) $(NVCCFLAGS) -o $@ -c $^
+lu_chol_test.cu.o: lu_chol_test.cu cuda_utils.cuh cublas_cusolver_init.cuh
+	$(NVCC) $(NVCCFLAGS) -o $@ -c lu_chol_test.cu
+
+syevd_test.cu.o: syevd_test.cu cuda_utils.cuh cublas_cusolver_init.cuh
+	$(NVCC) $(NVCCFLAGS) -o $@ -c syevd_test.cu
+
+gemm_test.cu.o: gemm_test.cu cuda_utils.cuh helper.cuh
+	$(NVCC) $(NVCCFLAGS) -o $@ -c gemm_test.cu
+
+cublaslt_gemm_test.cu.o: cublaslt_gemm_test.cu cuda_utils.cuh 
+	$(NVCC) $(NVCCFLAGS) -o $@ -c cublaslt_gemm_test.cu
+
+mgs2_test.cu.o: mgs2_test.cu cuda_utils.cuh helper.cuh block_mgs.cuh
+	$(NVCC) $(NVCCFLAGS) -o $@ -c mgs2_test.cu
+
+qr_test.cu.o: qr_test.cu cuda_utils.cuh helper.cuh householder_qr.cuh
+	$(NVCC) $(NVCCFLAGS) -o $@ -c qr_test.cu
 
 clean:
-	rm $(OBJS) $(EXES)
+	rm *.cu.o *.exe
