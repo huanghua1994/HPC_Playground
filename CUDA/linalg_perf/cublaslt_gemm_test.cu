@@ -61,15 +61,29 @@ void test_cublaslt_gemm(
     }
     if (dtype == 2)
     {
-        compute_type = CUBLAS_COMPUTE_16F;
+        compute_type = CUBLAS_COMPUTE_32F;
         AB_type = CUDA_R_16F;
         C_type = CUDA_R_16F;
-        scale_type = CUDA_R_16F;
+        scale_type = CUDA_R_32F;
         AB_elem_bytes = 2;
         C_elem_bytes = 2;
+        alpha = (void *) &f32_one;
+        beta = (void *) &f32_zero;
+    }
+    if (dtype == 3)
+    {
+        compute_type = CUBLAS_COMPUTE_32F;
+        AB_type = CUDA_R_16BF;
+        C_type = CUDA_R_16BF;
+        scale_type = CUDA_R_32F;
+        AB_elem_bytes = 2;
+        C_elem_bytes = 2;
+        alpha = (void *) &f32_one;
+        beta = (void *) &f32_zero;
     }
     // FP8: see https://docs.nvidia.com/cuda/cublas/#id83
-    if (dtype == 3)
+    int8_t fast_acc_mode = 0;
+    if (dtype == 4 || dtype == 5)
     {
         compute_type = CUBLAS_COMPUTE_32F;
         AB_type = CUDA_R_8F_E4M3;
@@ -77,11 +91,19 @@ void test_cublaslt_gemm(
         scale_type = CUDA_R_32F;
         AB_elem_bytes = 1;
         C_elem_bytes = 2;
+        alpha = (void *) &f32_one;
+        beta = (void *) &f32_zero;
+        if (dtype == 4) fast_acc_mode = 1;
+        if (dtype == 5) fast_acc_mode = 0;
     }
 
     CUBLAS_CHECK( cublasLtMatmulDescCreate(&operation_desc, compute_type, scale_type) );
     CUBLAS_CHECK( cublasLtMatmulDescSetAttribute(operation_desc, CUBLASLT_MATMUL_DESC_TRANSA, &transa, sizeof(transa)) );
     CUBLAS_CHECK( cublasLtMatmulDescSetAttribute(operation_desc, CUBLASLT_MATMUL_DESC_TRANSB, &transb, sizeof(transb)) );
+    if (dtype == 4 || dtype == 5)
+    {
+        CUBLAS_CHECK( cublasLtMatmulDescSetAttribute(operation_desc, CUBLASLT_MATMUL_DESC_FAST_ACCUM, &fast_acc_mode, sizeof(fast_acc_mode)) );
+    }
 
     CUBLAS_CHECK( cublasLtMatrixLayoutCreate(&Adesc, AB_type, transa == CUBLAS_OP_N ? m : k, transa == CUBLAS_OP_N ? k : m, lda) );
     CUBLAS_CHECK( cublasLtMatrixLayoutCreate(&Bdesc, AB_type, transb == CUBLAS_OP_N ? k : n, transb == CUBLAS_OP_N ? n : k, ldb) );
@@ -149,14 +171,19 @@ int main(int argc, char **argv)
     if (argc < 7)
     {
         fprintf(stderr, "Usage: %s dtype m n k transa transb n_test \n", argv[0]);
-        fprintf(stderr, "  - dtype      : 0 for double, 1 for float, 2 for half\n");
+        fprintf(stderr, "  - dtype      : 0 : fp64\n");
+        fprintf(stderr, "  -            : 1 : fp32\n");
+        fprintf(stderr, "  -            : 2 : fp16\n");
+        fprintf(stderr, "  -            : 3 : bf16\n");
+        fprintf(stderr, "  -            : 4 : f8e4m3 with fast accumulation\n");
+        fprintf(stderr, "  -            : 5 : f8e4m3 without fast accumulation\n");
         fprintf(stderr, "  - m, n, k    : op(A): m * k, op(B): k * n, matrix C: m * n\n");
         fprintf(stderr, "  - trans{a,b} : 0 for no transpose, 1 for transpose\n");
         fprintf(stderr, "  - n_test     : Number of tests to run\n");
         return 255;
     }
     dtype = atoi(argv[1]);
-    if (dtype < 0 || dtype > 2) dtype = 0;
+    if (dtype < 0 || dtype > 5) dtype = 0;
     m = atoi(argv[2]);
     n = atoi(argv[3]);
     k = atoi(argv[4]);
