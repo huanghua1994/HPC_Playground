@@ -73,6 +73,17 @@ void test_cublaslt_gemm(
     if (dtype == 3)
     {
         compute_type = CUBLAS_COMPUTE_32F;
+        AB_type = CUDA_R_16F;
+        C_type = CUDA_R_32F;
+        scale_type = CUDA_R_32F;
+        AB_elem_bytes = 2;
+        C_elem_bytes = 4;
+        alpha = (void *) &f32_one;
+        beta = (void *) &f32_zero;
+    }
+    if (dtype == 4)
+    {
+        compute_type = CUBLAS_COMPUTE_32F;
         AB_type = CUDA_R_16BF;
         C_type = CUDA_R_16BF;
         scale_type = CUDA_R_32F;
@@ -83,7 +94,7 @@ void test_cublaslt_gemm(
     }
     // FP8: see https://docs.nvidia.com/cuda/cublas/#id83
     int8_t fast_acc_mode = 0;
-    if (dtype == 4 || dtype == 5)
+    if (dtype == 5 || dtype == 6)
     {
         compute_type = CUBLAS_COMPUTE_32F;
         AB_type = CUDA_R_8F_E4M3;
@@ -93,8 +104,20 @@ void test_cublaslt_gemm(
         C_elem_bytes = 2;
         alpha = (void *) &f32_one;
         beta = (void *) &f32_zero;
-        if (dtype == 4) fast_acc_mode = 1;
-        if (dtype == 5) fast_acc_mode = 0;
+        if (dtype == 5) fast_acc_mode = 1;
+        if (dtype == 6) fast_acc_mode = 0;
+    }
+    if (dtype == 7)
+    {
+        compute_type = CUBLAS_COMPUTE_32F;
+        AB_type = CUDA_R_8F_E4M3;
+        C_type = CUDA_R_16BF;
+        scale_type = CUDA_R_32F;
+        AB_elem_bytes = 1;
+        C_elem_bytes = 2;
+        alpha = (void *) &f32_one;
+        beta = (void *) &f32_zero;
+        fast_acc_mode = 1;
     }
 
     CUBLAS_CHECK( cublasLtMatmulDescCreate(&operation_desc, compute_type, scale_type) );
@@ -171,19 +194,22 @@ int main(int argc, char **argv)
     if (argc < 7)
     {
         fprintf(stderr, "Usage: %s dtype m n k transa transb n_test \n", argv[0]);
-        fprintf(stderr, "  - dtype      : 0 : fp64\n");
-        fprintf(stderr, "  -            : 1 : fp32\n");
-        fprintf(stderr, "  -            : 2 : fp16\n");
-        fprintf(stderr, "  -            : 3 : bf16\n");
-        fprintf(stderr, "  -            : 4 : f8e4m3 with fast accumulation\n");
-        fprintf(stderr, "  -            : 5 : f8e4m3 without fast accumulation\n");
+        fprintf(stderr, "  - dtype | Compute type | A & B type | C type | Scalar type | Misc \n");
+        fprintf(stderr, "        0 |         FP64 |       FP64 |   FP64 |        FP64 |      \n");
+        fprintf(stderr, "        1 |         FP32 |       FP32 |   FP32 |        FP32 |      \n");
+        fprintf(stderr, "        2 |         FP32 |       FP16 |   FP16 |        FP32 |      \n");
+        fprintf(stderr, "        3 |         FP32 |       FP16 |   FP32 |        FP32 |      \n");
+        fprintf(stderr, "        4 |         FP32 |       BF16 |   BF16 |        FP32 |      \n");
+        fprintf(stderr, "        5 |         FP32 |       E4M3 |   FP16 |        FP32 | Fast acc \n");
+        fprintf(stderr, "        6 |         FP32 |       E4M3 |   FP16 |        FP32 | No fast acc \n");
+        fprintf(stderr, "        7 |         FP32 |       E4M3 |   BF16 |        FP32 | Fast acc \n");
         fprintf(stderr, "  - m, n, k    : op(A): m * k, op(B): k * n, matrix C: m * n\n");
         fprintf(stderr, "  - trans{a,b} : 0 for no transpose, 1 for transpose\n");
         fprintf(stderr, "  - n_test     : Number of tests to run\n");
         return 255;
     }
     dtype = atoi(argv[1]);
-    if (dtype < 0 || dtype > 5) dtype = 0;
+    if (dtype < 0 || dtype > 7) dtype = 0;
     m = atoi(argv[2]);
     n = atoi(argv[3]);
     k = atoi(argv[4]);
