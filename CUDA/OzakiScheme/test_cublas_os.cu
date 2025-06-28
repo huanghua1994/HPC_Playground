@@ -58,7 +58,7 @@ __global__ void split_array_kernel(
     const int arr_size, const InType* __restrict__ input,
     SplitType* __restrict__ output_0, SplitType* __restrict__ output_1,
     SplitType* __restrict__ output_2, SplitType* __restrict__ output_3,
-    InType level_scale = 1.0
+    InType level_scale = 1.0, InType contract_dim = 1.0
 )
 {
     if (level_scale == 1.0)
@@ -72,24 +72,56 @@ __global__ void split_array_kernel(
     int idx = blockIdx.x * blockDim.x + threadIdx.x;
     if (idx < arr_size)
     {
-        InType in_value = input[idx];
-        SplitType out_value0 = static_cast<SplitType>(in_value);
-        output_0[idx] = out_value0;
+        InType cd_bits = log2(contract_dim);
+        InType rho = ceil(52.0 - min(10.0, (23.0 - cd_bits) * 0.5));
+        int rho_int = static_cast<int>(rho);
+
+        InType mu = 1.0;
+        InType curr_x = input[idx];
+        InType tau = 0;
+        int tau_int = static_cast<int>(tau);
+        //InType sigma = exp2(rho + tau);
+        InType sigma = scalbn(1.0, rho_int + tau_int);
+        InType x_tmp = (curr_x + sigma) - sigma;
+        //InType out_value = exp2(-tau) * x_tmp;
+        InType out_value = scalbn(x_tmp, -tau_int);
+        output_0[idx] = static_cast<SplitType>(out_value);
         if constexpr(num_split == 1) return;
 
-        in_value = level_scale * (in_value - static_cast<InType>(out_value0));
-        SplitType out_value1 = static_cast<SplitType>(in_value);
-        output_1[idx] = out_value1;
+        //mu /= level_scale;
+        curr_x = curr_x - x_tmp;
+        //tau = ceil(log2(mu));
+        tau_int -= 10;
+        //sigma = exp2(rho + tau);
+        sigma = scalbn(sigma, -10);
+        x_tmp = (curr_x + sigma) - sigma;
+        //out_value = exp2(-tau) * x_tmp;
+        out_value = scalbn(x_tmp, -tau_int);
+        output_1[idx] = static_cast<SplitType>(out_value);
         if constexpr(num_split == 2) return;
 
-        in_value = level_scale * (in_value - static_cast<InType>(out_value1));
-        SplitType out_value2 = static_cast<SplitType>(in_value);
-        output_2[idx] = out_value2;
+        //mu /= level_scale;
+        curr_x = curr_x - x_tmp;
+        //tau = ceil(log2(mu));
+        tau_int -= 10;
+        //sigma = exp2(rho + tau);
+        sigma = scalbn(sigma, -10);
+        x_tmp = (curr_x + sigma) - sigma;
+        //out_value = exp2(-tau) * x_tmp;
+        out_value = scalbn(x_tmp, -tau_int);
+        output_2[idx] = static_cast<SplitType>(out_value);
         if constexpr(num_split == 3) return;
 
-        in_value = level_scale * (in_value - static_cast<InType>(out_value2));
-        SplitType out_value3 = static_cast<SplitType>(in_value);
-        output_3[idx] = out_value3;
+        //mu /= level_scale;
+        curr_x = curr_x - x_tmp;
+        //tau = ceil(log2(mu));
+        tau_int -= 10;
+        //sigma = exp2(rho + tau);
+        sigma = scalbn(sigma, -10);
+        x_tmp = (curr_x + sigma) - sigma;
+        //out_value = exp2(-tau) * x_tmp;
+        out_value = scalbn(x_tmp, -tau_int);
+        output_3[idx] = static_cast<SplitType>(out_value);
     }
 }
 
@@ -325,15 +357,18 @@ int main(int argc, char **argv)
     dim3 A_mat_grid((A_size + block.x - 1) / block.x);
     dim3 B_mat_grid((B_size + block.x - 1) / block.x);
     dim3 C_mat_grid((C_size + block.x - 1) / block.x);
+    double contract_dim = static_cast<double>(k);
     #define DISPATCH_SPLIT_ARRAY_KERNEL(num_split) \
     do {  \
         split_array_kernel<num_split, double, __half><<<A_mat_grid, block, 0, stream>>>(  \
             A_size, A_fp64, A_splits_fp16, A_splits_fp16 + A_size,  \
-            A_splits_fp16 + 2 * A_size, A_splits_fp16 + 3 * A_size  \
+            A_splits_fp16 + 2 * A_size, A_splits_fp16 + 3 * A_size,  \
+            1.0, contract_dim  \
         );  \
         split_array_kernel<num_split, double, __half><<<B_mat_grid, block, 0, stream>>>(  \
             B_size, B_fp64, B_splits_fp16, B_splits_fp16 + B_size,  \
-            B_splits_fp16 + 2 * B_size, B_splits_fp16 + 3 * B_size  \
+            B_splits_fp16 + 2 * B_size, B_splits_fp16 + 3 * B_size,  \
+            1.0, contract_dim  \
         );  \
     } while (0)
     if (num_split == 1) DISPATCH_SPLIT_ARRAY_KERNEL(1);
@@ -369,7 +404,8 @@ int main(int argc, char **argv)
         A_size, A_fp64_h, A_upcast_fp64_h.data(),
         &max_abs_err, &max_rel_err, &mat_relerr
     );
-    printf("A split summed up: max_abs_err = %e, max_rel_err = %e, mat_relerr = %e\n",
+    printf("A split summed up:\n");
+    printf("  max_abs_err = %e\n  max_rel_err = %e\n  mat_relerr  = %e\n",
            max_abs_err, max_rel_err, mat_relerr);
 
     cublasComputeType_t compute_type = CUBLAS_COMPUTE_32F;
@@ -393,13 +429,6 @@ int main(int argc, char **argv)
         }
     }
     printf("cublasLt GEMM with split arrays completed\n");
-
-    /*
-    auto C_splits_fp32_h = dev_array_to_host<float>(C_splits_fp32, C_size * num_split);
-    write_binary_file<float>(
-        "C_splits.bin", C_size * num_split, C_splits_fp32_h.data()
-    );
-    */
 
     #define DISPATCH_SUM_SPLIT_ARRAY_KERNEL(num_split) \
     do {  \
@@ -438,7 +467,8 @@ int main(int argc, char **argv)
         C_size, C_fp64_h.data(), C_upcast_fp64_h.data(),
         &max_abs_err, &max_rel_err, &mat_relerr
     );
-    printf("Ozaki Scheme GEMM output C: max_abs_err = %e, max_rel_err = %e, mat_relerr = %e\n",
+    printf("FP16 split FP32 GEMM output C:\n");
+    printf("  max_abs_err = %e\n  max_rel_err = %e\n  mat_relerr  = %e\n",
            max_abs_err, max_rel_err, mat_relerr);
 
     CUDA_CHECK( cudaFree(A_fp64) );
