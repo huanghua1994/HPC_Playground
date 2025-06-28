@@ -52,6 +52,47 @@ nvcc test_cublas_os.cu -O2 -gencode arch=compute_70,code=sm_70 -gencode \
         assert(result);                                                             \
     } while (0)
 
+template<int num_split>
+__device__ void os_fp_split(
+    double curr_x, const int rho_int, __half *output_0,
+    __half *output_1, __half *output_2, __half *output_3
+)
+{
+    int tau_int = 0;
+    double sigma, x_tmp, out_value;
+
+    // After each split, we scale up the residual by 2^10 since 
+    // FP16 has 10 bits of effective precision.
+    
+    sigma = scalbn(1.0, rho_int + tau_int);
+    x_tmp = (curr_x + sigma) - sigma;
+    out_value = scalbn(x_tmp, -tau_int);
+    *output_0 = static_cast<__half>(out_value);
+    if constexpr(num_split == 1) return;
+
+    curr_x -= x_tmp;
+    tau_int -= 10;
+    sigma = scalbn(sigma, -10);
+    x_tmp = (curr_x + sigma) - sigma;
+    out_value = scalbn(x_tmp, -tau_int);
+    *output_1 = static_cast<__half>(out_value);
+    if constexpr(num_split == 2) return;
+
+    curr_x -= x_tmp;
+    tau_int -= 10;
+    sigma = scalbn(sigma, -10);
+    x_tmp = (curr_x + sigma) - sigma;
+    out_value = scalbn(x_tmp, -tau_int);
+    *output_2 = static_cast<__half>(out_value);
+    if constexpr(num_split == 3) return;
+
+    curr_x -= x_tmp;
+    tau_int -= 10;
+    sigma = scalbn(sigma, -10);
+    x_tmp = (curr_x + sigma) - sigma;
+    out_value = scalbn(x_tmp, -tau_int);
+    *output_3 = static_cast<__half>(out_value);
+}
 
 template<int num_split, typename InType, typename SplitType>
 __global__ void split_array_kernel(
@@ -70,59 +111,15 @@ __global__ void split_array_kernel(
     }
 
     int idx = blockIdx.x * blockDim.x + threadIdx.x;
-    if (idx < arr_size)
-    {
-        InType cd_bits = log2(contract_dim);
-        InType rho = ceil(52.0 - min(10.0, (23.0 - cd_bits) * 0.5));
-        int rho_int = static_cast<int>(rho);
-
-        InType mu = 1.0;
-        InType curr_x = input[idx];
-        InType tau = 0;
-        int tau_int = static_cast<int>(tau);
-        //InType sigma = exp2(rho + tau);
-        InType sigma = scalbn(1.0, rho_int + tau_int);
-        InType x_tmp = (curr_x + sigma) - sigma;
-        //InType out_value = exp2(-tau) * x_tmp;
-        InType out_value = scalbn(x_tmp, -tau_int);
-        output_0[idx] = static_cast<SplitType>(out_value);
-        if constexpr(num_split == 1) return;
-
-        //mu /= level_scale;
-        curr_x = curr_x - x_tmp;
-        //tau = ceil(log2(mu));
-        tau_int -= 10;
-        //sigma = exp2(rho + tau);
-        sigma = scalbn(sigma, -10);
-        x_tmp = (curr_x + sigma) - sigma;
-        //out_value = exp2(-tau) * x_tmp;
-        out_value = scalbn(x_tmp, -tau_int);
-        output_1[idx] = static_cast<SplitType>(out_value);
-        if constexpr(num_split == 2) return;
-
-        //mu /= level_scale;
-        curr_x = curr_x - x_tmp;
-        //tau = ceil(log2(mu));
-        tau_int -= 10;
-        //sigma = exp2(rho + tau);
-        sigma = scalbn(sigma, -10);
-        x_tmp = (curr_x + sigma) - sigma;
-        //out_value = exp2(-tau) * x_tmp;
-        out_value = scalbn(x_tmp, -tau_int);
-        output_2[idx] = static_cast<SplitType>(out_value);
-        if constexpr(num_split == 3) return;
-
-        //mu /= level_scale;
-        curr_x = curr_x - x_tmp;
-        //tau = ceil(log2(mu));
-        tau_int -= 10;
-        //sigma = exp2(rho + tau);
-        sigma = scalbn(sigma, -10);
-        x_tmp = (curr_x + sigma) - sigma;
-        //out_value = exp2(-tau) * x_tmp;
-        out_value = scalbn(x_tmp, -tau_int);
-        output_3[idx] = static_cast<SplitType>(out_value);
-    }
+    if (idx >= arr_size) return;
+    InType cd_bits = log2(contract_dim);
+    InType rho = ceil(52.0 - min(10.0, (23.0 - cd_bits) * 0.5));
+    int rho_int = static_cast<int>(rho);
+    os_fp_split<num_split>(
+        input[idx], rho_int, 
+        output_0 + idx, output_1 + idx, 
+        output_2 + idx, output_3 + idx
+    );
 }
 
 
@@ -143,28 +140,26 @@ __global__ void sum_split_array_kernel(
     }
 
     int idx = blockIdx.x * blockDim.x + threadIdx.x;
-    if (idx < arr_size)
+    if (idx >= arr_size) return;
+    OutType out_value = 0;
+    OutType curr_scale_inv = 1.0;
+    out_value += static_cast<OutType>(split_0[idx]);
+    if constexpr(num_split >= 2)
     {
-        OutType out_value = 0;
-        OutType curr_scale_inv = 1.0;
-        out_value += static_cast<OutType>(split_0[idx]);
-        if constexpr(num_split >= 2)
-        {
-            curr_scale_inv *= level_scale_inv;
-            out_value += curr_scale_inv * static_cast<OutType>(split_1[idx]);
-        }
-        if constexpr(num_split >= 3)
-        {
-            curr_scale_inv *= level_scale_inv;
-            out_value += curr_scale_inv * static_cast<OutType>(split_2[idx]);
-        }
-        if constexpr(num_split >= 4)
-        {
-            curr_scale_inv *= level_scale_inv;
-            out_value += curr_scale_inv * static_cast<OutType>(split_3[idx]);
-        }
-        output[idx] = out_value;
+        curr_scale_inv *= level_scale_inv;
+        out_value += curr_scale_inv * static_cast<OutType>(split_1[idx]);
     }
+    if constexpr(num_split >= 3)
+    {
+        curr_scale_inv *= level_scale_inv;
+        out_value += curr_scale_inv * static_cast<OutType>(split_2[idx]);
+    }
+    if constexpr(num_split >= 4)
+    {
+        curr_scale_inv *= level_scale_inv;
+        out_value += curr_scale_inv * static_cast<OutType>(split_3[idx]);
+    }
+    output[idx] = out_value;
 }
 
 template<typename T>
