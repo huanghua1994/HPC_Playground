@@ -53,7 +53,39 @@ nvcc test_cublas_os.cu -O2 -gencode arch=compute_70,code=sm_70 -gencode \
     } while (0)
 
 template<int num_split>
-__device__ void os_fp_split(
+__device__ void os_fp_split_direct(
+    double curr_x, const int rho_int, __half *output_0,
+    __half *output_1, __half *output_2, __half *output_3
+)
+{
+    // After each split, we scale up the residual by 2^10 since
+    // FP16 e5m9 has 10 bits of effective precision.
+
+    __half out0 = static_cast<__half>(curr_x);
+    *output_0 = out0;
+    if constexpr(num_split == 1) return;
+
+    curr_x -= static_cast<double>(out0);
+    curr_x = scalbn(curr_x, 10);
+    __half out1 = static_cast<__half>(curr_x);
+    *output_1 = out1;
+    if constexpr(num_split == 2) return;
+
+    curr_x -= static_cast<double>(out1);
+    curr_x = scalbn(curr_x, 10);
+    __half out2 = static_cast<__half>(curr_x);
+    *output_2 = out2;
+    if constexpr(num_split == 3) return;
+
+    curr_x -= static_cast<double>(out2);
+    curr_x = scalbn(curr_x, 10);
+    __half out3 = static_cast<__half>(curr_x);
+    *output_3 = out3;
+}
+
+// The function below uses formulas from 10.1007/978-3-030-50743-5_12
+template<int num_split>
+__device__ void os_fp_split_paper(
     double curr_x, const int rho_int, __half *output_0,
     __half *output_1, __half *output_2, __half *output_3
 )
@@ -99,23 +131,15 @@ __global__ void split_array_kernel(
     const int arr_size, const InType* __restrict__ input,
     SplitType* __restrict__ output_0, SplitType* __restrict__ output_1,
     SplitType* __restrict__ output_2, SplitType* __restrict__ output_3,
-    InType level_scale = 1.0, InType contract_dim = 1.0
+    InType contract_dim = 1.0
 )
 {
-    if (level_scale == 1.0)
-    {
-        // FP16: e5m9, 10 bits of effective precision
-        if (std::is_same_v<SplitType, __half>) level_scale = 1024.0;
-        // FP32: e8m23, 24 bits of effective precision
-        if (std::is_same_v<SplitType, float>) level_scale = 16777216.0;
-    }
-
     int idx = blockIdx.x * blockDim.x + threadIdx.x;
     if (idx >= arr_size) return;
     InType cd_bits = log2(contract_dim);
-    InType rho = ceil(52.0 - min(10.0, (23.0 - cd_bits) * 0.5));
+    InType rho = ceil(53.0 - min(10.0, (24.0 - cd_bits) * 0.5));
     int rho_int = static_cast<int>(rho);
-    os_fp_split<num_split>(
+    os_fp_split_direct<num_split>(
         input[idx], rho_int, 
         output_0 + idx, output_1 + idx, 
         output_2 + idx, output_3 + idx
@@ -358,12 +382,12 @@ int main(int argc, char **argv)
         split_array_kernel<num_split, double, __half><<<A_mat_grid, block, 0, stream>>>(  \
             A_size, A_fp64, A_splits_fp16, A_splits_fp16 + A_size,  \
             A_splits_fp16 + 2 * A_size, A_splits_fp16 + 3 * A_size,  \
-            1.0, contract_dim  \
+            contract_dim  \
         );  \
         split_array_kernel<num_split, double, __half><<<B_mat_grid, block, 0, stream>>>(  \
             B_size, B_fp64, B_splits_fp16, B_splits_fp16 + B_size,  \
             B_splits_fp16 + 2 * B_size, B_splits_fp16 + 3 * B_size,  \
-            1.0, contract_dim  \
+            contract_dim  \
         );  \
     } while (0)
     if (num_split == 1) DISPATCH_SPLIT_ARRAY_KERNEL(1);
